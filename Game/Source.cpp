@@ -226,50 +226,51 @@ inline float UISize = 18.0f;
 
 void LoadTextures()
 {
-	LoadTexture("./Textures/HeatPipe.png", &HeatPipeTexture);
-	LoadTexture("./Textures/HeatPipe NormalMap.png", &HeatPipeNormalMap);
+	LoadTexture("./Textures/Connections/HeatPipe.png", &HeatPipeTexture);
+	LoadTexture("./Textures/Connections/HeatPipe NormalMap.png", &HeatPipeNormalMap);
 
-	LoadTexture("./Textures/Rope.png", &RopeTexture);
-	LoadTexture("./Textures/Rope NormalMap.png", &RopeNormalMap);
+	LoadTexture("./Textures/Connections/Rope.png", &RopeTexture);
+	LoadTexture("./Textures/Connections/Rope NormalMap.png", &RopeNormalMap);
 
-	LoadTexture("./Textures/Strut.png", &StrutTexture);
-	LoadTexture("./Textures/Strut NormalMap.png", &StrutNormalMap);
+	LoadTexture("./Textures/Connections/Strut.png", &StrutTexture);
+	LoadTexture("./Textures/Connections/Strut NormalMap.png", &StrutNormalMap);
 
-	LoadTexture("./Textures/RocketEngine.png", &RocketEngineTexture);
-	LoadTexture("./Textures/RocketEngine NormalMap.png", &RocketEngineNormalMap);
+	LoadTexture("./Textures/Misc/Pipe/Pipe.png", &PipeTexture);
+	LoadTexture("./Textures/Misc/Pipe/Pipe NormalMap.png", &PipeNormalMap);
 
-	LoadTexture("./Textures/Radiator.png", &RadiatorTexture);
-	LoadTexture("./Textures/Radiator NormalMap.png", &RadiatorNormalMap);
+	LoadTexture("./Textures/Parts/RocketEngine/RocketEngine.png", &RocketEngineTexture);
+	LoadTexture("./Textures/Parts/RocketEngine/RocketEngine NormalMap.png", &RocketEngineNormalMap);
 
-	LoadTexture("./Textures/Gun.png", &GunTexture);
-	LoadTexture("./Textures/Gun NormalMap.png", &GunNormalMap);
+	LoadTexture("./Textures/Parts/Radiator/Radiator.png", &RadiatorTexture);
+	LoadTexture("./Textures/Parts/Radiator/Radiator NormalMap.png", &RadiatorNormalMap);
 
-	LoadTexture("./Textures/LaserGun.png", &LaserGunTexture);
-	LoadTexture("./Textures/LaserGun NormalMap.png", &LaserGunNormalMap);
+	LoadTexture("./Textures/Parts/Gun/Gun.png", &GunTexture);
+	LoadTexture("./Textures/Parts/Gun/Gun NormalMap.png", &GunNormalMap);
 
-	LoadTexture("./Textures/MiniGun.png", &MiniGunTexture);
-	LoadTexture("./Textures/MiniGun NormalMap.png", &MiniGunNormalMap);
+	LoadTexture("./Textures/Parts/LaserGun/LaserGun.png", &LaserGunTexture);
+	LoadTexture("./Textures/Parts/LaserGun/LaserGun NormalMap.png", &LaserGunNormalMap);
 
-	LoadTexture("./Textures/GunBase.png", &GunBaseTexture);
-	LoadTexture("./Textures/GunBase NormalMap.png", &GunBaseNormalMap);
+	LoadTexture("./Textures/Parts/MiniGun/MiniGun.png", &MiniGunTexture);
+	LoadTexture("./Textures/Parts/MiniGun/MiniGun NormalMap.png", &MiniGunNormalMap);
 
-	LoadTexture("./Textures/RocketLauncher.png", &RocketLauncherTexture);
-	LoadTexture("./Textures/RocketLauncher NormalMap.png", &RocketLauncherNormalMap);
+	LoadTexture("./Textures/Parts/Gun/GunBase.png", &GunBaseTexture);
+	LoadTexture("./Textures/Parts/Gun/GunBase NormalMap.png", &GunBaseNormalMap);
 
-	LoadTexture("./Textures/BallBody.png", &BallBodyTexture);
-	LoadTexture("./Textures/BallBody NormalMap.png", &BallBodyNormalMap);
+	LoadTexture("./Textures/Parts/RocketLauncher/RocketLauncher.png", &RocketLauncherTexture);
+	LoadTexture("./Textures/Parts/RocketLauncher/RocketLauncher NormalMap.png", &RocketLauncherNormalMap);
 
-	LoadTexture("./Textures/CentralPart.png", &CentralPartTexture);
-	LoadTexture("./Textures/CentralPart NormalMap.png", &CentralPartNormalMap);
+	LoadTexture("./Textures/Parts/BallBody/BallBody.png", &BallBodyTexture);
+	LoadTexture("./Textures/Parts/BallBody/BallBody NormalMap.png", &BallBodyNormalMap);
 
-	LoadTexture("./Textures/Rotor.png", &RotorTexture);
-	LoadTexture("./Textures/Rotor NormalMap.png", &RotorNormalMap);
+	LoadTexture("./Textures/Parts/CentralPart/CentralPart.png", &CentralPartTexture);
+	LoadTexture("./Textures/Parts/CentralPart/CentralPart NormalMap.png", &CentralPartNormalMap);
 
-	LoadTexture("./Textures/Pipe.png", &PipeTexture);
-	LoadTexture("./Textures/Pipe NormalMap.png", &PipeNormalMap);
+	LoadTexture("./Textures/Parts/Rotor/Rotor.png", &RotorTexture);
+	LoadTexture("./Textures/Parts/Rotor/Rotor NormalMap.png", &RotorNormalMap);
 
-	LoadTexture("./Textures/debrie0.png", &Debrie0Texture);
-	LoadTexture("./Textures/debrie1.png", &Debrie1Texture);
+
+	LoadTexture("./Textures/Misc/Debrie/debrie0.png", &Debrie0Texture);
+	LoadTexture("./Textures/Misc/Debrie/debrie1.png", &Debrie1Texture);
 
 
 }
