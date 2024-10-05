@@ -1,0 +1,447 @@
+AIAim_0000000014
+{
+	Class 10011
+	ID 0
+	Name AIAim
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+BallBody_0000000027
+{
+	Class 10000
+	ID 0
+	Name BallBody
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+BallBody_0000000028
+{
+	Class 10000
+	ID 0
+	Name BallBody
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+BallBody_0000000029
+{
+	Class 10000
+	ID 0
+	Name BallBody
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+BallBody_0000000030
+{
+	Class 10000
+	ID 0
+	Name BallBody
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+CO_Cube_0000000000
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 4
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	Height 200.000000
+	ID -1
+	Material M_Cube
+	Name CO_Cube
+	Position 0.008734 370.004364
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 572.002197 200.004501
+	Type 1
+	Width 572.000000
+	Z_Index 1
+	invertX 0
+	invertY 0
+}
+CO_Cube_0000000001
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 4
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	Height 572.000000
+	ID -1
+	Material M_Cube
+	Name CO_Cube
+	Position 370.001404 0.008209
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 200.004181 572.004578
+	Type 1
+	Width 200.000000
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Cube_0000000002
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 4
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	Height 572.000000
+	ID -1
+	Material M_Cube
+	Name CO_Cube
+	Position -1.766808 -1259.445068
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 3409.239990 787.167236
+	Type 1
+	Width 200.000000
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Cube_0000000003
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 4
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	Height 200.000000
+	ID -1
+	Material M_Cube
+	Name CO_Cube
+	Position -0.001267 -370.004852
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 572.002197 200.004517
+	Type 1
+	Width 572.000000
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Cube_0000000004
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 4
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	Height 572.000000
+	ID -1
+	Material M_Cube
+	Name CO_Cube
+	Position -370.002655 0.007780
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 200.002213 572.004456
+	Type 1
+	Width 200.000000
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Cube_0000000005
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 4
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	Height 572.000000
+	ID -1
+	Material M_Cube
+	Name CO_Cube
+	Position -880.875000 -6.626926
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 710.286499 974.687500
+	Type 1
+	Width 200.000000
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Cube_0000000006
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 4
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	Height 572.000000
+	ID -1
+	Material M_Cube
+	Name CO_Cube
+	Position 909.340759 -4.645979
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 710.286499 974.687500
+	Type 1
+	Width 200.000000
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Cube_0000000007
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 4
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	Height 572.000000
+	ID -1
+	Material M_Cube
+	Name CO_Cube
+	Position 119.244019 1495.331055
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 1815.317017 988.081909
+	Type 1
+	Width 200.000000
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CentralPart_0000000009
+{
+	Class 10010
+	ID 0
+	Name CentralPart
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+CubeHM_0000000000
+{
+	Class 1
+	ID 0
+	Name CubeHM
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 10.000000
+	texture_Noize_Layers 3
+	texture_Size 100.000000
+	texture_Type 11
+	texture_filter 1
+}
+CubeNM_0000000001
+{
+	Class 1
+	ID 0
+	Name CubeNM
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 10.000000
+	texture_Noize_Layers 3
+	texture_Size 100.000000
+	texture_Type 9
+	texture_filter 1
+}
+Cube_0000000002
+{
+	Class 1
+	ID 0
+	Name Cube
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 10.000000
+	texture_Noize_Layers 3
+	texture_Size 100.000000
+	texture_Type 7
+	texture_filter 0
+}
+Glider_0000000023
+{
+	Class 10012
+	ID 0
+	Name Glider
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+Glider_0000000025
+{
+	Class 10012
+	ID 0
+	Name Glider
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+LightSource_0000000008
+{
+	Class 6
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 100.000000
+	ID 0
+	Name LightSource
+	Position -10.000000 0.000000
+	Rotation 0.000000
+	Scale 638.566650 621.367554
+	Texture No_texture
+	Type 1
+	Volume 0.000000
+	Z_Index 0
+	invertX 0
+	invertY 0
+	sizeZ 707.000000
+}
+M_Cube_0000000003
+{
+	Class 2
+	Height_Map CubeHM
+	ID 0
+	Name M_Cube
+	Normal_Map CubeNM
+	Texture Cube
+	Type 0
+}
+MiniGun_0000000021
+{
+	Class 10007
+	ID 0
+	Name MiniGun
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+Radiator_0000000016
+{
+	Class 10004
+	ID 0
+	Name Radiator
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+Radiator_0000000017
+{
+	Class 10004
+	ID 0
+	Name Radiator
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+Radiator_0000000022
+{
+	Class 10004
+	ID 0
+	Name Radiator
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000010
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000011
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000012
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000013
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000015
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000018
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000019
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000020
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000024
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000026
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}

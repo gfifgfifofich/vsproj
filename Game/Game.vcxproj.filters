@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{fd5fc495-6254-40a8-8456-53397495d30f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Include">
+      <UniqueIdentifier>{0286936b-239a-4c80-9fb6-219a01c934cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Cpps">
+      <UniqueIdentifier>{9dcc638e-c53d-4438-9f45-226907e79e7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Cpps\ImGui">
+      <UniqueIdentifier>{67c638a1-d3a4-479e-9e08-15c5be23d774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Parts">
+      <UniqueIdentifier>{c578d43c-4b21-47c7-9cf8-a83192a4e69a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="engine\Components\Engine.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Redactor.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Collisions\BallToBall.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Collisions\BallToLine.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Collisions\BallToPolygon.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Collisions\CircleToQuad.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Collisions\QuadToQuad.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Collisions\RayCastToShapes.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\Ball.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\Bodies.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\ECS.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\Graph.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\Line.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\NeuralNetwork.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\Particle.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\Polygon.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\Quad.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\Ray.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\Scene.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\SoftBody.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects\VerletObject.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Physics\Rope.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Physics\Spring.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Physics\Strut.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Collisions.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Drawing.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Helper.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\LoadWAV.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Mathematics.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Objects.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Physics.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\SaveToFile.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Shader.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\sounds.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\Text.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Components\Include\UI.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageSphere.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Explodion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Laser.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mission.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleMaterials.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parts.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rocket.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SubECS.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parts\Base.h">
+      <Filter>Source Files\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Parts\CentralPart.h">
+      <Filter>Source Files\Parts</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="engine\Components\Cpps\Collisions\BallToBall.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Collisions\BallToLine.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Collisions\BallToPolygon.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Collisions\CircleToQuad.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Collisions\QuadToQuad.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Collisions\RayCastToShapes.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\Ball.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\Bodies.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\ECS.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\Graph.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\Line.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\NeuralNetwork.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\Particle.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\Polygon.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\Ray.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\Scene.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\SoftBody.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Objects\VerletObject.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Physics\Rope.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Physics\Spring.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Physics\Strut.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Drawing.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Engine.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Math.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Redactor.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\SaveToFile.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Shader.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\sounds.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\Text.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\UI.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="Explodion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Laser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleMaterials.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SubECS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\ImGui\imgui_demo.cpp">
+      <Filter>Source Files\Engine\Cpps\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\ImGui\imgui_draw.cpp">
+      <Filter>Source Files\Engine\Cpps\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\ImGui\imgui_impl_glfw.cpp">
+      <Filter>Source Files\Engine\Cpps\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\ImGui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\Engine\Cpps\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\ImGui\imgui_tables.cpp">
+      <Filter>Source Files\Engine\Cpps\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\ImGui\imgui_widgets.cpp">
+      <Filter>Source Files\Engine\Cpps\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\ImGui\imgui.cpp">
+      <Filter>Source Files\Engine\Cpps\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Parts\Base.cpp">
+      <Filter>Source Files\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="Parts\CentralPart.cpp">
+      <Filter>Source Files\Parts</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

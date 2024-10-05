@@ -1,0 +1,75 @@
+AIAim
+{
+	Health 15 
+}
+BallBody
+{
+	Health 15 
+}
+CentralPart
+{
+	Health 25 
+}
+Glider
+{
+	Health 15 
+	HeatPerSecond 5.5 
+	Power 500 
+}
+Gun
+{
+	BulletHeat 1 
+	BulletSize 1 
+	BulletSpeed 400 
+	Damage 5 
+	FireRate 0.25 
+	Health 20 
+	HeatPerShot 6 
+	Recoil 15 
+}
+LaserGun
+{
+	BulletSize 50 
+	Damage 25 
+	Health 20 
+	HeatPerShot 10 
+	LaserHeat 3 
+	Recoil 15 
+}
+MiniGun
+{
+	BulletHeat 0.8 
+	BulletSize 50 
+	BulletSpeed 500 
+	Damage 3 
+	FireRate 0.034 
+	Health 25 
+	HeatPerShot 1 
+	Recoil 2.5 
+}
+Radiator
+{
+	Health 10 
+	coolingSpeed 2.0 
+	mintemp -1.0 
+}
+RocketEngine
+{
+	Health 15 
+	HeatPerSecond 3 
+	Power 550 
+}
+RocketLauncher
+{
+	BulletSize 50 
+	BulletSpeed 150 
+	Damage 0.15 
+	ExlodionForce 5 
+	FireRate 2 
+	Health 15 
+	Recoil 15 
+}
+Rotor
+{
+	Health 15 
+}

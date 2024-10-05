@@ -1,0 +1,323 @@
+CircleHM_0000000000
+{
+	Class 1
+	ID 0
+	Name CircleHM
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 10.000000
+	texture_Noize_Layers 3
+	texture_Size 1000.000000
+	texture_Type 10
+	texture_filter 1
+}
+CircleNM_0000000001
+{
+	Class 1
+	ID 0
+	Name CircleNM
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 10.000000
+	texture_Noize_Layers 3
+	texture_Size 100.000000
+	texture_Type 8
+	texture_filter 1
+}
+Circle_0000000002
+{
+	Class 1
+	ID 0
+	Name Circle
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 10.000000
+	texture_Noize_Layers 3
+	texture_Size 1000.000000
+	texture_Type 6
+	texture_filter 1
+}
+ExplodionP1_0000000005
+{
+	Class 7
+	ID 0
+	Name ExplodionP1
+	ParticleAsset P_Explodion
+	ParticleObjectType 3
+	Position 1379.582031 -40.497101
+	Radius 121.000000
+	Type 1
+	amount 2000
+	tick 15.617001
+	velocity 0.000000 0.000000
+}
+ExplodionP2_0000000006
+{
+	AttractionStrength -116.799988
+	Attractive 1
+	Class 7
+	ID 0
+	Name ExplodionP2
+	ParticleAsset P_Explodion
+	ParticleObjectType 0
+	Position 1379.582031 -40.497101
+	Radius 156.400024
+	Type 1
+	velocity 0.000000 0.000000
+}
+ExplodionP3_0000000007
+{
+	AttractionStrength 76.800011
+	Attractive 1
+	Class 7
+	ID 0
+	Name ExplodionP3
+	ParticleAsset P_Explodion
+	ParticleObjectType 0
+	Position 1379.582031 -40.497101
+	Radius 401.000000
+	Type 1
+	velocity 0.000000 0.000000
+}
+Fog_0000000003
+{
+	Acceleration 0.000000 0.000000
+	Additive 0
+	Class 3
+	DrawToNormalMap 0
+	EndColor 1.000000 1.000000 1.000000 0.000000
+	EndSize 45.799999 23.699997
+	ID 0
+	InitialOrbitalVelocity 0.000000
+	InitialRotation 0.000000
+	InitialVelocity 0.000000 0.000000
+	Material M_Fog
+	Name Fog
+	OrbitalVelocityRandomness 0.000000
+	ParticleEmiterType TEXTUREDLINE
+	RotationAcceleration 0.000000
+	RotationDamper 0.000000
+	RotationRandomness 0.000000
+	RotationVelocity 0.000000
+	StartColor 1.000000 1.000000 1.000000 4.110000
+	StartSize 0.000001 1.340001
+	Type 0
+	VelocityDamper 0.000000
+	VelocityRandomness 0.004000 0.008002 0.000000 0.005002
+	Z_Index 164
+	influenced 1
+	lifetime 5.000000
+	lifetimeRandomness 0.060000
+	lighted 0
+}
+LightSource_0000000000
+{
+	Class 6
+	Color 18.299999 4.400000 1.000000 1.000000
+	Depth -4.000000
+	ID 0
+	Name LightSource
+	Position 145.002762 100.003777
+	Rotation 0.000000
+	Scale 1300.000244 1300.002441
+	Texture No
+	Type 1
+	Volume 0.300000
+	Z_Index -1446
+	invertX 0
+	invertY 0
+	sizeZ 100.000000
+}
+Light_0000000004
+{
+	Class 1
+	ID 0
+	Name Light
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 10.000000
+	texture_Noize_Layers 3
+	texture_Size 100.000000
+	texture_Type 5
+	texture_filter 0
+}
+M_Circle_0000000005
+{
+	Class 2
+	Height_Map CircleHM
+	ID 0
+	Name M_Circle
+	Normal_Map CircleNM
+	Texture Circle
+	Type 0
+}
+M_Fog_0000000006
+{
+	Class 2
+	Height_Map 
+	ID 0
+	Name M_Fog
+	Normal_Map No_texture
+	Texture Noize
+	Type 0
+}
+M_Light_0000000007
+{
+	Class 2
+	Height_Map 
+	ID 0
+	Name M_Light
+	Normal_Map No_texture
+	Texture Light
+	Type 0
+}
+Noize_0000000008
+{
+	Class 1
+	ID 0
+	Name Noize
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 2.009355
+	texture_Noize_Layers 7
+	texture_Size 150.000000
+	texture_Type 1
+	texture_filter 0
+}
+Object_0000000001
+{
+	Additive 0
+	Class 1
+	Color 27.101158 5.160936 3.955850 3.422694
+	Depth 0.000000
+	ID 0
+	Material M_Light
+	Name Object
+	Position 145.005722 100.006134
+	Rotation 0.000000
+	Scale 9.122620 9.121191
+	Type 1
+	Z_Index -100
+	invertX 0
+	invertY 0
+}
+Object_0000000002
+{
+	Additive 0
+	Class 1
+	Color 0.100000 0.200000 1.000000 4.940000
+	Depth 0.000000
+	ID 0
+	Material M_Light
+	Name Object
+	Position -325.307770 -143.997574
+	Rotation 0.000000
+	Scale 435.680237 413.777924
+	Type 1
+	Z_Index -100
+	invertX 0
+	invertY 0
+}
+P_Explodion_0000000010
+{
+	Acceleration 0.000000 0.000000
+	Additive 1
+	Class 3
+	DrawToNormalMap 0
+	EndColor 20.919998 1.000000 1.000000 -0.000000
+	EndSize 70.000000 70.009995
+	ID 0
+	InitialOrbitalVelocity 0.000000
+	InitialRotation 0.000000
+	InitialVelocity 0.000000 0.000000
+	Material M_Fog
+	Name P_Explodion
+	OrbitalVelocityRandomness 0.000000
+	ParticleEmiterType TEXTURED
+	RotationAcceleration 0.000000
+	RotationDamper 0.000000
+	RotationRandomness 12.400001
+	RotationVelocity 0.000000
+	StartColor 16.959999 6.340000 1.000000 4.000000
+	StartSize 30.009998 30.009998
+	Type 0
+	VelocityDamper 0.000000
+	VelocityRandomness 0.000000 0.000000 0.000000 0.000000
+	Z_Index 0
+	influenced 1
+	lifetime 15.000000
+	lifetimeRandomness 0.200000
+	lighted 0
+}
+ParticleObject_0000000003
+{
+	Class 7
+	ID 0
+	Name ParticleObject
+	ParticleAsset Fog
+	ParticleObjectType 3
+	Position -232.739578 -79.328918
+	Radius 235.800003
+	Type 1
+	amount 21
+	tick 0.517000
+	velocity -20.299999 -20.399998
+}
+Planet_0000000004
+{
+	Additive 0
+	Class 1
+	Color 0.100000 0.207000 1.000000 1.000000
+	Depth -4.119998
+	ID 0
+	Material M_Circle
+	Name Planet
+	Position -286.450867 -124.112549
+	Rotation 0.000000
+	Scale 269.594666 256.756775
+	Type 1
+	Z_Index -99
+	invertX 0
+	invertY 0
+}
+Sparks_0000000009
+{
+	Acceleration 0.000000 0.000000
+	Additive 1
+	Class 3
+	DrawToNormalMap 0
+	EndColor 1.000000 1.000000 10.286328 0.008359
+	EndSize 2.000000 0.008047
+	ID 0
+	InitialOrbitalVelocity -0.202813
+	InitialRotation 0.000000
+	InitialVelocity 0.000000 0.000000
+	Material M_Light
+	Name Sparks
+	OrbitalVelocityRandomness 0.296016
+	ParticleEmiterType TEXTUREDLINE
+	RotationAcceleration 0.000000
+	RotationDamper 0.000000
+	RotationRandomness 0.000000
+	RotationVelocity 0.000000
+	StartColor 7.507264 1.114844 1.065625 2.064492
+	StartSize 1.003789 5.390898
+	Type 0
+	VelocityDamper 0.000000
+	VelocityRandomness 0.000000 0.000000 0.000000 0.000000
+	Z_Index -484
+	influenced 1
+	lifetime 20.039845
+	lifetimeRandomness 13.459375
+	lighted 0
+}

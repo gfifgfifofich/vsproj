@@ -1,0 +1,112 @@
+Light_0000000000
+{
+	Class 1
+	ID 0
+	Name Light
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 10.000000
+	texture_Noize_Layers 3
+	texture_Size 100.000000
+	texture_Type 5
+	texture_filter 0
+}
+M_Fog_0000000001
+{
+	Class 2
+	Height_Map 
+	ID 0
+	Name M_Fog
+	Normal_Map No_texture
+	Texture Noize
+	Type 0
+}
+M_Light_0000000002
+{
+	Class 2
+	Height_Map 
+	ID 0
+	Name M_Light
+	Normal_Map No_texture
+	Texture Light
+	Type 0
+}
+Noize_0000000003
+{
+	Class 1
+	ID 0
+	Name Noize
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 1.979355
+	texture_Noize_Layers 7
+	texture_Size 34.000000
+	texture_Type 1
+	texture_filter 0
+}
+Object_0000000000
+{
+	Additive 0
+	Class 1
+	Color 41.901169 3.960936 3.955850 20.142693
+	Depth 0.000000
+	ID 0
+	Material M_Fog
+	Name Object
+	Position 144.479736 94.149132
+	Rotation 0.000000
+	Scale 146.573883 134.679749
+	Type 1
+	Z_Index 461
+	invertX 0
+	invertY 0
+}
+ParticleObject_0000000001
+{
+	Class 7
+	ID 0
+	Name ParticleObject
+	ParticleAsset Sparks
+	ParticleObjectType 3
+	Position 288.170929 8.184252
+	Radius 63.640137
+	Type 1
+	amount 50
+	tick 0.015752
+	velocity -53.935932 -20.668360
+}
+Sparks_0000000004
+{
+	Acceleration 0.000000 0.000000
+	Additive 1
+	Class 3
+	DrawToNormalMap 0
+	EndColor 1.000000 1.000000 9.586328 0.008359
+	EndSize 2.000000 0.008047
+	ID 0
+	InitialOrbitalVelocity -0.202813
+	InitialRotation 0.000000
+	InitialVelocity 0.000000 0.000000
+	Material M_Light
+	Name Sparks
+	OrbitalVelocityRandomness 0.296016
+	ParticleEmiterType TEXTUREDLINE
+	RotationAcceleration 0.000000
+	RotationDamper 0.000000
+	RotationRandomness 0.000000
+	RotationVelocity 0.000000
+	StartColor 20.007263 2.314844 1.065625 2.064492
+	StartSize 1.003789 5.390898
+	Type 0
+	VelocityDamper 0.000000
+	VelocityRandomness 0.000000 0.000000 0.000000 0.000000
+	Z_Index -484
+	influenced 0
+	lifetime 20.039845
+	lifetimeRandomness 13.459375
+	lighted 0
+}
