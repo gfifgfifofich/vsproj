@@ -170,8 +170,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>E:\Engine-project-\Win\VSProj\Game\Game\Deps\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\Engine-project-\Win\VSProj\Game\Game\Deps\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\Deps\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Deps\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

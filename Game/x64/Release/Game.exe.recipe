@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>E:\Engine-project-\Win\VSProj\Game\x64\Release\Game.exe</FullPath>
+      <FullPath>E:\vsproj\x64\Release\Game.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
