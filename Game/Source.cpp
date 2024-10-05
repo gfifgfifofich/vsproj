@@ -2,62 +2,7 @@
 TODO:
 {
 
-	Story
-	{ 
-
-		add turrets?
-		&make a propper gods damn disdoc
-
-		Under implementation
-		[
-			Console layer
-
-			Swarm factory separated/lost controll, player is just a research lab
-			Change screen/cutscene about loss of first objective, new objective - destroy the laser guy // yeeeeee
-			0 operators available
-			attempt at connection to ground facilities...
-			failed
-			attempt at connection to ground facilities...
-			failed
-			attempt at connection to ground facilities...
-			failed
-			No ground facility found
-			objective priority critical, autonomus controll available. Switch to fully autonomous controlls: y/n?
-			y
-			transfering to fully autonomus controll...
-			optimal solution - make autonomus unit...
-			researching data from last operator training session...
-			syntezising of new control unit...
-			connection of new AI controller to the unit...
-			// Screen pops back, base scene, 1 available mission
-			
-		]
-		
-
-		subject of change
-		[
-			// todo: add some barriers to base, breachable by new modules/tech &shit
-
-			// swarms only instruction - defend humans &shit
-			// players target - kill the thing that exploded planet
-			go to remains of dabiggun, meet swarmers, kill few lowlevel pirates, kill swarmers, get pirate blackboxes, find their head
-			// pirate side missions unlocked			
-			killall at the base, more swarmers, recruiter is research lab
-			// lil bit of swarm AI degradation/mutation
-			// swarmers destroy all base to delete player, failed, many people dead
-			goto lab, killall at lab, +swarmers, recruiter is main bad guy
-			goto bad guy, killall bad guy, +swarmers
-			// last issue - swarm
-			goto swarm, killall swarm, read log, realise &shit, sadge etc.
-			
-		]
-
-
-	}
-	tutorial // add introduction and done
-
-
-	proper building mode // mostly done
+	
 	more parts
 	{
 		Shields
@@ -70,7 +15,7 @@ TODO:
 	} 
 
 	| Simulations - minigames to unlock new parts? ( race tracks for new engines, wavedeffence for new weapons?)
-	| Parts research, like in reassembly is perfect, just another window
+	| Parts research, like in reassembly is perfect (is it?), just another window
 	
 	
 	story missions are different/ special
@@ -80,36 +25,14 @@ TODO:
 	AI
 	UI
 
-	Test on Windows
 	Instanced lighting 
 	Memory Optimizations
 	{
 		ball[100'000] on stack, parts have int[] ids to the vector; or something
 
-		array of structs, processor's memory grabber will optimise it
+		array of structs instead of Nodes[] (each class has its own vector<Class>, not vector<Class*> ), processor's memory grabber will optimise it good enough
 	}
 }
-current task
-{
-	Parts "shop" // mostly done
-
-	improove player SaveData mechanism
-	propper craft managment system
-	{
-		Garage - enter  {
-						save, 
-						load from list,
-						add to list
-						}
-	}
-}
-Untill next stasge
-{
-	Save/load system & interface	+ done, polishing required
-	Parts Shop system & interface	+ done, polishing required 
-	Mission system 					+ done, polishing required, add more missions
-}
-
 
 resources - one material (matter or whatever)
 
