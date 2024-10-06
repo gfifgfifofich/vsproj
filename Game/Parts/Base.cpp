@@ -5,6 +5,7 @@
 #include "../DamageSphere.h"
 #include "../Explodion.h"
 #include "../Rocket.h"
+#include "smallball.h"
 #include "Base.h"
 
 inline float TextSize;
@@ -13,6 +14,8 @@ inline bool bLogicMode;
 inline bool fLogicMode;
 inline bool vLogicMode;
 inline int DataconnectionData[6];
+
+
 
 void BodyComponent::OnPartCreate()
 {
@@ -25,35 +28,32 @@ void BodyComponent::ProcessBody(float dt)
 	float avgT = 0.0f;
 	for (int i = 0; i < bodysize; i++)
 	{
-		if (body[i].temperature > MinAutocooltemp)
-			body[i].temperature -= dt * CoolingSpeed;
-		if (body[i].temperature <= MinAutocooltemp)
+		if (ballTemp[body[i]] > MinAutocooltemp)
+			ballTemp[body[i]] -= dt * CoolingSpeed;
+		if (ballTemp[body[i]] <= MinAutocooltemp)
 			shutdown = false;
-		if (body[i].temperature > shutdownTemp)
+		if (ballTemp[body[i]] > shutdownTemp)
 			shutdown = true;
-		if (body[i].temperature < MinAutocooltemp)
-			body[i].temperature += dt * CoolingSpeed;
-		if (body[i].temperature > MaxTemp) body[i].temperature = MaxTemp;
-		if (body[i].temperature < MinTemp) body[i].temperature = MinTemp;
-		avgT += body[i].temperature;
+		if (ballTemp[body[i]] < MinAutocooltemp)
+			ballTemp[body[i]] += dt * CoolingSpeed;
+		if (ballTemp[body[i]] > MaxTemp) ballTemp[body[i]] = MaxTemp;
+		if (ballTemp[body[i]] < MinTemp) ballTemp[body[i]] = MinTemp;
+		avgT += ballTemp[body[i]] ;
 
-		body[i].velbuff = body[i].velocity;
+		ballVelocityBuff[body[i]]= ballVelocity[body[i]];
 		for (int a = 0; a < GameScene->Collision_balls.size(); a++)
-		{
-			BalltoStaticBallCollision(&body[i], GameScene->Collision_balls[a],0.25f);
-			GameScene->Collision_balls[a]->velocity *= 0.0f;
-		}
+			BalltoStaticBallCollision(body[i], GameScene->Collision_balls[a]);
+
 		for (int a = 0; a < GameScene->Collision_cubes.size(); a++)
-			if (GameScene->Collision_cubes[a]->id == -1)
-				BallToStaticQuadCollision(&body[i], *GameScene->Collision_cubes[a]);
+			BallToStaticQuadCollision(body[i], GameScene->Collision_cubes[a]);
 	}
 	avgT /= bodysize;
-	
+
 	float tmpdiv = 1.0f / MaxTemp;
 	if (avgT > 0.0f)
 		color = BaseColor + HeatColor * (avgT * tmpdiv);
 	else
-		color = BaseColor - ColdColor * (avgT * tmpdiv);
+		color = BaseColor + ColdColor * (avgT * tmpdiv);
 	if (Health < 0.0f)
 		dead = true;
 
@@ -67,7 +67,7 @@ BodyComponent::~BodyComponent()
 }
 void BodyComponent::DrawDataConnections(int partid, bool b, bool f, bool v,int Z_Index)
 {
-	float Scale = (body[0].r / 2);
+	float Scale = (PARTSIZE / 2);
 	int i = 0;
 	int p = 0;
 	bool secondColomn = false;
@@ -79,9 +79,9 @@ void BodyComponent::DrawDataConnections(int partid, bool b, bool f, bool v,int Z
 		{
 			glm::vec2 position;
 			if (!secondColomn)
-				position = body[0].position + dir * float(p) * Scale * 2.0f + norm * Scale;
+				position = ballPosition[body[0]] + dir * float(p) * Scale * 2.0f + norm * Scale;
 			else
-				position = body[0].position + dir * float(p) * Scale * 2.0f - norm * Scale;
+				position = ballPosition[body[0]] + dir * float(p) * Scale * 2.0f - norm * Scale;
 			float rad = Scale;
 			if (sqrlength(MousePosition - position) < rad * rad)
 			{
@@ -126,9 +126,9 @@ void BodyComponent::DrawDataConnections(int partid, bool b, bool f, bool v,int Z
 		{
 			glm::vec2 position;
 			if (!secondColomn)
-				position = body[0].position + dir * float(p) * Scale * 2.0f + norm * Scale;
+				position = ballPosition[body[0]] + dir * float(p) * Scale * 2.0f + norm * Scale;
 			else
-				position = body[0].position + dir * float(p) * Scale * 2.0f - norm * Scale;
+				position = ballPosition[body[0]] + dir * float(p) * Scale * 2.0f - norm * Scale;
 			float rad = Scale;
 			if (sqrlength(MousePosition - position) < rad * rad)
 			{
@@ -173,9 +173,9 @@ void BodyComponent::DrawDataConnections(int partid, bool b, bool f, bool v,int Z
 		{
 			glm::vec2 position;
 			if (!secondColomn)
-				position = body[0].position + dir * float(p) * Scale * 2.0f + norm * Scale;
+				position = ballPosition[body[0]] + dir * float(p) * Scale * 2.0f + norm * Scale;
 			else
-				position = body[0].position + dir * float(p) * Scale * 2.0f - norm * Scale;
+				position = ballPosition[body[0]] + dir * float(p) * Scale * 2.0f - norm * Scale;
 			float rad = Scale;
 			if (sqrlength(MousePosition - position) < rad * rad)
 			{
@@ -221,22 +221,25 @@ void BodyComponent::DamageSphereCollide(DamageSphere* DS)
 	{
 		bool hit = false;
 		for (int i = 0; i < bodysize; i++)
-			if (BtBCollisionCheck(DS->body, body[i]))
+		{
+			glm::vec2 dif = DS->body.position - ballPosition[body[i]];
+			if ( dif.x*dif.x + dif.y*dif.y < (DS->body.r + PARTSIZE) * (DS->body.r + PARTSIZE))
 			{
 				if (!hit)
 				{
-					body[i].temperature += DS->Heat;
+					ballTemp[body[i]] += DS->Heat;
 					Health -= DS->Damage;
 					hit = true;
 					WasHitThisFrame = true;
 					dmgThisFrame += DS->Damage;
 				}
-				if (sqrlength(DS->body.position - body[i].position) > 0.0f)
-					body[i].velocity -= Normalize(DS->body.position - body[i].position) * DS->recoil;
-				body[i].velocity *= DS->friction;
+				if (sqrlength(DS->body.position - ballPosition[body[i]]) > 0.0f)
+					ballVelocity[body[i]] -= Normalize(DS->body.position - ballPosition[body[i]]) * DS->recoil;
+				ballVelocity[body[i]] *= DS->friction;
 				if (DS->singleHit)
 					DS->dead = true;
 			}
+		}
 	}
 }
 void BodyComponent::CreateBody(int size, int boolDCsize,int floatDCsize, int vectorDCsize)
@@ -247,14 +250,19 @@ void BodyComponent::CreateBody(int size, int boolDCsize,int floatDCsize, int vec
 	fDCsize = floatDCsize;
 	vDataConnections = new VectorDataPoint[vectorDCsize];
 	vDCsize = vectorDCsize;
-	body = new BallBodyComponent[size];
+
 	//Temperatures = new float[size];
+
+	for (int i = 0; i < size; i++)
+		body.push_back(NewBall());
+
 	bodysize = size;
 }
 void BodyComponent::DeleteBody()
 {
 	
-	delete[] body;
+	for(int i= 0;i < body.size();i++)
+		DeleteBall(body[i]);
 	if(bDCsize>0)
 		delete[] bDataConnections;
 	if (fDCsize > 0)
@@ -293,41 +301,13 @@ void PartsPile::Process(float dt, int iter,bool lastiter)
 	for (int i = 0; i < Parts.size(); i++)
 	{
 		Parts[i]->debris = true;
-		if (sqrlength(Parts[i]->body[0].position - CameraPosition) < DrawingDistance)
+		if (sqrlength(ballPosition[Parts[i]->body[0]] - CameraPosition) < DrawingDistance)
 		{
 			for (int d = 0; d < CloseDamageSpheres.size(); d++)
 				Parts[i]->DamageSphereCollide(CloseDamageSpheres[d]);
 			
 			Parts[i]->throtle = 0.0f;
 			Parts[i]->deactivated = true;
-			//if (!Parts[i]->dead)
-			//{
-
-			//	Parts[i]->Process(dt);
-			//	if (lastiter)
-			//		Parts[i]->Draw();
-			//}
-			
-			//debrie killing cubes, no need for now
-			
-			//for (int a = 0; a < GameScene->Collision_cubes.size(); a++)
-			//	if (GameScene->Collision_cubes[a]->id == 1)
-			//		for (int bp = 0; bp < Parts[i]->bodysize; bp++)
-			//		{
-			//			if (BtCCollisionCheck(Parts[i]->body[bp], *GameScene->Collision_cubes[a]))
-			//			{
-			//				Parts[i]->Health = -1.0f;
-			//			}
-			//		}
-			//for (int a = 0; a < GameScene->Collision_balls.size(); a++)
-			//	if (GameScene->Collision_balls[a]->id == 1)
-			//		for (int bp = 0; bp < Parts[i]->bodysize; bp++)
-			//		{
-			//			if (BtBCollisionCheck(Parts[i]->body[bp], *GameScene->Collision_balls[a]))
-			//			{
-			//				Parts[i]->Health = -1.0f;
-			//			}
-			//		}
 		}
 	}
 	CloseDamageSpheres.clear();
@@ -337,19 +317,19 @@ void PartsPile::DeletePart(int  index)
 	glm::vec2 mid = {0.0f,0.0f};
 	for (int i = 0; i < Parts[index]->bodysize; i++)
 	{
-		Sparks.Spawn(Parts[index]->body[i].position, 15);
-		Smoke.Spawn(Parts[index]->body[i].position, 15);
+		Sparks.Spawn(ballPosition[Parts[index]->body[i]], 15);
+		Smoke.Spawn(ballPosition[Parts[index]->body[i]], 15);
 		DebrieParticles.RotationVelocity = rand() % 100 * 0.1f - 5.0f;
-		DebrieParticles.InitialVelocity = Parts[index]->body[i].velocity;
-		DebrieParticles.Spawn(Parts[index]->body[i].position, 3);
-		mid += Parts[index]->body[i].position;
+		DebrieParticles.InitialVelocity = ballVelocity[Parts[index]->body[i]];
+		DebrieParticles.Spawn(ballPosition[Parts[index]->body[i]], 3);
+		mid += ballPosition[Parts[index]->body[i]];
 	}
 	mid /= Parts[index]->bodysize;
 	for (int bp = 0; bp < Parts[index]->bodysize; bp++)
 	{
-		if (GrabbedBall != nullptr)
-			if (GrabbedBall->position == Parts[index]->body[bp].position)
-				GrabbedBall = nullptr;
+		if (GrabbedBall != -1)
+			if (ballPosition[GrabbedBall]== ballPosition[Parts[index]->body[bp]])
+				GrabbedBall = -1;
 		if (SelectedPart = index)
 			SelectedPart = -1;
 	}

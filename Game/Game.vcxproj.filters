@@ -177,6 +177,9 @@
     <ClInclude Include="Parts\CentralPart.h">
       <Filter>Source Files\Parts</Filter>
     </ClInclude>
+    <ClInclude Include="Parts\smallball.h">
+      <Filter>Source Files\Parts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\Components\Cpps\Collisions\BallToBall.cpp">
@@ -315,6 +318,9 @@
       <Filter>Source Files\Parts</Filter>
     </ClCompile>
     <ClCompile Include="Parts\CentralPart.cpp">
+      <Filter>Source Files\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="Parts\smallball.cpp">
       <Filter>Source Files\Parts</Filter>
     </ClCompile>
   </ItemGroup>

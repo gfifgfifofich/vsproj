@@ -52,8 +52,8 @@ class Mission
 		{
 			for(int a=0;a< Entities[0]->Parts[i]->bodysize;a++)
 			{
-				Entities[0]->Parts[i]->body[a].velbuff = vel;
-				Entities[0]->Parts[i]->body[a].velocity = vel;
+				ballVelocityBuff[Entities[0]->Parts[i]->body[a]]= vel;
+				ballVelocity[Entities[0]->Parts[i]->body[a]] = vel;
 			}
 		}
 		Materials -= GetShipCost(Entities[0]);
@@ -143,10 +143,10 @@ class Mission
 				SpawnPlayer(playerpos);
 				for(int i=0;i< Entities[0]->Parts.size();i++)
 				{
-					for(int a=0;a< Entities[0]->Parts[i]->bodysize;a++)
+					for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
 					{
-						Entities[0]->Parts[i]->body[a].velbuff = vel;
-						Entities[0]->Parts[i]->body[a].velocity = vel;
+						ballVelocityBuff[Entities[0]->Parts[i]->body[a]] = vel;
+						ballVelocity[Entities[0]->Parts[i]->body[a]] = vel;
 					}
 				}
 				timers.push_back(2.0f);
@@ -175,10 +175,10 @@ class Mission
 				SpawnPlayer(playerpos);
 				for(int i=0;i< Entities[0]->Parts.size();i++)
 				{
-					for(int a=0;a< Entities[0]->Parts[i]->bodysize;a++)
+					for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
 					{
-						Entities[0]->Parts[i]->body[a].velbuff = vel;
-						Entities[0]->Parts[i]->body[a].velocity = vel;
+						ballVelocityBuff[Entities[0]->Parts[i]->body[a]] = vel;
+						ballVelocity[Entities[0]->Parts[i]->body[a]] = vel;
 					}
 				}
 				timers.push_back(5.0f);
@@ -206,10 +206,10 @@ class Mission
 				SpawnPlayer(playerpos);
 				for(int i=0;i< Entities[0]->Parts.size();i++)
 				{
-					for(int a=0;a< Entities[0]->Parts[i]->bodysize;a++)
+					for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
 					{
-						Entities[0]->Parts[i]->body[a].velbuff = vel;
-						Entities[0]->Parts[i]->body[a].velocity = vel;
+						ballVelocityBuff[Entities[0]->Parts[i]->body[a]] = vel;
+						ballVelocity[Entities[0]->Parts[i]->body[a]] = vel;
 					}
 				}
 				timers.push_back(5.0f);
@@ -255,10 +255,10 @@ class Mission
 				SpawnPlayer(playerpos);
 				for(int i=0;i< Entities[0]->Parts.size();i++)
 				{
-					for(int a=0;a< Entities[0]->Parts[i]->bodysize;a++)
+					for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
 					{
-						Entities[0]->Parts[i]->body[a].velbuff = vel;
-						Entities[0]->Parts[i]->body[a].velocity = vel;
+						ballVelocityBuff[Entities[0]->Parts[i]->body[a]] = vel;
+						ballVelocity[Entities[0]->Parts[i]->body[a]] = vel;
 					}
 				}
 				timers.push_back(5.0f);
@@ -362,10 +362,10 @@ class Mission
 				SpawnPlayer(playerpos);
 				for(int i=0;i< Entities[0]->Parts.size();i++)
 				{
-					for(int a=0;a< Entities[0]->Parts[i]->bodysize;a++)
+					for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
 					{
-						Entities[0]->Parts[i]->body[a].velbuff = vel;
-						Entities[0]->Parts[i]->body[a].velocity = vel;
+						ballVelocityBuff[Entities[0]->Parts[i]->body[a]] = vel;
+						ballVelocity[Entities[0]->Parts[i]->body[a]] = vel;
 					}
 				}
 				timers.push_back(0.0f);

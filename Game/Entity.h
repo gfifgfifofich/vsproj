@@ -81,35 +81,35 @@ void EntityToEntityCollision(CentralPart* e1, CentralPart* e2)
 		for(auto i : e1->Balls)
 			for(auto a : e2->Balls)
 				{
-					glm::vec2 prevvel = i->velocity;
-					glm::vec2 prevvel2 = a->velocity;
+					glm::vec2 prevvel  = ballVelocity[i];
+					glm::vec2 prevvel2 = ballVelocity[a];
 					BtBCollision(i,a);
 					
-					glm::vec2 dif = prevvel - i->velocity;
+					glm::vec2 dif = prevvel - ballVelocity[i];
 					float len = sqrlength(dif);
 					if (len > maxdif * maxdif)
-						playsound(Hit,i->position,0.5f,0.1f + (rand() % 100 * 0.00025f),i->velocity,false);
-					 dif = prevvel2 - a->velocity;
+						playsound(Hit, ballPosition[i],0.5f,0.1f + (rand() % 100 * 0.00025f), ballVelocity[i],false);
+					 dif = prevvel2 - ballVelocity[a];
 					len = sqrlength(dif);
 					if (len > maxdif * maxdif)
-						playsound(Hit,a->position,0.5f,0.1f + (rand() % 100 * 0.00025f),a->velocity,false);
+						playsound(Hit, ballPosition[a],0.5f,0.1f + (rand() % 100 * 0.00025f), ballVelocity[a],false);
 				}
 	else
 		for(auto i : e2->Balls)
 			for(auto a : e1->Balls)
 				{
-					glm::vec2 prevvel = i->velocity;
-					glm::vec2 prevvel2 = a->velocity;
+					glm::vec2 prevvel  = ballVelocity[i];
+					glm::vec2 prevvel2 = ballVelocity[a];
 					BtBCollision(i,a);
 					
-					glm::vec2 dif = prevvel - i->velocity;
+					glm::vec2 dif = prevvel - ballVelocity[i];
 					float len = sqrlength(dif);
 					if (len > maxdif * maxdif)
-						playsound(Hit,i->position,0.5f,0.1f + (rand() % 100 * 0.00025f),i->velocity,false);
-					 dif = prevvel2 - a->velocity;
+						playsound(Hit, ballPosition[i],0.5f,0.1f + (rand() % 100 * 0.00025f), ballVelocity[i],false);
+					 dif = prevvel2 - ballVelocity[a];
 					len = sqrlength(dif);
 					if (len > maxdif * maxdif)
-						playsound(Hit,a->position,0.5f,0.1f + (rand() % 100 * 0.00025f),a->velocity,false);
+						playsound(Hit, ballPosition[a],0.5f,0.1f + (rand() % 100 * 0.00025f), ballVelocity[a],false);
 				}
 
 	/*
@@ -213,25 +213,27 @@ void ProcessEntities(float dt,int s)
 	balltaken = false;
 
 
-	for (int i = 0; i < Debris.Parts.size(); i++)
-	{
-		balls.reserve(Debris.Parts[i]->BodyIdsWithCollision.size());
-		for (auto pid : Debris.Parts[i]->BodyIdsWithCollision)
-			balls.push_back(&Debris.Parts[i]->body[pid]);
-	}
-	for (int e = 0; e < Entities.size(); e++)
-	{
-		balls.reserve(Entities[e]->Balls.size());
-		for (int i = 0; i < Entities[e]->Balls.size(); i++)
-			balls.push_back(Entities[e]->Balls[i]);
-	}
+	//for (int i = 0; i < Debris.Parts.size(); i++)
+	//{
+	//	balls.reserve(Debris.Parts[i]->BodyIdsWithCollision.size());
+	//	for (auto pid : Debris.Parts[i]->BodyIdsWithCollision)
+	//		balls.push_back(&Debris.Parts[i]->body[pid]);
+	//}
+	//for (int e = 0; e < Entities.size(); e++)
+	//{
+	//	balls.reserve(Entities[e]->Balls.size());
+	//	for (int i = 0; i < Entities[e]->Balls.size(); i++)
+	//		balls.push_back(Entities[e]->Balls[i]);
+	//}
 
-	for (int i = 0; i < balls.size(); i++)
+	for (int i = 0; i < lastid; i++)
 	{
+		if (!IsBall[i])
+			continue;
 		// friction
-		glm::vec2 aVel = balls[i]->velocity;
-		glm::vec2 pVel = balls[i]->velbuff;
-		balls[i]->velocity -= balls[i]->velocity * sqrlength(balls[i]->velocity) * subdt * 0.000002f;
+		glm::vec2 aVel = ballVelocity[i];
+		glm::vec2 pVel = ballVelocityBuff[i];
+		ballVelocity[i] -= ballVelocity[i] * sqrlength(ballVelocity[i]) * subdt * 0.000002f;
 		glm::vec2 offset = Entities[0]->mid + glm::vec2(-150, -150);
 		//int x = roundf(balls[i]->position.x - offset.x);
 		//int y = roundf(balls[i]->position.y - offset.y);
@@ -240,15 +242,12 @@ void ProcessEntities(float dt,int s)
 		//	x >= 0 && x < 300)
 		//	Grid[x][y].add(balls[i]);
 
-		balls[i]->rotation = 0.0f;
-		balls[i]->rotationVelocity = 0.0f;
-		balls[i]->roughness = 0.8f;
-		balls[i]->soundcd -= subdt; 
-		if(balls[i]->soundcd <-1.0f)
-			balls[i]->soundcd = -1.0f;
+		ballSoundcd[i] -= subdt;
+		if(ballSoundcd[i] < -1.0f)
+			ballSoundcd[i] = -1.0f;
 
 
-		if (balls[i]->soundcd <=0.0f && (!snapToGrid || !BuildingMode))
+		if (ballSoundcd[i] <=0.0f && (!snapToGrid || !BuildingMode))
 		{
 			float maxdif = 7.0f;
 
@@ -258,19 +257,19 @@ void ProcessEntities(float dt,int s)
 			{//heavy collision
 				len = sqrt(len);
 
-				glm::vec2 position = balls[i]->position + balls[i]->GroundVector * balls[i]->r;
+				glm::vec2 position = ballPosition[i];
 				int amount = rand() % 10 + 0.001f * len;
 				for (int a = 0; a < amount; a++)
 					CollisionSparks.Spawn(position,
-						-balls[i]->GroundVector * 150.0f * len * 0.001f + (rand() % 100 - 50.0f) * glm::vec2(-balls[i]->GroundVector.y, balls[i]->GroundVector.x) * len * 0.001f +
-						Rotate(balls[i]->GroundVector * DOT(Rotate(balls[i]->GroundVector, pi * 0.5f), pVel * 0.1f)
+						dif * 150.0f * 0.001f + (rand() % 100 - 50.0f) * dif * 0.001f +
+						Rotate(dif * DOT(Rotate(dif, pi * 0.5f), pVel * 0.1f) // was i drunk?
 							* float(rand() % 100) * 0.1f, pi * 0.5f),
 						1);
 				CollisionSmoke.Spawn(position,
 					15);
 				
-				playsound(Hit,balls[i]->position,0.5f,0.1f + (rand() % 100 * 0.00025f),balls[i]->velocity,false);
-				balls[i]->soundcd = 1.0f; 
+				playsound(Hit,ballPosition[i],0.5f,0.1f + (rand() % 100 * 0.00025f), ballVelocity[i],false);
+				ballSoundcd[i] = 1.0f;
 				
 			}
 
@@ -283,10 +282,10 @@ void ProcessEntities(float dt,int s)
 		{
 			if (in_UI <= 0)
 				if (JustPressedbutton[GLFW_MOUSE_BUTTON_2])
-					if (BalltoPointCollisionCheck(*balls[i], MousePosition) && !balltaken)
+					if (sqrlength(ballPosition[i] - MousePosition)<PARTSIZE*PARTSIZE && !balltaken)
 					{
 						balltaken = true;
-						GrabbedBall = balls[i];
+						GrabbedBall = i;
 					}
 
 			if (JustReleasedbutton[GLFW_MOUSE_BUTTON_2])
@@ -294,27 +293,27 @@ void ProcessEntities(float dt,int s)
 
 
 			if (keys[GLFW_KEY_LEFT_ALT])
-				DrawCircle(*balls[i], glm::vec4(0.1f, 0.1f, 1.0f, 1.0f), false, BallNormalMapTexture, 10);
+				DrawCircle(ballPosition[i], PARTSIZE, glm::vec4(0.1f, 0.1f, 1.0f, 1.0f), false, BallNormalMapTexture, 10);
 
 			else if (keys[GLFW_KEY_LEFT_SHIFT])
-				DrawCircle(*balls[i], glm::vec4(1.1f, 0.1f, 0.1f, 1.0f), false, BallNormalMapTexture, 10);
+				DrawCircle(ballPosition[i], PARTSIZE, glm::vec4(1.1f, 0.1f, 0.1f, 1.0f), false, BallNormalMapTexture, 10);
 
 			if (snapToGrid)
 			{
-				balls[i]->velocity -= balls[i]->velocity * length(balls[i]->velocity) * subdt * 2.0f;
+				ballVelocity[i] -= ballVelocity[i] * length(ballVelocity[i]) * subdt * 2.0f;
 
 				/*glm::vec2 snapvector = glm::vec2(
 					((int)(balls[i]->position.x + 40 - 3000) % 1),
 					((int)(balls[i]->position.y - 40 - 3000) % 1)
 				);*/
 				glm::vec2 snapvector = glm::vec2(
-					roundf(balls[i]->position.x),
-					roundf(balls[i]->position.y)
+					roundf(ballPosition[i].x),
+					roundf(ballPosition[i].y)
 				);
 
 				DrawCircle(snapvector, 0.25f, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), false, BallNormalMapTexture, 1000);
 
-				balls[i]->Force += (snapvector - balls[i]->position) * 10.0f;
+				ballForce[i] += (snapvector - ballPosition[i]) * 10.0f;
 			}
 		}
 		else
@@ -390,7 +389,6 @@ void ProcessEntities(float dt,int s)
 		}
 	*/
 
-	balls.clear();
 	int i = 0;
 	while (i < Entities.size())
 	{

@@ -77,9 +77,9 @@ void ProcessLasers(float dt, bool draw, bool updateRaycasts)
 				CastRayToBall(&LaserPtrs[i]->RayCast, *GameScene->Collision_balls[a]);
 
 
-		for (int c = 0; c < balls.size(); c++)
-			if (LaserPtrs[i]->fraction != balls[c]->id)
-				CastRayToBall(&LaserPtrs[i]->RayCast, *balls[c]);
+		//for (int c = 0; c < balls.size(); c++)
+		//	if (LaserPtrs[i]->fraction != balls[c]->id)
+		//		CastRayToBall(&LaserPtrs[i]->RayCast, *balls[c]);
 
 		LaserPtrs[i]->Process(dt);
 		if(draw)LaserPtrs[i]->Draw();
@@ -102,9 +102,9 @@ void ProcessLasers(float dt, bool draw, bool updateRaycasts)
 				if (GameScene->Collision_balls[a]->id == -1)
 					CastRayToBall(&LaserPtrs[i]->RayCast, *GameScene->Collision_balls[a]);
 
-			for (int c = 0; c < balls.size(); c++)
-				if (Lasers[i].fraction != balls[c]->id)
-					CastRayToBall(&Lasers[i].RayCast, *balls[c]);
+			//for (int c = 0; c < balls.size(); c++)
+			//	if (Lasers[i].fraction != balls[c]->id)
+			//		CastRayToBall(&Lasers[i].RayCast, *balls[c]);
 
 			Lasers[i].Process(dt);
 			if (draw)Lasers[i].Draw();
@@ -124,8 +124,8 @@ void ProcessLasers(float dt, bool draw, bool updateRaycasts)
 					if (GameScene->Collision_balls[a]->id == -1)
 						CastRayToBall(&LaserPtrs[i]->RayCast, *GameScene->Collision_balls[a]);
 
-				for (int c = 0; c < balls.size(); c++)
-					CastRayToBall(&Lasers[i].RayCast, *balls[c]);
+				//for (int c = 0; c < balls.size(); c++)
+				//	CastRayToBall(&Lasers[i].RayCast, *balls[c]);
 
 				Lasers[i].Process(dt);			
 				if (draw)Lasers[i].Draw();

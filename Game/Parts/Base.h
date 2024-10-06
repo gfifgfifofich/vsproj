@@ -15,15 +15,7 @@ struct CostMaterial
 	////Processed
 	//int Steel = 0;
 };
-class BallBodyComponent : public ball
-{
-public:
-	float temperature = 0.0f;
-	float soundcd = 0.0f;
-	glm::vec4 color = {1.0f,1.0f,1.0f,1.0f};
-	glm::vec2 velbuff;
-};
-inline std::vector<BallBodyComponent*>balls;
+
 
 
 enum CONNECTION
@@ -97,7 +89,7 @@ public:
 
 	std::string name = "NO NAME";
 
-	BallBodyComponent* body;
+	std::vector<int> body;
 	std::vector<int> BodyIdsWithCollision;
 	int bodysize = 1;
 	float freq = 1.0f;
@@ -185,7 +177,7 @@ inline PartsPile Debris;
 
 
 
-inline BallBodyComponent* GrabbedBall;
+inline int GrabbedBall;
 inline int SelectedPart;
 
 inline std::vector<int> PurchasableParts;

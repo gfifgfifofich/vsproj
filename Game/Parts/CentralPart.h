@@ -51,8 +51,8 @@ public:
 
 		int type = CONNECTION::STRUT;
 
-		BallBodyComponent* b1;
-		BallBodyComponent* b2;
+		int b1 = -1;
+		int b2 = -1;
 
 		BodyComponent* bod1;
 		BodyComponent* bod2;
@@ -73,8 +73,8 @@ public:
 	bool Alive = true;
 	bool destroyed = false;
 
-	ball* back = nullptr;
-	ball* front = nullptr;
+	int back = -1;
+	int front = -1;
 	glm::vec2 prevfrontpos = {0.0f,0.0f};
 	glm::vec2 prevbackpos = {0.0f,0.0f};
 
@@ -96,7 +96,7 @@ public:
 	float avgheat = 0.0f;
 	float sumheat = 0.0f;
 
-	std::vector<BallBodyComponent*> Balls;
+	std::vector<int> Balls;
 	std::vector<BodyComponent*> Parts;
 	std::vector<BodyComponent*> Engines;
 

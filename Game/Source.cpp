@@ -2,7 +2,62 @@
 TODO:
 {
 
-	
+	Story
+	{ 
+
+		add turrets?
+		&make a propper gods damn disdoc
+
+		Under implementation
+		[
+			Console layer
+
+			Swarm factory separated/lost controll, player is just a research lab
+			Change screen/cutscene about loss of first objective, new objective - destroy the laser guy // yeeeeee
+			0 operators available
+			attempt at connection to ground facilities...
+			failed
+			attempt at connection to ground facilities...
+			failed
+			attempt at connection to ground facilities...
+			failed
+			No ground facility found
+			objective priority critical, autonomus controll available. Switch to fully autonomous controlls: y/n?
+			y
+			transfering to fully autonomus controll...
+			optimal solution - make autonomus unit...
+			researching data from last operator training session...
+			syntezising of new control unit...
+			connection of new AI controller to the unit...
+			// Screen pops back, base scene, 1 available mission
+			
+		]
+		
+
+		subject of change
+		[
+			// todo: add some barriers to base, breachable by new modules/tech &shit
+
+			// swarms only instruction - defend humans &shit
+			// players target - kill the thing that exploded planet
+			go to remains of dabiggun, meet swarmers, kill few lowlevel pirates, kill swarmers, get pirate blackboxes, find their head
+			// pirate side missions unlocked			
+			killall at the base, more swarmers, recruiter is research lab
+			// lil bit of swarm AI degradation/mutation
+			// swarmers destroy all base to delete player, failed, many people dead
+			goto lab, killall at lab, +swarmers, recruiter is main bad guy
+			goto bad guy, killall bad guy, +swarmers
+			// last issue - swarm
+			goto swarm, killall swarm, read log, realise &shit, sadge etc.
+			
+		]
+
+
+	}
+	tutorial // add introduction and done
+
+
+	proper building mode // mostly done
 	more parts
 	{
 		Shields
@@ -15,7 +70,7 @@ TODO:
 	} 
 
 	| Simulations - minigames to unlock new parts? ( race tracks for new engines, wavedeffence for new weapons?)
-	| Parts research, like in reassembly is perfect (is it?), just another window
+	| Parts research, like in reassembly is perfect, just another window
 	
 	
 	story missions are different/ special
@@ -25,14 +80,36 @@ TODO:
 	AI
 	UI
 
+	Test on Windows
 	Instanced lighting 
 	Memory Optimizations
 	{
 		ball[100'000] on stack, parts have int[] ids to the vector; or something
 
-		array of structs instead of Nodes[] (each class has its own vector<Class>, not vector<Class*> ), processor's memory grabber will optimise it good enough
+		array of structs, processor's memory grabber will optimise it
 	}
 }
+current task
+{
+	Parts "shop" // mostly done
+
+	improove player SaveData mechanism
+	propper craft managment system
+	{
+		Garage - enter  {
+						save, 
+						load from list,
+						add to list
+						}
+	}
+}
+Untill next stasge
+{
+	Save/load system & interface	+ done, polishing required
+	Parts Shop system & interface	+ done, polishing required 
+	Mission system 					+ done, polishing required, add more missions
+}
+
 
 resources - one material (matter or whatever)
 
@@ -65,21 +142,14 @@ Mission
 */
 
 
-/*
-
-
-
-CentralPart == Entity;
-{
-	Connections[]
-}
-
-
-*/
-
 
 #include "engine/Components/Redactor.h"
 #include "engine/Components/Include/sounds.h"
+
+#include "Parts/smallball.h"
+
+
+
 
 DataStorage GameSaveFile;
 int Materials = 0;
@@ -134,7 +204,6 @@ void SavePlayerData()
 
 
 
-#define PARTSIZE 0.5f
 
 int BackgroundWindowID = -1;
 int ForeWindowID = -1;
@@ -149,51 +218,50 @@ inline float UISize = 18.0f;
 
 void LoadTextures()
 {
-	LoadTexture("./Textures/Connections/HeatPipe.png", &HeatPipeTexture);
-	LoadTexture("./Textures/Connections/HeatPipe NormalMap.png", &HeatPipeNormalMap);
+	LoadTexture("./Textures/HeatPipe.png", &HeatPipeTexture);
+	LoadTexture("./Textures/HeatPipe NormalMap.png", &HeatPipeNormalMap);
 
-	LoadTexture("./Textures/Connections/Rope.png", &RopeTexture);
-	LoadTexture("./Textures/Connections/Rope NormalMap.png", &RopeNormalMap);
+	LoadTexture("./Textures/Rope.png", &RopeTexture);
+	LoadTexture("./Textures/Rope NormalMap.png", &RopeNormalMap);
 
-	LoadTexture("./Textures/Connections/Strut.png", &StrutTexture);
-	LoadTexture("./Textures/Connections/Strut NormalMap.png", &StrutNormalMap);
+	LoadTexture("./Textures/Strut.png", &StrutTexture);
+	LoadTexture("./Textures/Strut NormalMap.png", &StrutNormalMap);
 
-	LoadTexture("./Textures/Misc/Pipe/Pipe.png", &PipeTexture);
-	LoadTexture("./Textures/Misc/Pipe/Pipe NormalMap.png", &PipeNormalMap);
+	LoadTexture("./Textures/RocketEngine.png", &RocketEngineTexture);
+	LoadTexture("./Textures/RocketEngine NormalMap.png", &RocketEngineNormalMap);
 
-	LoadTexture("./Textures/Parts/RocketEngine/RocketEngine.png", &RocketEngineTexture);
-	LoadTexture("./Textures/Parts/RocketEngine/RocketEngine NormalMap.png", &RocketEngineNormalMap);
+	LoadTexture("./Textures/Radiator.png", &RadiatorTexture);
+	LoadTexture("./Textures/Radiator NormalMap.png", &RadiatorNormalMap);
 
-	LoadTexture("./Textures/Parts/Radiator/Radiator.png", &RadiatorTexture);
-	LoadTexture("./Textures/Parts/Radiator/Radiator NormalMap.png", &RadiatorNormalMap);
+	LoadTexture("./Textures/Gun.png", &GunTexture);
+	LoadTexture("./Textures/Gun NormalMap.png", &GunNormalMap);
 
-	LoadTexture("./Textures/Parts/Gun/Gun.png", &GunTexture);
-	LoadTexture("./Textures/Parts/Gun/Gun NormalMap.png", &GunNormalMap);
+	LoadTexture("./Textures/LaserGun.png", &LaserGunTexture);
+	LoadTexture("./Textures/LaserGun NormalMap.png", &LaserGunNormalMap);
 
-	LoadTexture("./Textures/Parts/LaserGun/LaserGun.png", &LaserGunTexture);
-	LoadTexture("./Textures/Parts/LaserGun/LaserGun NormalMap.png", &LaserGunNormalMap);
+	LoadTexture("./Textures/MiniGun.png", &MiniGunTexture);
+	LoadTexture("./Textures/MiniGun NormalMap.png", &MiniGunNormalMap);
 
-	LoadTexture("./Textures/Parts/MiniGun/MiniGun.png", &MiniGunTexture);
-	LoadTexture("./Textures/Parts/MiniGun/MiniGun NormalMap.png", &MiniGunNormalMap);
+	LoadTexture("./Textures/GunBase.png", &GunBaseTexture);
+	LoadTexture("./Textures/GunBase NormalMap.png", &GunBaseNormalMap);
 
-	LoadTexture("./Textures/Parts/Gun/GunBase.png", &GunBaseTexture);
-	LoadTexture("./Textures/Parts/Gun/GunBase NormalMap.png", &GunBaseNormalMap);
+	LoadTexture("./Textures/RocketLauncher.png", &RocketLauncherTexture);
+	LoadTexture("./Textures/RocketLauncher NormalMap.png", &RocketLauncherNormalMap);
 
-	LoadTexture("./Textures/Parts/RocketLauncher/RocketLauncher.png", &RocketLauncherTexture);
-	LoadTexture("./Textures/Parts/RocketLauncher/RocketLauncher NormalMap.png", &RocketLauncherNormalMap);
+	LoadTexture("./Textures/BallBody.png", &BallBodyTexture);
+	LoadTexture("./Textures/BallBody NormalMap.png", &BallBodyNormalMap);
 
-	LoadTexture("./Textures/Parts/BallBody/BallBody.png", &BallBodyTexture);
-	LoadTexture("./Textures/Parts/BallBody/BallBody NormalMap.png", &BallBodyNormalMap);
+	LoadTexture("./Textures/CentralPart.png", &CentralPartTexture);
+	LoadTexture("./Textures/CentralPart NormalMap.png", &CentralPartNormalMap);
 
-	LoadTexture("./Textures/Parts/CentralPart/CentralPart.png", &CentralPartTexture);
-	LoadTexture("./Textures/Parts/CentralPart/CentralPart NormalMap.png", &CentralPartNormalMap);
+	LoadTexture("./Textures/Rotor.png", &RotorTexture);
+	LoadTexture("./Textures/Rotor NormalMap.png", &RotorNormalMap);
 
-	LoadTexture("./Textures/Parts/Rotor/Rotor.png", &RotorTexture);
-	LoadTexture("./Textures/Parts/Rotor/Rotor NormalMap.png", &RotorNormalMap);
+	LoadTexture("./Textures/Pipe.png", &PipeTexture);
+	LoadTexture("./Textures/Pipe NormalMap.png", &PipeNormalMap);
 
-
-	LoadTexture("./Textures/Misc/Debrie/debrie0.png", &Debrie0Texture);
-	LoadTexture("./Textures/Misc/Debrie/debrie1.png", &Debrie1Texture);
+	LoadTexture("./Textures/debrie0.png", &Debrie0Texture);
+	LoadTexture("./Textures/debrie1.png", &Debrie1Texture);
 
 
 }
@@ -362,26 +430,26 @@ bool snapToGrid = false;
 
 #include "Parts/Base.h"
 
-
-struct GridCell
-{
-	int size = 0;
-	BallBodyComponent* balls[10];
-	void add(BallBodyComponent* b)
-	{
-		if (size < 10)
-		{
-			balls[size] = b;
-			size++;
-		}
-	}
-};
-GridCell Grid[300][300];
-
-int balllbuffersize;
-BallBodyComponent* ballbuffer[200];
-BallBodyComponent* NewConBall1;
-BallBodyComponent* NewConBall2;
+//
+//struct GridCell
+//{
+//	int size = 0;
+//	BallBodyComponent* balls[10];
+//	void add(BallBodyComponent* b)
+//	{
+//		if (size < 10)
+//		{
+//			balls[size] = b;
+//			size++;
+//		}
+//	}
+//};
+//GridCell Grid[300][300];
+//
+//int balllbuffersize;
+//BallBodyComponent* ballbuffer[200];
+int NewConBall1 = -1;
+int NewConBall2 = -1;
 
 
 #include "ParticleMaterials.h"
@@ -1155,10 +1223,10 @@ void ProcessPlayerControls()
 		if (align)
 		{
 			//Entities[0].Parts[0] -> central part
-			glm::vec2 mid = (Entities[0]->Parts[0]->body[0].position + Entities[0]->Parts[0]->body[1].position) * 0.5f;
+			glm::vec2 mid = (ballPosition[Entities[0]->Parts[0]->body[0]] + ballPosition[Entities[0]->Parts[0]->body[1]]) * 0.5f;
 
-			Entities[0]->Parts[0]->body[0].velocity = ((mid + glm::vec2(0.0f, 1.0f) * Entities[0]->Parts[0]->body[0].r) - Entities[0]->Parts[0]->body[0].position) * 15.0f;
-			Entities[0]->Parts[0]->body[1].velocity = ((mid - glm::vec2(0.0f, 1.0f) * Entities[0]->Parts[0]->body[1].r) - Entities[0]->Parts[0]->body[1].position) * 15.0f;
+			ballVelocity[Entities[0]->Parts[0]->body[0]] = ((mid + glm::vec2(0.0f, 1.0f) * PARTSIZE) - ballPosition[Entities[0]->Parts[0]->body[0]]) * 15.0f;
+			ballVelocity[Entities[0]->Parts[0]->body[1]] = ((mid - glm::vec2(0.0f, 1.0f) * PARTSIZE) - ballPosition[Entities[0]->Parts[0]->body[1]]) * 15.0f;
 
 		}
 
@@ -1168,7 +1236,7 @@ void ProcessPlayerControls()
 		{
 			if (ConCreationStage == 1)
 			{
-				DrawLine(NewConBall1->position, MousePosition, 0.125f);
+				DrawLine(ballPosition[NewConBall1], MousePosition, 0.125f);
 			}
 			if (JustPressedLMB)
 			{
@@ -1177,18 +1245,20 @@ void ProcessPlayerControls()
 				{
 					for (auto a : Entities[0]->Parts[i]->BodyIdsWithCollision)
 					{
-						if (BalltoPointCollisionCheck(Entities[0]->Parts[i]->body[a], MousePosition))
+
+						glm::vec2 dif = ballPosition[Entities[0]->Parts[i]->body[a]] - MousePosition;
+						if (sqrlength(dif) < PARTSIZE * PARTSIZE)
 						{
 							if (ConCreationStage == 0)
 							{
-								NewConBall1 = &Entities[0]->Parts[i]->body[a];
+								NewConBall1 = Entities[0]->Parts[i]->body[a];
 								NewConIndex1 = a;
 								NewConPart1 = i;
 								ConCreationStage++;
 							}
 							else if (ConCreationStage == 1)
 							{
-								NewConBall2 = &Entities[0]->Parts[i]->body[a];
+								NewConBall2 = Entities[0]->Parts[i]->body[a];
 								NewConIndex2 = a;
 								NewConPart2 = i;
 								ConCreationStage++;
@@ -1206,11 +1276,12 @@ void ProcessPlayerControls()
 					{
 						for (auto a : Debris.Parts[i]->BodyIdsWithCollision)
 						{
-							if (BalltoPointCollisionCheck(Debris.Parts[i]->body[a], MousePosition))
+							glm::vec2 dif = ballPosition[Debris.Parts[i]->body[a]] - MousePosition;
+							if (sqrlength(dif) < PARTSIZE * PARTSIZE)
 							{
 								if (ConCreationStage == 0)
 								{
-									NewConBall1 = &Debris.Parts[i]->body[a];
+									NewConBall1 = Debris.Parts[i]->body[a];
 									NewConIndex1 = a;
 									NewConPart1 = i;
 									ConCreationStage++;
@@ -1218,7 +1289,7 @@ void ProcessPlayerControls()
 								}
 								else if (ConCreationStage == 1)
 								{
-									NewConBall2 = &Debris.Parts[i]->body[a];
+									NewConBall2 = Debris.Parts[i]->body[a];
 									NewConIndex2 = a;
 									NewConPart2 = i;
 									ConCreationStage++;
@@ -1233,13 +1304,13 @@ void ProcessPlayerControls()
 				}
 				if (ConCreationStage == 1 && prevcon != ConCreationStage)
 				{
-					Sparks.Spawn(NewConBall1->position, rand() % 5 + 5);
+					Sparks.Spawn(ballPosition[NewConBall1], rand() % 5 + 5);
 					playsound(Clang, MousePosition, 0.3f,2.5f,{0.0f,0.0f},false);
 				}
 				if (ConCreationStage >= 2)
 				{
 					playsound(Clang, MousePosition, 0.3f,2.5f,{0.0f,0.0f},false);
-					Sparks.Spawn(NewConBall2->position, rand() % 5 + 5);
+					Sparks.Spawn(ballPosition[NewConBall2], rand() % 5 + 5);
 					ConCreationStage = 0;
 					if (NewConDebrie1)
 						NewConPart1 = Entities[0]->ClaimPart(NewConPart1);
@@ -1272,7 +1343,9 @@ void ProcessPlayerControls()
 						for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
 						{
 
-							if (i < Entities[0]->Parts.size() && BalltoPointCollisionCheck(Entities[0]->Parts[i]->body[a], MousePosition) && !detached)
+							glm::vec2 dif = ballPosition[Entities[0]->Parts[i]->body[a]] - MousePosition;
+							
+							if (i < Entities[0]->Parts.size() && sqrlength(dif) < PARTSIZE * PARTSIZE && !detached)
 							{
 								playsound(Detach, MousePosition, 0.3f,3.5f,{0.0f,0.0f},false);
 								Entities[0]->DetachPart(i);
@@ -1292,7 +1365,9 @@ void ProcessPlayerControls()
 				if (Debris.Parts[i]->bodysize > 1)
 				{
 					for (int a = 0; a < Debris.Parts[i]->bodysize; a++)
-						if (BalltoPointCollisionCheck(Debris.Parts[i]->body[a], MousePosition))
+					{
+						glm::vec2 dif = ballPosition[Debris.Parts[i]->body[a]] - MousePosition;
+						if (sqrlength(dif) < PARTSIZE * PARTSIZE)
 						{
 
 							found = true;
@@ -1300,6 +1375,7 @@ void ProcessPlayerControls()
 
 							break;
 						}
+					}
 				}
 
 				if (found)
@@ -1312,7 +1388,7 @@ void ProcessPlayerControls()
 		{
 			glm::vec2 mid = { 0.0f,0.0f };
 			for (int i = 0; i < Debris.Parts[SelectedPart]->bodysize; i++)
-				mid += Debris.Parts[SelectedPart]->body[i].position;
+				mid += ballPosition[Debris.Parts[SelectedPart]->body[i]];
 			mid /= Debris.Parts[SelectedPart]->bodysize;
 
 			glm::vec2 dir = Normalize(MousePosition - mid);
@@ -1321,7 +1397,7 @@ void ProcessPlayerControls()
 			float rotStep = pi * 2.0f / Debris.Parts[SelectedPart]->bodysize;
 			for (int i = 0; i < Debris.Parts[SelectedPart]->bodysize; i++)
 			{
-				Debris.Parts[SelectedPart]->body[i].position = mid + Rotate(dir, rot) * Debris.Parts[SelectedPart]->body[i].r;
+				ballPosition[Debris.Parts[SelectedPart]->body[i]] = mid + Rotate(dir, rot) * PARTSIZE;
 				rot += rotStep;
 			}
 
@@ -1423,8 +1499,8 @@ void ProcessPlayerControls()
 		{
 			for(int a=0;a< Entities[0]->Parts[i]->bodysize;a++)
 			{
-				Entities[0]->Parts[i]->body[a].velbuff = vel;
-				Entities[0]->Parts[i]->body[a].velocity = vel;
+				ballVelocityBuff[Entities[0]->Parts[i]->body[a]]= vel;
+				ballVelocity[Entities[0]->Parts[i]->body[a]] = vel;
 			}
 		}
 	}
@@ -1485,8 +1561,15 @@ void ProcessPlayerControls()
 	{
 		point p;
 		p.position = MousePosition;
-		SpringBallToPoint(GrabbedBall, &p, 0.0f, 3000.0f, 1.0f);
-		DrawLine(GrabbedBall->position, MousePosition, 0.025f, { 1.0f,1.0f,0.0f,1.0f });
+		ball tmpb;
+		tmpb.position = ballPosition[GrabbedBall];
+		tmpb.velocity = ballVelocity[GrabbedBall];
+		tmpb.Force = ballForce[GrabbedBall];
+		SpringBallToPoint(&tmpb, &p, 0.0f, 3000.0f, 1.0f);
+		ballPosition[GrabbedBall] = tmpb.position;
+		ballVelocity[GrabbedBall] = tmpb.velocity;
+		ballForce[GrabbedBall] = tmpb.Force;
+		DrawLine(ballPosition[GrabbedBall], MousePosition, 0.025f, { 1.0f,1.0f,0.0f,1.0f });
 
 		DamageSphere DS;
 		DS.body.r = 0.25f;
@@ -1720,6 +1803,8 @@ void Ready()
 	ChromaticAbberationFallOff = 1.0f;
 	LoadTextures();
 
+	
+
 	noize = NULL;
 	GenNoizeTexture(&noize, 100, 2, 1.0f, 2);
 
@@ -1880,8 +1965,8 @@ void Ready()
 	VSync = 1;
 
 
-	GrabbedBall = nullptr;
-	SelectedPart = 0;
+	GrabbedBall = -1;
+	SelectedPart = -1;
 	
 	BuildingMode = false;
 	bLogicMode = false;
@@ -1946,7 +2031,7 @@ void Process(float dt)
 
 	ImGui::Begin("Settings");
 	ImGui::SliderFloat("speed", &Speed, 0.0f, 10.0f);
-	ImGui::Text("ballssize = %.i", balls.size());
+	ImGui::Text("ballssize = %.i", lastid);
 	ImGui::Text("%.1ffps (%.4fms)", 1.0f/delta,delta);
 
 
@@ -2025,7 +2110,8 @@ void Process(float dt)
 
 
 	int currentObject = 1;
-	balls.clear();
+	
+	//balls.clear();
 
 
 	
@@ -2175,7 +2261,6 @@ void Process(float dt)
 		if(AccumulatedHeat<0.0f)
 			AccumulatedHeat = 0.0f;
 	}
-	ProcessCamera(dt);
 	
     GameScene->Draw(dt);
 	int ent=0;
@@ -2202,6 +2287,15 @@ void Process(float dt)
 			ent++;
 	}
 	CurrnetMission.CheckShips(dt);
+	ProcessCamera(dt);
+
+	int lastball = lastid;
+	for (int i =0; i < lastid; i++)
+	{
+		if (IsBall[i])
+			lastball = i ;
+	}
+
 	sw->End();
 
 	if (OpenMenu || MainMenu)
@@ -2253,6 +2347,21 @@ void Process(float dt)
 
 void PreReady()
 {
+
+	lastid = 0;
+	lastStaticBallid = 0;
+	lastStaticCubeid = 0;
+	for (int i = 0; i < 100'00; i++)
+	{
+		freeBallIDs.push_back(i);
+		ballPosition[i] = { 0.0f,0.0f };
+		ballVelocity[i] = { 0.0f,0.0f };
+		ballForce[i] = { 0.0f,0.0f };
+		ballSoundcd[i] = 0.0f;
+		ballTemp[i] = 0.0f;
+		ballVelocityBuff[i] = { 0.0f,0.0f };
+		IsBall[i] = false;
+	}
     // Remake with DataStorage
 	std::cout<<"Pre ready\n";
 	std::ifstream f("Settings.sav");

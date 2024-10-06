@@ -5,10 +5,10 @@
 #include "../DamageSphere.h"
 #include "../Explodion.h"
 #include "../Rocket.h"
+#include "smallball.h"
 #include "Base.h"
 #include "CentralPart.h"
 
-#define PARTSIZE 0.5f
 inline float Speed;
 inline bool absoluteControl;
 inline bool BuildingMode;
@@ -37,18 +37,18 @@ void CentralPart::DataConnection::Process(CentralPart* ent)
 			ent->Parts[part2]->bDataConnections[index2].connected = true;
 			if (bLogicMode)
 			{
-				float Scale = (ent->Parts[part1]->body[0].r * 0.5f);
+				float Scale = (PARTSIZE * 0.5f);
 				glm::vec2 norm = Rotate(ent->Parts[part1]->dir, pi * 0.5f);
 				if (index1 < ent->Parts[part1]->bDCsize * 0.5f)
-					position1 = ent->Parts[part1]->body[0].position + ent->Parts[part1]->dir * float(index1) * Scale * 2.0f + norm * Scale;
+					position1 = ballPosition[ent->Parts[part1]->body[0]] + ent->Parts[part1]->dir * float(index1) * Scale * 2.0f + norm * Scale;
 				else
-					position1 = ent->Parts[part1]->body[0].position + ent->Parts[part1]->dir * float(index1 - int(ent->Parts[part1]->bDCsize * 0.5f + 0.5f)) * Scale * 2.0f - norm * Scale;
-				float Scale2 = (ent->Parts[part2]->body[0].r * 0.5f);
+					position1 = ballPosition[ent->Parts[part1]->body[0]] + ent->Parts[part1]->dir * float(index1 - int(ent->Parts[part1]->bDCsize * 0.5f + 0.5f)) * Scale * 2.0f - norm * Scale;
+				float Scale2 = (PARTSIZE * 0.5f);
 				glm::vec2 norm2 = Rotate(ent->Parts[part2]->dir, pi * 0.5f);
 				if (index2 < ent->Parts[part2]->bDCsize * 0.5f)
-					position2 = ent->Parts[part2]->body[0].position + ent->Parts[part2]->dir * float(index2) * Scale2 * 2.0f + norm2 * Scale2;
+					position2 = ballPosition[ent->Parts[part2]->body[0]] + ent->Parts[part2]->dir * float(index2) * Scale2 * 2.0f + norm2 * Scale2;
 				else
-					position2 = ent->Parts[part2]->body[0].position + ent->Parts[part2]->dir * float(index2 - int(ent->Parts[part2]->bDCsize * 0.5f + 0.5f)) * Scale2 * 2.0f - norm2 * Scale2;
+					position2 = ballPosition[ent->Parts[part2]->body[0]] + ent->Parts[part2]->dir * float(index2 - int(ent->Parts[part2]->bDCsize * 0.5f + 0.5f)) * Scale2 * 2.0f - norm2 * Scale2;
 			}
 		}
 		else if (type == 1 && index1 < ent->Parts[part1]->fDCsize && index2 < ent->Parts[part2]->fDCsize)
@@ -61,18 +61,18 @@ void CentralPart::DataConnection::Process(CentralPart* ent)
 			ent->Parts[part2]->fDataConnections[index2].connected = true;
 			if (fLogicMode)
 			{
-				float Scale = (ent->Parts[part1]->body[0].r * 0.5f);
+				float Scale = (PARTSIZE * 0.5f);
 				glm::vec2 norm = Rotate(ent->Parts[part1]->dir, pi * 0.5f);
 				if (index1 < ent->Parts[part1]->fDCsize * 0.5f)
-					position1 = ent->Parts[part1]->body[0].position + ent->Parts[part1]->dir * float(index1) * Scale * 2.0f + norm * Scale;
+					position1 = ballPosition[ent->Parts[part1]->body[0]] + ent->Parts[part1]->dir * float(index1) * Scale * 2.0f + norm * Scale;
 				else
-					position1 = ent->Parts[part1]->body[0].position + ent->Parts[part1]->dir * float(index1 - int(ent->Parts[part1]->fDCsize * 0.5f + 0.5f)) * Scale * 2.0f - norm * Scale;
-				float Scale2 = (ent->Parts[part2]->body[0].r * 0.5f);
+					position1 = ballPosition[ent->Parts[part1]->body[0]] + ent->Parts[part1]->dir * float(index1 - int(ent->Parts[part1]->fDCsize * 0.5f + 0.5f)) * Scale * 2.0f - norm * Scale;
+				float Scale2 = (PARTSIZE * 0.5f);
 				glm::vec2 norm2 = Rotate(ent->Parts[part2]->dir, pi * 0.5f);
 				if (index2 < ent->Parts[part2]->fDCsize * 0.5f)
-					position2 = ent->Parts[part2]->body[0].position + ent->Parts[part2]->dir * float(index2) * Scale2 * 2.0f + norm2 * Scale2;
+					position2 = ballPosition[ent->Parts[part2]->body[0]] + ent->Parts[part2]->dir * float(index2) * Scale2 * 2.0f + norm2 * Scale2;
 				else
-					position2 = ent->Parts[part2]->body[0].position + ent->Parts[part2]->dir * float(index2 - int(ent->Parts[part2]->fDCsize * 0.5f + 0.5f)) * Scale2 * 2.0f - norm2 * Scale2;
+					position2 = ballPosition[ent->Parts[part2]->body[0]] + ent->Parts[part2]->dir * float(index2 - int(ent->Parts[part2]->fDCsize * 0.5f + 0.5f)) * Scale2 * 2.0f - norm2 * Scale2;
 			}
 		}
 		else if (type == 2 && index1 < ent->Parts[part1]->vDCsize && index2 < ent->Parts[part2]->vDCsize)
@@ -85,18 +85,18 @@ void CentralPart::DataConnection::Process(CentralPart* ent)
 			ent->Parts[part2]->vDataConnections[index2].connected = true;
 			if (vLogicMode)
 			{
-				float Scale = (ent->Parts[part1]->body[0].r * 0.5f);
+				float Scale = (PARTSIZE * 0.5f);
 				glm::vec2 norm = Rotate(ent->Parts[part1]->dir, pi * 0.5f);
 				if (index1 < ent->Parts[part1]->vDCsize * 0.5f)
-					position1 = ent->Parts[part1]->body[0].position + ent->Parts[part1]->dir * float(index1) * Scale * 2.0f + norm * Scale;
+					position1 = ballPosition[ent->Parts[part1]->body[0]] + ent->Parts[part1]->dir * float(index1) * Scale * 2.0f + norm * Scale;
 				else
-					position1 = ent->Parts[part1]->body[0].position + ent->Parts[part1]->dir * float(index1 - int(ent->Parts[part1]->vDCsize * 0.5f + 0.5f)) * Scale * 2.0f - norm * Scale;
-				float Scale2 = (ent->Parts[part2]->body[0].r * 0.5f);
+					position1 = ballPosition[ent->Parts[part1]->body[0]] + ent->Parts[part1]->dir * float(index1 - int(ent->Parts[part1]->vDCsize * 0.5f + 0.5f)) * Scale * 2.0f - norm * Scale;
+				float Scale2 = (PARTSIZE * 0.5f);
 				glm::vec2 norm2 = Rotate(ent->Parts[part2]->dir, pi * 0.5f);
 				if (index2 < ent->Parts[part2]->vDCsize * 0.5f)
-					position2 = ent->Parts[part2]->body[0].position + ent->Parts[part2]->dir * float(index2) * Scale2 * 2.0f + norm2 * Scale2;
+					position2 = ballPosition[ent->Parts[part2]->body[0]] + ent->Parts[part2]->dir * float(index2) * Scale2 * 2.0f + norm2 * Scale2;
 				else
-					position2 = ent->Parts[part2]->body[0].position + ent->Parts[part2]->dir * float(index2 - int(ent->Parts[part2]->vDCsize * 0.5f + 0.5f)) * Scale2 * 2.0f - norm2 * Scale2;
+					position2 = ballPosition[ent->Parts[part2]->body[0]] + ent->Parts[part2]->dir * float(index2 - int(ent->Parts[part2]->vDCsize * 0.5f + 0.5f)) * Scale2 * 2.0f - norm2 * Scale2;
 			}
 		}
 		else
@@ -136,18 +136,18 @@ void CentralPart::DataConnection::Draw()
 void CentralPart::Connection::UpdateLinks(CentralPart* ent)
 {
 	bod1 = ent->Parts[part1];
-	b1 = &ent->Parts[part1]->body[index1];
+	b1 = ent->Parts[part1]->body[index1];
 	bod2 = ent->Parts[part2];
-	b2 = &ent->Parts[part2]->body[index2];
+	b2 = ent->Parts[part2]->body[index2];
 	if (bod1->Health <= 0.0f)
 	{
 		bod1 = NULL;
-		b1 = NULL;
+		b1 = -1;
 	}
 	if (bod2->Health <= 0.0f)
 	{
 		bod2 = NULL;
-		b2 = NULL;
+		b2 = -1;
 	}
 }
 void CentralPart::Connection::Init()
@@ -157,7 +157,7 @@ void CentralPart::Connection::Init()
 void CentralPart::Connection::Process(CentralPart* ent, float dt)
 {
 	UpdateLinks(ent);
-	if (b1 != nullptr && b2 != nullptr)
+	if (b1 != -1 && b2 != -1)
 	{
 		if (type == CONNECTION::STRUT)
 			Strut(b1, b2, length);
@@ -167,26 +167,37 @@ void CentralPart::Connection::Process(CentralPart* ent, float dt)
 			Rope(b1, b2, length);
 		
 	}
-	if (b1 != nullptr && b2 != nullptr)
+	if (b1 != -1 && b2 != -1)
 	{
-		float change = (b1->temperature - b2->temperature) * dt * HeatTransferSpeed;
-		b1->temperature -= change;
-		b2->temperature += change;
+		float change = (ballTemp[b1] - ballTemp[b2]) * dt * HeatTransferSpeed;
+		ballTemp[b1] -= change;
+		ballTemp[b2] += change;
 	}
 }
 void CentralPart::Connection::Draw(float dt)
 {
-	glm::vec4 color = (b1->color + b2->color) * 0.5f;
+
+	glm::vec4 BaseColor = glm::vec4(1.0f);
+	glm::vec4 HeatColor = glm::vec4(60.0f, 10.0f, 2.0f, 0.0f);
+	glm::vec4 ColdColor = glm::vec4(0.04f, 2.0f, 10.0f, 0.0f);
+	float avgT = (ballTemp[b1] + ballTemp[b2])*0.5f;
+	glm::vec4 color;
+	if (avgT > 0.0f)
+		color = BaseColor + HeatColor * (avgT / 30.0f);
+	else
+		color = BaseColor + ColdColor * (avgT / 30.0f);
+
+
 	if (type == CONNECTION::STRUT)
 		if (Texture == NULL)
-			DrawLine(b1->position, b2->position, width, color, true, NormalMap, -10);
+			DrawLine(ballPosition[b1], ballPosition[b2], width, color, true, NormalMap, -10);
 		else
-			DrawTexturedLine(Texture, b1->position, b2->position, width, color, NormalMap, -10);
+			DrawTexturedLine(Texture, ballPosition[b1], ballPosition[b2], width, color, NormalMap, -10);
 	if (type == CONNECTION::SPRING)
 		if (Texture == NULL)
-			DrawLine(b1->position, b2->position, width, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), true, true, -10);
+			DrawLine(ballPosition[b1], ballPosition[b2], width, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), true, true, -10);
 		else
-			DrawTexturedLine(Texture, b1->position, b2->position, width, color, NormalMap, -10);
+			DrawTexturedLine(Texture, ballPosition[b1], ballPosition[b2], width, color, NormalMap, -10);
 	if (type == CONNECTION::HEATPIPE)
 	{
 		Texture = HeatPipeTexture;
@@ -204,8 +215,10 @@ void CentralPart::Connection::Draw(float dt)
 	}
 	if (type == CONNECTION::HEATPIPE || type == CONNECTION::ROPE)
 	{
-		rope.b1 = b1;
-		rope.b2 = b2;
+		rope.rope[0].position = ballPosition[b1];
+		rope.rope[4].position = ballPosition[b2];
+		rope.rope[0].velocity = ballVelocity[b1];
+		rope.rope[4].velocity = ballVelocity[b2];
 		rope.length = length;
 		rope.width = width;
 		rope.Process(dt);
@@ -233,11 +246,8 @@ CentralPart::CentralPart()
 	CreateBody(2,9,0,3);
 	BodyIdsWithCollision.push_back(0);
 	BodyIdsWithCollision.push_back(1);
-	body[0].position = position + Normalize({0.0f,1.0f}) * PARTSIZE;
-	body[1].position = position - Normalize({0.0f,1.0f}) * PARTSIZE;
-	body[0].r = PARTSIZE;
-	body[1].r = PARTSIZE;
-	body[1].mass = 1.0f;
+	ballPosition[body[0]] = position + Normalize({ 0.0f,1.0f }) * PARTSIZE;
+	ballPosition[body[1]] = position - Normalize({0.0f,1.0f}) * PARTSIZE;
 	ProcessConnections();
 	OnPartCreate();
 	Cost.Matter = 0;
@@ -246,11 +256,8 @@ void CentralPart::Create(glm::vec2 position, glm::vec2 direction, float size,flo
 {
 	
 	Health = PartsData.GetPropertyAsFloat("CentralPart", "Health");
-	body[0].position = position + Normalize(direction) * size;
-	body[1].position = position - Normalize(direction) * size;
-	body[0].r = size;
-	body[1].r = size;
-	body[1].mass = mass;
+	ballPosition[body[0]] = position + Normalize(direction) * size;
+	ballPosition[body[1]] = position - Normalize(direction) * size;
 	ProcessConnections();
 	Parts.push_back(this);
 	
@@ -288,16 +295,20 @@ void CentralPart::MTProcess (float dt)
 		return;
 	ProcessConnections();
 	ProcessBody(dt);
-	body[0].color = color;
-	body[1].color = color;
-	mid = 0.5f * (body[0].position + body[1].position);
-	midvel = 0.5f * (body[0].velocity + body[1].velocity);
-	dir = (body[1].position - body[0].position);
-	body[0].Process(dt);
-	body[1].Process(dt);
-	body[1].Force = glm::vec2(0.0f);
-	body[0].Force = glm::vec2(0.0f);
-	Strut(&body[0], &body[1], body[0].r * 2.0f);
+	mid = 0.5f * (ballPosition[body[0]] + ballPosition[body[1]]);
+	midvel = 0.5f * (ballVelocity[body[0]] + ballVelocity[body[1]]);
+	dir = (ballPosition[body[1]] - ballPosition[body[0]]);
+
+	ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+	ballPosition[body[1]] += ballVelocity[body[1]] * dt;
+
+	ballVelocity[body[0]] += ballForce[body[0]] * dt;
+	ballVelocity[body[1]] += ballForce[body[1]] * dt;
+
+	ballForce[body[0]] = { 0.0f,0.0f };
+	ballForce[body[1]] = { 0.0f,0.0f };
+
+	Strut(body[0], body[1], PARTSIZE * 2.0f);
 	if (player && !deactivated)
 	{
 		bDataConnections[0].data = buttons[GLFW_MOUSE_BUTTON_1];
@@ -332,8 +343,8 @@ void CentralPart::MTProcess (float dt)
 	maxR = 0.0f;
 	if (!destroyed)
 	{
-		front = &body[0];
-		back = &body[1];
+		front = body[0];
+		back = body[1];
 		
 		int deliter = 0;
 		while (deliter<Parts.size())
@@ -349,7 +360,7 @@ void CentralPart::MTProcess (float dt)
 		
 		for (int i = 0; i < Parts.size(); i++)
 		{
-			float len = sqrlength(Parts[i]->body[0].position - CenterOfMass);
+			float len = sqrlength(ballPosition[Parts[i]->body[0]] - CenterOfMass);
 			if (len > maxR)
 				maxR = sqrt(len);
 		}
@@ -402,11 +413,11 @@ void CentralPart::MTProcess (float dt)
 			for (int bp = 0; bp < Parts[i]->BodyIdsWithCollision.size(); bp++)
 			{				
 				int pid = Parts[i]->BodyIdsWithCollision[bp];
-				mass += Parts[i]->body[pid].mass;
-				avgvel += Parts[i]->body[bp].velocity * Parts[i]->body[pid].mass;
-				CenterOfMass += Parts[i]->body[bp].position * Parts[i]->body[pid].mass;
-				Parts[i]->body[pid].id = id;
-				Balls.push_back(&Parts[i]->body[pid]);
+				mass += 1.0f;
+				avgvel += ballVelocity[Parts[i]->body[bp]];
+				CenterOfMass += ballPosition[Parts[i]->body[bp]];
+				ballID[Parts[i]->body[pid]] = id;
+				Balls.push_back(Parts[i]->body[pid]);
 			}
 			//if (!Parts[i]->dead||i==0)
 			//{
@@ -423,21 +434,21 @@ void CentralPart::MTProcess (float dt)
 		CenterOfMass /= mass;
 		if(dt<0.0001f)
 			dt = 0.0001f;
-		rotationvelocity = length(((front->position - prevfrontpos) - (back->position - prevbackpos)) * 0.5f) /dt; // roughly should do the trick
+		rotationvelocity = length(((ballPosition[front] - prevfrontpos) - (ballPosition[back] - prevbackpos)) * 0.5f) /dt; // roughly should do the trick
 		
-		prevfrontpos = front->position;
-		prevbackpos = back->position;
-		if (back != nullptr && front != nullptr)
+		prevfrontpos = ballPosition[front];
+		prevbackpos =  ballPosition[back];
+		if (back != -1 && front != -1)
 		{
-			float len = length((front->position - back->position));
+			float len = length((ballPosition[front]- ballPosition[back]));
 			if(len<0.001f)
 			{
-				front->position.y+=0.001f;
-				len = length((front->position - back->position));
+				ballPosition[front].y+=0.001f;
+				len = length((ballPosition[front] - ballPosition[back]));
 			}
-			direction = (front->position - back->position)/len;
+			direction = (ballPosition[front] - ballPosition[back])/len;
 			float aligment = DOT(Normalize(direction), Normalize(glm::vec2(-LookAt.y, LookAt.x)));
-			glm::vec2 dirTotrg = Normalize((trgPos - (body[0].position + body[1].position) * 0.5f));
+			glm::vec2 dirTotrg = Normalize((trgPos - (ballPosition[body[0]]+ ballPosition[body[1]]) * 0.5f));
 			
 			
 			for (int i = 0; i < Engines.size(); i++)
@@ -446,12 +457,12 @@ void CentralPart::MTProcess (float dt)
 				float dotTotrg = DOT(-Engines[i]->dir, dirTotrg);
 				if (dotTotrg > 0.0f)
 					ForceToThrustDirection += dotTotrg * Engines[i]->Power;
-				Engines[i]->throtle += DOT(-Engines[i]->dir, Normalize(Rotate(CenterOfMass - Engines[i]->body[1].position, pi * 0.5))) * aligment;
+				Engines[i]->throtle += DOT(-Engines[i]->dir, Normalize(Rotate(CenterOfMass - ballPosition[Engines[i]->body[1]], pi * 0.5))) * aligment;
 				if (Engines[i]->throtle < 0.0f)	Engines[i]->throtle = 0.0f;
 				if (Engines[i]->throtle > 1.0f)	Engines[i]->throtle = 1.0f;
 			}
 		}
-		float distance = length(trgPos - (body[0].position + body[1].position) * 0.5f) + 0.001f;
+		float distance = length(trgPos - (ballPosition[body[0]] + ballPosition[body[1]]) * 0.5f) + 0.001f;
 		float entVelocity = length(avgvel) + 0.001f;
 		maxVelocity = distance * ForceToThrustDirection * 0.01f / (mass)+0.001f;
 		float friction = 0.0f;
@@ -464,11 +475,11 @@ void CentralPart::MTProcess (float dt)
 				GunsTargetrotPoint = Playerpos;
 				trgPos = Playerpos + Normalize(mid - Playerpos) * (maxR + 30.0f);
 			}
-			glm::vec2 dir = ((trgPos - (body[0].position + body[1].position) * 0.5f) / distance);
+			glm::vec2 dir = ((trgPos - (ballPosition[body[0]] + ballPosition[body[1]]) * 0.5f) / distance);
 			if (distance < 2)
 			{
-				body[0].Force = dir * 10.0f;
-				body[1].Force = dir * 10.0f;
+				ballForce[body[0]]= dir * 10.0f;
+				ballForce[body[1]] = dir * 10.0f;
 				friction = 1.0;
 				LookAt = LookAtOnTarget;
 			}
@@ -486,7 +497,7 @@ void CentralPart::MTProcess (float dt)
 				if(len >= 0.001f)
 				{
 					glm::vec2 norm = rotatedvec/len;
-					Force -= DOT(norm, body[0].velocity) * norm * 4.0f;
+					Force -= DOT(norm, ballVelocity[body[0]]) * norm * 4.0f;
 					//float forceNeeded = length(Force);// (maxVelocity - entVelocity)* mass / (ForceToThrustDirection);
 					ThrustDirection = Force;
 					/*if (DOT(ThrustDirection, dir) < 0.0f && DOT(avgvel, dir) < 0.0f)
@@ -518,14 +529,14 @@ void CentralPart::MTProcess (float dt)
 		sumheat = 0.0f;
 		for (int i = 0; i < Balls.size(); i++)
 		{
-			float len = sqrlength(CenterOfMass - Balls[i]->position);
+			float len = sqrlength(CenterOfMass - ballPosition[Balls[i]]);
 			if(len<0.001f)
 				continue;
-			glm::vec2 dif = (CenterOfMass - Balls[i]->position)/len;
-			Balls[i]->velocity -= DOT(Balls[i]->velocity - avgvel, glm::vec2(-dif.y, dif.x)) * glm::vec2(-dif.y, dif.x) * RotationalFriction * dt;
-			Balls[i]->velocity -= Balls[i]->velocity * friction * dt;
-			sumheat += Balls[i]->temperature;
-			Balls[i]->velbuff = Balls[i]->velocity;
+			glm::vec2 dif = (CenterOfMass - ballPosition[Balls[i]])/len;
+			ballVelocity[Balls[i]]-= DOT(ballVelocity[Balls[i]] - avgvel, glm::vec2(-dif.y, dif.x)) * glm::vec2(-dif.y, dif.x) * RotationalFriction * dt;
+			ballVelocity[Balls[i]] -= ballVelocity[Balls[i]] * friction * dt;
+			sumheat += ballTemp[Balls[i]];
+			ballVelocityBuff[Balls[i]] = ballVelocity[Balls[i]];
 
 			for(int a = i+1;a<Balls.size();a++)
 				BtBCollision(Balls[i],Balls[a]);
@@ -535,6 +546,7 @@ void CentralPart::MTProcess (float dt)
 	}
 	
 }
+
 void CentralPart::Process(float dt) 
 {
 	
@@ -592,10 +604,10 @@ void CentralPart::Draw()
 		firstdrawafterload = false;
 		return;
 	}
-	glm::vec2 dif = body[0].position - body[1].position;
-	DrawLine(body[0].position + dif*0.5f, body[1].position - dif * 0.5f, body[0].r, color, true, CubeNormalMapTexture, Z_Index);
+	glm::vec2 dif = ballPosition[body[0]] - ballPosition[body[1]];
+	DrawLine(ballPosition[body[0]] + dif*0.5f, ballPosition[body[1]] - dif * 0.5f, PARTSIZE, color, true, CubeNormalMapTexture, Z_Index);
 	
-	DrawTexturedQuad(mid, glm::vec2(1.0f * body[1].r, 2.0f * body[1].r), CentralPartTexture, get_angle_between_points(mid, body[0].position), color, Z_Index, CentralPartNormalMap);
+	DrawTexturedQuad(mid, glm::vec2(1.0f * PARTSIZE, 2.0f * PARTSIZE), CentralPartTexture, get_angle_between_points(mid, ballPosition[body[0]]), color, Z_Index, CentralPartNormalMap);
 	
 	
 	for (int i = 0; i < Connections.size(); i++)
@@ -696,9 +708,9 @@ void CentralPart::DestroyPart(int  index)
 	mid /= Parts[index]->bodysize;
 	for (int bp = 0; bp < Parts[index]->bodysize; bp++)
 	{
-		if (GrabbedBall != NULL)
-			if (GrabbedBall->position == Parts[index]->body[bp].position)
-				GrabbedBall = NULL;
+		if (GrabbedBall != -1)
+			if (ballPosition[GrabbedBall] == ballPosition[Parts[index]->body[bp]])
+				GrabbedBall = -1;
 		if (SelectedPart = index)
 			SelectedPart = -1;
 	}
@@ -813,7 +825,7 @@ void CentralPart::AddConnection(int type, float len, float width, float stiffnes
 		if (len < 0)
 		{
 			Connections[i].UpdateLinks(this);
-			Connections[i].length = length(Connections[i].b1->position - Connections[i].b2->position);
+			Connections[i].length = length(ballPosition [Connections[i].b1] - ballPosition[Connections[i].b2]);
 		}
 		else
 			Connections[i].length = len;
@@ -923,7 +935,7 @@ void CentralPart::SaveTo(std::string filename)
 	filename = fn;
 	std::ofstream f;
 	f.open(filename);
-	glm::vec2 mid = 0.5f * (Parts[0]->body[0].position + Parts[0]->body[1].position);
+	glm::vec2 mid = 0.5f * (ballPosition[Parts[0]->body[0]] + ballPosition[Parts[0]->body[1]]);
 	for (int i = 1; i < Parts.size(); i++) // skip part[0] - central part
 	{
 		f << "P ";
@@ -933,9 +945,9 @@ void CentralPart::SaveTo(std::string filename)
 		for (int a = 0; a < Parts[i]->bodysize; a++)
 		{
 			f << " ";
-			f << Parts[i]->body[a].position.x - mid.x;
+			f << ballPosition[Parts[i]->body[a]].x - mid.x;
 			f << " ";
-			f << Parts[i]->body[a].position.y - mid.y;
+			f << ballPosition[Parts[i]->body[a]].y - mid.y;
 		}
 		f << "\n";
 	}
@@ -985,7 +997,7 @@ void CentralPart::LoadFrom(std::string filename)
 	std::string fn = "./Ships/"+filename + ".sav";
 	filename = fn;
 	std::cout<<"\nLoading Entity: "<<filename;
-	glm::vec2 mid = 0.5f * (Parts[0]->body[0].position + Parts[0]->body[1].position);
+	glm::vec2 mid = 0.5f * (ballPosition[Parts[0]->body[0]] + ballPosition[Parts[0]->body[1]]);
 	Clear();
 	std::ifstream f(filename);
 	if (!f.is_open())
@@ -1021,7 +1033,7 @@ void CentralPart::LoadFrom(std::string filename)
 			{
 				b->Create({ 0.0f,0.0f }, { 0.0f,1.0f }, PARTSIZE);
 				for (int i = 0; i < bodysize; i++)
-					b->body[i].position = positions[i]+ mid;
+					ballPosition[b->body[i]] = positions[i]+ mid;
 				Parts.push_back(b);
 			}
 		}
@@ -1090,8 +1102,8 @@ void CentralPart::Destroy()
 		if (rand() % 100 < 50)
 			for (int b = 0; b < Parts[i]->bodysize; b++)
 			{
-				Parts[i]->body[b].Force = glm::vec2(rand() % 5000 - 2500, rand() % 5000 - 2500);
-				Parts[i]->body[b].temperature = Parts[i]->MaxTemp;
+				ballForce[Parts[i]->body[b]] = glm::vec2(rand() % 5000 - 2500, rand() % 5000 - 2500);
+				ballTemp[Parts[i]->body[b]] = 30.0f;
 			}	
 		else
 			Parts[i]->Health = -1.0f;

@@ -13,6 +13,7 @@
 #include "../Include/Text.h"
 #include "../Include/UI.h"
 
+//One time use. May become invalid after adding or deleating window, safe if otherwise.
 Window* GetWindow(int id)
 {
 	return &Windows[id];

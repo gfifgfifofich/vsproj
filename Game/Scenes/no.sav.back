@@ -1,4 +1,4 @@
-AIAim_0000000023
+AIAim_0000000031
 {
 	Class 10011
 	ID 0
@@ -214,7 +214,7 @@ Cube_0000000002
 	texture_Type 7
 	texture_filter 0
 }
-Glider_0000000032
+Glider_0000000020
 {
 	Class 10012
 	ID 0
@@ -223,7 +223,7 @@ Glider_0000000032
 	Type 1
 	Z_Index 0
 }
-Glider_0000000034
+Glider_0000000022
 {
 	Class 10012
 	ID 0
@@ -386,7 +386,7 @@ M_Cube_0000000003
 	Texture Cube
 	Type 0
 }
-MiniGun_0000000035
+MiniGun_0000000019
 {
 	Class 10007
 	ID 0
@@ -453,7 +453,7 @@ Object_0000000016
 	invertX 0
 	invertY 0
 }
-Radiator_0000000025
+Radiator_0000000023
 {
 	Class 10004
 	ID 0
@@ -462,7 +462,7 @@ Radiator_0000000025
 	Type 1
 	Z_Index 0
 }
-Radiator_0000000026
+Radiator_0000000028
 {
 	Class 10004
 	ID 0
@@ -471,43 +471,16 @@ Radiator_0000000026
 	Type 1
 	Z_Index 0
 }
-Radiator_0000000031
+Radiator_0000000029
 {
 	Class 10004
 	ID 0
 	Name Radiator
-	Position 0.000000 0.000000
-	Type 1
-	Z_Index 0
-}
-RocketEngine_0000000019
-{
-	Class 10001
-	ID 0
-	Name RocketEngine
-	Position 0.000000 0.000000
-	Type 1
-	Z_Index 0
-}
-RocketEngine_0000000020
-{
-	Class 10001
-	ID 0
-	Name RocketEngine
 	Position 0.000000 0.000000
 	Type 1
 	Z_Index 0
 }
 RocketEngine_0000000021
-{
-	Class 10001
-	ID 0
-	Name RocketEngine
-	Position 0.000000 0.000000
-	Type 1
-	Z_Index 0
-}
-RocketEngine_0000000022
 {
 	Class 10001
 	ID 0
@@ -525,25 +498,25 @@ RocketEngine_0000000024
 	Type 1
 	Z_Index 0
 }
+RocketEngine_0000000025
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000026
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
 RocketEngine_0000000027
-{
-	Class 10001
-	ID 0
-	Name RocketEngine
-	Position 0.000000 0.000000
-	Type 1
-	Z_Index 0
-}
-RocketEngine_0000000028
-{
-	Class 10001
-	ID 0
-	Name RocketEngine
-	Position 0.000000 0.000000
-	Type 1
-	Z_Index 0
-}
-RocketEngine_0000000029
 {
 	Class 10001
 	ID 0
@@ -561,7 +534,34 @@ RocketEngine_0000000030
 	Type 1
 	Z_Index 0
 }
+RocketEngine_0000000032
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
 RocketEngine_0000000033
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000034
+{
+	Class 10001
+	ID 0
+	Name RocketEngine
+	Position 0.000000 0.000000
+	Type 1
+	Z_Index 0
+}
+RocketEngine_0000000035
 {
 	Class 10001
 	ID 0

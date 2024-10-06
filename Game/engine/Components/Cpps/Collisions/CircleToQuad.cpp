@@ -12,11 +12,11 @@ void BallToStaticQuadCollision(ball* b, cube quad)
 
 	if (posdifference.x > quad.width)
 		posdifference.x = quad.width;
-	else if (posdifference.x < -quad.width)
+	if (posdifference.x <= -quad.width)
 		posdifference.x = -quad.width;
 	if (posdifference.y > quad.height)
 		posdifference.y = quad.height;
-	else if (posdifference.y < -quad.height)
+	if (posdifference.y <= -quad.height)
 		posdifference.y = -quad.height;
 
 

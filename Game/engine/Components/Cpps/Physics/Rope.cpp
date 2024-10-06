@@ -87,17 +87,22 @@ void DecorativeRope::Process(float dt)
 {
 	for (int s = 0; s < 2; s++)
 	{
-		rope[0].position = b1->position;
-		rope[0].velocity = b1->velocity;
-		rope[0].Force = b1->Force;
+		if (b1 != nullptr) 
+		{
+			rope[0].position = b1->position;
+			rope[0].velocity = b1->velocity;
+			rope[0].Force = b1->Force;
+		}
 		for (int i = 1; i < 5; i++)
 		{
 			rope[i].Force = Force;
 			rope[i].Process(delta * 0.5f);
-
-			rope[4].position = b2->position;
-			rope[4].velocity = b2->velocity;
-			rope[4].Force = b2->Force;
+			if (b1 != nullptr)
+			{
+				rope[4].position = b2->position;
+				rope[4].velocity = b2->velocity;
+				rope[4].Force = b2->Force;
+			}
 			Rope(&rope[i], &rope[i - 1], length * 0.2f);
 
 		}
@@ -105,8 +110,11 @@ void DecorativeRope::Process(float dt)
 }
 void DecorativeRope::Draw(int Z_Index)
 {
-	rope[0].position = b1->position;
-	rope[4].position = b2->position;
+	if (b1 != nullptr)
+		rope[0].position = b1->position;
+
+	if (b2 != nullptr)
+		rope[4].position = b2->position;
 	if (Texture == NULL)
 	{
 		/*for (int i = 0; i < 5; i++)

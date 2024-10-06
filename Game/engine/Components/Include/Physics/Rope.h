@@ -3,11 +3,11 @@ void Rope(ball* a, ball* b, float length);
 void MRope(ball* a, ball* b, float length);
 class DecorativeRope
 {
-	ball rope[5];
 public:
+	ball rope[5];
 
-	ball* b1;
-	ball* b2;
+	ball* b1 = nullptr;
+	ball* b2 = nullptr;
 	float length = 0.0f;
 
 	float width = 1.0f;

@@ -1,0 +1,35 @@
+#pragma once
+// this system will make them chaos to process per part, but very fast to process all at once (cuz array)
+inline int lastid;
+// Fuck oop, we ball through arrays only
+inline std::array<glm::vec2, 100'00> ballPosition;
+inline std::array<glm::vec2, 100'00> ballVelocity;
+inline std::array<glm::vec2, 100'00> ballForce;
+inline std::array<float,     100'00> ballSoundcd;
+inline std::array<float,     100'00> ballTemp;
+inline std::array<glm::vec2, 100'00> ballVelocityBuff;
+inline std::array<int,       100'00> ballID;
+inline std::array<bool,      100'00> IsBall;
+
+
+inline std::array<glm::vec3, 100'00> StaticBalls;
+inline std::array<glm::vec4, 100'00> StaticCubes;
+inline int lastStaticBallid;
+inline int lastStaticCubeid;
+
+#define PARTSIZE 0.5f
+// better to use array backwards, then pop_back() is pop_front();
+inline std::list<int> freeBallIDs;
+
+int NewBall();
+void DeleteBall(int id);
+
+
+void Strut(int b1, int b2, float length);
+void SpringBetweenBalls(int b1, int b2, float length, float stiffnes, float absorbtion);
+void Rope(int b1, int b2, float length);
+
+void BallToPointCollision(int b, glm::vec2 point);
+void BalltoStaticBallCollision(int id, ball* b);
+void BallToStaticQuadCollision(int id, cube* b);
+void BtBCollision(int id1, int id2);

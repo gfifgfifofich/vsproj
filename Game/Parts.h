@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Parts/smallball.h"
 #include "Parts/Base.h"
 #include "Parts/CentralPart.h"
 
@@ -43,17 +44,11 @@ public:
 		Name = "Gun";
 
 		CreateBody(3,1,0,1);
-		body[0].position = position;
-		body[1].position = position + glm::vec2(0.0f,1.0f) * 3.0f;
-		body[2].position = position + glm::vec2(0.0f,1.0f) * 3.0f;
-		body[0].r = PARTSIZE;
-		body[1].r = PARTSIZE*0.75;
-		body[2].r = PARTSIZE;
+		ballPosition[body[0]]= position;
+		ballPosition[body[1]]= position + glm::vec2(0.0f,1.0f) * 3.0f;
+		ballPosition[body[2]]= position + glm::vec2(0.0f,1.0f) * 3.0f;
 		deactivated = true;
 
-		body[0].mass = 1.0f;
-		body[1].mass = 1.0f*0.2f;
-		body[2].mass = 1.0f;
 
 
 		Health = PartsData.GetPropertyAsFloat("Gun", "Health");
@@ -73,17 +68,11 @@ public:
 
 	void Create(glm::vec2 position, glm::vec2 direction, float size, float mass = 1.0f) override
 	{
-		body[0].position = position;
-		body[1].position = position + direction * 3.0f;
-		body[2].position = position + direction * 3.0f;
-		body[0].r = size;
-		body[1].r = size*0.75;
-		body[2].r = size;
+		ballPosition[body[0]]= position;
+		ballPosition[body[1]]= position + direction * 3.0f;
+		ballPosition[body[2]]= position + direction * 3.0f;
 		deactivated = true;
 
-		body[0].mass = mass;
-		body[1].mass = mass*0.2f;
-		body[2].mass = mass;
 		Health = PartsData.GetPropertyAsFloat("Gun", "Health");
 
 		HeatPerShot = PartsData.GetPropertyAsFloat("Gun", "HeatPerShot");
@@ -111,14 +100,13 @@ public:
 	{
 		ProcessConnections();
 		ProcessBody(dt);
-		body[0].color = color;
-		body[1].color = color;
-		body[2].color = color;
+		
 
-		mid = (body[0].position + body[2].position) * 0.5f;
-		if (body[1].temperature >= shutdownTemp)
+
+		mid = (ballPosition[body[0]] + ballPosition[body[2]]) * 0.5f;
+		if (ballTemp[body[1]] >= shutdownTemp)
 			overheated = true;
-		if (body[1].temperature <= 0.25f)
+		if (ballTemp[body[1]] <= 0.25f)
 			overheated = false;
 		shot = bDataConnections[0].data && bDataConnections[0].connected;
 		if (!debris && !overheated)
@@ -132,9 +120,9 @@ public:
 			if (!deactivated)
 			{
 				targetrotpoint = vDataConnections[0].data;
-				glm::vec2 dif = body[1].position - body[0].position;
+				glm::vec2 dif = ballPosition[body[1]] - ballPosition[body[0]];
 				glm::vec2 trgvel = (targetrotpoint - prevtrgpos) * (1.0f / dt);
-				glm::vec2 trgvec = targetrotpoint - body[0].position;
+				glm::vec2 trgvec = targetrotpoint - ballPosition[body[0]];
 				glm::vec2 rotvec = Normalize(glm::vec2(-dif.y, dif.x));
 
 				float D = length(trgvec);
@@ -144,50 +132,56 @@ public:
 				{
 					targetrotpoint += trgvel * (T - lastT);
 					lastT = T;
-					trgvec = targetrotpoint - body[0].position;
+					trgvec = targetrotpoint - ballPosition[body[0]];
 					D = length(trgvec);
 					T = D / bulletSpeed;
 				}
 				trgvec = trgvec / D;
-				body[1].velocity -= dt * RotationalFriction * DOT(body[1].velocity - body[0].velocity, rotvec) * rotvec;
+				ballVelocity[body[1]] -= dt * RotationalFriction * DOT(ballVelocity[body[1]] - ballVelocity[body[0]], rotvec) * rotvec;
 
-				body[1].Force += speed * rotvec * DOT(rotvec, trgvec);
+				ballForce[body[1]] += speed * rotvec * DOT(rotvec, trgvec);
 				prevtrgpos = vDataConnections[0].data;
 				if(sqrlength(vDataConnections[0].data) < 2.0f) // its normalized
 					prevtrgpos = mid + vDataConnections[0].data * 10.0f;
 			}
 
 		}
-		glm::vec2 posdif = body[1].position - body[0].position;
+		glm::vec2 posdif = ballPosition[body[1]] - ballPosition[body[0]];
 
 		glm::vec2 norm = Normalize(posdif);
 
-		glm::vec2 Difference = posdif - norm * body[0].r * 3.0f;
+		glm::vec2 Difference = posdif - norm * PARTSIZE * 3.0f;
 
 
 
-		body[0].position += Difference * 0.5f;
-		body[1].position += -Difference * 0.5f;
+		ballPosition[body[0]] += Difference * 0.5f;
+		ballPosition[body[1]] += -Difference * 0.5f;
 
-		glm::vec2  velbuf = body[0].velocity;
+		glm::vec2  velbuf = ballVelocity[body[0]];
 
-		body[1].velocity -= DOT(body[1].velocity - velbuf, norm) * norm;
+		ballVelocity[body[1]]-= DOT(ballVelocity[body[1]]- velbuf, norm) * norm;
 
-		Strut(&body[0], &body[2], body[0].r * 2.0f);
+		Strut(body[0], body[2], PARTSIZE * 2.0f);
 
 
-		body[0].Process(dt);
-		body[1].Process(dt);
-		body[2].Process(dt);
-		body[1].Force = { 0.0f,0.0f };
-		body[0].Force = { 0.0f,0.0f };
-		body[2].Force = { 0.0f,0.0f };
+		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+		ballPosition[body[1]] += ballVelocity[body[1]] * dt;
+		ballPosition[body[2]] += ballVelocity[body[2]] * dt;
 
-		float change = ((body[0].temperature + body[2].temperature)*0.5f- body[1].temperature);
+		ballVelocity[body[0]] += ballForce[body[0]] * dt;
+		ballVelocity[body[1]] += ballForce[body[1]] * dt;
+		ballVelocity[body[2]] += ballForce[body[2]] * dt;
 
-		body[0].temperature -= change*0.5f;
-		body[2].temperature -= change*0.5f;
-		body[1].temperature += change;
+
+		ballForce[body[1]] = { 0.0f,0.0f };
+		ballForce[body[0]] = { 0.0f,0.0f };
+		ballForce[body[2]] = { 0.0f,0.0f };
+
+		float change = ((ballTemp[body[0]]+ ballTemp[body[2]])*0.5f- ballTemp[body[1]]);
+
+		ballTemp[body[0]]-= change*0.5f;
+		ballTemp[body[2]]-= change*0.5f;
+		ballTemp[body[1]]+= change;
 	}
 	void Process(float dt) override
 	{
@@ -203,36 +197,36 @@ public:
 
 	void Shoot()
 	{
-		if (body[1].temperature < shutdownTemp)
+		if (ballTemp[body[1]] < shutdownTemp)
 		{
 			t= shootspeed;
 
-			glm::vec2 dir = Normalize(body[1].position - body[0].position);
+			glm::vec2 dir = Normalize(ballPosition[body[1]]- ballPosition[body[0]]);
 
 			for (int i = 0; i < 15; i++)
-				GunShotPE.Spawn(body[1].position + dir * body[0].r * -1.0f + dir * (rand() % 1000 * 0.002f * body[0].r), dir * 500.0f * 0.025f, 1);
+				GunShotPE.Spawn(ballPosition[body[1]]+ dir * PARTSIZE * -1.0f + dir * (rand() % 1000 * 0.002f * PARTSIZE), dir * 500.0f * 0.025f, 1);
 
 			for (int i = 0; i < 10; i++)
-				GunShotPE.Spawn(body[1].position + dir * body[0].r * -0.9f + Rotate(dir * (rand() % 1000 * 0.0015f * body[0].r), -pi * 0.7f), Rotate(dir * 500.0f, -pi * 0.7f) * 0.025f, 1);
+				GunShotPE.Spawn(ballPosition[body[1]]+ dir * PARTSIZE * -0.9f + Rotate(dir * (rand() % 1000 * 0.0015f * PARTSIZE), -pi * 0.7f), Rotate(dir * 500.0f, -pi * 0.7f) * 0.025f, 1);
 			for (int i = 0; i < 10; i++)
-				GunShotPE.Spawn(body[1].position + dir * body[0].r * -0.8f + Rotate(dir * (rand() % 1000 * 0.0015f * body[0].r), pi * 0.7f), Rotate(dir * 500.0f, pi * 0.7f) * 0.025f, 1);
+				GunShotPE.Spawn(ballPosition[body[1]]+ dir * PARTSIZE * -0.8f + Rotate(dir * (rand() % 1000 * 0.0015f * PARTSIZE), pi * 0.7f), Rotate(dir * 500.0f, pi * 0.7f) * 0.025f, 1);
 			
-			SpawnBullet(body[1].position, bulletSpeed * Normalize(body[1].position - body[0].position), dmg, body[1].r * 0.5f, BulletHeat, recoil, id);
+			SpawnBullet(ballPosition[body[1]], bulletSpeed * Normalize(ballPosition[body[1]]- ballPosition[body[0]]), dmg, PARTSIZE * 0.5f, BulletHeat, recoil, id);
 
 
 
-			body[1].temperature += HeatPerShot;
+			ballTemp[body[1]] += HeatPerShot;
 			playsound(GunSound,
-			 body[1].position,
+				ballPosition[body[1]],
 			 freq <= 0.001f ? 0.0f : 1.0f,
 			 (1.0f + rand() % 10 * 0.04f - 0.2f) * freq,
-			  body[0].velocity);
+			  ballVelocity[body[0]]);
 
 
-			ScreenShake += body[1].r * bulletSpeed * 0.000001f;
-			ChromaticAbberation += body[1].r * bulletSpeed * 0.000001f;
+			ScreenShake += PARTSIZE * 0.2f * bulletSpeed * 0.000001f;
+			ChromaticAbberation += PARTSIZE * 0.2f * bulletSpeed * 0.000001f;
 
-			body[0].Force -= recoil * Normalize(body[1].position - body[0].position) * 2000.0f;
+			ballForce[body[0]] -= recoil * Normalize(ballPosition[body[1]] - ballPosition[body[0]]) * 2000.0f;
 
 			//body[1].Force -= recoil * Normalize(body[1].position - body[0].position) * 1000.0f;
 		}
@@ -242,12 +236,12 @@ public:
 	{
 		//DrawLine(body[0].position, body[1].position, body[1].r, Base.color, true, CubeNormalMapTexture, Z_Index+1);
 		
-		glm::vec2 mid = (body[1].position + body[0].position) * 0.5f;
+		glm::vec2 mid = (ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f;
 		//GunTexture
-		DrawTexturedQuad(mid, glm::vec2(0.5f * body[1].r, 2.0f * body[1].r), GunTexture, get_angle_between_points(body[0].position,mid), color, Z_Index+2, GunNormalMap);
+		DrawTexturedQuad(mid, glm::vec2(0.5f * PARTSIZE, 2.0f * PARTSIZE), GunTexture, get_angle_between_points(ballPosition[body[0]], mid), color, Z_Index + 2, GunNormalMap);
 		//DrawTexturedQuad(body[0].position, glm::vec2(body[0].r), GunBaseTexture, 0.0f, color, Z_Index+1, GunBaseNormalMap);
-		mid = (body[2].position + body[0].position) * 0.5f; 
-		DrawTexturedQuad(mid, glm::vec2(1.0f * body[2].r, 2.0f * body[2].r), GunBaseTexture, get_angle_between_points(body[0].position, mid), color, Z_Index, GunBaseNormalMap);
+		mid = (ballPosition[body[2]] + ballPosition[body[0]]) * 0.5f;
+		DrawTexturedQuad(mid, glm::vec2(1.0f * PARTSIZE, 2.0f * PARTSIZE), GunBaseTexture, get_angle_between_points(ballPosition[body[0]], mid), color, Z_Index, GunBaseNormalMap);
 
 	}
 
@@ -298,33 +292,23 @@ public:
 		Name = "LaserGun";
 		CreateBody(5, 1, 0, 1);
 		float ang = 0.25f * pi;
-		body[0].position = position + Rotate({0.0f,1.0f}, ang);
-		body[0].r = PARTSIZE;
-		body[0].mass = 1.0f;
+		ballPosition[body[0]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[2].position = position + Rotate({0.0f,1.0f}, ang);
-		body[2].r = PARTSIZE;
-		body[2].mass = 1.0f;
+		ballPosition[body[2]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[3].position = position + Rotate({0.0f,1.0f}, ang);
-		body[3].r = PARTSIZE;
-		body[3].mass = 1.0f;
+		ballPosition[body[3]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[4].position = position + Rotate({0.0f,1.0f}, ang);
-		body[4].r = PARTSIZE;
-		body[4].mass = 1.0f;
+		ballPosition[body[4]] = position + Rotate({ 0.0f,1.0f }, ang);
 
-		body[1].position = position + glm::vec2(0.0f,1.0f) * 3.0f;
-		body[1].r =  PARTSIZE * 0.75f;
-		body[1].mass = 0.75f;
+		ballPosition[body[1]] = position + glm::vec2(0.0f, 1.0f) * 3.0f;
 
-		diaglength = sqrt(body[0].r * 2.0f * body[0].r * 2.0f + body[0].r * 2.0f * body[0].r * 2.0f);
+		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
 		deactivated = true;
-		lsr = new Laser(body[1].position, body[1].position - body[0].position,150,175);
+		lsr = new Laser(ballPosition[body[1]], ballPosition[body[1]] - ballPosition[body[0]],150,175);
 		lsr->inf = true;
 
 		lsr->time = 0;
@@ -334,7 +318,7 @@ public:
 		lsr->body.Heat = 0;
 		lsr->body.recoil = 0;
 		lsr->body.singleHit = false;
-		lsr->fraction = body[0].id;
+		lsr->fraction = ballID[body[0]];
 
 
 		Health = PartsData.GetPropertyAsFloat("LaserGun", "Health");
@@ -357,33 +341,27 @@ public:
 	}
 	void Create(glm::vec2 position, glm::vec2 direction, float size, float mass = 1.0f) override
 	{
-		float ang = 0.25f*pi;
-		body[0].position = position + Rotate(direction, ang);
-		body[0].r = size;
-		body[0].mass = mass ;
-
-		ang +=pi*0.5;
-		body[2].position = position + Rotate(direction, ang);
-		body[2].r = size;
-		body[2].mass = mass;
+		float ang = 0.25f * pi;
+		ballPosition[body[0]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[3].position = position + Rotate(direction, ang);
-		body[3].r = size;
-		body[3].mass = mass;
+		ballPosition[body[2]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[4].position = position + Rotate(direction, ang);
-		body[4].r = size;
-		body[4].mass = mass;
+		ballPosition[body[3]] = position + Rotate({ 0.0f,1.0f }, ang);
 
-		diaglength = sqrt(body[0].r * 2.0f * body[0].r * 2.0f + body[0].r * 2.0f * body[0].r * 2.0f);
+		ang += pi * 0.5;
+		ballPosition[body[4]] = position + Rotate({ 0.0f,1.0f }, ang);
+
+		ballPosition[body[1]] = position + glm::vec2(0.0f, 1.0f) * 3.0f;
+
+		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
+
+		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
 		deactivated = true;
-		body[1].position = position + direction*3.0f;
-		body[1].r = size*0.75f;
-		body[1].mass = mass * 0.2f;
-		lsr = new Laser(body[1].position, body[1].position - body[0].position,150,175);
+		ballPosition[body[1]] = position + direction*3.0f;
+		lsr = new Laser(ballPosition[body[1]], ballPosition[body[1]]- ballPosition[body[0]],150,175);
 		lsr->inf = true;
 
 		lsr->time = 0;
@@ -393,7 +371,7 @@ public:
 		lsr->body.Heat = 0;
 		lsr->body.recoil = 0;
 		lsr->body.singleHit = false;
-		lsr->fraction = body[0].id;
+		lsr->fraction = ballID[body[0]];
 
 		Cost.Matter = 50;
 
@@ -427,11 +405,6 @@ public:
 
 		ProcessConnections();
 		ProcessBody(dt);
-		body[0].color = color;
-		body[1].color = color;
-		body[2].color = color;
-		body[3].color = color;
-		body[4].color = color;
 		
 		if (!debris)
 		{
@@ -442,15 +415,14 @@ public:
 			lsr->body.Heat = t * HeatPerShot * dt;
 			lsr->body.recoil = t * recoil * dt;
 			lsr->body.body.r = 2.0f;
-			ChromaticAbberation += body[1].r * recoil * 0.00001f * t;
-			glm::vec2 rec = t * recoil * Normalize(body[1].position - body[0].position) * 1000.1f * dt * 0.25f;
+			ChromaticAbberation += PARTSIZE * recoil * 0.00001f * t;
+			glm::vec2 rec = t * recoil * Normalize(ballPosition[body[1]]- ballPosition[body[0]]) * 1000.1f * dt * 0.25f;
 
-			body[0].Force -= rec;
-			body[2].Force -= rec;
-			body[3].Force -= rec;
-			body[4].Force -= rec;
-
-			body[1].Force -= t * recoil * Normalize(body[1].position - body[0].position) * 1000.1f * dt;
+			ballForce[body[0]] -= rec;
+			ballForce[body[2]] -= rec;
+			ballForce[body[3]] -= rec;
+			ballForce[body[4]] -= rec;
+			ballForce[body[1]] -= t * recoil * Normalize(ballPosition[body[1]]- ballPosition[body[0]]) * 1000.1f * dt;
 
 
 
@@ -461,69 +433,76 @@ public:
 				targetrotpoint = vDataConnections[0].data;
 				if(sqrlength(targetrotpoint) < 2.0f) // its normalized
 					targetrotpoint = mid + targetrotpoint;
-				glm::vec2 dif = body[1].position - mid;
+				glm::vec2 dif = ballPosition[body[1]]- mid;
 				glm::vec2 trgvec = targetrotpoint - mid;
 				glm::vec2 rotvec = Normalize(glm::vec2(-dif.y, dif.x));
 
 				float D = length(trgvec);
 				trgvec = trgvec / D;
-				body[1].velocity -= dt * RotationalFriction * DOT(body[1].velocity - body[0].velocity, rotvec) * rotvec;
+				ballVelocity[body[1]]-= dt * RotationalFriction * DOT(ballVelocity[body[1]]- ballVelocity[body[0]], rotvec) * rotvec;
 
-				body[1].Force += speed * rotvec * DOT(rotvec, trgvec);
+				ballForce[body[1]] += speed * rotvec * DOT(rotvec, trgvec);
 			}
 
 		}
-		mid = (body[0].position + body[2].position + body[3].position + body[4].position) * 0.25f;
+		mid = (ballPosition[body[0]]+ ballPosition[body[2]]+ ballPosition[body[3]]+ ballPosition[body[4]]) * 0.25f;
 
-		glm::vec2 posdif = body[1].position - mid;
+		glm::vec2 posdif = ballPosition[body[1]]- mid;
 
 		glm::vec2 norm = Normalize(posdif);
 
 		lsr->RayCast.direction = norm;
-		lsr->RayCast.position = body[1].position;
+		lsr->RayCast.position = ballPosition[body[1]];
 
-		glm::vec2 Difference = posdif - norm * body[0].r * 3.0f;
-
-
-
-		body[0].position += Difference * 0.5f * 0.25f;
-		body[2].position += Difference * 0.5f * 0.25f;
-		body[3].position += Difference * 0.5f * 0.25f;
-		body[4].position += Difference * 0.5f * 0.25f;
-		body[1].position += -Difference * 0.5f;
-
-		glm::vec2  velbuf = body[0].velocity;
-
-		body[1].velocity -= DOT(body[1].velocity - velbuf, norm) * norm;
-
-		body[0].Process(dt);
-		body[1].Process(dt);
-		body[2].Process(dt);
-		body[3].Process(dt);
-		body[4].Process(dt);
-
-		body[0].Force = { 0.0f,0.0f };
-		body[1].Force = { 0.0f,0.0f };
-		body[2].Force = { 0.0f,0.0f };
-		body[3].Force = { 0.0f,0.0f };
-		body[4].Force = { 0.0f,0.0f };
+		glm::vec2 Difference = posdif - norm * PARTSIZE * 3.0f;
 
 
-		Strut(&body[0], &body[2], body[0].r*2.0f);
-		Strut(&body[2], &body[3], body[0].r*2.0f);
-		Strut(&body[3], &body[4], body[0].r*2.0f);
-		Strut(&body[0], &body[4], body[0].r*2.0f);
 
-		Strut(&body[0], &body[3], diaglength);
-		Strut(&body[4], &body[2], diaglength);
+		ballPosition[body[0]]+= Difference * 0.5f * 0.25f;
+		ballPosition[body[2]]+= Difference * 0.5f * 0.25f;
+		ballPosition[body[3]]+= Difference * 0.5f * 0.25f;
+		ballPosition[body[4]]+= Difference * 0.5f * 0.25f;
+		ballPosition[body[1]]+= -Difference * 0.5f;
 
-		float change = ((body[0].temperature+ body[2].temperature + body[3].temperature + body[4].temperature)*0.25f - body[1].temperature);
+		glm::vec2  velbuf = ballVelocity[body[0]];
 
-		body[0].temperature -= change * 0.25f;
-		body[2].temperature -= change * 0.25f;
-		body[3].temperature -= change * 0.25f;
-		body[4].temperature -= change * 0.25f;
-		body[1].temperature += change;
+		ballVelocity[body[1]] -= DOT(ballVelocity[body[1]]- velbuf, norm) * norm;
+
+
+		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+		ballPosition[body[1]] += ballVelocity[body[1]] * dt;
+		ballPosition[body[2]] += ballVelocity[body[2]] * dt;
+		ballPosition[body[3]] += ballVelocity[body[3]] * dt;
+		ballPosition[body[4]] += ballVelocity[body[4]] * dt;
+
+		ballVelocity[body[0]] += ballForce[body[0]] * dt;
+		ballVelocity[body[1]] += ballForce[body[1]] * dt;
+		ballVelocity[body[2]] += ballForce[body[2]] * dt;
+		ballVelocity[body[3]] += ballForce[body[3]] * dt;
+		ballVelocity[body[4]] += ballForce[body[4]] * dt;
+
+		ballForce[body[0]] = { 0.0f,0.0f };
+		ballForce[body[1]] = { 0.0f,0.0f };
+		ballForce[body[2]] = { 0.0f,0.0f };
+		ballForce[body[3]] = { 0.0f,0.0f };
+		ballForce[body[4]] = { 0.0f,0.0f };
+
+
+		Strut(body[0], body[2], PARTSIZE*2.0f);
+		Strut(body[2], body[3], PARTSIZE*2.0f);
+		Strut(body[3], body[4], PARTSIZE*2.0f);
+		Strut(body[0], body[4], PARTSIZE*2.0f);
+
+		Strut(body[0], body[3], diaglength);
+		Strut(body[4], body[2], diaglength);
+
+		float change = ((ballTemp[body[0]]+ ballTemp[body[2]]+ ballTemp[body[3]]+ ballTemp[body[4]])*0.25f - ballTemp[body[1]]);
+
+		ballTemp[body[0]]-= change * 0.25f;
+		ballTemp[body[2]]-= change * 0.25f;
+		ballTemp[body[3]]-= change * 0.25f;
+		ballTemp[body[4]]-= change * 0.25f;
+		ballTemp[body[1]]+= change;
 
 	}
 	void Process(float dt) override
@@ -536,7 +515,7 @@ public:
 			shot = bDataConnections[0].data && bDataConnections[0].connected;
 			targetrotpoint = vDataConnections[0].data;
 
-			lsr->fraction = body[0].id;
+			lsr->fraction = ballID[body[0]];
 
 
 			lsr->body.id = id;
@@ -548,7 +527,7 @@ public:
 
 
 
-			if (shot && body[1].temperature < shutdownTemp)
+			if (shot && ballTemp[body[1]] < shutdownTemp)
 				t += dt;
 			else
 				t -= dt;
@@ -560,11 +539,11 @@ public:
 				t = 0.0f;
 
 			if (t > 0.0f)
-				playsound(LaserGunSound,body[1].position,t * (freq <= 0.0001f ? 0.0f : 1.0f),t * freq,body[0].velocity);
+				playsound(LaserGunSound,ballPosition[body[1]],t * (freq <= 0.0001f ? 0.0f : 1.0f),t * freq,ballVelocity[body[0]]);
 			
-			body[1].temperature += t * HeatPerShot * dt;
+			ballTemp[body[1]] += t * HeatPerShot * dt;
 
-			ScreenShake += body[1].r * recoil * 0.000021f * t;
+			ScreenShake += PARTSIZE * recoil * 0.000021f * t;
 
 
 
@@ -583,9 +562,9 @@ public:
 	{
 
 
-		mid = (body[0].position + body[2].position + body[3].position + body[4].position) * 0.25f;
-		DrawTexturedQuad(mid, glm::vec2(0.5f * body[1].r, 4.0f * body[1].r), LaserGunTexture, get_angle_between_points(body[1].position, mid), color, Z_Index + 2, LaserGunNormalMap);
-		DrawTexturedQuad(mid, glm::vec2(body[0].r*2.0f), GunBaseTexture, get_angle_between_points(body[0].position,mid) - pi*0.25f, color, Z_Index + 1, GunBaseNormalMap);
+		mid = (ballPosition[body[0]] + ballPosition[body[2]] + ballPosition[body[3]] + ballPosition[body[4]]) * 0.25f;
+		DrawTexturedQuad(mid, glm::vec2(0.5f * PARTSIZE * 0.2f, 4.0f * PARTSIZE * 0.2f), LaserGunTexture, get_angle_between_points(ballPosition[body[1]], mid), color, Z_Index + 2, LaserGunNormalMap);
+		DrawTexturedQuad(mid, glm::vec2(PARTSIZE * 2.0f), GunBaseTexture, get_angle_between_points(ballPosition[body[0]],mid) - pi*0.25f, color, Z_Index + 1, GunBaseNormalMap);
 	}
 
 	void DeletePart() override
@@ -643,22 +622,18 @@ public:
 		bulletSize = PartsData.GetPropertyAsFloat("RocketLauncher", "BulletSize");
 
 		CreateBody(2, 1, 0, 1);
-		body[0].position = position;
-		body[1].position = position + glm::vec2(0.0f,1.0f) * 3.0f;
-		body[0].r = PARTSIZE;
-		body[1].r = PARTSIZE;
+		ballPosition[body[0]] = position;
+		ballPosition[body[1]] = position + glm::vec2(0.0f, 1.0f) * 3.0f;
 		deactivated = true;
 
-		body[0].mass = 1.0f;
-		body[1].mass = 1.0f;
 		ProcessConnections();
 
 
 		HoldingRocket.DS.Damage = dmg;
 		HoldingRocket.DS.singleHit = true;
 
-		HoldingRocket.body[0].position = body[1].position;
-		HoldingRocket.body[1].position = body[1].position + dir * 3.0f * PARTSIZE * 0.5f;
+		HoldingRocket.body[0].position = ballPosition[body[1]];
+		HoldingRocket.body[1].position = ballPosition[body[1]] + dir * 3.0f * PARTSIZE * 0.5f;
 		HoldingRocket.body[0].r = PARTSIZE * 0.4f;
 		HoldingRocket.body[1].r = PARTSIZE * 0.4f;
 		HoldingRocket.fired = false;
@@ -685,16 +660,12 @@ public:
 		bulletSize = PartsData.GetPropertyAsFloat("RocketLauncher", "BulletSize");
 
 
-		body[0].position = position;
-		body[1].position = position + direction * 3.0f;
-		body[0].r = size;
-		body[1].r = size;
+		ballPosition[body[0]] = position;
+		ballPosition[body[1]] = position + direction * 3.0f;
 		deactivated = true;
 
-		body[0].mass = mass;
-		body[1].mass = mass;
 		ProcessConnections();
-		
+
 
 		Cost.Matter = 75;
 
@@ -703,8 +674,8 @@ public:
 		HoldingRocket.DS.Damage = dmg;
 		HoldingRocket.DS.singleHit = true;
 
-		HoldingRocket.body[0].position = body[1].position;
-		HoldingRocket.body[1].position = body[1].position + dir * 3.0f * size * 0.5f;
+		HoldingRocket.body[0].position = ballPosition[body[1]];
+		HoldingRocket.body[1].position = ballPosition[body[1]] + dir * 3.0f * size * 0.5f;
 		HoldingRocket.body[0].r = size * 0.4f;
 		HoldingRocket.body[1].r = size * 0.4f;
 		HoldingRocket.fired = false;
@@ -729,13 +700,11 @@ public:
 	{
 		ProcessConnections();
 		ProcessBody(dt);
-		body[0].color = color;
-		body[1].color = color;
-		dir = Normalize(body[1].position - body[0].position);
+		dir = Normalize(ballPosition[body[1]] - ballPosition[body[0]]);
 
-		
-		HoldingRocket.body[1].position = body[1].position ;
-		HoldingRocket.body[0].position = body[1].position + dir * 2.0f * HoldingRocket.body[1].r;
+
+		HoldingRocket.body[1].position = ballPosition[body[1]];
+		HoldingRocket.body[0].position = ballPosition[body[1]] + dir * 2.0f * HoldingRocket.body[1].r;
 		if (!debris)
 		{
 			if (t <= 0)
@@ -763,15 +732,20 @@ public:
 					iter++;
 			}
 		}
-		Strut(&body[0], &body[1], body[0].r * 2.0f);
-		body[0].Process(dt);
-		body[1].Process(dt);
-		body[1].Force = { 0.0f,0.0f };
-		body[0].Force = { 0.0f,0.0f };
-		float change = (body[0].temperature - body[1].temperature);
+		Strut(body[0], body[1], PARTSIZE * 2.0f);
+		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+		ballPosition[body[1]] += ballVelocity[body[1]] * dt;
 
-		body[0].temperature -= change;
-		body[1].temperature += change;
+		ballVelocity[body[0]] += ballForce[body[0]] * dt;
+		ballVelocity[body[1]] += ballForce[body[1]] * dt;
+
+		ballForce[body[0]] = { 0.0f,0.0f };
+		ballForce[body[1]] = { 0.0f,0.0f };
+
+		float change = (ballTemp[body[0]] - ballTemp[body[1]]);
+
+		ballTemp[body[0]] -= change;
+		ballTemp[body[1]] += change;
 	}
 	void Process(float dt) override
 	{
@@ -815,15 +789,15 @@ public:
 
 
 		for (int i = 0; i < 15; i++)
-			GunShotPE.Spawn(body[1].position + dir * body[0].r * -1.0f + dir * (rand() % 1000 * 0.002f * body[0].r),
+			GunShotPE.Spawn(ballPosition[body[1]] + dir * PARTSIZE * -1.0f + dir * (rand() % 1000 * 0.002f * PARTSIZE),
 				dir * 500.0f * 0.025f, 1);
 
 		Rocket* R = new Rocket();
 
 		R->Init(HoldingRocket.body[0].position, HoldingRocket.dir, HoldingRocket.body[0].r, dmg, 10.0f);
 		R->fired = true;
-		R->body[0].velocity = dir * 100.0f + body[1].velocity;
-		R->body[1].velocity = dir * 100.0f + body[1].velocity;
+		R->body[0].velocity = dir * 100.0f + ballVelocity[body[1]];
+		R->body[1].velocity = dir * 100.0f + ballVelocity[body[1]];
 		R->ExplodionForce = ExplodionForce;
 		FiredRockets.push_back(R);
 		/*HoldingRocket.body[0].velocity = dir*1.0f;
@@ -837,12 +811,12 @@ public:
 		
 		//Position 
 		//Velocity 
-		playsound(GunSound,body[1].position,(1.0f + rand() % 10 * 0.04f - 0.2f) * freq,freq <= 0.001f ? 0.0f : 1.0f,body[0].velocity);
+		playsound(GunSound, ballPosition[body[1]], (1.0f + rand() % 10 * 0.04f - 0.2f) * freq, freq <= 0.001f ? 0.0f : 1.0f, ballVelocity[body[0]]);
 
-		ScreenShake += body[1].r * bulletSpeed * 0.000001f;
-		ChromaticAbberation += body[1].r * bulletSpeed * 0.000001f;
+		ScreenShake += PARTSIZE * bulletSpeed * 0.000001f;
+		ChromaticAbberation += PARTSIZE * bulletSpeed * 0.000001f;
 
-		body[0].Force -= recoil * Normalize(body[1].position - body[0].position) * 2000.0f;
+		ballForce[body[0]] -= recoil * Normalize(ballPosition[body[1]] - ballPosition[body[0]]) * 2000.0f;
 
 		//body[1].Force -= recoil * Normalize(body[1].position - body[0].position) * 1000.0f;
 
@@ -855,9 +829,9 @@ public:
 		{
 			FiredRockets[i]->Draw();
 		}
-		mid = (body[1].position + body[0].position) * 0.5f;
+		mid = (ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f;
 		//GunTexture
-		DrawTexturedQuad(mid, glm::vec2(1.0f * body[1].r, 2.0f * body[1].r), RocketLauncherTexture, get_angle_between_points(body[0].position, mid), color, Z_Index, RocketLauncherNormalMap);
+		DrawTexturedQuad(mid, glm::vec2(1.0f * PARTSIZE, 2.0f * PARTSIZE), RocketLauncherTexture, get_angle_between_points(ballPosition[body[0]], mid), color, Z_Index, RocketLauncherNormalMap);
 		//DrawTexturedQuad(mid, glm::vec2(1.0f * body[1].r, 2.0f * body[1].r), RocketEngineTexture, get_angle_between_points(body[0].position, mid), color, Z_Index, RocketEngineNormalMap);
 
 		//DrawCircle(body[0], glm::vec4(1.0f), true, BallNormalMapTexture, Z_Index);
@@ -928,32 +902,22 @@ public:
 
 		CreateBody(5, 1, 0, 1);
 		float ang = 0.25f * pi;
-		body[0].position = position + Rotate({0.0f,1.0f}, ang);
-		body[0].r = PARTSIZE;
-		body[0].mass = 1.0f;
+		ballPosition[body[0]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[2].position = position + Rotate({0.0f,1.0f}, ang);
-		body[2].r = PARTSIZE;
-		body[2].mass = 1.0f;
+		ballPosition[body[2]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[3].position = position + Rotate({0.0f,1.0f}, ang);
-		body[3].r = PARTSIZE;
-		body[3].mass = 1.0f;
+		ballPosition[body[3]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[4].position = position + Rotate({0.0f,1.0f}, ang);
-		body[4].r = PARTSIZE;
-		body[4].mass = 1.0f;
+		ballPosition[body[4]] = position + Rotate({ 0.0f,1.0f }, ang);
 
-		body[1].position = position + glm::vec2(0.0f,1.0f) * 3.0f;
-		body[1].r =  PARTSIZE * 0.75f;
-		body[1].mass = 0.75f;
+		ballPosition[body[1]] = position + glm::vec2(0.0f, 1.0f) * 3.0f;
+
+		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
 		deactivated = true;
-
-		diaglength = sqrt(body[0].r * 2.0f * body[0].r * 2.0f + body[0].r * 2.0f * body[0].r * 2.0f);
 		Cost.Matter = 75;
 
 		shutdownTemp = 15.0f;
@@ -977,32 +941,22 @@ public:
 		bulletSize = PartsData.GetPropertyAsFloat("MiniGun", "BulletSize");
 
 		float ang = 0.25f * pi;
-		body[0].position = position + Rotate(direction, ang);
-		body[0].r = size;
-		body[0].mass = mass;
+		ballPosition[body[0]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[2].position = position + Rotate(direction, ang);
-		body[2].r = size;
-		body[2].mass = mass;
+		ballPosition[body[2]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[3].position = position + Rotate(direction, ang);
-		body[3].r = size;
-		body[3].mass = mass;
+		ballPosition[body[3]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[4].position = position + Rotate(direction, ang);
-		body[4].r = size;
-		body[4].mass = mass;
+		ballPosition[body[4]] = position + Rotate({ 0.0f,1.0f }, ang);
 
-		body[1].position = position + direction * 3.0f;
-		body[1].r = size * 0.75;
-		body[1].mass = mass * 0.2f;
+		ballPosition[body[1]] = position + glm::vec2(0.0f, 1.0f) * 3.0f;
+
+		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
 		deactivated = true;
-
-		diaglength = sqrt(body[0].r * 2.0f * body[0].r * 2.0f + body[0].r * 2.0f * body[0].r * 2.0f);
 
 		shutdownTemp = 15.0f;
 		ProcessConnections();
@@ -1023,22 +977,17 @@ public:
 	{
 		ProcessConnections();
 		ProcessBody(dt);
-		body[0].color = color;
-		body[1].color = color;
-		body[2].color = color;
-		body[3].color = color;
-		body[4].color = color;
 		if(bDataConnections[0].connected)
 			shot = bDataConnections[0].data;
 		else
 			shot = false;
 
-		if (body[1].temperature >= shutdownTemp)
+		if (ballTemp[body[1]] >= shutdownTemp)
 			overheated = true;
-		if (body[1].temperature <= 0.25f)
+		if (ballTemp[body[1]] <= 0.25f)
 			overheated = false;
-		mid = (body[0].position + body[2].position + body[3].position + body[4].position) * 0.25f;
-		glm::vec2 avgvel = (body[0].velocity + body[2].velocity + body[3].velocity + body[4].velocity) * 0.25f;
+		mid = (ballPosition[body[0]] + ballPosition[body[2]] + ballPosition[body[3]] + ballPosition[body[4]]) * 0.25f;
+		glm::vec2 avgvel = (ballVelocity[body[0]] + ballVelocity[body[2]] + ballVelocity[body[3]] + ballVelocity[body[4]]) * 0.25f;
 		
 		if (!debris && !deactivated && !overheated)
 		{
@@ -1046,7 +995,7 @@ public:
 			if(sqrlength(targetrotpoint) < 2.0f) // its normalized
 				targetrotpoint = mid + targetrotpoint * 10.0f;
 
-			glm::vec2 dif = body[1].position - mid;
+			glm::vec2 dif = ballPosition[body[1]] - mid;
 			if(dt<0.0001f) // 10k fps probably unreachable with enough stability, shouldnt cause speed issues 
 				 dt = 0.0001f;
 			glm::vec2 trgvel = (targetrotpoint - prevtrgpos) * (1.0f/dt); // probably 
@@ -1074,9 +1023,9 @@ public:
 			if(D<1.0f)
 				D = 1.0f;
 			trgvec = trgvec / D;
-			body[1].velocity -= dt * RotationalFriction * DOT(body[1].velocity - body[0].velocity, rotvec) * rotvec;
+			ballVelocity[body[1]] -= dt * RotationalFriction * DOT(ballVelocity[body[1]] - ballVelocity[body[0]] , rotvec) * rotvec;
 
-			body[1].Force += speed * rotvec * DOT(rotvec, trgvec);
+			ballForce[body[1]] += speed * rotvec * DOT(rotvec, trgvec);
 			
 			prevtrgpos = vDataConnections[0].data;
 			if(sqrlength(vDataConnections[0].data) < 2.0f) // its normalized
@@ -1090,7 +1039,7 @@ public:
 			RotationSpeed = 0.0f;
 		while (BarrelRotation > pi * 2.0f)
 			BarrelRotation = 0.0f;
-		glm::vec2 posdif = body[1].position - mid;
+		glm::vec2 posdif = ballPosition[body[1]] - mid;
 
 		float l = length(posdif); 
 
@@ -1099,49 +1048,56 @@ public:
 		else 
 			dir = {0.0,1.0f};
 	
-		glm::vec2 Difference = posdif - dir * body[0].r * 3.0f;
+		glm::vec2 Difference = posdif - dir * PARTSIZE * 3.0f;
 
 
 
-		body[0].position += Difference * 0.125f;
-		body[2].position += Difference * 0.125f;
-		body[3].position += Difference * 0.125f;
-		body[4].position += Difference * 0.125f;
+		ballPosition[body[0]] += Difference * 0.125f;
+		ballPosition[body[2]] += Difference * 0.125f;
+		ballPosition[body[3]] += Difference * 0.125f;
+		ballPosition[body[4]] += Difference * 0.125f;
 
-		body[1].position += -Difference * 0.5f;
+		ballPosition[body[1]] += -Difference * 0.5f;
 
-		glm::vec2  velbuf = body[0].velocity;
+		glm::vec2  velbuf = ballVelocity[body[0]];
 
-		body[1].velocity -= DOT(body[1].velocity - velbuf, dir) * dir;
+		ballVelocity[body[1]] -= DOT(ballVelocity[body[1]] - velbuf, dir) * dir;
 
-		body[0].Process(dt);
-		body[1].Process(dt);
-		body[2].Process(dt);
-		body[3].Process(dt);
-		body[4].Process(dt);
+		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+		ballPosition[body[1]] += ballVelocity[body[1]] * dt;
+		ballPosition[body[2]] += ballVelocity[body[2]] * dt;
+		ballPosition[body[3]] += ballVelocity[body[3]] * dt;
+		ballPosition[body[4]] += ballVelocity[body[4]] * dt;
 
-		body[1].Force = { 0.0f,0.0f };
-		body[0].Force = { 0.0f,0.0f };
-		body[2].Force = { 0.0f,0.0f };
-		body[3].Force = { 0.0f,0.0f };
-		body[4].Force = { 0.0f,0.0f };
+		ballVelocity[body[0]] += ballForce[body[0]] * dt;
+		ballVelocity[body[1]] += ballForce[body[1]] * dt;
+		ballVelocity[body[2]] += ballForce[body[2]] * dt;
+		ballVelocity[body[3]] += ballForce[body[3]] * dt;
+		ballVelocity[body[4]] += ballForce[body[4]] * dt;
 
-		Strut(&body[0], &body[2], body[0].r * 2.0f);
-		Strut(&body[2], &body[3], body[0].r * 2.0f);
-		Strut(&body[3], &body[4], body[0].r * 2.0f);
-		Strut(&body[0], &body[4], body[0].r * 2.0f);
+		ballForce[body[0]] = { 0.0f,0.0f };
+		ballForce[body[1]] = { 0.0f,0.0f };
+		ballForce[body[2]] = { 0.0f,0.0f };
+		ballForce[body[3]] = { 0.0f,0.0f };
+		ballForce[body[4]] = { 0.0f,0.0f };
 
-		Strut(&body[0], &body[3], diaglength);
-		Strut(&body[4], &body[2], diaglength);
+
+		Strut(body[0], body[2], PARTSIZE * 2.0f);
+		Strut(body[2], body[3], PARTSIZE * 2.0f);
+		Strut(body[3], body[4], PARTSIZE * 2.0f);
+		Strut(body[0], body[4], PARTSIZE * 2.0f);
+
+		Strut(body[0], body[3], diaglength);
+		Strut(body[4], body[2], diaglength);
 
 	
-		float change = ((body[0].temperature + body[2].temperature + body[3].temperature + body[4].temperature) * 0.25f - body[1].temperature);
+		float change = ((ballTemp[body[0]]+ ballTemp[body[2]]+ ballTemp[body[3]]+ ballTemp[body[4]]) * 0.25f - ballTemp[body[1]]);
 
-		body[0].temperature -= change * 0.25f;
-		body[2].temperature -= change * 0.25f;
-		body[3].temperature -= change * 0.25f;
-		body[4].temperature -= change * 0.25f;
-		body[1].temperature += change;
+		ballTemp[body[0]]-= change * 0.25f;
+		ballTemp[body[2]]-= change * 0.25f;
+		ballTemp[body[3]]-= change * 0.25f;
+		ballTemp[body[4]]-= change * 0.25f;
+		ballTemp[body[1]]+= change;
 	}
 	void Process(float dt) override
 	{
@@ -1149,7 +1105,7 @@ public:
 		if (!debris && !deactivated && !overheated)
 		{
 			if (shot)
-				playsound(MiniGunSound,body[1].position,1.0f,freq + 0.25f + (((rand() % 100) * 0.01f) - 0.5f) * 0.5f + 0.02f*body[1].temperature,body[0].velocity);
+				playsound(MiniGunSound,ballPosition[body[1]],1.0f,freq + 0.25f + (((rand() % 100) * 0.01f) - 0.5f) * 0.5f + 0.02f*ballTemp[body[1]],ballVelocity[body[0]]);
 
 			t -= dt;
 			if (shot && t <= 0)
@@ -1167,32 +1123,32 @@ public:
 			t = shootspeed;
 			RotationSpeed = 20.0f;
 
-			dir = Normalize(body[1].position - mid);
-			glm::vec2 avgvel = (body[0].velocity + body[2].velocity + body[3].velocity + body[4].velocity) * 0.25f;
+			dir = Normalize(ballPosition[body[1]]- mid);
+			glm::vec2 avgvel = (ballVelocity[body[0]] + ballVelocity[body[2]] + ballVelocity[body[3]] + ballVelocity[body[4]] ) * 0.25f;
 
-			GunRoundPE.Spawn(mid + dir * body[0].r * 0.6f,
-				Rotate(dir * 500.0f, pi * -0.5f) * 0.025f + body[0].velocity, 1);
+			GunRoundPE.Spawn(mid + dir * PARTSIZE * 0.6f,
+				Rotate(dir * 500.0f, pi * -0.5f) * 0.025f + ballVelocity[body[0]] , 1);
 
-			GunShotPE.Spawn(body[1].position + dir * body[0].r * -1.0f + dir * (rand() % 1000 * 0.002f * body[0].r),
-				dir * 500.0f * 0.025f + body[0].velocity, 1);
+			GunShotPE.Spawn(ballPosition[body[1]]+ dir * PARTSIZE * -1.0f + dir * (rand() % 1000 * 0.002f * PARTSIZE),
+				dir * 500.0f * 0.025f + ballVelocity[body[0]] , 1);
 
 			for (int i = 0; i < 2; i++)
-				GunShotPE.Spawn(body[1].position + dir * body[0].r * -0.9f + Rotate(dir * (rand() % 1000 * 0.0015f * body[0].r), -pi * 0.7f),
-					Rotate(dir * 500.0f, -pi * 0.7f) * 0.025f + body[0].velocity, 1);
+				GunShotPE.Spawn(ballPosition[body[1]]+ dir * PARTSIZE * -0.9f + Rotate(dir * (rand() % 1000 * 0.0015f * PARTSIZE), -pi * 0.7f),
+					Rotate(dir * 500.0f, -pi * 0.7f) * 0.025f + ballVelocity[body[0]] , 1);
 			for (int i = 0; i < 2; i++)
-				GunShotPE.Spawn(body[1].position + dir * body[0].r * -0.8f + Rotate(dir * (rand() % 1000 * 0.0015f * body[0].r), pi * 0.7f),
-					Rotate(dir * 500.0f, pi * 0.7f) * 0.025f + body[0].velocity, 1);
-			SpawnBullet(body[1].position, bulletSpeed * Normalize(body[1].position - mid) + avgvel, dmg, body[1].r * 0.2f, BulletHeat, recoil * 10.0f, id);
+				GunShotPE.Spawn(ballPosition[body[1]]+ dir * PARTSIZE * -0.8f + Rotate(dir * (rand() % 1000 * 0.0015f * PARTSIZE), pi * 0.7f),
+					Rotate(dir * 500.0f, pi * 0.7f) * 0.025f + ballVelocity[body[0]] , 1);
+			SpawnBullet(ballPosition[body[1]], bulletSpeed * Normalize(ballPosition[body[1]]- mid) + avgvel, dmg, PARTSIZE * 0.2f, BulletHeat, recoil * 10.0f, id);
 
 
-			body[1].temperature += HeatPerShot;
+			ballTemp[body[1]] += HeatPerShot;
 			//PlaySound(&source, &GunSound, body[1].position, (1.0f + rand() % 10 * 0.04f - 0.2f) * freq, freq <= 0.001f ? 0.0f : 1.0f);
 
 
-			ScreenShake += body[1].r * bulletSpeed * 0.00001f;
-			ChromaticAbberation += body[1].r * bulletSpeed * 0.000075f;
+			ScreenShake += PARTSIZE * bulletSpeed * 0.00001f;
+			ChromaticAbberation += PARTSIZE * bulletSpeed * 0.000075f;
 
-			body[0].Force -= recoil * Normalize(body[1].position - mid) * 2000.0f;
+			ballForce[body[0]] -= recoil * Normalize(ballPosition[body[1]] - mid) * 2000.0f;
 
 			//body[1].Force -= recoil * Normalize(body[1].position - body[0].position) * 1000.0f;
 		}
@@ -1202,10 +1158,10 @@ public:
 	{
 		//DrawLine(body[0].position, body[1].position, body[1].r, Base.color, true, CubeNormalMapTexture, Z_Index+1);
 
-		glm::vec2 mid2 = (body[1].position + mid) * 0.5f;
+		glm::vec2 mid2 = (ballPosition[body[1]] + mid) * 0.5f;
 		//GunTexture
-		DrawTexturedQuad(mid - dir* body[2].r*2.0f, glm::vec2(1.5f * body[1].r, 4.0f * body[1].r), MiniGunTexture, get_angle_between_points(mid2, mid), color, Z_Index + 5, MiniGunNormalMap);
-		DrawTexturedQuad(mid, glm::vec2(body[0].r * 2.0f), GunBaseTexture, get_angle_between_points(body[0].position, body[3].position) + pi*0.25f, color, Z_Index + 1, GunBaseNormalMap,false);
+		DrawTexturedQuad(mid - dir* PARTSIZE*2.0f, glm::vec2(1.5f *PARTSIZE, 4.0f * PARTSIZE), MiniGunTexture, get_angle_between_points(mid2, mid), color, Z_Index + 5, MiniGunNormalMap);
+		DrawTexturedQuad(mid, glm::vec2(PARTSIZE * 2.0f), GunBaseTexture, get_angle_between_points(ballPosition[body[0]], ballPosition[body[3]]) + pi*0.25f, color, Z_Index + 1, GunBaseNormalMap,false);
 
 		for (int i = 0; i < 6; i++)
 		{
@@ -1228,7 +1184,7 @@ public:
 
 			;
 			z += 2;
-			DrawTexturedQuad(body[1].position + Rotate(dir, pi * 0.5f) * berrrelPos.x * body[1].r*0.6f, { body[1].r * 0.35f ,body[0].r * 3.8f }, PipeTexture, get_angle_between_points({ 0.0f,0.0f }, dir), color, z + Z_Index, PipeNormalMap);
+			DrawTexturedQuad(ballPosition[body[1]] + Rotate(dir, pi * 0.5f) * berrrelPos.x * PARTSIZE * 0.2f *0.6f, { PARTSIZE * 0.2f * 0.35f ,PARTSIZE * 3.8f }, PipeTexture, get_angle_between_points({ 0.0f,0.0f }, dir), color, z + Z_Index, PipeNormalMap);
 		}
 	}
 
@@ -1297,18 +1253,9 @@ public:
 		Power = PartsData.GetPropertyAsFloat("RocketEngine", "Power");
 
 		CreateBody(2,2);
-		body[0].r = PARTSIZE;
-		body[1].r = PARTSIZE;
-		body[0].position = position + Normalize({0.0f,1.0f}) * PARTSIZE;
-		body[1].position = position - Normalize({0.0f,1.0f}) * PARTSIZE;
+		ballPosition[body[0]] = position + Normalize({ 0.0f,1.0f }) * PARTSIZE;
+		ballPosition[body[1]] = position - Normalize({ 0.0f,1.0f }) * PARTSIZE;
 
-		body[1].mass = 1.0f;
-		body[0].mass= 1.0f;
-
-		body[0].roughness = 0.0f;
-		body[0].bounciness = 0.0f;
-		body[1].roughness = 0.0f;
-		body[1].bounciness = 0.0f;
 
 		Cost.Matter = 15;
 
@@ -1319,24 +1266,14 @@ public:
 	}
 	void Create(glm::vec2 position, glm::vec2 direction, float size, float mass = 1.0f) override
 	{
-		
+
 
 		Health = PartsData.GetPropertyAsFloat("RocketEngine", "Health");
 		HeatPerSecond = PartsData.GetPropertyAsFloat("RocketEngine", "HeatPerSecond");
 		Power = PartsData.GetPropertyAsFloat("RocketEngine", "Power");
 
-		body[0].r = size;
-		body[1].r = size;
-		body[0].position = position + Normalize(direction) * size;
-		body[1].position = position - Normalize(direction) * size;
-
-		body[1].mass = mass;
-		body[0].mass= mass;
-
-		body[0].roughness = 0.0f;
-		body[0].bounciness = 0.0f;
-		body[1].roughness = 0.0f;
-		body[1].bounciness = 0.0f;
+		ballPosition[body[0]] = position + Normalize(direction) * size;
+		ballPosition[body[1]] = position - Normalize(direction) * size;
 
 
 		ProcessConnections();
@@ -1352,15 +1289,19 @@ public:
 	{
 		ProcessConnections();
 		ProcessBody(dt);
-		body[0].color = color;
-		body[1].color = color;
-		Strut(&body[1], &body[0], body[0].r * 2.0f);
+		Strut(body[1], body[0],PARTSIZE * 2.0f);
 
-		
-		body[0].Process(dt);
-		body[1].Process(dt);
 
-		dir = Normalize(body[1].position - body[0].position);
+		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+		ballPosition[body[1]] += ballVelocity[body[1]] * dt;
+
+		ballVelocity[body[0]] += ballForce[body[0]] * dt;
+		ballVelocity[body[1]] += ballForce[body[1]] * dt;
+
+		ballForce[body[0]] = { 0.0f,0.0f };
+		ballForce[body[1]] = { 0.0f,0.0f };
+
+		dir = Normalize(ballPosition[body[1]] - ballPosition[body[0]]);
 
 		if ((bDataConnections[0].connected && bDataConnections[0].data))
 			throtle = 1.0f;
@@ -1369,31 +1310,31 @@ public:
 
 
 
-			body[1].Force = Force;
-			body[0].Force = Force;
+			ballForce[body[1]] = Force;
+			ballForce[body[0]] = Force;
 			OutForce = Power * -dir * throtle;
 
 			if (abs(throtle) > 0.0f && !shutdown && !deactivated)
 			{
 				
-				body[1].Force += Power * -dir * throtle;
-				body[0].Force += Power * -dir * throtle;
+				ballForce[body[1]] += Power * -dir * throtle;
+				ballForce[body[0]] += Power * -dir * throtle;
 
 
-				glm::vec2 dir = Normalize(body[1].position - body[0].position);
+				glm::vec2 dir = Normalize(ballPosition[body[1]] - ballPosition[body[0]]);
 
 
 				
-				body[0].temperature += abs(throtle) * HeatPerSecond * dt;
-				body[1].temperature += abs(throtle) * HeatPerSecond * dt;
+				ballTemp[body[0]]+= abs(throtle) * HeatPerSecond * dt;
+				ballTemp[body[1]]+= abs(throtle) * HeatPerSecond * dt;
 
 
 			}
 		}
-		float change = (body[0].temperature - body[1].temperature);
+		float change = (ballTemp[body[0]]- ballTemp[body[1]]);
 
-		body[0].temperature -= change;
-		body[1].temperature += change;
+		ballTemp[body[0]]-= change;
+		ballTemp[body[1]]+= change;
 
 	}
 	void Process(float dt) override
@@ -1413,10 +1354,10 @@ public:
 				{
 					throtle *= 2.5f;
 				}
-				playsound(RocketEngineSound,(body[1].position + body[0].position) * 0.5f,
+				playsound(RocketEngineSound,(ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f,
 				throtle * 0.25f * (freq <= 0.001f ? 0.0f : 1.0f),
 				freq,
-				body[0].velocity,
+				ballVelocity[body[0]],
 				false);
 				
 
@@ -1424,14 +1365,14 @@ public:
 			}
 			else
 			{
-				body[1].Force = { 0.0f,0.0f };
-				body[0].Force = {0.0f,0.0f};
+				ballForce[body[1]] = { 0.0f,0.0f };
+				ballForce[body[0]] = {0.0f,0.0f};
 			}
 		}
 		else
 		{
-			body[1].Force = { 0.0f,0.0f };
-			body[0].Force = {0.0f,0.0f};
+			ballForce[body[1]] = { 0.0f,0.0f };
+			ballForce[body[0]] = {0.0f,0.0f};
 
 		}
 	}
@@ -1453,16 +1394,16 @@ public:
 
 
 					for (int i = 0; i < 5; i++)
-						EngineSmoke.Spawn(body[1].position + dir * body[0].r * -1.0f - dir * (rand() % 1000 * 0.002f * body[0].r),
+						EngineSmoke.Spawn(ballPosition[body[1]] + dir * PARTSIZE * -1.0f - dir * (rand() % 1000 * 0.002f * PARTSIZE),
 							dir * 5000.0f * Particleforce * 0.025f, 1,
 							EngineSmoke.lifetime * abs(Particleforce) * (rand() % 1000 * 0.0005f + 0.5f));
 				}
 			}
-			glm::vec2 lp = (body[1].position + dir * body[0].r);
-			DrawLight(glm::vec3(lp.x,lp.y, EngineLightHeight), glm::vec2( 800 * abs(Particleforce)*0.025f), glm::vec4(4.0f, 0.8f, 0.4f, abs(0.5f + abs(Particleforce) + (rand() % 100 - 50) * 0.01f)), 0.0f);
+			glm::vec2 lp = (ballPosition[body[1]] + dir * PARTSIZE);
+			DrawLight(glm::vec3(lp.x, lp.y, EngineLightHeight), glm::vec2(800 * abs(Particleforce) * 0.025f), glm::vec4(4.0f, 0.8f, 0.4f, abs(0.5f + abs(Particleforce) + (rand() % 100 - 50) * 0.01f)), 0.0f);
 		}
-		glm::vec2 mid = (body[1].position + body[0].position) * 0.5f;
-		DrawTexturedQuad(mid,glm::vec2(1.0f * body[1].r,2.0f* body[1].r), RocketEngineTexture,  get_angle_between_points(mid, mid - dir),color, Z_Index,RocketEngineNormalMap);
+		glm::vec2 mid = (ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f;
+		DrawTexturedQuad(mid,glm::vec2(1.0f * PARTSIZE,2.0f* PARTSIZE), RocketEngineTexture,  get_angle_between_points(mid, mid - dir),color, Z_Index,RocketEngineNormalMap);
 
 		/*DrawLine(
 			body[0].position - dir * body[0].r,
@@ -1499,13 +1440,9 @@ public:
 		Health = PartsData.GetPropertyAsFloat("BallBody", "Health");
 		
 		CreateBody(1);
-		body[0].r = PARTSIZE;
-		body[0].position = position;
+		ballPosition[body[0]] = position;
 
-		body[0].mass = 1.0f;
 
-		body[0].roughness = 0.0f;
-		body[0].bounciness = 0.0f;
 
 		BodyIdsWithCollision.push_back(0);
 		OnPartCreate();
@@ -1515,13 +1452,8 @@ public:
 	{
 		Health = PartsData.GetPropertyAsFloat("BallBody", "Health");
 		
-		body[0].r = size;
-		body[0].position = position;
+		ballPosition[body[0]] = position;
 
-		body[0].mass = mass;
-
-		body[0].roughness = 0.0f;
-		body[0].bounciness = 0.0f;
 		Cost.Matter = 2;
 
 	}
@@ -1529,10 +1461,12 @@ public:
 	void MTProcess (float dt) override
 	{
 		ProcessBody(dt);
-		body[0].color = color;
-		body[0].Process(dt);
 
-		body[0].Force = glm::vec2(0.0f);
+		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+
+		ballVelocity[body[0]] += ballForce[body[0]] * dt;
+
+		ballForce[body[0]] = { 0.0f,0.0f };
 		
 	}
 
@@ -1542,7 +1476,7 @@ public:
 	void Draw() override
 	{
 		//DrawTexturedQuad(body[0].position, glm::vec2(body[0].r), BallBodyTexture, 0.0f, color, Z_Index + 1, BallBodyNormalMap);
-		DrawCircle(body[0].position, body[0].r, color, true, BallNormalMapTexture, Z_Index);
+		DrawCircle(ballPosition[body[0]], PARTSIZE, color, true, BallNormalMapTexture, Z_Index);
 
 	}
 
@@ -1575,19 +1509,12 @@ public:
 		Health = PartsData.GetPropertyAsFloat("Rotor", "Health");
 		
 		CreateBody(5,2);
-		for (int i = 0; i < 5; i++)
-		{
-			body[i].r = PARTSIZE;
-			body[i].mass = 1.0f;
 
-			body[i].roughness = 0.0f;
-			body[i].bounciness = 0.0f;
-		}
-		body[0].position = position;
-		body[1].position = position + glm::vec2(PARTSIZE * 2.0f, 0.0f);
-		body[2].position = position + glm::vec2(0.0f, PARTSIZE * -2.0f);
-		body[3].position = position + glm::vec2(PARTSIZE * -2.0f, 0.0f);
-		body[4].position = position + glm::vec2(0.0f, PARTSIZE * 2.0f);
+		ballPosition[body[0]] = position;
+		ballPosition[body[1]] = position + glm::vec2(PARTSIZE * 2.0f, 0.0f);
+		ballPosition[body[2]] = position + glm::vec2(0.0f, PARTSIZE * -2.0f);
+		ballPosition[body[3]] = position + glm::vec2(PARTSIZE * -2.0f, 0.0f);
+		ballPosition[body[4]] = position + glm::vec2(0.0f, PARTSIZE * 2.0f);
 		diaglen = sqrt(((PARTSIZE*2.0f) * (PARTSIZE*2.0f)) * 2.0f);
 		ProcessConnections();
 
@@ -1602,20 +1529,12 @@ public:
 	void Create(glm::vec2 position, glm::vec2 direction, float size, float mass = 1.0f) override
 	{
 		Health = PartsData.GetPropertyAsFloat("Rotor", "Health");
-		
-		for (int i = 0; i < 5; i++)
-		{
-			body[i].r = size;
-			body[i].mass = mass;
 
-			body[i].roughness = 0.0f;
-			body[i].bounciness = 0.0f;
-		}
-		body[0].position = position;
-		body[1].position = position + glm::vec2(size * 2.0f, 0.0f);
-		body[2].position = position + glm::vec2(0.0f, size * -2.0f);
-		body[3].position = position + glm::vec2(size * -2.0f, 0.0f);
-		body[4].position = position + glm::vec2(0.0f, size * 2.0f);
+		ballPosition[body[0]] = position;
+		ballPosition[body[1]] = position + glm::vec2(PARTSIZE * 2.0f, 0.0f);
+		ballPosition[body[2]] = position + glm::vec2(0.0f, PARTSIZE * -2.0f);
+		ballPosition[body[3]] = position + glm::vec2(PARTSIZE * -2.0f, 0.0f);
+		ballPosition[body[4]] = position + glm::vec2(0.0f, PARTSIZE * 2.0f);
 		diaglen = sqrt(((size*2.0f) * (size*2.0f)) * 2.0f);
 		ProcessConnections();
 
@@ -1633,8 +1552,8 @@ public:
 	{
 		ProcessBody(dt);
 		ProcessConnections();
-		mid = (body[0].position);
-		dir = (body[1].position - body[0].position);
+		mid = (ballPosition[body[0]]);
+		dir = (ballPosition[body[1]] - ballPosition[body[0]]);
 
 
 		float vel = 0.0f;
@@ -1646,27 +1565,39 @@ public:
 		if (!debris&&!BuildingMode)
 		for (int i = 1; i < 5; i++)
 		{
-			glm::vec2 force = Rotate(Normalize(body[i].position - body[0].position), pi * 0.5f) * Power*0.625f* vel;
-			body[i].Force += force;
-			body[0].Force -= force;
+			glm::vec2 force = Rotate(Normalize(ballPosition[body[i]] - ballPosition[body[0]]), pi * 0.5f) * Power*0.625f* vel;
+			ballForce[body[i]] += force;
+			ballForce[body[0]] -= force;
 
 		}
-		for (int i = 0; i < 5; i++)
-		{
-			body[i].color = color;
-			body[i].Process(dt);
-			body[i].Force = glm::vec2(0.0f);
-		}
+
+		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+		ballPosition[body[1]] += ballVelocity[body[1]] * dt;
+		ballPosition[body[2]] += ballVelocity[body[2]] * dt;
+		ballPosition[body[3]] += ballVelocity[body[3]] * dt;
+		ballPosition[body[4]] += ballVelocity[body[4]] * dt;
+
+		ballVelocity[body[0]] += ballForce[body[0]] * dt;
+		ballVelocity[body[1]] += ballForce[body[1]] * dt;
+		ballVelocity[body[2]] += ballForce[body[2]] * dt;
+		ballVelocity[body[3]] += ballForce[body[3]] * dt;
+		ballVelocity[body[4]] += ballForce[body[4]] * dt;
+
+		ballForce[body[0]] = { 0.0f,0.0f };
+		ballForce[body[1]] = { 0.0f,0.0f };
+		ballForce[body[2]] = { 0.0f,0.0f };
+		ballForce[body[3]] = { 0.0f,0.0f };
+		ballForce[body[4]] = { 0.0f,0.0f };
 		
-		Strut(&body[0], &body[1], body[0].r * 2.0f);
-		Strut(&body[0], &body[2], body[0].r * 2.0f);
-		Strut(&body[0], &body[3], body[0].r * 2.0f);
-		Strut(&body[0], &body[4], body[0].r * 2.0f);
+		Strut(body[0], body[1], PARTSIZE * 2.0f);
+		Strut(body[0], body[2], PARTSIZE * 2.0f);
+		Strut(body[0], body[3], PARTSIZE * 2.0f);
+		Strut(body[0], body[4], PARTSIZE * 2.0f);
 
-		Strut(&body[1], &body[2], diaglen);
-		Strut(&body[2], &body[3], diaglen);
-		Strut(&body[3], &body[4], diaglen);
-		Strut(&body[4], &body[1], diaglen);
+		Strut(body[1], body[2], diaglen);
+		Strut(body[2], body[3], diaglen);
+		Strut(body[3], body[4], diaglen);
+		Strut(body[4], body[1], diaglen);
 
 	}
 	void Process(float dt) override
@@ -1678,7 +1609,7 @@ public:
 	{
 		for (int i = 0; i < 5; i++)
 		{
-			DrawCircle(body[i], color, true, BallNormalMapTexture, Z_Index);
+			DrawCircle(ballPosition[body[i]],PARTSIZE, color, true, BallNormalMapTexture, Z_Index);
 		}
 	}
 
@@ -1720,12 +1651,8 @@ public:
 
 		
 		CreateBody(2);
-		body[0].position = position + Normalize({0.0f,1.0f}) * PARTSIZE;
-		body[1].position = position - Normalize({0.0f,1.0f}) * PARTSIZE;
-		body[0].r = PARTSIZE;
-		body[1].r = PARTSIZE;
-		body[1].mass = 1.0f;
-		body[0].mass = 1.0f;
+		ballPosition[body[0]]= position + Normalize({0.0f,1.0f}) * PARTSIZE;
+		ballPosition[body[1]]= position - Normalize({0.0f,1.0f}) * PARTSIZE;
 		
 		BodyIdsWithCollision.push_back(0);
 		BodyIdsWithCollision.push_back(1);
@@ -1742,12 +1669,8 @@ public:
 
 
 		
-		body[0].position = position + Normalize(direction) * size;
-		body[1].position = position - Normalize(direction) * size;
-		body[0].r = size;
-		body[1].r = size;
-		body[1].mass = mass;
-		body[0].mass = mass;
+		ballPosition[body[0]] = position + Normalize(direction) * size;
+		ballPosition[body[1]] = position - Normalize(direction) * size;
 
 		CoolingSpeed = coolingSpeed;
 		MinAutocooltemp = mintemp;
@@ -1760,20 +1683,25 @@ public:
 	{
 		delt = dt;
 		ProcessBody(dt);
-		body[0].color = color;
-		body[1].color = color;
 
-		mid = 0.5f * (body[0].position + body[1].position);
-		dir = (body[1].position - body[0].position);
-		body[0].Process(dt);
-		body[1].Process(dt);
-		body[1].Force = glm::vec2(0.0f);
-		body[0].Force = glm::vec2(0.0f);
-		Strut(&body[0], &body[1], body[0].r * 2.0f);
-		float change = (body[0].temperature - body[1].temperature);
+		mid = 0.5f * (ballPosition[body[0]] + ballPosition[body[1]]);
+		dir = (ballPosition[body[1]] - ballPosition[body[0]]);
 
-		body[0].temperature -= change;
-		body[1].temperature += change;
+
+		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+		ballPosition[body[1]] += ballVelocity[body[1]] * dt;
+
+		ballVelocity[body[0]] += ballForce[body[0]] * dt;
+		ballVelocity[body[1]] += ballForce[body[1]] * dt;
+
+		ballForce[body[0]] = { 0.0f,0.0f };
+		ballForce[body[1]] = { 0.0f,0.0f };
+
+		Strut(body[0], body[1], PARTSIZE * 2.0f);
+		float change = (ballTemp[body[0]] - ballTemp[body[1]]);
+
+		ballTemp[body[0]] -= change;
+		ballTemp[body[1]] += change;
 
 	}
 	float delt = 0.0f;
@@ -1784,14 +1712,14 @@ public:
 
 		if (!debris && !deactivated)
 		{
-			gain = ((body[1].temperature + body[0].temperature)*0.25f);
+			gain = ((ballTemp[body[1]] + ballTemp[body[0]])*0.25f);
 
 
 			CoolingSpeed = coolingSpeed;
 			MinAutocooltemp = mintemp;
 			if (gain > 0.1f)
 			{
-				playsound(SHHSound,(body[0].position + body[1].position) * 0.5f,gain * 0.03f,1.0f,body[0].velocity);
+				playsound(SHHSound,(ballPosition[body[0]] + ballPosition[body[1]]) * 0.5f,gain * 0.03f,1.0f,ballVelocity[body[0]]);
 			}
 
 			
@@ -1806,21 +1734,21 @@ public:
 
 	void Draw() override
 	{
-		glm::vec2 dif = body[0].position - body[1].position;
+		glm::vec2 dif = ballPosition[body[0]] - ballPosition[body[1]];
 		//DrawLine(body[0].position + dif*0.5f, body[1].position - dif * 0.5f, body[0].r, Base.color, true, CubeNormalMapTexture, Z_Index);
-		glm::vec2 mid = (body[1].position + body[0].position) * 0.5f;
-		float gain = ((body[1].temperature + body[0].temperature) * 0.25f);
+		glm::vec2 mid = (ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f;
+		float gain = ((ballTemp[body[1]] + ballTemp[body[0]]) * 0.25f);
 		if (gain > 0.0f)
 		{
 			t -= delt;
 			if (t <= 0.0f)
 			{
 				t = 0.016f;
-				Smoke.SpawnInCircle(body[0].position, body[0].r, 2 + gain);
-				Smoke.SpawnInCircle(body[1].position, body[1].r, 2);
+				Smoke.SpawnInCircle(ballPosition[body[0]], PARTSIZE, 2 + gain);
+				Smoke.SpawnInCircle(ballPosition[body[1]], PARTSIZE, 2);
 			}
 		}
-		DrawTexturedQuad(mid, glm::vec2(1.0f * body[1].r, 2.0f * body[1].r), RadiatorTexture, get_angle_between_points(mid, body[0].position), color, Z_Index, RadiatorNormalMap);
+		DrawTexturedQuad(mid, glm::vec2(1.0f * PARTSIZE, 2.0f * PARTSIZE), RadiatorTexture, get_angle_between_points(mid, ballPosition[body[0]] ), color, Z_Index, RadiatorNormalMap);
 
 	}
 
@@ -1849,12 +1777,9 @@ public:
 		
 
 		CreateBody(1);
-		body[0].r = 10;
-		body[0].position = position;
+		ballPosition[body[0]] = position;
 		this->position = position;
 
-		body[0].roughness = 0.0f;
-		body[0].bounciness = 0.0f;
 		BodyIdsWithCollision.push_back(0);
 		OnPartCreate();
 	}
@@ -1863,22 +1788,17 @@ public:
 
 		
 
-		body[0].r = 10;
-		body[0].position = position;
+		ballPosition[body[0]] = position;
 		this->position = position;
 
-		body[0].roughness = 0.0f;
-		body[0].bounciness = 0.0f;
 	}
 	
 	void MTProcess (float dt) override
 	{
 		ProcessBody(dt);
-		body[0].position = position;
-		body[0].velocity = { 0.0f,0.0f };
-		body[0].Force = { 0.0f,0.0f };
-		body[0].Process(dt);
-		body[0].color = color;
+		ballPosition[body[0]] = position;
+		ballVelocity[body[0]] = { 0.0f,0.0f };
+		ballForce[body[0]]= { 0.0f,0.0f };
 	
 	}
 
@@ -1888,7 +1808,7 @@ public:
 	}
 	void Draw() override
 	{
-		DrawCircle(body[0], color, true, BallNormalMapTexture, Z_Index);
+		DrawCircle(ballPosition[body[0]],PARTSIZE, color, true, BallNormalMapTexture, Z_Index);
 	}
 
 	
@@ -1914,13 +1834,8 @@ public:
 		Health = PartsData.GetPropertyAsFloat("AIAim", "Health");
 		
 		CreateBody(1,2,1,1);
-		body[0].r = PARTSIZE;
-		body[0].position = position;
+		ballPosition[body[0]] = position;
 
-		body[0].mass = 1.0f;
-
-		body[0].roughness = 0.0f;
-		body[0].bounciness = 0.0f;
 
 		BodyIdsWithCollision.push_back(0);
 		OnPartCreate();
@@ -1930,13 +1845,8 @@ public:
 	{
 		Health = PartsData.GetPropertyAsFloat("AIAim", "Health");
 		
-		body[0].r = size;
-		body[0].position = position;
+		ballPosition[body[0]]= position;
 
-		body[0].mass = mass;
-
-		body[0].roughness = 0.0f;
-		body[0].bounciness = 0.0f;
 		Cost.Matter = 5;
 
 	}
@@ -1958,10 +1868,15 @@ public:
 	{
 		ProcessConnections();
 		ProcessBody(dt);
-		body[0].color = color;
-		body[0].Process(dt);
-		mid = body[0].position;
-		body[0].Force = glm::vec2(0.0f);
+
+		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+
+		ballVelocity[body[0]] += ballForce[body[0]] * dt;
+
+		ballForce[body[0]] = { 0.0f,0.0f };
+
+		mid = ballPosition[body[0]];
+		ballForce[body[0]] = glm::vec2(0.0f);
 		glm::vec2 CalculateFrom = mid;
 		if(bDataConnections[1].connected && bDataConnections[1].data && player)
 			CalculateFrom = foregroundMousePosition;
@@ -2017,7 +1932,7 @@ public:
 	void Draw() override
 	{
 		//DrawTexturedQuad(body[0].position, glm::vec2(body[0].r), BallBodyTexture, 0.0f, color, Z_Index + 1, BallBodyNormalMap);
-		DrawCircle(body[0].position, body[0].r, color, true, BallNormalMapTexture, Z_Index);
+		DrawCircle(ballPosition[body[0]], PARTSIZE, color, true, BallNormalMapTexture, Z_Index);
 
 	}
 
@@ -2062,30 +1977,21 @@ public:
 		Power = PartsData.GetPropertyAsFloat("Glider", "Power");
 
 		CreateBody(4, 1, 0, 1);
+
 		float ang = 0.25f * pi;
-		body[0].position = position + Rotate({0.0f,1.0f}, ang);
-		body[0].r = PARTSIZE;
-		body[0].mass = 1.0f;
+		ballPosition[body[0]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[1].position = position + Rotate({0.0f,1.0f}, ang);
-		body[1].r = PARTSIZE;
-		body[1].mass = 1.0f;
+		ballPosition[body[1]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[2].position = position + Rotate({0.0f,1.0f}, ang);
-		body[2].r = PARTSIZE;
-		body[2].mass = 1.0f;
+		ballPosition[body[2]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[3].position = position + Rotate({0.0f,1.0f}, ang);
-		body[3].r = PARTSIZE;
-		body[3].mass = 1.0f;
+		ballPosition[body[3]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 
-		deactivated = true;
-
-		diaglength = sqrt(body[0].r * 2.0f * body[0].r * 2.0f + body[0].r * 2.0f * body[0].r * 2.0f);
+		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 		Cost.Matter = 25;
 
 		shutdownTemp = 15.0f;
@@ -2104,29 +2010,18 @@ public:
 		Power = PartsData.GetPropertyAsFloat("Glider", "Power");
 
 		float ang = 0.25f * pi;
-		body[0].position = position + Rotate({0.0f,1.0f}, ang);
-		body[0].r = PARTSIZE;
-		body[0].mass = 1.0f;
+		ballPosition[body[0]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[1].position = position + Rotate({0.0f,1.0f}, ang);
-		body[1].r = PARTSIZE;
-		body[1].mass = 1.0f;
+		ballPosition[body[1]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[2].position = position + Rotate({0.0f,1.0f}, ang);
-		body[2].r = PARTSIZE;
-		body[2].mass = 1.0f;
+		ballPosition[body[2]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
-		body[3].position = position + Rotate({0.0f,1.0f}, ang);
-		body[3].r = PARTSIZE;
-		body[3].mass = 1.0f;
+		ballPosition[body[3]] = position + Rotate({ 0.0f,1.0f }, ang);
 
-
-		deactivated = true;
-
-		diaglength = sqrt(body[0].r * 2.0f * body[0].r * 2.0f + body[0].r * 2.0f * body[0].r * 2.0f);
+		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
 		shutdownTemp = 15.0f;
 		ProcessConnections();
@@ -2145,9 +2040,9 @@ public:
 		ProcessConnections();
 		ProcessBody(dt);
 
-		glm::vec2 avgvel = (body[0].velocity + body[1].velocity + body[2].velocity + body[3].velocity) * 0.25f;
-		mid = (body[0].position + body[1].position + body[2].position + body[3].position) * 0.25f;
-		float avgtemp = (body[0].temperature + body[1].temperature + body[2].temperature + body[3].temperature)*0.25f;
+		glm::vec2 avgvel = (ballVelocity[body[0]] + ballVelocity[body[1]] + ballVelocity[body[2]] + ballVelocity[body[3]]) * 0.25f;
+		mid = (ballPosition[body[0]]+ ballPosition[body[1]]+ ballPosition[body[2]]+ ballPosition[body[3]]) * 0.25f;
+		float avgtemp = (ballTemp[body[0]]+ ballTemp[body[1]]+ ballTemp[body[2]]+ ballTemp[body[3]])*0.25f;
 		if ((bDataConnections[0].connected && bDataConnections[0].data))
 			for(int i=0;i<4;i++)
 				throtles[i] = 1.0f;
@@ -2170,24 +2065,24 @@ public:
 		if (!debris && !shutdown && vDataConnections[0].connected && !deactivated && sqrlength(avgvel) > 10.0f*10.0f && sqrlength(glidedir)>0.0f
 		)
 		{
-			body[0].Force = Force;
-			body[1].Force = Force;
-			body[2].Force = Force;
-			body[3].Force = Force;
+			ballForce[body[0]] = Force;
+			ballForce[body[1]] = Force;
+			ballForce[body[2]] = Force;
+			ballForce[body[3]] = Force;
 
 			glm::vec2 veldir = Normalize (avgvel);
 			glm::vec2 norm = {-veldir.y,veldir.x};
 			glm::vec2 trustvec = DOT(norm, -glidedir) * norm;
 			
 			float forcemult = 1.0f;
-			body[0].Force -= trustvec * Power * 1.0f * forcemult;
-			body[1].Force -= trustvec * Power * 1.0f * forcemult;
-			body[2].Force -= trustvec * Power * 1.0f * forcemult;
-			body[3].Force -= trustvec * Power * 1.0f * forcemult;
+			ballForce[body[0]] -= trustvec * Power * 1.0f * forcemult;
+			ballForce[body[1]] -= trustvec * Power * 1.0f * forcemult;
+			ballForce[body[2]] -= trustvec * Power * 1.0f * forcemult;
+			ballForce[body[3]] -= trustvec * Power * 1.0f * forcemult;
 
 			for(int i=0;i<4;i++)
 			{
-				glm::vec2 dir = Normalize (body[i].position - mid);
+				glm::vec2 dir = Normalize (ballPosition[body[i]] - mid);
 				
 				throtles[i] =  DOT(dir,trustvec) * 2.0f;
 				if(throtles[i] <0.0f)
@@ -2202,43 +2097,49 @@ public:
 
 		for(int i=0;i<4;i++)
 		{			
-			body[i].temperature += abs(throtles[i]) * HeatPerSecond * dt;
+			ballTemp[body[i]]+= abs(throtles[i]) * HeatPerSecond * dt;
 		}
-		float change = (body[0].temperature - body[1].temperature);
+		float change = (ballTemp[body[0]]- ballTemp[body[1]]);
 
-		body[0].temperature -= change* dt;
-		body[1].temperature += change* dt;
-		change = (body[1].temperature - body[2].temperature);
-		body[1].temperature -= change* dt;
-		body[2].temperature += change* dt;
-		change = (body[2].temperature - body[3].temperature);
-		body[2].temperature -= change* dt;
-		body[3].temperature += change* dt;
-		change = (body[3].temperature - body[0].temperature);
-		body[3].temperature -= change* dt;
-		body[0].temperature += change* dt;
+		ballTemp[body[0]]-= change* dt;
+		ballTemp[body[1]]+= change* dt;
+		change = (ballTemp[body[1]]- ballTemp[body[2]]);
+		ballTemp[body[1]]-= change* dt;
+		ballTemp[body[2]]+= change* dt;
+		change = (ballTemp[body[2]]- ballTemp[body[3]]);
+		ballTemp[body[2]]-= change* dt;
+		ballTemp[body[3]]+= change* dt;
+		change = (ballTemp[body[3]]- ballTemp[body[0]]);
+		ballTemp[body[3]]-= change* dt;
+		ballTemp[body[0]]+= change* dt;
 		
 
-		glm::vec2  velbuf = body[0].velocity;
+		glm::vec2  velbuf = ballVelocity[body[0]];
 
 
-		body[0].Process(dt);
-		body[1].Process(dt);
-		body[2].Process(dt);
-		body[3].Process(dt);
+		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
+		ballPosition[body[1]] += ballVelocity[body[1]] * dt;
+		ballPosition[body[2]] += ballVelocity[body[2]] * dt;
+		ballPosition[body[3]] += ballVelocity[body[3]] * dt;
 
-		body[1].Force = { 0.0f,0.0f };
-		body[0].Force = { 0.0f,0.0f };
-		body[2].Force = { 0.0f,0.0f };
-		body[3].Force = { 0.0f,0.0f };
+		ballVelocity[body[0]] += ballForce[body[0]] * dt;
+		ballVelocity[body[1]] += ballForce[body[1]] * dt;
+		ballVelocity[body[2]] += ballForce[body[2]] * dt;
+		ballVelocity[body[3]] += ballForce[body[3]] * dt;
 
-		Strut(&body[0], &body[1], body[0].r * 2.0f);
-		Strut(&body[1], &body[2], body[0].r * 2.0f);
-		Strut(&body[2], &body[3], body[0].r * 2.0f);
-		Strut(&body[0], &body[3], body[0].r * 2.0f);
+		ballForce[body[0]] = { 0.0f,0.0f };
+		ballForce[body[1]] = { 0.0f,0.0f };
+		ballForce[body[2]] = { 0.0f,0.0f };
+		ballForce[body[3]] = { 0.0f,0.0f };
 
-		Strut(&body[0], &body[2], diaglength);
-		Strut(&body[3], &body[1], diaglength);
+
+		Strut(body[0], body[1], PARTSIZE * 2.0f);
+		Strut(body[1], body[2], PARTSIZE * 2.0f);
+		Strut(body[2], body[3], PARTSIZE * 2.0f);
+		Strut(body[0], body[3], PARTSIZE * 2.0f);
+
+		Strut(body[0], body[2], diaglength);
+		Strut(body[3], body[1], diaglength);
 
 	
 	}
@@ -2259,7 +2160,7 @@ public:
 				playsound(RocketEngineSound,mid,
 				throtle * 0.25f * (freq <= 0.001f ? 0.0f : 1.0f),
 				freq,
-				body[0].velocity,
+					ballVelocity[body[0]],
 				false);
 				
 
@@ -2267,14 +2168,14 @@ public:
 			}
 			else
 			{
-				body[1].Force = { 0.0f,0.0f };
-				body[0].Force = {0.0f,0.0f};
+				ballForce[body[1]] = { 0.0f,0.0f };
+				ballForce[body[0]] = { 0.0f,0.0f };
 			}
 		}
 		else
 		{
-			body[1].Force = { 0.0f,0.0f };
-			body[0].Force = {0.0f,0.0f};
+			ballForce[body[1]] = { 0.0f,0.0f };
+			ballForce[body[0]] = {0.0f,0.0f};
 
 		}
 	}
@@ -2296,9 +2197,9 @@ public:
 				if (abs(throtles[i]) > 0.0f)
 				{
 					float Particleforce = throtles[i];
-					glm::vec2 dir = body[i].position - mid;
+					glm::vec2 dir = ballPosition[body[i]] - mid;
 					for (int a = 0; a < 5; a++)
-						EngineSmoke.Spawn(body[i].position,
+						EngineSmoke.Spawn(ballPosition[body[i]],
 							dir * 5000.0f * Particleforce * 0.025f, 1,
 							EngineSmoke.lifetime * abs(Particleforce) * (rand() % 1000 * 0.0005f + 0.5f));
 					
@@ -2308,8 +2209,8 @@ public:
 		DrawLight(glm::vec3(lp.x,lp.y, EngineLightHeight), glm::vec2( 800 * abs(throtle)*0.025f), glm::vec4(4.0f, 0.8f, 0.4f, abs(0.5f + abs(throtle) + (rand() % 100 - 50) * 0.01f)), 0.0f);
 		
 
-		glm::vec2 mid2 = (body[1].position + mid) * 0.5f;
-		DrawTexturedQuad(mid, glm::vec2(body[0].r * 2.0f), GunBaseTexture, get_angle_between_points(body[0].position, body[3].position) , color, Z_Index + 1, GunBaseNormalMap,false);
+		glm::vec2 mid2 = (ballPosition[body[1]] + mid) * 0.5f;
+		DrawTexturedQuad(mid, glm::vec2(PARTSIZE * 2.0f), GunBaseTexture, get_angle_between_points(ballPosition[body[0]], ballPosition[body[3]]) , color, Z_Index + 1, GunBaseNormalMap,false);
 
 	}
 
