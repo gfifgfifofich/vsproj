@@ -104,6 +104,7 @@ void CentralPart::DataConnection::Process(CentralPart* ent)
 	}
 	else
 		failed = true;
+	failed = false;
 }
 void CentralPart::DataConnection::Draw()
 {
@@ -111,6 +112,8 @@ void CentralPart::DataConnection::Draw()
 	{
 		if (bLogicMode)
 		{
+			DrawCircle(position1, 2.0f, { 1.0f,1.0f,2.0f,1.0f });
+			DrawCircle(position2, 2.0f, { 1.0f,1.0f,2.0f,1.0f });
 			DrawLine(position1, position2,
 				0.0625f, glm::vec4(0.0f, 0.0f, 1.5f, 1.0f), false, 0, 1000);
 		}
@@ -119,6 +122,8 @@ void CentralPart::DataConnection::Draw()
 	{
 		if (fLogicMode)
 		{
+			DrawCircle(position1, 2.0f, { 1.0f,1.0f,2.0f,1.0f });
+			DrawCircle(position2, 2.0f, { 1.0f,1.0f,2.0f,1.0f });
 			DrawLine(position1, position2,
 				0.0625f, glm::vec4(0.0f, 1.5f, 0.0f, 1.0f), false, 0, 1000);
 		}
@@ -127,6 +132,8 @@ void CentralPart::DataConnection::Draw()
 	{
 		if (vLogicMode)
 		{
+			DrawCircle(position1, 2.0f, { 1.0f,1.0f,2.0f,1.0f });
+			DrawCircle(position2, 2.0f, { 1.0f,1.0f,2.0f,1.0f });
 			DrawLine(position1, position2,
 				0.0625f, glm::vec4(1.5f, 0.0f, 0.0f, 1.0f), false, 0, 1000);
 		}
@@ -360,6 +367,7 @@ void CentralPart::MTProcess (float dt)
 		
 		for (int i = 0; i < Parts.size(); i++)
 		{
+			Parts[i]->debris = false;
 			float len = sqrlength(ballPosition[Parts[i]->body[0]] - CenterOfMass);
 			if (len > maxR)
 				maxR = sqrt(len);
@@ -919,6 +927,7 @@ void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2,
 				}
 				else
 					DataConnections.push_back(dc);
+
 			}
 		}
 		else if(it>=0)
@@ -1088,7 +1097,12 @@ void CentralPart::LoadFrom(std::string filename)
 void CentralPart::Clear()
 {
 	for (int i = 1; i < Parts.size(); i++)
-		Parts[i]->Delete=true;
+	{
+		Parts[i]->Health = -10.0f;
+	}
+
+	while (Parts.size() > 0)
+		DetachPart(Parts.size() - 1);
 	Parts.clear();
 	Parts.push_back(this);
 	Connections.clear();

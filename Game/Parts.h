@@ -36,6 +36,10 @@ public:
 
 	glm::vec2 prevtrgpos = { 0.0f,0.0f };
 
+	~Gun() override
+	{
+		DeleteBody();
+	}
 	Gun()
 	{
 		partid = PART::GUN;
@@ -882,7 +886,11 @@ public:
 	bool overheated = false;
 
 	float RotationSpeed = 0.0f;
-	float BarrelRotation = 0.0f;
+	float BarrelRotation = 0.0f;	
+	~MiniGun() override
+	{
+		DeleteBody();
+	}
 	MiniGun()
 	{
 		
@@ -905,15 +913,15 @@ public:
 		ballPosition[body[0]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
+		ballPosition[body[1]] = position + Rotate({ 0.0f,1.0f }, ang);
+
+		ang += pi * 0.5;
 		ballPosition[body[2]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
 		ballPosition[body[3]] = position + Rotate({ 0.0f,1.0f }, ang);
 
-		ang += pi * 0.5;
-		ballPosition[body[4]] = position + Rotate({ 0.0f,1.0f }, ang);
-
-		ballPosition[body[1]] = position + glm::vec2(0.0f, 1.0f) * 3.0f;
+		ballPosition[body[4]] = position + glm::vec2(0.0f, 1.0f) * 3.0f;
 
 		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
@@ -923,9 +931,9 @@ public:
 		shutdownTemp = 15.0f;
 		ProcessConnections();
 		BodyIdsWithCollision.push_back(0);
+		BodyIdsWithCollision.push_back(1);
 		BodyIdsWithCollision.push_back(2);
 		BodyIdsWithCollision.push_back(3);
-		BodyIdsWithCollision.push_back(4);
 		OnPartCreate();
 	}
 	void Create(glm::vec2 position, glm::vec2 direction, float size, float mass = 1.0f) override
@@ -944,15 +952,15 @@ public:
 		ballPosition[body[0]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
+		ballPosition[body[1]] = position + Rotate({ 0.0f,1.0f }, ang);
+
+		ang += pi * 0.5;
 		ballPosition[body[2]] = position + Rotate({ 0.0f,1.0f }, ang);
 
 		ang += pi * 0.5;
 		ballPosition[body[3]] = position + Rotate({ 0.0f,1.0f }, ang);
 
-		ang += pi * 0.5;
-		ballPosition[body[4]] = position + Rotate({ 0.0f,1.0f }, ang);
-
-		ballPosition[body[1]] = position + glm::vec2(0.0f, 1.0f) * 3.0f;
+		ballPosition[body[4]] = position + glm::vec2(0.0f, 1.0f) * 3.0f;
 
 		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
@@ -986,8 +994,8 @@ public:
 			overheated = true;
 		if (ballTemp[body[1]] <= 0.25f)
 			overheated = false;
-		mid = (ballPosition[body[0]] + ballPosition[body[2]] + ballPosition[body[3]] + ballPosition[body[4]]) * 0.25f;
-		glm::vec2 avgvel = (ballVelocity[body[0]] + ballVelocity[body[2]] + ballVelocity[body[3]] + ballVelocity[body[4]]) * 0.25f;
+		mid = (ballPosition[body[0]] + ballPosition[body[1]] + ballPosition[body[2]] + ballPosition[body[3]]) * 0.25f;
+		glm::vec2 avgvel = (ballVelocity[body[0]] + ballVelocity[body[1]] + ballVelocity[body[2]] + ballVelocity[body[3]]) * 0.25f;
 		
 		if (!debris && !deactivated && !overheated)
 		{
@@ -995,7 +1003,7 @@ public:
 			if(sqrlength(targetrotpoint) < 2.0f) // its normalized
 				targetrotpoint = mid + targetrotpoint * 10.0f;
 
-			glm::vec2 dif = ballPosition[body[1]] - mid;
+			glm::vec2 dif = ballPosition[body[4]] - mid;
 			if(dt<0.0001f) // 10k fps probably unreachable with enough stability, shouldnt cause speed issues 
 				 dt = 0.0001f;
 			glm::vec2 trgvel = (targetrotpoint - prevtrgpos) * (1.0f/dt); // probably 
@@ -1023,9 +1031,9 @@ public:
 			if(D<1.0f)
 				D = 1.0f;
 			trgvec = trgvec / D;
-			ballVelocity[body[1]] -= dt * RotationalFriction * DOT(ballVelocity[body[1]] - ballVelocity[body[0]] , rotvec) * rotvec;
+			ballVelocity[body[4]] -= dt * RotationalFriction * DOT(ballVelocity[body[4]] - ballVelocity[body[0]] , rotvec) * rotvec;
 
-			ballForce[body[1]] += speed * rotvec * DOT(rotvec, trgvec);
+			ballForce[body[4]] += speed * rotvec * DOT(rotvec, trgvec);
 			
 			prevtrgpos = vDataConnections[0].data;
 			if(sqrlength(vDataConnections[0].data) < 2.0f) // its normalized
@@ -1039,7 +1047,7 @@ public:
 			RotationSpeed = 0.0f;
 		while (BarrelRotation > pi * 2.0f)
 			BarrelRotation = 0.0f;
-		glm::vec2 posdif = ballPosition[body[1]] - mid;
+		glm::vec2 posdif = ballPosition[body[4]] - mid;
 
 		float l = length(posdif); 
 
@@ -1053,15 +1061,15 @@ public:
 
 
 		ballPosition[body[0]] += Difference * 0.125f;
+		ballPosition[body[1]] += Difference * 0.125f;
 		ballPosition[body[2]] += Difference * 0.125f;
 		ballPosition[body[3]] += Difference * 0.125f;
-		ballPosition[body[4]] += Difference * 0.125f;
 
-		ballPosition[body[1]] += -Difference * 0.5f;
+		ballPosition[body[4]] += -Difference * 0.5f;
 
 		glm::vec2  velbuf = ballVelocity[body[0]];
 
-		ballVelocity[body[1]] -= DOT(ballVelocity[body[1]] - velbuf, dir) * dir;
+		ballVelocity[body[4]] -= DOT(ballVelocity[body[4]] - velbuf, dir) * dir;
 
 		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
 		ballPosition[body[1]] += ballVelocity[body[1]] * dt;
@@ -1082,22 +1090,22 @@ public:
 		ballForce[body[4]] = { 0.0f,0.0f };
 
 
-		Strut(body[0], body[2], PARTSIZE * 2.0f);
+		Strut(body[0], body[1], PARTSIZE * 2.0f);
+		Strut(body[1], body[2], PARTSIZE * 2.0f);
 		Strut(body[2], body[3], PARTSIZE * 2.0f);
-		Strut(body[3], body[4], PARTSIZE * 2.0f);
-		Strut(body[0], body[4], PARTSIZE * 2.0f);
+		Strut(body[0], body[3], PARTSIZE * 2.0f);
 
-		Strut(body[0], body[3], diaglength);
-		Strut(body[4], body[2], diaglength);
+		Strut(body[0], body[2], diaglength);
+		Strut(body[3], body[1], diaglength);
 
 	
-		float change = ((ballTemp[body[0]]+ ballTemp[body[2]]+ ballTemp[body[3]]+ ballTemp[body[4]]) * 0.25f - ballTemp[body[1]]);
+		float change = ((ballTemp[body[0]]+ ballTemp[body[1]]+ ballTemp[body[2]]+ ballTemp[body[3]]) * 0.25f - ballTemp[body[4]]);
 
 		ballTemp[body[0]]-= change * 0.25f;
+		ballTemp[body[1]]-= change * 0.25f;
 		ballTemp[body[2]]-= change * 0.25f;
 		ballTemp[body[3]]-= change * 0.25f;
-		ballTemp[body[4]]-= change * 0.25f;
-		ballTemp[body[1]]+= change;
+		ballTemp[body[4]]+= change;
 	}
 	void Process(float dt) override
 	{
@@ -1105,7 +1113,7 @@ public:
 		if (!debris && !deactivated && !overheated)
 		{
 			if (shot)
-				playsound(MiniGunSound,ballPosition[body[1]],1.0f,freq + 0.25f + (((rand() % 100) * 0.01f) - 0.5f) * 0.5f + 0.02f*ballTemp[body[1]],ballVelocity[body[0]]);
+				playsound(MiniGunSound,ballPosition[body[4]],1.0f,freq + 0.25f + (((rand() % 100) * 0.01f) - 0.5f) * 0.5f + 0.02f*ballTemp[body[4]],ballVelocity[body[0]]);
 
 			t -= dt;
 			if (shot && t <= 0)
@@ -1123,32 +1131,32 @@ public:
 			t = shootspeed;
 			RotationSpeed = 20.0f;
 
-			dir = Normalize(ballPosition[body[1]]- mid);
-			glm::vec2 avgvel = (ballVelocity[body[0]] + ballVelocity[body[2]] + ballVelocity[body[3]] + ballVelocity[body[4]] ) * 0.25f;
+			dir = Normalize(ballPosition[body[4]]- mid);
+			glm::vec2 avgvel = (ballVelocity[body[0]] + ballVelocity[body[1]] + ballVelocity[body[2]] + ballVelocity[body[3]] ) * 0.25f;
 
 			GunRoundPE.Spawn(mid + dir * PARTSIZE * 0.6f,
 				Rotate(dir * 500.0f, pi * -0.5f) * 0.025f + ballVelocity[body[0]] , 1);
 
-			GunShotPE.Spawn(ballPosition[body[1]]+ dir * PARTSIZE * -1.0f + dir * (rand() % 1000 * 0.002f * PARTSIZE),
+			GunShotPE.Spawn(ballPosition[body[4]]+ dir * PARTSIZE * -1.0f + dir * (rand() % 1000 * 0.002f * PARTSIZE),
 				dir * 500.0f * 0.025f + ballVelocity[body[0]] , 1);
 
 			for (int i = 0; i < 2; i++)
-				GunShotPE.Spawn(ballPosition[body[1]]+ dir * PARTSIZE * -0.9f + Rotate(dir * (rand() % 1000 * 0.0015f * PARTSIZE), -pi * 0.7f),
+				GunShotPE.Spawn(ballPosition[body[4]]+ dir * PARTSIZE * -0.9f + Rotate(dir * (rand() % 1000 * 0.0015f * PARTSIZE), -pi * 0.7f),
 					Rotate(dir * 500.0f, -pi * 0.7f) * 0.025f + ballVelocity[body[0]] , 1);
 			for (int i = 0; i < 2; i++)
-				GunShotPE.Spawn(ballPosition[body[1]]+ dir * PARTSIZE * -0.8f + Rotate(dir * (rand() % 1000 * 0.0015f * PARTSIZE), pi * 0.7f),
+				GunShotPE.Spawn(ballPosition[body[4]]+ dir * PARTSIZE * -0.8f + Rotate(dir * (rand() % 1000 * 0.0015f * PARTSIZE), pi * 0.7f),
 					Rotate(dir * 500.0f, pi * 0.7f) * 0.025f + ballVelocity[body[0]] , 1);
-			SpawnBullet(ballPosition[body[1]], bulletSpeed * Normalize(ballPosition[body[1]]- mid) + avgvel, dmg, PARTSIZE * 0.2f, BulletHeat, recoil * 10.0f, id);
+			SpawnBullet(ballPosition[body[4]], bulletSpeed * Normalize(ballPosition[body[4]]- mid) + avgvel, dmg, PARTSIZE * 0.2f, BulletHeat, recoil * 10.0f, id);
 
 
-			ballTemp[body[1]] += HeatPerShot;
+			ballTemp[body[4]] += HeatPerShot;
 			//PlaySound(&source, &GunSound, body[1].position, (1.0f + rand() % 10 * 0.04f - 0.2f) * freq, freq <= 0.001f ? 0.0f : 1.0f);
 
 
 			ScreenShake += PARTSIZE * bulletSpeed * 0.00001f;
 			ChromaticAbberation += PARTSIZE * bulletSpeed * 0.000075f;
 
-			ballForce[body[0]] -= recoil * Normalize(ballPosition[body[1]] - mid) * 2000.0f;
+			ballForce[body[0]] -= recoil * Normalize(ballPosition[body[4]] - mid) * 2000.0f;
 
 			//body[1].Force -= recoil * Normalize(body[1].position - body[0].position) * 1000.0f;
 		}
@@ -1158,10 +1166,10 @@ public:
 	{
 		//DrawLine(body[0].position, body[1].position, body[1].r, Base.color, true, CubeNormalMapTexture, Z_Index+1);
 
-		glm::vec2 mid2 = (ballPosition[body[1]] + mid) * 0.5f;
+		glm::vec2 mid2 = (ballPosition[body[4]] + mid) * 0.5f;
 		//GunTexture
 		DrawTexturedQuad(mid - dir* PARTSIZE*2.0f, glm::vec2(1.5f *PARTSIZE, 4.0f * PARTSIZE), MiniGunTexture, get_angle_between_points(mid2, mid), color, Z_Index + 5, MiniGunNormalMap);
-		DrawTexturedQuad(mid, glm::vec2(PARTSIZE * 2.0f), GunBaseTexture, get_angle_between_points(ballPosition[body[0]], ballPosition[body[3]]) + pi*0.25f, color, Z_Index + 1, GunBaseNormalMap,false);
+		DrawTexturedQuad(mid, glm::vec2(PARTSIZE * 2.0f), GunBaseTexture, get_angle_between_points(ballPosition[body[0]], ballPosition[body[2]]) + pi*0.25f, color, Z_Index + 1, GunBaseNormalMap,false);
 
 		for (int i = 0; i < 6; i++)
 		{
@@ -1184,7 +1192,7 @@ public:
 
 			;
 			z += 2;
-			DrawTexturedQuad(ballPosition[body[1]] + Rotate(dir, pi * 0.5f) * berrrelPos.x * PARTSIZE * 0.2f *0.6f, { PARTSIZE * 0.2f * 0.35f ,PARTSIZE * 3.8f }, PipeTexture, get_angle_between_points({ 0.0f,0.0f }, dir), color, z + Z_Index, PipeNormalMap);
+			DrawTexturedQuad(ballPosition[body[4]] + Rotate(dir, pi * 0.5f) * berrrelPos.x * PARTSIZE * 0.5f *0.6f, { PARTSIZE * 0.5f * 0.35f ,PARTSIZE * 3.8f }, PipeTexture, get_angle_between_points({ 0.0f,0.0f }, dir), color, z + Z_Index, PipeNormalMap);
 		}
 	}
 

@@ -6,13 +6,31 @@ const float collisionRoughness = 0.4f;
 
 int NewBall()
 {
-	int id = freeBallIDs.front();
+	int id = -1;
+	if (freeBallIDs.size() > 0)
+	{
+		id = freeBallIDs.front();
+		freeBallIDs.pop_front();
+	}
+	else
+		id = lastid + 1;
+
+	if (id >= 100'000)
+		return -1;
 
 	//failsafe
 	while (IsBall[id])
 	{
-		freeBallIDs.pop_front();
-		id = freeBallIDs.front();
+		if (freeBallIDs.size() > 0)
+		{
+			freeBallIDs.pop_front();
+			id = freeBallIDs.front();
+		}
+		else
+			id++;
+
+		if (id >= 100'000)
+			return -1;
 	}
 
 	ballPosition[id] = { 0.0f,0.0f };
@@ -24,13 +42,14 @@ int NewBall()
 	IsBall[id] = true;
 	if (id > lastid)
 		lastid = id;
-	freeBallIDs.pop_front();
 	return id;
 }
+
 void DeleteBall(int id)
 {
 	IsBall[id] = false;
 	freeBallIDs.push_front(id);
+	std::cout << "deleted: "<<id<<"\n";
 }
 
 void Strut(int b1, int b2, float StrutLength)

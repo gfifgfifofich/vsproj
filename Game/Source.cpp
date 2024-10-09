@@ -519,6 +519,13 @@ void ChangeMap(std::string FilePath, bool scaleDown = true)
 		Debris.Parts[i]->DeletePart();
 	Debris.Parts.clear();
 
+	for (int i = 0; i < 100'000; i++)
+	{
+		IsBall[i] = false;
+	}
+	lastid = 0; 
+	freeBallIDs.clear();
+
 	DamageSpheres.clear();
 	DamageSpheresArray.clear();
 	bullets.clear();
@@ -2351,9 +2358,8 @@ void PreReady()
 	lastid = 0;
 	lastStaticBallid = 0;
 	lastStaticCubeid = 0;
-	for (int i = 0; i < 100'00; i++)
+	for (int i = 0; i < 100'000; i++)
 	{
-		freeBallIDs.push_back(i);
 		ballPosition[i] = { 0.0f,0.0f };
 		ballVelocity[i] = { 0.0f,0.0f };
 		ballForce[i] = { 0.0f,0.0f };

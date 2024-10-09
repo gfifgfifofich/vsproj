@@ -60,7 +60,10 @@ void BodyComponent::ProcessBody(float dt)
 	
 }
 void BodyComponent::Create(glm::vec2 position, glm::vec2 direction, float size, float mass) {}
-void BodyComponent::DeletePart(){}
+void BodyComponent::DeletePart()
+{
+	DeleteBody();
+}
 BodyComponent::~BodyComponent()
 {
 	DeletePart();
@@ -263,12 +266,23 @@ void BodyComponent::DeleteBody()
 	
 	for(int i= 0;i < body.size();i++)
 		DeleteBall(body[i]);
-	if(bDCsize>0)
+	body.clear();
+	if (bDCsize > 0 && bDataConnections != NULL)
+	{
 		delete[] bDataConnections;
-	if (fDCsize > 0)
+		bDataConnections = NULL;
+	}
+	if (fDCsize > 0 && fDataConnections != NULL)
+	{
 		delete[] fDataConnections;
-	if (vDCsize > 0)
+		fDataConnections = NULL;
+	}
+	if (vDCsize > 0 && vDataConnections != NULL)
+	{
 		delete[] vDataConnections;
+		vDataConnections = NULL;
+	}
+	std::cout << "a";
 }
 
 

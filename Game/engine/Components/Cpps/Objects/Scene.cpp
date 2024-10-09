@@ -876,6 +876,8 @@ void Scene::Update()
 	{
 		if(Assets[ii]->framesUntillDeletion <=0)
 		{
+			Assets[ii]->~Asset();
+			delete Assets[ii];
 			if(Assets.size()>0)
 				Assets[ii] = Assets[Assets.size()-1];
 			Assets.pop_back();
@@ -921,6 +923,8 @@ void Scene::Update()
 			continue;
 		if(Nodes[ii]->framesUntillDeletion <=0)
 		{
+			Nodes[ii]->~Node();
+			delete Nodes[ii];
 			if(Nodes.size()>0)
 				Nodes[ii] = Nodes[Nodes.size()-1];
 			Nodes.pop_back();
