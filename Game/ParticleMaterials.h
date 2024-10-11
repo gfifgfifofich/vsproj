@@ -9,11 +9,15 @@ inline ParticleEmiter GunRoundPE;
 inline ParticleEmiter GunShotPE;
 inline ParticleEmiter DebrieParticles;
 inline ParticleEmiter Smoke;
+inline ParticleEmiter foregroundFog;
 inline ParticleEmiter LaserPm;
 inline ParticleEmiter LaserShotPm;
 inline ParticleEmiter Sparks;
 inline ParticleEmiter ExplodionPE;
 inline unsigned int noize;
+
+inline float foregroundFogParticleAmount;
+inline float foregroundFogParticleT;
 
 inline std::vector<ParticleEmiter*> emiters;
 
@@ -29,9 +33,11 @@ void SetupCollisionSmokePE();
 void SetupCollisionSparksPE();
 void SetupExplodionPE();
 void SetupDebriePE();
+void SetupforegroundFogPE();
 
 void SetupPEs();
 void clearParticleMaterials();
 
 void AddSphereOfInfluence(glm::vec2 position, float r, glm::vec2 velocity, bool attractive, float attractiveStrehgth);
+void AddLightSphere(glm::vec2 position, float r, glm::vec4 color);
 void ProcessPE(float dt);

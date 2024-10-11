@@ -192,7 +192,7 @@ void CentralPart::Connection::Draw(float dt)
 	if (avgT > 0.0f)
 		color = BaseColor + HeatColor * (avgT / 30.0f);
 	else
-		color = BaseColor + ColdColor * (avgT / 30.0f);
+		color = BaseColor - ColdColor * (avgT / 30.0f);
 
 
 	if (type == CONNECTION::STRUT)
@@ -431,6 +431,8 @@ void CentralPart::MTProcess (float dt)
 			//{
 			//	Parts[i]->Process(dt);
 			//}
+			Parts[i]->dmgThisFrame = 0.0f;
+			Parts[i]->WasHitThisFrame = false;
 			Parts[i]->freq = freq;
 			Parts[i]->deactivated = false;
 			Parts[i]->targetrotpoint = GunsTargetrotPoint;

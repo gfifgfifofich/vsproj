@@ -321,7 +321,7 @@ void Window::_Draw()
 			glBindVertexArray(CircleVAO);
 
 
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].Circlecolors.size(), &SceneLayers[i].Circlecolors[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].Circlecolors.size(), &SceneLayers[i].Circlecolors[0], GL_DYNAMIC_DRAW);
 
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
@@ -330,7 +330,7 @@ void Window::_Draw()
 			glBindBuffer(GL_ARRAY_BUFFER, instanceCircleVBO[1]);
 			glBindVertexArray(CircleVAO);
 
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].CirclePosScale.size(), &SceneLayers[i].CirclePosScale[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].CirclePosScale.size(), &SceneLayers[i].CirclePosScale[0], GL_DYNAMIC_DRAW);
 
 			glEnableVertexAttribArray(2);
 			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
@@ -340,7 +340,7 @@ void Window::_Draw()
 			glBindBuffer(GL_ARRAY_BUFFER, instanceCircleVBO[2]);
 			glBindVertexArray(CircleVAO);
 
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].CircleRotations.size(), &SceneLayers[i].CircleRotations[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].CircleRotations.size(), &SceneLayers[i].CircleRotations[0], GL_DYNAMIC_DRAW);
 
 			glEnableVertexAttribArray(3);
 			glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
@@ -355,7 +355,7 @@ void Window::_Draw()
 
 			glBindVertexArray(quadVAO);
 
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].Quadcolors.size(), &SceneLayers[i].Quadcolors[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].Quadcolors.size(), &SceneLayers[i].Quadcolors[0], GL_DYNAMIC_DRAW);
 
 			glEnableVertexAttribArray(2);
 			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
@@ -366,7 +366,7 @@ void Window::_Draw()
 
 			glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[1]);
 
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].QuadPosScale.size(), &SceneLayers[i].QuadPosScale[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].QuadPosScale.size(), &SceneLayers[i].QuadPosScale[0], GL_DYNAMIC_DRAW);
 			glBindVertexArray(quadVAO);
 
 
@@ -379,7 +379,7 @@ void Window::_Draw()
 
 			glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[2]);
 
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].QuadRotations.size(), &SceneLayers[i].QuadRotations[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].QuadRotations.size(), &SceneLayers[i].QuadRotations[0], GL_DYNAMIC_DRAW);
 			glBindVertexArray(quadVAO);
 
 
@@ -420,7 +420,7 @@ void Window::_Draw()
 
 		glBindVertexArray(quadVAO);
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].SmoothQuadcolors.size(), &SceneLayers[i].SmoothQuadcolors[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].SmoothQuadcolors.size(), &SceneLayers[i].SmoothQuadcolors[0], GL_DYNAMIC_DRAW);
 
 		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
@@ -431,7 +431,7 @@ void Window::_Draw()
 
 		glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[1]);
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].SmoothQuadPosScale.size(), &SceneLayers[i].SmoothQuadPosScale[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].SmoothQuadPosScale.size(), &SceneLayers[i].SmoothQuadPosScale[0], GL_DYNAMIC_DRAW);
 		glBindVertexArray(quadVAO);
 
 
@@ -444,7 +444,7 @@ void Window::_Draw()
 
 		glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[2]);
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].SmoothQuadRotations.size(), &SceneLayers[i].SmoothQuadRotations[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].SmoothQuadRotations.size(), &SceneLayers[i].SmoothQuadRotations[0], GL_DYNAMIC_DRAW);
 		glBindVertexArray(quadVAO);
 
 
@@ -498,28 +498,28 @@ void Window::_Draw()
 			glBindVertexArray(quadVAO);
 
 
+
+			glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[2]);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].TexturedQuads[TQA].QuadRotations.size(), &SceneLayers[i].TexturedQuads[TQA].QuadRotations[0], GL_DYNAMIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+			glVertexAttribDivisor(1, 1);
+
+			glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[1]);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].TexturedQuads[TQA].QuadPosScale.size(), &SceneLayers[i].TexturedQuads[TQA].QuadPosScale[0], GL_DYNAMIC_DRAW);
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+			glVertexAttribDivisor(2, 1);
+
 			glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[0]);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].TexturedQuads[TQA].Quadcolors.size(), &SceneLayers[i].TexturedQuads[TQA].Quadcolors[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].TexturedQuads[TQA].Quadcolors.size(), &SceneLayers[i].TexturedQuads[TQA].Quadcolors[0], GL_DYNAMIC_DRAW);
 			glEnableVertexAttribArray(3);
 			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
 			glVertexAttribDivisor(3, 1);
 
 
-			glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[1]);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].TexturedQuads[TQA].QuadPosScale.size(), &SceneLayers[i].TexturedQuads[TQA].QuadPosScale[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
-			glVertexAttribDivisor(2, 1);
-
-
-			glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[2]);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].TexturedQuads[TQA].QuadRotations.size(), &SceneLayers[i].TexturedQuads[TQA].QuadRotations[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
-			glVertexAttribDivisor(1, 1);
-
 			glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[3]);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].TexturedQuads[TQA].QuadDepth.size(), &SceneLayers[i].TexturedQuads[TQA].QuadDepth[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].TexturedQuads[TQA].QuadDepth.size(), &SceneLayers[i].TexturedQuads[TQA].QuadDepth[0], GL_DYNAMIC_DRAW);
 			glEnableVertexAttribArray(4);
 			glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
 			glVertexAttribDivisor(4, 1);
@@ -604,7 +604,7 @@ void Window::_Draw()
 			glBindVertexArray(SceneLayers[i].Polygons[PA].VAO);
 			glGenBuffers(4, instanceTexturedQuadVBO);
 			glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[0]);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].Polygons[PA].colors.size(), &SceneLayers[i].Polygons[PA].colors[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].Polygons[PA].colors.size(), &SceneLayers[i].Polygons[PA].colors[0], GL_DYNAMIC_DRAW);
 
 			glEnableVertexAttribArray(3);
 			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
@@ -615,7 +615,7 @@ void Window::_Draw()
 			glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[1]);
 
 
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].Polygons[PA].PosScale.size(), &SceneLayers[i].Polygons[PA].PosScale[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].Polygons[PA].PosScale.size(), &SceneLayers[i].Polygons[PA].PosScale[0], GL_DYNAMIC_DRAW);
 
 			glEnableVertexAttribArray(2);
 			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
@@ -625,7 +625,7 @@ void Window::_Draw()
 
 			glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[2]);
 
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].Polygons[PA].Rotations.size(), &SceneLayers[i].Polygons[PA].Rotations[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].Polygons[PA].Rotations.size(), &SceneLayers[i].Polygons[PA].Rotations[0], GL_DYNAMIC_DRAW);
 
 
 			glEnableVertexAttribArray(1);
@@ -635,7 +635,7 @@ void Window::_Draw()
 			glVertexAttribDivisor(1, 1);
 
 			glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[3]);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].Polygons[PA].Depths.size(), &SceneLayers[i].Polygons[PA].Depths[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].Polygons[PA].Depths.size(), &SceneLayers[i].Polygons[PA].Depths[0], GL_DYNAMIC_DRAW);
 			glEnableVertexAttribArray(4);
 			glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
 			glVertexAttribDivisor(4, 1);
@@ -779,7 +779,7 @@ void Window::_Draw()
 				glGenBuffers(3, instanceNormalMapTextureVBO);
 				glBindVertexArray(quadVAO);
 				glBindBuffer(GL_ARRAY_BUFFER, instanceNormalMapTextureVBO[0]);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].NormalMaps[NQA].QuadRotations.size(), &SceneLayers[i].NormalMaps[NQA].QuadRotations[0], GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].NormalMaps[NQA].QuadRotations.size(), &SceneLayers[i].NormalMaps[NQA].QuadRotations[0], GL_DYNAMIC_DRAW);
 
 				glEnableVertexAttribArray(1);
 				glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
@@ -787,7 +787,7 @@ void Window::_Draw()
 				glVertexAttribDivisor(1, 1);
 
 				glBindBuffer(GL_ARRAY_BUFFER, instanceNormalMapTextureVBO[2]);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].NormalMaps[NQA].QuadDepth.size(), &SceneLayers[i].NormalMaps[NQA].QuadDepth[0], GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].NormalMaps[NQA].QuadDepth.size(), &SceneLayers[i].NormalMaps[NQA].QuadDepth[0], GL_DYNAMIC_DRAW);
 
 				glEnableVertexAttribArray(4);
 				glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
@@ -798,7 +798,7 @@ void Window::_Draw()
 				glBindBuffer(GL_ARRAY_BUFFER, instanceNormalMapTextureVBO[1]);
 				glBindVertexArray(quadVAO);
 
-				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].NormalMaps[NQA].QuadPosScale.size(), &SceneLayers[i].NormalMaps[NQA].QuadPosScale[0], GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].NormalMaps[NQA].QuadPosScale.size(), &SceneLayers[i].NormalMaps[NQA].QuadPosScale[0], GL_DYNAMIC_DRAW);
 
 				glEnableVertexAttribArray(2);
 				glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
@@ -859,21 +859,21 @@ void Window::_Draw()
 
 
 				glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[0]);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].PolygonNormalMaps[PA].Rotations.size(), &SceneLayers[i].PolygonNormalMaps[PA].Rotations[0], GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].PolygonNormalMaps[PA].Rotations.size(), &SceneLayers[i].PolygonNormalMaps[PA].Rotations[0], GL_DYNAMIC_DRAW);
 				glEnableVertexAttribArray(1);
 				glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
 				glVertexAttribDivisor(1, 1);
 
 
 				glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[1]);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4)* SceneLayers[i].PolygonNormalMaps[PA].PosScale.size(), &SceneLayers[i].PolygonNormalMaps[PA].PosScale[0], GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4)* SceneLayers[i].PolygonNormalMaps[PA].PosScale.size(), &SceneLayers[i].PolygonNormalMaps[PA].PosScale[0], GL_DYNAMIC_DRAW);
 				glEnableVertexAttribArray(2);
 				glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
 				glVertexAttribDivisor(2, 1);
 
 
 				glBindBuffer(GL_ARRAY_BUFFER, instanceTexturedQuadVBO[3]);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].PolygonNormalMaps[PA].Depths.size(), &SceneLayers[i].PolygonNormalMaps[PA].Depths[0], GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].PolygonNormalMaps[PA].Depths.size(), &SceneLayers[i].PolygonNormalMaps[PA].Depths[0], GL_DYNAMIC_DRAW);
 				glEnableVertexAttribArray(4);
 				glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
 				glVertexAttribDivisor(4, 1);

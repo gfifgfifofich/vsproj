@@ -417,9 +417,10 @@ StaticDamageSphere_0000000017
 	Position 975.000000 0.000000
 	Type 1
 	Z_Index 20
-	attractionForce 3.000000
+	attractionForce 0.800000
 	attractive 1
 	damage 0.000004
+	disable 0
 	heat 0.200000
 	radius 390.368134
 }

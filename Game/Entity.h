@@ -261,9 +261,7 @@ void ProcessEntities(float dt,int s)
 				int amount = rand() % 10 + 0.001f * len;
 				for (int a = 0; a < amount; a++)
 					CollisionSparks.Spawn(position,
-						dif * 150.0f * 0.001f + (rand() % 100 - 50.0f) * dif * 0.001f +
-						Rotate(dif * DOT(Rotate(dif, pi * 0.5f), pVel * 0.1f) // was i drunk?
-							* float(rand() % 100) * 0.1f, pi * 0.5f),
+						dif * 150.0f * 0.0001f * (rand() % 100 + 50.0f),
 						1);
 				CollisionSmoke.Spawn(position,
 					15);

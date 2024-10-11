@@ -53,7 +53,7 @@ void BodyComponent::ProcessBody(float dt)
 	if (avgT > 0.0f)
 		color = BaseColor + HeatColor * (avgT * tmpdiv);
 	else
-		color = BaseColor + ColdColor * (avgT * tmpdiv);
+		color = BaseColor - ColdColor * (avgT * tmpdiv);
 	if (Health < 0.0f)
 		dead = true;
 
@@ -233,8 +233,11 @@ void BodyComponent::DamageSphereCollide(DamageSphere* DS)
 					ballTemp[body[i]] += DS->Heat;
 					Health -= DS->Damage;
 					hit = true;
-					WasHitThisFrame = true;
-					dmgThisFrame += DS->Damage;
+					if (DS->Damage >= 0.01f)
+					{
+						WasHitThisFrame = true;
+						dmgThisFrame += DS->Damage;
+					}
 				}
 				if (sqrlength(DS->body.position - ballPosition[body[i]]) > 0.0f)
 					ballVelocity[body[i]] -= Normalize(DS->body.position - ballPosition[body[i]]) * DS->recoil;

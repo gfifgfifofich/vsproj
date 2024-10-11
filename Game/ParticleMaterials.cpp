@@ -232,11 +232,9 @@ void SetupExplodionPE()
 	ExplodionPE.VelocityRandomness = { -150,150,-150,150 };
 	ExplodionPE.VelocityRandomness *= 0.025f;
 	ExplodionPE.acceleration = { 0.0f,0.0f };
-	ExplodionPE.StartColor = { 1.0f,1.0f,1.0f,3.0f };
-	ExplodionPE.EndColor = { 1.0f,1.0f,1.0f,0.0f };
+	ExplodionPE.StartColor = { 1.0f,1.0f,1.0f,10.0f };
+	ExplodionPE.EndColor = { 1.0f,1.0f,1.0f,1.0f };
 	ExplodionPE.lighted = true;
-	//ExplodionPE.NormalMap = BallNormalMapTexture;
-	//ExplodionPE.DrawToNormalMap = true;
 	ExplodionPE.lifetimeRandomness = 0.3f;
 	ExplodionPE.lifetime = 3.5f;
 	ExplodionPE.Z_Index = 100;
@@ -271,6 +269,31 @@ void SetupDebriePE()
 	DebrieParticles.EndSize *= 0.025f;
 	DebrieParticles.Z_Index = 100;
 }
+void SetupforegroundFogPE()
+{
+	foregroundFog.material.Texture = noize;
+	foregroundFog.Type = "TEXTURED";
+	foregroundFog.VelocityRandomness = {0.0f,0.0f,0.0f,0.0f};//{ 0,700,0,700 };
+	foregroundFog.InitialVelocity =    {0.0f,0.0f};//{ -350,-350};
+	foregroundFog.StartColor = { 10.0f,10.0f,10.0f,10.0f };
+	foregroundFog.EndColor = { 10.0f,10.0f,10.0f,4.0f };
+	foregroundFog.OrbitalVelocityRandomness = 1.5f;
+	foregroundFog.RotationRandomness = 10.0f;
+	foregroundFog.InitialRotation = 10.0f;
+	foregroundFog.lifetimeRandomness = 0.0f;
+	foregroundFog.lifetime = 16.5f;
+	foregroundFog.Z_Index = 100;
+	foregroundFog.VelocityDamper = 0.05f * 60;
+	foregroundFog.StartSize = { 0.0f,0.0f };
+	foregroundFog.EndSize = { 350.0f,350.f};
+	foregroundFog.Additive = false;
+	foregroundFog.influenced = true;
+	foregroundFog.lighted = true;
+	foregroundFog.ShowWindow = false;
+	foregroundFog.DrawToNormalMap = false;
+	foregroundFog.ShowWindow = true;
+
+}
 
 void SetupPEs()
 {
@@ -286,6 +309,8 @@ void SetupPEs()
 	SetupExplodionPE();
 	SetupGunRoundPE();
 	SetupDebriePE();
+	SetupforegroundFogPE();
+
 	emiters.push_back(&EngineSmoke);
 	emiters.push_back(&Sparks);
 	emiters.push_back(&bulletFlightPm);
@@ -299,10 +324,11 @@ void SetupPEs()
 	emiters.push_back(&CollisionSmoke);
 	emiters.push_back(&ExplodionPE);
 	emiters.push_back(&DebrieParticles);
-
+	
 	for (int i = 0; i < emiters.size(); i++)
 	{
 		emiters[i]->influenced = true;
+		emiters[i]->lighted = true;
 		emiters[i]->ShowWindow = false;
 	}
 }
@@ -312,12 +338,23 @@ void clearParticleMaterials()
 	{
 		emiters[i]->Particles.clear();
 	}
+	
 }
 
 void AddSphereOfInfluence(glm::vec2 position, float r, glm::vec2 velocity, bool attractive, float attractiveStrehgth)
 {
 	for (int i = 0; i < emiters.size(); i++)
 		emiters[i]->AddSpheresOfInfluence(position, r, velocity, attractive, attractiveStrehgth);
+
+	foregroundFog.AddSpheresOfInfluence(position, r*1.5f, velocity * 1.5f, attractive, attractiveStrehgth * 2.5f);
+
+}
+void AddLightSphere(glm::vec2 position, float r, glm::vec4 color)
+{
+	for (int i = 0; i < emiters.size(); i++)
+		emiters[i]->AddLightSphere(position, r,color);
+
+	foregroundFog.AddLightSphere(position, r*1.5f, color * 0.8f);
 
 }
 void ProcessPE(float dt)
@@ -328,6 +365,7 @@ void ProcessPE(float dt)
 		emiters[i]->ShowWindow = false;
 		emiters[i]->Process(dt);
 		emiters[i]->SpheresOfInfluence.clear();
+		emiters[i]->LightSpheres.clear();
 	}
 
 }

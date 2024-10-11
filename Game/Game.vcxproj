@@ -66,6 +66,7 @@
     <ClInclude Include="Parts\Base.h" />
     <ClInclude Include="Parts\CentralPart.h" />
     <ClInclude Include="Parts\smallball.h" />
+    <ClInclude Include="Radar.h" />
     <ClInclude Include="Rocket.h" />
     <ClInclude Include="SubECS.h" />
     <ClInclude Include="Textures.h" />
@@ -115,6 +116,7 @@
     <ClCompile Include="Parts\Base.cpp" />
     <ClCompile Include="Parts\CentralPart.cpp" />
     <ClCompile Include="Parts\smallball.cpp" />
+    <ClCompile Include="Radar.cpp" />
     <ClCompile Include="Rocket.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SubECS.cpp" />

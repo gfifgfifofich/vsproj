@@ -2,62 +2,7 @@
 TODO:
 {
 
-	Story
-	{ 
 
-		add turrets?
-		&make a propper gods damn disdoc
-
-		Under implementation
-		[
-			Console layer
-
-			Swarm factory separated/lost controll, player is just a research lab
-			Change screen/cutscene about loss of first objective, new objective - destroy the laser guy // yeeeeee
-			0 operators available
-			attempt at connection to ground facilities...
-			failed
-			attempt at connection to ground facilities...
-			failed
-			attempt at connection to ground facilities...
-			failed
-			No ground facility found
-			objective priority critical, autonomus controll available. Switch to fully autonomous controlls: y/n?
-			y
-			transfering to fully autonomus controll...
-			optimal solution - make autonomus unit...
-			researching data from last operator training session...
-			syntezising of new control unit...
-			connection of new AI controller to the unit...
-			// Screen pops back, base scene, 1 available mission
-			
-		]
-		
-
-		subject of change
-		[
-			// todo: add some barriers to base, breachable by new modules/tech &shit
-
-			// swarms only instruction - defend humans &shit
-			// players target - kill the thing that exploded planet
-			go to remains of dabiggun, meet swarmers, kill few lowlevel pirates, kill swarmers, get pirate blackboxes, find their head
-			// pirate side missions unlocked			
-			killall at the base, more swarmers, recruiter is research lab
-			// lil bit of swarm AI degradation/mutation
-			// swarmers destroy all base to delete player, failed, many people dead
-			goto lab, killall at lab, +swarmers, recruiter is main bad guy
-			goto bad guy, killall bad guy, +swarmers
-			// last issue - swarm
-			goto swarm, killall swarm, read log, realise &shit, sadge etc.
-			
-		]
-
-
-	}
-	tutorial // add introduction and done
-
-
-	proper building mode // mostly done
 	more parts
 	{
 		Shields
@@ -73,47 +18,19 @@ TODO:
 	| Parts research, like in reassembly is perfect, just another window
 	
 	
-	story missions are different/ special
-	grid missions 
 
 	lots of textures
 	AI
 	UI
 
-	Test on Windows
 	Instanced lighting 
 	Memory Optimizations
 	{
-		ball[100'000] on stack, parts have int[] ids to the vector; or something
-
-		array of structs, processor's memory grabber will optimise it
+		ball[100'000] on stack, parts have int[] ids to the vector; or something //done, works
+		array of structs, processor's memory grabber will optimise it //done even better, just arrays, no structs	
 	}
 }
-current task
-{
-	Parts "shop" // mostly done
 
-	improove player SaveData mechanism
-	propper craft managment system
-	{
-		Garage - enter  {
-						save, 
-						load from list,
-						add to list
-						}
-	}
-}
-Untill next stasge
-{
-	Save/load system & interface	+ done, polishing required
-	Parts Shop system & interface	+ done, polishing required 
-	Mission system 					+ done, polishing required, add more missions
-}
-
-
-resources - one material (matter or whatever)
-
-Missions, base location, resources. Parts cost materials, missions give. Retrieving vehicle returns all resorces.....
 
 Mission ideas:
 	retrive part/object/debrie ?? 
@@ -139,6 +56,55 @@ Mission
 	enum int type // mining, retrival, defeat pirates, clear bugs etc
 
 }
+
+Stages
+{
+	Current sate
+	{
+		Openworld like seamless "MapLoading" - MissionLoader
+		Inside/outside, Heat attracts enemies
+		1.5 - 2k balls @60fps {balls are in array on stack, parts and other GameObjects are still in chaos in vector<Node*>}
+	}
+	
+	todo {
+		Radar {
+			Random points - Red, Blue, Yellow and mb green
+				Red - something damgerous, will only bleep ocasionally - when guns are fired
+				Yellow/Orange - Large heat emmisions
+				Blue - mission target and other stuff like that
+				green or the color of radar - physical obstractions
+			Getting closer to dots on radar will load them (Missionloader in case of physical obstacles & missions)
+			Entering new bleep will delete prewious in some cases
+
+			All dots look the same
+			when enemy dot gets in radius of heat - it may bleep back and start moving towards player.
+			Some dots will bleep on their own, and imitate fight on the radar.
+
+		}
+
+		layers of scene - 
+		-	background
+		-	Middle - player, objects, game
+		td	ForeGround - Fog and other stuff "above" player, will add really great volume felling
+		td	interface layer
+		-	menulayer
+		draw foreground with half or quatter of resolution, fog only = dont care, linear filter will fix low res
+		todo: make light buffer & others with less res/ color depth, they dont need full res 32bit float buffers	
+
+			
+	}
+
+
+
+	Release stage
+	{
+		at least 1 fully playable mode with features endless sandbox
+		full play through 3 times with no major bugs
+		No tmp textures & sounds
+	}
+
+}
+
 */
 
 
@@ -205,9 +171,10 @@ void SavePlayerData()
 
 
 
-int BackgroundWindowID = -1;
-int ForeWindowID = -1;
-int TerminalWindowID = -1;
+int BackgroundWindowID = -1;// background cosmetic window
+int ForeWindowID = -1;// "game" window
+int ForeGroundWindowID = -1;// foreground cosmetic window
+int InterfaceWindowID = -1;// player interface window
 int MenuWindowID = -1;
 inline glm::vec2 foregroundMousePosition = {0.0f,0.0f};
 
@@ -343,6 +310,7 @@ struct LightEffect
 	float volume = 0.05f;
 };
 
+#include "ParticleMaterials.h"
 std::vector<LightEffect> LightEffects;
 
 void ProcessLightEffects(float dt)
@@ -352,11 +320,13 @@ void ProcessLightEffects(float dt)
 	{
 		
 		float step = LightEffects[i].time / LightEffects[i].maxT;
+		glm::vec2 scale = glm::vec2(LightEffects[i].S_Scale * step + LightEffects[i].E_Scale * (1.0f - step));
+		glm::vec4 color = LightEffects[i].S_Color * step + LightEffects[i].E_Color * (1.0f - step);
 		DrawLight(LightEffects[i].position,
-			glm::vec2(LightEffects[i].S_Scale * step + LightEffects[i].E_Scale * (1.0f - step)),
-			LightEffects[i].S_Color * step + LightEffects[i].E_Color * (1.0f - step),
+			scale,
+			color,
 			LightEffects[i].volume);
-
+		AddLightSphere(LightEffects[i].position, (scale.x + scale.y) * 0.5f, color);
 		LightEffects[i].time -= dt;
 
 	}
@@ -452,7 +422,6 @@ int NewConBall1 = -1;
 int NewConBall2 = -1;
 
 
-#include "ParticleMaterials.h"
 #include "Rocket.h"
 #include "Bullet.h"
 #include "Laser.h"
@@ -480,7 +449,7 @@ void ProcessCamera(float dt)
 	if (Exposure < 0.85f)
 		Exposure += dt;
 	else
-        Exposure = 0.85f;
+		Exposure = 0.85f;
 	SceneExposure = Exposure * Exposure * brightness;
 	CameraPosition = camerapos + glm::vec2(((rand()%100) * ScreenShake - ScreenShake *50.0f )* s_ScreenShake, ((rand() %100) * ScreenShake - ScreenShake * 50.0f )* s_ScreenShake);
 	ScreenShake -= ScreenShakeFallOff * dt;
@@ -594,12 +563,14 @@ CentralPart* SpawnAiShip(glm::vec2 pos, std::string name)
 	
 }
 
-bool inbase = true;
-std::vector<std::string> shipNames;
+inline bool inbase = true;
+inline std::vector<std::string> shipNames;
 
 #include "Mission.h"
+#include "Radar.h"
 
 Mission CurrnetMission;
+Radar ActiveRadar;
 
 
 void SetupInstances()
@@ -1064,6 +1035,14 @@ Shop shopmenu;
 
 void ProcessPlayerControls()
 {
+
+	glm::vec4 UI_ColorON = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
+	glm::vec4 UI_ColorOFF = glm::vec4(0.8f, 0.8f, 0.8f, 0.8f);
+	Window* bw = GetWindow(BackgroundWindowID);
+	Window* sw = GetWindow(ForeWindowID);
+	Window* iw = GetWindow(InterfaceWindowID);
+	Window* mw = GetWindow(MenuWindowID);
+
 	AqueredCameraScale *= 1.0f + scrollmovement * 0.1f;
 
 	if (AqueredCameraScale.x > 80.0f)
@@ -1139,16 +1118,17 @@ void ProcessPlayerControls()
 
 		// grid size = 1
 		glm::vec2 roundCP = glm::vec2(roundf(CameraPosition.x), roundf(CameraPosition.y));
-		if (CameraScale.x > 15.0f)
+		float aVal = (CameraScale.x - 10.0f)/70.0f;
+		if (CameraScale.x > 10.0f)
 			for (int i = 0; i < 200; i++)
 			{
 				DrawLine(glm::vec2(50 * (i * 0.02f - 2.0f), 50 * -2.0f) + gridpos + roundCP,
 					glm::vec2(50 * (i * 0.02f - 2.0f), 50 * 2.0f) + gridpos + roundCP, 1.75f * 0.025f,
-					glm::vec4(0.15f), false, CubeNormalMapTexture, -100);
+					glm::vec4(0.75f, 0.75f, 0.75f, aVal), false, CubeNormalMapTexture, -10);
 
 				DrawLine(glm::vec2(50 * -2.0f, 50 * (i * 0.02f - 2.0f)) + gridpos + roundCP,
 					glm::vec2(50 * 2.0f, 50 * (i * 0.02f - 2.0f)) + gridpos + roundCP, 1.75f * 0.025f,
-					glm::vec4(0.15f), false, CubeNormalMapTexture, -100);
+					glm::vec4(0.75f, 0.75f, 0.75f, aVal), false, CubeNormalMapTexture, -10);
 			}
 
 		if (JustPressedLMB && in_UI <= 0)
@@ -1409,24 +1389,32 @@ void ProcessPlayerControls()
 			}
 
 		}
+		EndOfWindow();
+		iw->Use();
+		glm::vec2 WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
+		MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
+		MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
+		ScreenMousePosition = WindowMousePosition;
+		LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
+		foregroundMousePosition = MousePosition;
 
 		bool b = (NewConType == STRUT);
-		UI_buttonOnlyON(&b, "Strut", { -0.47f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, glm::vec4(0.9f), glm::vec4(0.5f), 1200);
+		UI_buttonOnlyON(&b, "Strut", { -0.47f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 		if (b && b != (NewConType == STRUT))
 			NewConType = STRUT;
 
 		b = (NewConType == SPRING);
-		UI_buttonOnlyON(&b, "Spring", { -0.47f * WIDTH ,-0.40f * HEIGHT }, UISize, TextSize, glm::vec4(0.9f), glm::vec4(0.5f), 1200);
+		UI_buttonOnlyON(&b, "Spring", { -0.47f * WIDTH ,-0.40f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 		if (b && b != (NewConType == SPRING))
 			NewConType = SPRING;
 
 		b = (NewConType == HEATPIPE);
-		UI_buttonOnlyON(&b, "Heat pipe", { -0.47f * WIDTH ,-0.34f * HEIGHT }, UISize, TextSize, glm::vec4(0.9f), glm::vec4(0.5f), 1200);
+		UI_buttonOnlyON(&b, "Heat pipe", { -0.47f * WIDTH ,-0.34f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 		if (b && b != (NewConType == HEATPIPE))
 			NewConType = HEATPIPE;
 
 		b = (NewConType == ROPE);
-		UI_buttonOnlyON(&b, "Rope", { -0.47f * WIDTH ,-0.28f * HEIGHT }, UISize, TextSize, glm::vec4(0.9f), glm::vec4(0.5f), 1200);
+		UI_buttonOnlyON(&b, "Rope", { -0.47f * WIDTH ,-0.28f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 		if (b && b != (NewConType == ROPE))
 			NewConType = ROPE;
 
@@ -1434,23 +1422,31 @@ void ProcessPlayerControls()
 
 
 
-		UI_CheckBox(&align, "Align rotation", { -0.35f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, glm::vec4(0.9f), glm::vec4(0.5f), 1200);
+		UI_CheckBox(&align, "Align rotation", { -0.35f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 
-		UI_CheckBox(&snapToGrid, "Snap to grid", { -0.20f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, glm::vec4(0.9f), glm::vec4(0.5f), 1200);
+		UI_CheckBox(&snapToGrid, "Snap to grid", { -0.20f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 
 		UI_TextBox(&saveFileName, { -0.46f * WIDTH ,0.46f * HEIGHT }, 32, { 15 * UISize,UISize * 1.0f }, TextSize, { 0.4f,0.4f,0.4f,0.4f }, { 1.0f,1.0f,1.0f,1.0f }, 1200);
 
 		bool save = false;
-		UI_buttonOnlyON(&save, "Save", { -0.46f * WIDTH ,0.40f * HEIGHT }, UISize, TextSize, glm::vec4(0.9f), glm::vec4(0.5f), 1200);
+		UI_buttonOnlyON(&save, "Save", { -0.46f * WIDTH ,0.40f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 		if (save)
 			Entities[0]->SaveTo(saveFileName);
 
 		bool load = false;
-		UI_buttonOnlyON(&load, "Load", { -0.46f * WIDTH ,0.34f * HEIGHT }, UISize, TextSize, glm::vec4(0.9f), glm::vec4(0.5f), 1200);
+		UI_buttonOnlyON(&load, "Load", { -0.46f * WIDTH ,0.34f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 		if (load)
 			Entities[0]->LoadFrom(saveFileName);
 
 
+		iw->End();
+		sw->Use();
+		WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
+		MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
+		MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
+		ScreenMousePosition = WindowMousePosition;
+		LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
+		foregroundMousePosition = MousePosition;
 			
 	}
 	}
@@ -1512,8 +1508,17 @@ void ProcessPlayerControls()
 		}
 	}
 
-	UI_DrawLine({ 0.34f * WIDTH ,0.46f * HEIGHT },{ 0.34f * WIDTH + 0.16f * WIDTH,0.46f * HEIGHT }, 10.0f,glm::vec4(0.1f,0.1f,0.1f,1.0f),0,0,10000);
-	UI_DrawLine({ 0.35f * WIDTH ,0.46f * HEIGHT },{ 0.35f * WIDTH + AccumulatedHeat/400.0f * 0.15f * WIDTH,0.46f * HEIGHT }, 8.0f,glm::vec4(AccumulatedHeat / 40.0f,AccumulatedHeat / 200.0f,AccumulatedHeat / 300.0f,1.0f),0,0,10000);
+	EndOfWindow();
+	iw->Use();
+	glm::vec2 WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
+	MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
+	MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
+	ScreenMousePosition = WindowMousePosition;
+	LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
+	foregroundMousePosition = MousePosition;
+
+	//UI_DrawLine({ 0.34f * WIDTH ,0.46f * HEIGHT },{ 0.34f * WIDTH + 0.16f * WIDTH,0.46f * HEIGHT }, 10.0f,glm::vec4(0.1f,0.1f,0.1f,1.0f),0,0,10000);
+	//UI_DrawLine({ 0.35f * WIDTH ,0.46f * HEIGHT },{ 0.35f * WIDTH + AccumulatedHeat/400.0f * 0.15f * WIDTH,0.46f * HEIGHT }, 8.0f,glm::vec4(AccumulatedHeat / 40.0f,AccumulatedHeat / 200.0f,AccumulatedHeat / 300.0f,1.0f),0,0,10000);
 
 	bool blm = bLogicMode;
 	bool flm = fLogicMode;
@@ -1522,15 +1527,40 @@ void ProcessPlayerControls()
 
 	if (JustPressedkey[GLFW_KEY_B])
 		BuildingMode = !BuildingMode;
+	if (Entities.size() > 0)
+		ActiveRadar.playerHeat = Entities[0]->avgheat;
 
-	glm::vec4 UI_ColorON = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
-	glm::vec4 UI_ColorOFF = glm::vec4(0.5f, 0.5f, 0.5f, 0.7f);
+	for (int i = 0; i < ActiveRadar.bleeps.size(); i++)
+	{
+		if (Entities.size() > 0)
+		{
+			if (ActiveRadar.bleeps[i].state == 1 &&
+				1000.0f > length(ActiveRadar.bleeps[i].position - Entities[0]->mid))
+			{
+				ActiveRadar.bleeps[i].t = -10.0f;
+				ActiveRadar.bleeps[i].infinite = false;
+				SpawnAiShip(ActiveRadar.bleeps[i].position, "Bigboy")->AIState = 1;
+			}
+
+		}
+	}
+	ActiveRadar.Process(delta);
+	ActiveRadar.Draw({ 0.5f * WIDTH - 120.0f,0.5f * HEIGHT - 120.0f });
+
 
 	UI_CheckBox(&bLogicMode, "Bools Logic", { 0.40f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 	UI_CheckBox(&fLogicMode, "Number Logic", { 0.40f * WIDTH ,-0.40f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 	UI_CheckBox(&vLogicMode, "Vector Logic", { 0.40f * WIDTH ,-0.34f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 	UI_CheckBox(&BuildingMode, "Building Mode", { 0.40f * WIDTH ,-0.28f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 
+	iw->End();
+	sw->Use();
+	WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
+	MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
+	MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
+	ScreenMousePosition = WindowMousePosition;
+	LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
+	foregroundMousePosition = MousePosition;
 	if (bLogicMode && blm != bLogicMode)
 	{
 		bLogicMode = true;
@@ -1900,34 +1930,42 @@ void Ready()
 	ForeWindowID = CreateWindow();
 	BackgroundWindowID = CreateWindow();
 	MenuWindowID = CreateWindow();
-	TerminalWindowID= CreateWindow();
+	InterfaceWindowID = CreateWindow();
+	ForeGroundWindowID = CreateWindow();
 
 	Window* bw = GetWindow(BackgroundWindowID);
 	Window* sw = GetWindow(ForeWindowID);
-	Window* cw = GetWindow(TerminalWindowID);
+	Window* fw = GetWindow(ForeGroundWindowID);
+	Window* cw = GetWindow(InterfaceWindowID);
 	Window* mw = GetWindow(MenuWindowID);
 
 
 	sw->AutoActive = false;
 	bw->AutoActive = false;
+	fw->AutoActive = false;
 	cw->AutoActive = false;
 	mw->AutoActive = false;
 
 	sw->hdr = true;
+	bw->hdr = true;
+	fw->hdr = false;
 
 	sw->Init(GetWindow(SceneWindowID)->ViewportSize);
 	bw->Init(GetWindow(SceneWindowID)->ViewportSize);
+	fw->Init(GetWindow(SceneWindowID)->ViewportSize);
 	cw->Init(GetWindow(SceneWindowID)->ViewportSize);
 	mw->Init(GetWindow(SceneWindowID)->ViewportSize);
 
 
-    sw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
-    bw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
+	sw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
+	bw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
+	fw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
 	cw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
 	mw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
 	EditorColor = {0.0f,0.0f,0.0f,1.0f};
 	sw->w_AmbientLight = 0.4f;
 	bw->w_AmbientLight = 0.1f;
+	fw->w_AmbientLight = 0.1f;
 	cw->w_AmbientLight = 1.4f;
 	sw->w_DirectionalLight = 2.0f;
 
@@ -1981,7 +2019,9 @@ void Ready()
 	vLogicMode = false;
 	DataconnectionData[6] = {0};
 	Speed = 1.0f;
+	ActiveRadar.Init();
 	std::cout<<"ready\n";
+
 }
 void SubSteppedProcess(float dt, int SubStep)
 {
@@ -1995,7 +2035,7 @@ void SubSteppedProcess(float dt, int SubStep)
 		Sounds[i].Update();
 	}
 	sw->End();
-    UseWindow(SceneWindowID);
+	UseWindow(SceneWindowID);
 }
 
 void Process(float dt)
@@ -2015,8 +2055,9 @@ void Process(float dt)
 		in_UI = 0;
 
 	Window* sw = GetWindow(ForeWindowID);
+	Window* fw = GetWindow(ForeGroundWindowID);
 	Window* bw = GetWindow(BackgroundWindowID);
-	Window* cw = GetWindow(TerminalWindowID);
+	Window* cw = GetWindow(InterfaceWindowID);
 	Window* mw = GetWindow(MenuWindowID);
 
 	sw->active = true;
@@ -2250,7 +2291,7 @@ void Process(float dt)
 			inside = false;
 	}
 
-	if(!inside && Entities.size()>0)
+	/*if(!inside && Entities.size()>0)
 	{
 		AccumulatedHeat += (Entities[0]->sumheat - 5.0f) * dt * 0.1f;
 		if(AccumulatedHeat<0.0f)
@@ -2267,9 +2308,9 @@ void Process(float dt)
 		AccumulatedHeat -= 10.0f * dt;
 		if(AccumulatedHeat<0.0f)
 			AccumulatedHeat = 0.0f;
-	}
+	}*/
 	
-    GameScene->Draw(dt);
+	GameScene->Draw(dt);
 	int ent=0;
 	
 	while (ent < Entities.size())
@@ -2312,13 +2353,63 @@ void Process(float dt)
 		bw->w_CameraPosition = (sw->w_CameraPosition )*0.05f;
 	else
 		bw->w_CameraPosition = (sw->w_CameraPosition + MissionSelectMenu.missionPosition)*0.05f;
-	
+
 	bw->Use();
 	Background.DrawCollisions = false;
-	ProcessScene(&Background,true,false);
+	ProcessScene(&Background, true, false);
 	Background.Draw(delta);
-	
+
 	bw->End();
+
+	if (MissionSelectMenu.Hub)
+		fw->w_CameraPosition = (sw->w_CameraPosition) * 1.0f;
+	else
+		fw->w_CameraPosition = (sw->w_CameraPosition + MissionSelectMenu.missionPosition) * 1.0f;
+	fw->w_CameraScale = (sw->w_CameraScale * 0.75f);
+
+	fw->Use();
+
+	glm::vec2 fogbox = glm::vec2(WIDTH * 1.2f, HEIGHT * 1.2f);
+	foregroundFogParticleT -= dt;
+	if (foregroundFogParticleT <= 0.0f)
+	{
+		foregroundFog.SpawnInCube(fw->w_CameraPosition, fogbox, foregroundFogParticleAmount * 100);
+		foregroundFogParticleT = 1.00f;
+	}
+	for (int i = 0; i < foregroundFog.Particles.size(); i++)
+	{
+		if (foregroundFog.Particles[i].position.x - CameraPosition.x < -fogbox.x)
+		{
+			foregroundFog.Particles[i].position.x = CameraPosition.x + fogbox.x ;
+			foregroundFog.Particles[i].position.y = CameraPosition.y + fogbox.y  * (rand() % 1000 * 0.002f - 1.0f);
+			foregroundFog.Particles[i].velocity = { 0.0f, 0.0f };
+		}
+		if (foregroundFog.Particles[i].position.x - CameraPosition.x > fogbox.x )
+		{
+			foregroundFog.Particles[i].position.x = CameraPosition.x + -fogbox.x ;
+			foregroundFog.Particles[i].position.y = CameraPosition.y + fogbox.y  * (rand() % 1000 * 0.002f - 1.0f);
+			foregroundFog.Particles[i].velocity = { 0.0f, 0.0f };
+		}
+		if (foregroundFog.Particles[i].position.y - CameraPosition.y < -fogbox.y )
+		{
+			foregroundFog.Particles[i].position.y = CameraPosition.y + fogbox.y ;
+			foregroundFog.Particles[i].position.x = CameraPosition.x + fogbox.x  * (rand() % 1000 * 0.002f - 1.0f);
+			foregroundFog.Particles[i].velocity = { 0.0f, 0.0f };
+		}
+		if (foregroundFog.Particles[i].position.y - CameraPosition.y > fogbox.y )
+		{
+			foregroundFog.Particles[i].position.y = CameraPosition.y + -fogbox.y ;
+			foregroundFog.Particles[i].position.x = CameraPosition.x + fogbox.x  * (rand() % 1000 * 0.002f - 1.0f);
+			foregroundFog.Particles[i].velocity = { 0.0f, 0.0f };
+		}
+	}
+
+	foregroundFog.ShowWindow = false;
+	foregroundFog.Process(dt);
+	foregroundFog.SpheresOfInfluence.clear();
+	foregroundFog.LightSpheres.clear();
+
+	fw->End();
 
 	cw->Use();
 	
@@ -2339,15 +2430,22 @@ void Process(float dt)
 	cw->End();
 	
 
-    UseWindow(SceneWindowID);
+	UseWindow(SceneWindowID);
 	AmbientLight = 1.0f;
-    bw->Draw(0);
+	bw->Draw(0);
+	fw->Scale = { 1.0f,1.0f };
 
-    sw->Draw(1);
+	fw->Draw(1);
 
-    cw->Draw(2);
+	sw->Draw(2);
 
-    mw->Draw(3);
+	fw->Scale = { 1.6f,1.6f };
+	
+	fw->Draw(3);
+
+	cw->Draw(4);
+
+	mw->Draw(5);
 	
 
 }
@@ -2358,6 +2456,8 @@ void PreReady()
 	lastid = 0;
 	lastStaticBallid = 0;
 	lastStaticCubeid = 0;
+	foregroundFogParticleAmount = 1.0f;
+	foregroundFogParticleT = 1.0f;
 	for (int i = 0; i < 100'000; i++)
 	{
 		ballPosition[i] = { 0.0f,0.0f };
@@ -2368,7 +2468,7 @@ void PreReady()
 		ballVelocityBuff[i] = { 0.0f,0.0f };
 		IsBall[i] = false;
 	}
-    // Remake with DataStorage
+	// Remake with DataStorage
 	std::cout<<"Pre ready\n";
 	std::ifstream f("Settings.sav");
 	if (f.is_open())
@@ -2447,6 +2547,8 @@ void Rescale(int newWindth,int newHeight)
 
 	Window* sw = GetWindow(ForeWindowID);
 	Window* bw = GetWindow(BackgroundWindowID);
+	Window* iw = GetWindow(InterfaceWindowID);
+	Window* fw = GetWindow(ForeGroundWindowID);
 	Window* mw = GetWindow(MenuWindowID);
 	sw->ViewportSize = GetWindow(SceneWindowID)->ViewportSize;
 	sw->RecalculateSize();
@@ -2456,6 +2558,12 @@ void Rescale(int newWindth,int newHeight)
 
 	mw->ViewportSize = GetWindow(SceneWindowID)->ViewportSize;
 	mw->RecalculateSize();
+
+	iw->ViewportSize = GetWindow(SceneWindowID)->ViewportSize;
+	iw->RecalculateSize();
+
+	fw->ViewportSize = GetWindow(SceneWindowID)->ViewportSize;
+	fw->RecalculateSize();
 
 	float maxsize = fmaxf(sw->ViewportSize.x, sw->ViewportSize.y);
 	TextSize = maxsize * 0.0005f * 0.35f;

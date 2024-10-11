@@ -180,6 +180,9 @@
     <ClInclude Include="Parts\smallball.h">
       <Filter>Source Files\Parts</Filter>
     </ClInclude>
+    <ClInclude Include="Radar.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\Components\Cpps\Collisions\BallToBall.cpp">
@@ -322,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="Parts\smallball.cpp">
       <Filter>Source Files\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="Radar.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -49,7 +49,6 @@ void DeleteBall(int id)
 {
 	IsBall[id] = false;
 	freeBallIDs.push_front(id);
-	std::cout << "deleted: "<<id<<"\n";
 }
 
 void Strut(int b1, int b2, float StrutLength)
