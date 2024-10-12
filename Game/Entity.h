@@ -61,7 +61,6 @@ int CheckShipSaveFile(std::string filename)// returns -1 if not an ship, returns
 
 int _MultithreadEntitiesProcesStep = 0;
 
-int lastEntityID = 0;
 
 float subdt = 0.0017;
 
@@ -207,8 +206,8 @@ void ProcessEntities(float dt,int s)
 
 			}
 		}
-		
-	
+
+	subdt = dt / substeps;
 	Debris.Process(subdt, s, s == substeps - 1);
 	balltaken = false;
 

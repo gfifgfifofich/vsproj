@@ -139,7 +139,6 @@ class Mission
 			{
 			case 0: // tutorial
 			{
-				AmbientLight=  0.0f;
 				Background.LoadFrom("Scenes/Sun.sav");
 				ChangeMap("Scenes/tutorial.sav",false);
 				SpawnPlayer(playerpos);
@@ -160,7 +159,6 @@ class Mission
 				flags["Spawned"] = false;
 				for(int i=0;i<8;i++)
 					Debris.SpawnPart(PART::ROCKETENGINE,{i + 11.5f,5.0f},PARTSIZE);
-				AqueredCameraScale = {20.0f,20.0f};
 
 				glm::vec2 pos = {30.0f,100.0f};
 				Debris.SpawnPart(PART::RADIATOR,pos,PARTSIZE);
@@ -172,7 +170,6 @@ class Mission
 			}break;
 			case 1:
 			{
-				AmbientLight=  0.0f;
 				ChangeMap("Scenes/Gun.sav",false);
 				SpawnPlayer(playerpos);
 				for(int i=0;i< Entities[0]->Parts.size();i++)
@@ -188,7 +185,6 @@ class Mission
 				timers.push_back(5.0f);
 				flags["Ending"] = false;
 				flags["Spawned"] = false;
-				AqueredCameraScale = {2.0f,2.0f};
 				std::vector<CentralPart*> arrr;
 				Bots.push_back(arrr);
 				Bots[0].push_back(SpawnAiShip({-150.0f,400.0f},"drone"));
@@ -203,7 +199,6 @@ class Mission
 			}break;
 			case 2:
 			{
-				AmbientLight=  0.0f;
 				ChangeMap("Scenes/pstation.sav",false);
 				SpawnPlayer(playerpos);
 				for(int i=0;i< Entities[0]->Parts.size();i++)
@@ -219,7 +214,6 @@ class Mission
 				timers.push_back(5.0f);
 				flags["Ending"] = false;
 				flags["Spawned"] = false;
-				AqueredCameraScale = {2.0f,2.0f};
 				std::vector<CentralPart*> arrr;
 				Bots.push_back(arrr);
 				
@@ -359,7 +353,6 @@ class Mission
 			}break;
 			case 4:
 			{
-				AmbientLight=  0.0f;
 				ChangeMap("Scenes/lab.sav",false);
 				SpawnPlayer(playerpos);
 				for(int i=0;i< Entities[0]->Parts.size();i++)
@@ -374,7 +367,6 @@ class Mission
 				flags["LaserShot"] = false;
 				
 				
-				AqueredCameraScale = {2.0f,2.0f};
 				std::vector<CentralPart*> arrr;
 				Bots.push_back(arrr);
 				
@@ -1370,7 +1362,6 @@ class Mission
 			}
 			exitedmission = true;
 			inbase = true;
-			AmbientLight = 0.0f;
 			exiting = false;
 			GetWindow(BackgroundWindowID)->w_DirectionalLight = 1.0f;
 			ChangeMap("Scenes/base.sav", false);

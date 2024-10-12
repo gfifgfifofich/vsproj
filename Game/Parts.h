@@ -1408,7 +1408,7 @@ public:
 				}
 			}
 			glm::vec2 lp = (ballPosition[body[1]] + dir * PARTSIZE);
-			DrawLight(glm::vec3(lp.x, lp.y, EngineLightHeight), glm::vec2(800 * abs(Particleforce) * 0.025f), glm::vec4(4.0f, 0.8f, 0.4f, abs(0.5f + abs(Particleforce) + (rand() % 100 - 50) * 0.01f)), 0.0f);
+			DrawLight(glm::vec3(lp.x, lp.y, 0.01f), glm::vec2(800 * abs(Particleforce) * 0.025f), glm::vec4(4.0f, 0.8f, 0.4f, abs(0.5f + abs(Particleforce) + (rand() % 100 - 50) * 0.01f)), 0.0f);
 		}
 		glm::vec2 mid = (ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f;
 		DrawTexturedQuad(mid,glm::vec2(1.0f * PARTSIZE,2.0f* PARTSIZE), RocketEngineTexture,  get_angle_between_points(mid, mid - dir),color, Z_Index,RocketEngineNormalMap);
@@ -2214,7 +2214,7 @@ public:
 				}
 		}
 		glm::vec2 lp = (mid);
-		DrawLight(glm::vec3(lp.x,lp.y, EngineLightHeight), glm::vec2( 800 * abs(throtle)*0.025f), glm::vec4(4.0f, 0.8f, 0.4f, abs(0.5f + abs(throtle) + (rand() % 100 - 50) * 0.01f)), 0.0f);
+		DrawLight(glm::vec3(lp.x,lp.y, 0.01f), glm::vec2( 800 * abs(throtle)*0.025f), glm::vec4(4.0f, 0.8f, 0.4f, abs(0.5f + abs(throtle) + (rand() % 100 - 50) * 0.01f)), 0.0f);
 		
 
 		glm::vec2 mid2 = (ballPosition[body[1]] + mid) * 0.5f;

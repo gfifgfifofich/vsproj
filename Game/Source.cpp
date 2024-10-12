@@ -91,6 +91,41 @@ Stages
 		draw foreground with half or quatter of resolution, fog only = dont care, linear filter will fix low res
 		todo: make light buffer & others with less res/ color depth, they dont need full res 32bit float buffers	
 
+
+		Rewrite
+		{
+		gameHelper.h
+		{
+			inline glm::vec2 prevmissionpos = {0.0f,0.0f};
+			inline glm::vec2 currentmissionpos = {0.0f,0.0f};
+			inline glm::vec2 absolutePlayerPos = currentmissionpos + Entities[0].mid
+			
+		}
+
+			Mission
+			{
+				
+
+				area1 
+				{
+					logic
+				}
+				area2
+				{
+					logic
+				}
+				etc.
+				StoryArea
+				{
+					1{}
+					2{}
+					3{}
+				}
+
+
+			}
+		}
+
 			
 	}
 
@@ -110,316 +145,32 @@ Stages
 
 
 #include "engine/Components/Redactor.h"
+glm::ivec2 StandartResolutions[] =
+{
+	{800, 600},
+	{ 1024,768 },
+	{ 1280,720 },
+	{ 1280,1024 },
+	{ 1366,768 },
+	{ 1680,1050 },
+	{ 1920,1080 },
+	{ 2560,1440 }
+};
 #include "engine/Components/Include/sounds.h"
 
 #include "Parts/smallball.h"
 
-
-
-
-DataStorage GameSaveFile;
-int Materials = 0;
-int storyint = 0;
-std::string lastEntityName = "Save0.sav";
-std::string EntityBackUpName = "PreMissionBackup";
-std::string GameSaveName = "Save0";
-std::vector<std::string> ConsoleTexts;
-
-float AccumulatedHeat = 0.0f;
-bool inside = false;
-
-struct shipInfo
-{
-	std::string filename = "";
-	int MateralCost = 0;
-
-};
-std::vector <shipInfo> ShipInfos;
-void LoadPlayerData()
-{
-	ShipInfos.clear();
-	GameSaveFile.Load("SaveFile.sav");	
-	lastEntityName = GameSaveFile.GetProperty(GameSaveName,"lastEntityName");
-	EntityBackUpName = GameSaveFile.GetProperty(GameSaveName,"EntityBackUpName");
-	Materials = GameSaveFile.GetPropertyAsFloat(GameSaveName,"Materials");
-	storyint = GameSaveFile.GetPropertyAsFloat(GameSaveName,"storyint");
-	
-	std::vector<std::string> shipfilenames = GameSaveFile.GetProperties("ShipFileNames");
-	for(int i=0;i< shipfilenames.size();i++)
-	{
-		shipInfo si;
-		si.filename = shipfilenames[i];
-		si.MateralCost = GameSaveFile.GetPropertyAsFloat("ShipFileNames",shipfilenames[i]);
-		ShipInfos.push_back(si);
-	}
-}
-void SavePlayerData()
-{
-	GameSaveFile.SetProperty(GameSaveName,"lastEntityName",lastEntityName);
-	GameSaveFile.SetProperty(GameSaveName,"Materials",Materials);
-	GameSaveFile.SetProperty(GameSaveName,"EntityBackUpName",EntityBackUpName);
-	GameSaveFile.SetProperty(GameSaveName,"storyint",storyint);
-	GameSaveFile.SetProperty("LastSave","LastSaveName","Save0");
-
-	for(int i=0;i<ShipInfos.size();i++)
-		GameSaveFile.SetProperty("ShipFileNames",ShipInfos[i].filename,ShipInfos[i].MateralCost);
-
-	GameSaveFile.Save("SaveFile.sav");
-}
-
-
-
-
-
-int BackgroundWindowID = -1;// background cosmetic window
-int ForeWindowID = -1;// "game" window
-int ForeGroundWindowID = -1;// foreground cosmetic window
-int InterfaceWindowID = -1;// player interface window
-int MenuWindowID = -1;
-inline glm::vec2 foregroundMousePosition = {0.0f,0.0f};
-
-inline float TextSize = 1.0f;
-inline float UISize = 18.0f;
-
 #include "Textures.h"
 
-void LoadTextures()
-{
-	LoadTexture("./Textures/HeatPipe.png", &HeatPipeTexture);
-	LoadTexture("./Textures/HeatPipe NormalMap.png", &HeatPipeNormalMap);
-
-	LoadTexture("./Textures/Rope.png", &RopeTexture);
-	LoadTexture("./Textures/Rope NormalMap.png", &RopeNormalMap);
-
-	LoadTexture("./Textures/Strut.png", &StrutTexture);
-	LoadTexture("./Textures/Strut NormalMap.png", &StrutNormalMap);
-
-	LoadTexture("./Textures/RocketEngine.png", &RocketEngineTexture);
-	LoadTexture("./Textures/RocketEngine NormalMap.png", &RocketEngineNormalMap);
-
-	LoadTexture("./Textures/Radiator.png", &RadiatorTexture);
-	LoadTexture("./Textures/Radiator NormalMap.png", &RadiatorNormalMap);
-
-	LoadTexture("./Textures/Gun.png", &GunTexture);
-	LoadTexture("./Textures/Gun NormalMap.png", &GunNormalMap);
-
-	LoadTexture("./Textures/LaserGun.png", &LaserGunTexture);
-	LoadTexture("./Textures/LaserGun NormalMap.png", &LaserGunNormalMap);
-
-	LoadTexture("./Textures/MiniGun.png", &MiniGunTexture);
-	LoadTexture("./Textures/MiniGun NormalMap.png", &MiniGunNormalMap);
-
-	LoadTexture("./Textures/GunBase.png", &GunBaseTexture);
-	LoadTexture("./Textures/GunBase NormalMap.png", &GunBaseNormalMap);
-
-	LoadTexture("./Textures/RocketLauncher.png", &RocketLauncherTexture);
-	LoadTexture("./Textures/RocketLauncher NormalMap.png", &RocketLauncherNormalMap);
-
-	LoadTexture("./Textures/BallBody.png", &BallBodyTexture);
-	LoadTexture("./Textures/BallBody NormalMap.png", &BallBodyNormalMap);
-
-	LoadTexture("./Textures/CentralPart.png", &CentralPartTexture);
-	LoadTexture("./Textures/CentralPart NormalMap.png", &CentralPartNormalMap);
-
-	LoadTexture("./Textures/Rotor.png", &RotorTexture);
-	LoadTexture("./Textures/Rotor NormalMap.png", &RotorNormalMap);
-
-	LoadTexture("./Textures/Pipe.png", &PipeTexture);
-	LoadTexture("./Textures/Pipe NormalMap.png", &PipeNormalMap);
-
-	LoadTexture("./Textures/debrie0.png", &Debrie0Texture);
-	LoadTexture("./Textures/debrie1.png", &Debrie1Texture);
-
-
-}
-
-glm::vec2 camerapos = {0.0f,0.0f};
-
-const int GridCellSize = PARTSIZE * 2.0f;
-
-
-bool reloadSources = false;
-
-float brightness = 1.0f;
-
-int SRiter = 0;
-glm::ivec2 StandartResolutions[] =
-{
-	{800,600},
-	{1024,768},
-	{1280,720},
-	{1280,1024},
-	{1366,768},
-	{1680,1050},
-	{1920,1080},
-	{2560,1440}
-};
-
-
-std::string RX = std::to_string(s_Resolution.x);
-std::string RY = std::to_string(s_Resolution.y);
-
-void ResetSettings()
-{
-	brightness = 1.0f;
-	bloom = true;
-}
-void SaveSettings()
-{
-	std::ofstream SaveFile("Settings.sav");
-	SaveFile << "Res ";
-	SaveFile << s_Resolution.x;
-	SaveFile << " ";
-	SaveFile << s_Resolution.y;
-	SaveFile << "\n";
-
-	SaveFile << "FS ";
-	SaveFile << s_Fullscreen;
-	SaveFile << "\n";
-
-	SaveFile << "Br ";
-	SaveFile << brightness;
-	SaveFile << "\n";
-
-	SaveFile << "Bl ";
-	SaveFile << bloom;
-	SaveFile << "\n";
-	SaveFile << "Sh ";
-	SaveFile << s_ScreenShake;
-	SaveFile << "\n";
-	SaveFile << "Ca ";
-	SaveFile << s_ChromaticAbberation;
-	SaveFile << "\n";
-}
-
-inline float Exposure = 0.0f;
-
-
-struct LightEffect
-{
-	float time = 1.0f;
-	float maxT = 1.0f;
-	float S_Scale = 1000.0f;
-	float E_Scale = 0.0f;
-
-	glm::vec3 position = glm::vec3(0.0f);
-
-	glm::vec4 S_Color = glm::vec4(1.0f);
-	glm::vec4 E_Color = glm::vec4(0.0f);
-
-	float volume = 0.05f;
-};
+#include "Helper.h"
 
 #include "ParticleMaterials.h"
-std::vector<LightEffect> LightEffects;
-
-void ProcessLightEffects(float dt)
-{
-
-	for (int i = 0; i < LightEffects.size(); i++)
-	{
-		
-		float step = LightEffects[i].time / LightEffects[i].maxT;
-		glm::vec2 scale = glm::vec2(LightEffects[i].S_Scale * step + LightEffects[i].E_Scale * (1.0f - step));
-		glm::vec4 color = LightEffects[i].S_Color * step + LightEffects[i].E_Color * (1.0f - step);
-		DrawLight(LightEffects[i].position,
-			scale,
-			color,
-			LightEffects[i].volume);
-		AddLightSphere(LightEffects[i].position, (scale.x + scale.y) * 0.5f, color);
-		LightEffects[i].time -= dt;
-
-	}
-	int i = 0;
-	while (i < LightEffects.size())
-	{
-		if (LightEffects[i].time <= 0.0f)
-		{
-			LightEffects[i] = LightEffects[LightEffects.size() - 1];
-			LightEffects.pop_back();
-		}
-		else
-			i++;
-	}
-
-
-}
-
-float ExplodionLightHeight = 0.010f;
-float EngineLightHeight = 0.010f;
-float BulletHitLightHeight = 0.010f;
-
-Scene Background;
 
 #include "DamageSphere.h"
 #include "Explodion.h"
 #include "SubECS.h"
 
-
-inline float Speed = 1.0f;
-
-int NewConType =0;
-int NewConPart1;
-int NewConPart2;
-int NewConIndex1;
-int NewConIndex2;
-int ConCreationStage = 0;
-
-bool NewConDebrie1 = false;
-bool NewConDebrie2 = false;
-
-int newPartType = -1;//-1 = not selected
-float newPartRotation = 0.0f;
-
-bool balltaken = false;
-
-inline bool absoluteControl = true;
-inline bool BuildingMode = false;
-
-inline bool bLogicMode = false;
-inline bool fLogicMode = false;
-inline bool vLogicMode = false;
-inline int DataconnectionData[6];
-
-
-bool editSaveName = false;
-//std::string saveFileName =  "Radiat.sav";
-std::string saveFileName = "Save0.sav";
-//std::string saveFileName = "Save0Laser.sav";
-//std::string saveFileName = "BigBoy.sav";
-//std::string saveFileName = "Spinner.sav";
-
-int in_UI = 0;// <=0 - not, else - browsing ui
-
-bool createdFreezeDS = false;
-
-bool align = false;
-bool snapToGrid = false;
-
-
-
 #include "Parts/Base.h"
-
-//
-//struct GridCell
-//{
-//	int size = 0;
-//	BallBodyComponent* balls[10];
-//	void add(BallBodyComponent* b)
-//	{
-//		if (size < 10)
-//		{
-//			balls[size] = b;
-//			size++;
-//		}
-//	}
-//};
-//GridCell Grid[300][300];
-//
-//int balllbuffersize;
-//BallBodyComponent* ballbuffer[200];
-int NewConBall1 = -1;
-int NewConBall2 = -1;
 
 
 #include "Rocket.h"
@@ -428,51 +179,15 @@ int NewConBall2 = -1;
 #include "Parts.h"
 #include "Entity.h"
 
-const int StarsAmount = 3000;
-float StarsSpread = 2520.0f;
-float StarsDepth = 10.0f;
-glm::vec4 Stars[StarsAmount];
-glm::vec4 BackgroundStars[StarsAmount];
-
-
-bool MainMenu = false;
-bool switchScene = false;
-bool switchToMission = false;
-bool OpenMenu = false;
-bool Settings = false;
-int lastsound = 0;
-int lastsound2 = 0;
-unsigned int lastplayedsound = 1;
-
-void ProcessCamera(float dt)
-{
-	if (Exposure < 0.85f)
-		Exposure += dt;
-	else
-		Exposure = 0.85f;
-	SceneExposure = Exposure * Exposure * brightness;
-	CameraPosition = camerapos + glm::vec2(((rand()%100) * ScreenShake - ScreenShake *50.0f )* s_ScreenShake, ((rand() %100) * ScreenShake - ScreenShake * 50.0f )* s_ScreenShake);
-	ScreenShake -= ScreenShakeFallOff * dt;
-	ChromaticAbberation -= ChromaticAbberationFallOff * dt;
-	if (ScreenShake < 0.0f) ScreenShake = 0.0f;
-	if (ChromaticAbberation < 0.0f) ChromaticAbberation = 0.0f;
-
-	if (ScreenShake > 1.0f) ScreenShake = 1.0f;
-	if (ChromaticAbberation > 0.3f) ChromaticAbberation = 0.3f;
-	ChromaticStrength = ChromaticAbberation * s_ChromaticAbberation;
-	ListenerPos = CameraPosition;
-	UpdateListenerPosition();
-}
 
 
 
-std::vector <Node> PartSpawnPoints;
 
 void Delete()
 {
 }
 
-void ChangeMap(std::string FilePath, bool scaleDown = true)
+void ChangeMap(std::string FilePath, bool scaleDown)
 {
 	std::cout<<"changing map to: " <<FilePath<<"\n";
 	
@@ -502,69 +217,12 @@ void ChangeMap(std::string FilePath, bool scaleDown = true)
 	Lasers.clear();
 	LightEffects.clear();
 	GameScene->LoadFrom(FilePath);
-
-
-	PartSpawnPoints.clear();
-	int currentobject = 0;
-	for (int i = 0; i < GameScene->Nodes.size(); i++)
-	{
-		if (GameScene->Nodes[i]->id == 1 && currentobject <= SpawnablePartAmount)
-		{
-			if(currentobject < PART::LASTPART && currentobject != PART::CENTRALPART && currentobject != PART::STATICPOINT)
-			{
-				Node mp;
-				mp.id = currentobject;
-				mp.position = GameScene->Nodes[i]->position;
-				PartSpawnPoints.push_back(mp);
-			}
-			currentobject++;
-		}
-	}
-
-
-
-
 	lastEntityID = 0;
 
 	std::cout<<"\nMap Changed to: "<<FilePath;
 	SavePlayerData();
 }
 
-void SpawnPlayer(std::string filename = "PreMissionBackup")
-{
-
-	glm::vec2 position = glm::vec2(-10, 0.0f);
-	glm::vec2 Scale = glm::vec2(0.5f, 0.5f);
-	Entities.push_back(new CentralPart);
-	Entities[0]->Create(glm::vec2(0.0f, 0.0f) * Scale + position, { 0.0f,1.0f }, PARTSIZE);
-	Entities[0]->LoadFrom(filename);
-	std::cout<<"\nPlayer Spawned";
-}
-void SpawnPlayer(glm::vec2 position,std::string filename = "PreMissionBackup")
-{
-	glm::vec2 Scale = glm::vec2(0.5f, 0.5f);
-	Entities.push_back(new CentralPart);
-	Entities[0]->Create(glm::vec2(0.0f, 0.0f) * Scale + position, { 0.0f,1.0f }, PARTSIZE);
-	Entities[0]->LoadFrom(filename);
-	std::cout<<"\nPlayer Spawned";
-}
-
-CentralPart* SpawnAiShip(glm::vec2 pos, std::string name)
-{
-	Entities.push_back(new CentralPart);
-	Entities[Entities.size() - 1]->Create(pos, { 0.0f,1.0f }, PARTSIZE);
-	Entities[Entities.size() - 1]->LoadFrom(name);
-	Entities[Entities.size() - 1]->autocontrol = true;
-	Entities[Entities.size() - 1]->trgPos = pos;
-	lastEntityID++;
-	Entities[Entities.size() - 1]->id = lastEntityID;
-	return Entities[Entities.size() - 1];
-
-	
-}
-
-inline bool inbase = true;
-inline std::vector<std::string> shipNames;
 
 #include "Mission.h"
 #include "Radar.h"
@@ -1029,6 +687,7 @@ public:
 	
 
 };
+
 MissionSelectScreen MissionSelectMenu;
 SaveScreen SaveScreenmenu;
 Shop shopmenu;
@@ -1117,7 +776,7 @@ void ProcessPlayerControls()
 			Entities[0]->FireGuns = false;
 
 			// grid size = 1
-			glm::vec2 roundCP = glm::vec2(roundf(CameraPosition.x), roundf(CameraPosition.y));
+			glm::vec2 roundCP = glm::vec2(roundf(camerapos.x), roundf(camerapos.y));
 			float aVal = (CameraScale.x - 10.0f) / 70.0f;
 			if (CameraScale.x > 10.0f)
 				for (int i = 0; i < 200; i++)
@@ -1479,6 +1138,8 @@ void ProcessPlayerControls()
 		inbase = false;
 		switchScene = false;
 		OpenMenu = false;
+		Entities[0]->mid = plPos;
+		loadedThisFrame = true;
 	}
 	if (!MissionSelectMenu.Hub && Entities.size() > 0 && sqrlength(-MissionSelectMenu.missionPosition - Entities[0]->mid) < (2000 * 2000))
 	{
@@ -1494,7 +1155,6 @@ void ProcessPlayerControls()
 			Entities[0]->SaveTo(EntityBackUpName);
 		}
 		inbase = true;
-		AmbientLight = 0.0f;
 		GetWindow(BackgroundWindowID)->w_DirectionalLight = 1.0f;
 		ChangeMap("Scenes/base.sav", false);
 		SpawnPlayer(plPos, EntityBackUpName);
@@ -1506,6 +1166,8 @@ void ProcessPlayerControls()
 				ballVelocity[Entities[0]->Parts[i]->body[a]] = vel;
 			}
 		}
+		Entities[0]->mid = plPos;
+		loadedThisFrame = true;
 	}
 
 	EndOfWindow();
@@ -1569,6 +1231,8 @@ void ProcessPlayerControls()
 					inbase = false;
 					switchScene = false;
 					OpenMenu = false;
+					Entities[0]->mid = plPos;
+					loadedThisFrame = true;
 				}
 			}
 		}
@@ -1604,6 +1268,13 @@ void ProcessPlayerControls()
 	ScreenMousePosition = WindowMousePosition;
 	LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
 	foregroundMousePosition = MousePosition;
+
+	if (loadedThisFrame)
+	{
+		camerapos = (Entities[0]->mid + MissionSelectMenu.missionPosition);
+		CameraPosition = (Entities[0]->mid + MissionSelectMenu.missionPosition);
+	}
+
 	if (bLogicMode && blm != bLogicMode)
 	{
 		bLogicMode = true;
@@ -2160,7 +1831,6 @@ void Process(float dt)
 	ImGui::Text("Camera position { %.2f ; %.2f }", CameraPosition.x, CameraPosition.y);
 	ImGui::Text("Mission position { %.2f ; %.2f }", MissionSelectMenu.missionPosition.x, MissionSelectMenu.missionPosition.y);
 	ImGui::Text("Exposure { %.2f }", Exposure );
-	ImGui::Text("AccumulatedHeat { %.2f }", AccumulatedHeat );
 	
 	if (ImGui::Button("inside"))
 	{
@@ -2169,17 +1839,6 @@ void Process(float dt)
 	ImGui::SliderFloat("AmbientLight", &AmbientLight, 0.0f, 1.0f);
 	
 
-	ExplodionLightHeight *= 10.0f;
-	EngineLightHeight *= 10.0f;
-	BulletHitLightHeight *= 10.0f;
-
-	ImGui::SliderFloat("Explodion Light Height", &ExplodionLightHeight, -0.1f, 0.2f);
-	ImGui::SliderFloat("Engine Light Height", &EngineLightHeight, -0.1f, 0.2f);
-	ImGui::SliderFloat("BulletHit Light Height", &BulletHitLightHeight, -0.1f, 0.2f);
-
-	ExplodionLightHeight *= 0.1f;
-	EngineLightHeight *= 0.1f;
-	BulletHitLightHeight *= 0.1f;
 
 	if (ImGui::Button("VSync"))
 	{
@@ -2206,70 +1865,6 @@ void Process(float dt)
 
 
 	
-	if (clock() > 250 && (!inbase || MainMenu))
-	{
-		for (int i = 0; i < StarsAmount; i++)
-		{
-			if (Stars[i].x > CameraPosition.x + StarsSpread * 0.5f)
-			{
-				Stars[i].x = CameraPosition.x - StarsSpread * 0.5f;
-				Stars[i].y = CameraPosition.y + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
-			}
-			if (Stars[i].x < CameraPosition.x - StarsSpread * 0.5f)
-			{
-				Stars[i].x = CameraPosition.x + StarsSpread * 0.5f;
-				Stars[i].y = CameraPosition.y + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
-			}
-			if (Stars[i].y > CameraPosition.y + StarsSpread * 0.5f)
-			{
-				Stars[i].y = CameraPosition.y - StarsSpread * 0.5f;
-				Stars[i].x = CameraPosition.x + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
-			}
-			if (Stars[i].y < CameraPosition.y - StarsSpread * 0.5f)
-			{
-				Stars[i].y = CameraPosition.y + StarsSpread * 0.5f;
-				Stars[i].x = CameraPosition.x + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
-			}
-
-			DrawCube(glm::vec2(Stars[i]), glm::vec2(Stars[i].z * 0.25f), Stars[i].w, glm::vec4(1.0f, 1.0f, 1.0f, Stars[i].z * 10.0f / StarsDepth),false,0,-1000);
-
-		}
-		sw->End();
-		bw->Use();
-		for (int i = 0; i < StarsAmount*0.2; i++)
-		{
-			if (BackgroundStars[i].x > CameraPosition.x + StarsSpread * 0.5f)
-			{
-				BackgroundStars[i].x = CameraPosition.x - StarsSpread * 0.5f;
-				BackgroundStars[i].y = CameraPosition.y + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
-			}
-			if (BackgroundStars[i].x < CameraPosition.x - StarsSpread * 0.5f)
-			{
-				BackgroundStars[i].x = CameraPosition.x + StarsSpread * 0.5f;
-				BackgroundStars[i].y = CameraPosition.y + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
-			}
-			if (BackgroundStars[i].y > CameraPosition.y + StarsSpread * 0.5f)
-			{
-				BackgroundStars[i].y = CameraPosition.y - StarsSpread * 0.5f;
-				BackgroundStars[i].x = CameraPosition.x + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
-			}
-			if (BackgroundStars[i].y < CameraPosition.y - StarsSpread * 0.5f)
-			{
-				BackgroundStars[i].y = CameraPosition.y + StarsSpread * 0.5f;
-				BackgroundStars[i].x = CameraPosition.x + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
-			}
-
-			DrawCube(glm::vec2(BackgroundStars[i]*2.0f), glm::vec2(BackgroundStars[i].z * 1.25f), BackgroundStars[i].w, glm::vec4(1.0f, 1.0f, 1.0f, BackgroundStars[i].z * 10.0f / StarsDepth),false,0,-1000);
-		}
-		bw->End();
-		sw->Use();
-		glm::vec2 WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
-		MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
-		MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
-		ScreenMousePosition = WindowMousePosition;
-		LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
-		foregroundMousePosition =MousePosition; 
-	}
 	
 	if (!Settings) {
 		if (keys[GLFW_KEY_1])
@@ -2322,10 +1917,83 @@ void Process(float dt)
 
 	ProcessLightEffects(dt);
 	DrawExplodions(dt);
-	
+	loadedThisFrame = false;
 	if (!OpenMenu && !MainMenu)
 		ProcessPlayerControls();
-	
+
+
+	if (Entities.size() > 0 && !Entities[0]->dead && !Entities[0]->destroyed)
+		camerapos = Entities[0]->mid;
+
+	sw->End();
+	ProcessCamera(dt);
+	sw->Use();
+	// stars
+	if (clock() > 250)
+	{
+		for (int i = 0; i < StarsAmount; i++)
+		{
+			if (Stars[i].x > CameraPosition.x + StarsSpread * 0.5f)
+			{
+				Stars[i].x = CameraPosition.x - StarsSpread * 0.5f;
+				Stars[i].y = CameraPosition.y + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
+			}
+			if (Stars[i].x < CameraPosition.x - StarsSpread * 0.5f)
+			{
+				Stars[i].x = CameraPosition.x + StarsSpread * 0.5f;
+				Stars[i].y = CameraPosition.y + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
+			}
+			if (Stars[i].y > CameraPosition.y + StarsSpread * 0.5f)
+			{
+				Stars[i].y = CameraPosition.y - StarsSpread * 0.5f;
+				Stars[i].x = CameraPosition.x + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
+			}
+			if (Stars[i].y < CameraPosition.y - StarsSpread * 0.5f)
+			{
+				Stars[i].y = CameraPosition.y + StarsSpread * 0.5f;
+				Stars[i].x = CameraPosition.x + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
+			}
+
+			DrawCube(glm::vec2(Stars[i]), glm::vec2(Stars[i].z * 0.25f), Stars[i].w, glm::vec4(1.0f, 1.0f, 1.0f, Stars[i].z * 10.0f / StarsDepth), false, 0, -1000);
+
+		}
+		sw->End();
+		bw->Use();
+		for (int i = 0; i < StarsAmount * 0.2; i++)
+		{
+			if (BackgroundStars[i].x > CameraPosition.x + StarsSpread * 0.5f)
+			{
+				BackgroundStars[i].x = CameraPosition.x - StarsSpread * 0.5f;
+				BackgroundStars[i].y = CameraPosition.y + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
+			}
+			if (BackgroundStars[i].x < CameraPosition.x - StarsSpread * 0.5f)
+			{
+				BackgroundStars[i].x = CameraPosition.x + StarsSpread * 0.5f;
+				BackgroundStars[i].y = CameraPosition.y + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
+			}
+			if (BackgroundStars[i].y > CameraPosition.y + StarsSpread * 0.5f)
+			{
+				BackgroundStars[i].y = CameraPosition.y - StarsSpread * 0.5f;
+				BackgroundStars[i].x = CameraPosition.x + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
+			}
+			if (BackgroundStars[i].y < CameraPosition.y - StarsSpread * 0.5f)
+			{
+				BackgroundStars[i].y = CameraPosition.y + StarsSpread * 0.5f;
+				BackgroundStars[i].x = CameraPosition.x + rand() % 10000 * 0.0001f * StarsSpread - StarsSpread * 0.5f;
+			}
+
+			DrawCube(glm::vec2(BackgroundStars[i] * 2.0f), glm::vec2(BackgroundStars[i].z * 1.25f), BackgroundStars[i].w, glm::vec4(1.0f, 1.0f, 1.0f, BackgroundStars[i].z * 10.0f / StarsDepth), false, 0, -1000);
+		}
+		bw->End();
+		sw->Use();
+		glm::vec2 WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
+		MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
+		MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
+		ScreenMousePosition = WindowMousePosition;
+		LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
+		foregroundMousePosition = MousePosition;
+	}
+
 	if(MissionSelectMenu.Hub && Entities.size()>0)
 	{
 		if(sqrlength(Entities[0]->mid)<600*600)
@@ -2378,7 +2046,6 @@ void Process(float dt)
 			ent++;
 	}
 	CurrnetMission.CheckShips(dt);
-	ProcessCamera(dt);
 
 	int lastball = lastid;
 	for (int i =0; i < lastid; i++)
@@ -2475,6 +2142,12 @@ void Process(float dt)
 
 	UseWindow(SceneWindowID);
 	AmbientLight = 1.0f;
+
+	fw->w_AmbientLight = 0.4f;
+	fw->w_DirectionalLight = 1.0f;
+	cw->w_AmbientLight = 1.0f;
+	cw->w_DirectionalLight = 1.0f;
+
 	bw->Draw(0);
 	fw->Scale = { 1.0f,1.0f };
 
@@ -2495,6 +2168,80 @@ void Process(float dt)
 
 void PreReady()
 {
+
+	Speed = 1.0f;
+
+	NewConType = 0;
+	ConCreationStage = 0;
+	
+	NewConDebrie1 = false;
+	NewConDebrie2 = false;
+
+	newPartType = -1;//-1 = not selected
+	newPartRotation = 0.0f;
+
+	balltaken = false;
+
+	absoluteControl = true;
+	BuildingMode = false;
+
+	bLogicMode = false;
+	fLogicMode = false;
+	vLogicMode = false;
+	
+	in_UI = 0;// <=0 - not, else - browsing ui // compleat bullshit
+
+	createdFreezeDS = false; // why is that a thing?
+
+	align = false;
+	snapToGrid = false;
+
+	NewConBall1 = -1;
+	NewConBall2 = -1;
+	
+	StarsSpread = 2520.0f;
+	StarsDepth = 10.0f;
+	
+
+	MainMenu = false;
+	switchScene = false;
+	switchToMission = false;
+	OpenMenu = false;
+	Settings = false;
+	lastsound = 0;
+	lastsound2 = 0;
+	lastplayedsound = 1;
+
+	Exposure = 0.0f;
+
+
+	BackgroundWindowID = -1;// background cosmetic window
+	ForeWindowID = -1;// "game" window
+	ForeGroundWindowID = -1;// foreground cosmetic window
+	InterfaceWindowID = -1;// player interface window
+	MenuWindowID = -1;
+	foregroundMousePosition = { 0.0f,0.0f };
+	lastEntityID = 0;
+	TextSize = 1.0f;
+	UISize = 18.0f;
+
+	camerapos = { 0.0f,0.0f };// cameraposition that sets cameraposition in ProcessCamera() + screenshake
+	GridCellSize = PARTSIZE * 2.0f;// gird that doesnt exist anymore
+	reloadSources = false; // reload sound system
+	brightness = 1.0f;// exposure modifier
+	SRiter = 0; // screen res iter
+
+
+	Materials = 0;
+	storyint = 0;
+	lastEntityName = "Save0.sav";
+	EntityBackUpName = "PreMissionBackup";
+	GameSaveName = "Save0";
+	inside = false;
+	inbase = true;
+
+	RX = std::to_string(s_Resolution.x);
+	RY = std::to_string(s_Resolution.y);
 
 	lastid = 0;
 	lastStaticBallid = 0;

@@ -59,6 +59,7 @@
     <ClInclude Include="engine\Components\Redactor.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Explodion.h" />
+    <ClInclude Include="Helper.h" />
     <ClInclude Include="Laser.h" />
     <ClInclude Include="Mission.h" />
     <ClInclude Include="ParticleMaterials.h" />
@@ -112,6 +113,7 @@
     <ClCompile Include="engine\Components\Cpps\UI.cpp" />
     <ClCompile Include="Explodion.cpp" />
     <ClCompile Include="Laser.cpp" />
+    <ClCompile Include="Misc.cpp" />
     <ClCompile Include="ParticleMaterials.cpp" />
     <ClCompile Include="Parts\Base.cpp" />
     <ClCompile Include="Parts\CentralPart.cpp" />
