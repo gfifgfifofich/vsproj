@@ -85,8 +85,8 @@ Stages
 		layers of scene - 
 		-	background
 		-	Middle - player, objects, game
-		td	ForeGround - Fog and other stuff "above" player, will add really great volume felling
-		td	interface layer
+		-	ForeGround - Fog and other stuff "above" player, will add really great volume felling
+		-	interface layer
 		-	menulayer
 		draw foreground with half or quatter of resolution, fog only = dont care, linear filter will fix low res
 		todo: make light buffer & others with less res/ color depth, they dont need full res 32bit float buffers	
@@ -1102,371 +1102,371 @@ void ProcessPlayerControls()
 		Entities[0]->ThrustDirection = velvec;
 	}
 
-	if(Entities.size()>0 && !Entities[0]->dead && !Entities[0]->destroyed)
+	if (Entities.size() > 0 && !Entities[0]->dead && !Entities[0]->destroyed)
 	{
 		camerapos = Entities[0]->mid;
 		Entities[0]->player = true;
 		Entities[0]->autocontrol = false;
 		listenerVel = { Entities[0]->midvel.x ,Entities[0]->midvel.y ,1.0f };
-	
-	if (BuildingMode || bLogicMode || fLogicMode || vLogicMode)
-	{
-		BackgroundColor = glm::vec4(0.0f, 0.0f, 0.01f, 1.0f);
-		//grid
-		glm::vec2 gridpos = glm::vec2(0.0f, 0.0f);
-		Entities[0]->FireGuns = false;
 
-		// grid size = 1
-		glm::vec2 roundCP = glm::vec2(roundf(CameraPosition.x), roundf(CameraPosition.y));
-		float aVal = (CameraScale.x - 10.0f)/70.0f;
-		if (CameraScale.x > 10.0f)
-			for (int i = 0; i < 200; i++)
-			{
-				DrawLine(glm::vec2(50 * (i * 0.02f - 2.0f), 50 * -2.0f) + gridpos + roundCP,
-					glm::vec2(50 * (i * 0.02f - 2.0f), 50 * 2.0f) + gridpos + roundCP, 1.75f * 0.025f,
-					glm::vec4(0.75f, 0.75f, 0.75f, aVal), false, CubeNormalMapTexture, -10);
-
-				DrawLine(glm::vec2(50 * -2.0f, 50 * (i * 0.02f - 2.0f)) + gridpos + roundCP,
-					glm::vec2(50 * 2.0f, 50 * (i * 0.02f - 2.0f)) + gridpos + roundCP, 1.75f * 0.025f,
-					glm::vec4(0.75f, 0.75f, 0.75f, aVal), false, CubeNormalMapTexture, -10);
-			}
-
-		if (JustPressedLMB && in_UI <= 0)
+		if (BuildingMode || bLogicMode || fLogicMode || vLogicMode)
 		{
-			DamageSphere DS;
-			DS.body.r = 5.0f;
-			DS.body.position = MousePosition;
-			DS.Damage = false;
-			DS.timeLeft = 1.0f;
-			DS.Heat = 0.0f;
-			DS.recoil = 0.0f;
-			DS.neutral = true;
-			DS.friction = 0.9f;
-			DS.singleHit = false;
-			DamageSpheresArray.push_back(DS);
-		}
-	}
-	else
-	{
-		DataconnectionData[0] = 0;
+			BackgroundColor = glm::vec4(0.0f, 0.0f, 0.01f, 1.0f);
+			//grid
+			glm::vec2 gridpos = glm::vec2(0.0f, 0.0f);
+			Entities[0]->FireGuns = false;
 
-		Entities[0]->GunsTargetrotPoint = MousePosition;
-		BackgroundColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-		/*if (buttons[GLFW_MOUSE_BUTTON_2])
-		{
-
-			Entities.push_back(new Entity);
-			Entities[Entities.size() - 1]->Ready(MousePosition, { 0.0f,1.0f }, PARTSIZE);
-			Entities[Entities.size() - 1]->LoadFrom("Cube.sav");
-			Entities[Entities.size() - 1]->autocontrol = true;
-			Entities[Entities.size() - 1]->trgPos = MousePosition;
-			Entities[Entities.size() - 1]->enemy = true;
-			Entities[Entities.size() - 1]->CP.Health=-10;
-
-
-		}*/
-	}
-	if (bLogicMode || fLogicMode || vLogicMode)
-	{
-		if (JustPressedbutton[GLFW_MOUSE_BUTTON_2])
-			DataconnectionData[0] = 0;
-
-
-		for (int i = 0; i < Entities[0]->Parts.size(); i++)
-		{
-			Entities[0]->Parts[i]->DrawDataConnections(i, bLogicMode, fLogicMode, vLogicMode, 1000);
-
-		}
-		if (DataconnectionData[0] == 1)
-		{
-			if (DataconnectionData[1] == 0)
-				DrawLine(MousePosition, Entities[0]->Parts[DataconnectionData[2]]->bDataConnections[DataconnectionData[3]].lastpos, 0.125f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 1000);
-			else if (DataconnectionData[1] == 1)
-				DrawLine(MousePosition, Entities[0]->Parts[DataconnectionData[2]]->fDataConnections[DataconnectionData[3]].lastpos, 0.125f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 0, 0, 1000);
-			else if (DataconnectionData[1] == 2)
-				DrawLine(MousePosition, Entities[0]->Parts[DataconnectionData[2]]->vDataConnections[DataconnectionData[3]].lastpos, 0.125f, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 0, 0, 1000);
-		}
-		if (DataconnectionData[0] == 2)
-		{
-			Entities[0]->AddDataConnection(DataconnectionData[1], DataconnectionData[2], DataconnectionData[3], DataconnectionData[4], DataconnectionData[5]);
-			DataconnectionData[0] = 0;
-		}
-	}
-	else
-		DataconnectionData[0] = 0;
-
-	if (BuildingMode)
-	{
-
-
-		if (JustPressedkey[GLFW_KEY_TAB])
-		{
-			NewConType++;
-			if (NewConType > 3) NewConType = 0;
-		}
-
-		if (JustPressedkey[GLFW_KEY_SPACE])
-			align = !align;
-		if (align)
-		{
-			//Entities[0].Parts[0] -> central part
-			glm::vec2 mid = (ballPosition[Entities[0]->Parts[0]->body[0]] + ballPosition[Entities[0]->Parts[0]->body[1]]) * 0.5f;
-
-			ballVelocity[Entities[0]->Parts[0]->body[0]] = ((mid + glm::vec2(0.0f, 1.0f) * PARTSIZE) - ballPosition[Entities[0]->Parts[0]->body[0]]) * 15.0f;
-			ballVelocity[Entities[0]->Parts[0]->body[1]] = ((mid - glm::vec2(0.0f, 1.0f) * PARTSIZE) - ballPosition[Entities[0]->Parts[0]->body[1]]) * 15.0f;
-
-		}
-
-
-
-		if (keys[GLFW_KEY_LEFT_ALT])
-		{
-			if (ConCreationStage == 1)
-			{
-				DrawLine(ballPosition[NewConBall1], MousePosition, 0.125f);
-			}
-			if (JustPressedLMB)
-			{
-				int prevcon = ConCreationStage;
-				for (int i = 0; i < Entities[0]->Parts.size(); i++)
+			// grid size = 1
+			glm::vec2 roundCP = glm::vec2(roundf(CameraPosition.x), roundf(CameraPosition.y));
+			float aVal = (CameraScale.x - 10.0f) / 70.0f;
+			if (CameraScale.x > 10.0f)
+				for (int i = 0; i < 200; i++)
 				{
-					for (auto a : Entities[0]->Parts[i]->BodyIdsWithCollision)
-					{
+					DrawLine(glm::vec2(50 * (i * 0.02f - 2.0f), 50 * -2.0f) + gridpos + roundCP,
+						glm::vec2(50 * (i * 0.02f - 2.0f), 50 * 2.0f) + gridpos + roundCP, 1.75f * 0.025f,
+						glm::vec4(0.75f, 0.75f, 0.75f, aVal), false, CubeNormalMapTexture, -10);
 
-						glm::vec2 dif = ballPosition[Entities[0]->Parts[i]->body[a]] - MousePosition;
-						if (sqrlength(dif) < PARTSIZE * PARTSIZE)
-						{
-							if (ConCreationStage == 0)
-							{
-								NewConBall1 = Entities[0]->Parts[i]->body[a];
-								NewConIndex1 = a;
-								NewConPart1 = i;
-								ConCreationStage++;
-							}
-							else if (ConCreationStage == 1)
-							{
-								NewConBall2 = Entities[0]->Parts[i]->body[a];
-								NewConIndex2 = a;
-								NewConPart2 = i;
-								ConCreationStage++;
-							}
-						}
-					}
-					
+					DrawLine(glm::vec2(50 * -2.0f, 50 * (i * 0.02f - 2.0f)) + gridpos + roundCP,
+						glm::vec2(50 * 2.0f, 50 * (i * 0.02f - 2.0f)) + gridpos + roundCP, 1.75f * 0.025f,
+						glm::vec4(0.75f, 0.75f, 0.75f, aVal), false, CubeNormalMapTexture, -10);
 				}
 
+			if (JustPressedLMB && in_UI <= 0)
+			{
+				DamageSphere DS;
+				DS.body.r = 5.0f;
+				DS.body.position = MousePosition;
+				DS.Damage = false;
+				DS.timeLeft = 1.0f;
+				DS.Heat = 0.0f;
+				DS.recoil = 0.0f;
+				DS.neutral = true;
+				DS.friction = 0.9f;
+				DS.singleHit = false;
+				DamageSpheresArray.push_back(DS);
+			}
+		}
+		else
+		{
+			DataconnectionData[0] = 0;
+
+			Entities[0]->GunsTargetrotPoint = MousePosition;
+			BackgroundColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+			/*if (buttons[GLFW_MOUSE_BUTTON_2])
+			{
+
+				Entities.push_back(new Entity);
+				Entities[Entities.size() - 1]->Ready(MousePosition, { 0.0f,1.0f }, PARTSIZE);
+				Entities[Entities.size() - 1]->LoadFrom("Cube.sav");
+				Entities[Entities.size() - 1]->autocontrol = true;
+				Entities[Entities.size() - 1]->trgPos = MousePosition;
+				Entities[Entities.size() - 1]->enemy = true;
+				Entities[Entities.size() - 1]->CP.Health=-10;
 
 
-				if (prevcon == ConCreationStage && !NewConDebrie1)
+			}*/
+		}
+		if (bLogicMode || fLogicMode || vLogicMode)
+		{
+			if (JustPressedbutton[GLFW_MOUSE_BUTTON_2])
+				DataconnectionData[0] = 0;
+
+
+			for (int i = 0; i < Entities[0]->Parts.size(); i++)
+			{
+				Entities[0]->Parts[i]->DrawDataConnections(i, bLogicMode, fLogicMode, vLogicMode, 1000);
+
+			}
+			if (DataconnectionData[0] == 1)
+			{
+				if (DataconnectionData[1] == 0)
+					DrawLine(MousePosition, Entities[0]->Parts[DataconnectionData[2]]->bDataConnections[DataconnectionData[3]].lastpos, 0.125f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 1000);
+				else if (DataconnectionData[1] == 1)
+					DrawLine(MousePosition, Entities[0]->Parts[DataconnectionData[2]]->fDataConnections[DataconnectionData[3]].lastpos, 0.125f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 0, 0, 1000);
+				else if (DataconnectionData[1] == 2)
+					DrawLine(MousePosition, Entities[0]->Parts[DataconnectionData[2]]->vDataConnections[DataconnectionData[3]].lastpos, 0.125f, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 0, 0, 1000);
+			}
+			if (DataconnectionData[0] == 2)
+			{
+				Entities[0]->AddDataConnection(DataconnectionData[1], DataconnectionData[2], DataconnectionData[3], DataconnectionData[4], DataconnectionData[5]);
+				DataconnectionData[0] = 0;
+			}
+		}
+		else
+			DataconnectionData[0] = 0;
+
+		if (BuildingMode)
+		{
+
+
+			if (JustPressedkey[GLFW_KEY_TAB])
+			{
+				NewConType++;
+				if (NewConType > 3) NewConType = 0;
+			}
+
+			if (JustPressedkey[GLFW_KEY_SPACE])
+				align = !align;
+			if (align)
+			{
+				//Entities[0].Parts[0] -> central part
+				glm::vec2 mid = (ballPosition[Entities[0]->Parts[0]->body[0]] + ballPosition[Entities[0]->Parts[0]->body[1]]) * 0.5f;
+
+				ballVelocity[Entities[0]->Parts[0]->body[0]] = ((mid + glm::vec2(0.0f, 1.0f) * PARTSIZE) - ballPosition[Entities[0]->Parts[0]->body[0]]) * 15.0f;
+				ballVelocity[Entities[0]->Parts[0]->body[1]] = ((mid - glm::vec2(0.0f, 1.0f) * PARTSIZE) - ballPosition[Entities[0]->Parts[0]->body[1]]) * 15.0f;
+
+			}
+
+
+
+			if (keys[GLFW_KEY_LEFT_ALT])
+			{
+				if (ConCreationStage == 1)
 				{
-					for (int i = 0; i < Debris.Parts.size(); i++)
+					DrawLine(ballPosition[NewConBall1], MousePosition, 0.125f);
+				}
+				if (JustPressedLMB)
+				{
+					int prevcon = ConCreationStage;
+					for (int i = 0; i < Entities[0]->Parts.size(); i++)
 					{
-						for (auto a : Debris.Parts[i]->BodyIdsWithCollision)
+						for (auto a : Entities[0]->Parts[i]->BodyIdsWithCollision)
 						{
-							glm::vec2 dif = ballPosition[Debris.Parts[i]->body[a]] - MousePosition;
+
+							glm::vec2 dif = ballPosition[Entities[0]->Parts[i]->body[a]] - MousePosition;
 							if (sqrlength(dif) < PARTSIZE * PARTSIZE)
 							{
 								if (ConCreationStage == 0)
 								{
-									NewConBall1 = Debris.Parts[i]->body[a];
+									NewConBall1 = Entities[0]->Parts[i]->body[a];
 									NewConIndex1 = a;
 									NewConPart1 = i;
 									ConCreationStage++;
-									NewConDebrie1 = true;
 								}
 								else if (ConCreationStage == 1)
 								{
-									NewConBall2 = Debris.Parts[i]->body[a];
+									NewConBall2 = Entities[0]->Parts[i]->body[a];
 									NewConIndex2 = a;
 									NewConPart2 = i;
 									ConCreationStage++;
-									NewConDebrie2 = true;
 								}
 							}
 						}
-						
+
 					}
 
 
-				}
-				if (ConCreationStage == 1 && prevcon != ConCreationStage)
-				{
-					Sparks.Spawn(ballPosition[NewConBall1], rand() % 5 + 5);
-					playsound(Clang, MousePosition, 0.3f,2.5f,{0.0f,0.0f},false);
-				}
-				if (ConCreationStage >= 2)
-				{
-					playsound(Clang, MousePosition, 0.3f,2.5f,{0.0f,0.0f},false);
-					Sparks.Spawn(ballPosition[NewConBall2], rand() % 5 + 5);
-					ConCreationStage = 0;
-					if (NewConDebrie1)
-						NewConPart1 = Entities[0]->ClaimPart(NewConPart1);
-					if (NewConDebrie2)
-						NewConPart2 = Entities[0]->ClaimPart(NewConPart2);
-					NewConDebrie1 = false;
-					NewConDebrie2 = false;
 
-					if (NewConPart1 != NewConPart2)
-						Entities[0]->AddConnection(NewConType, -1, 0.125f, 1500, 2, NewConType == HEATPIPE ? 0.4f : 0.1f, NewConPart1, NewConIndex1, NewConPart2, NewConIndex2);
+					if (prevcon == ConCreationStage && !NewConDebrie1)
+					{
+						for (int i = 0; i < Debris.Parts.size(); i++)
+						{
+							for (auto a : Debris.Parts[i]->BodyIdsWithCollision)
+							{
+								glm::vec2 dif = ballPosition[Debris.Parts[i]->body[a]] - MousePosition;
+								if (sqrlength(dif) < PARTSIZE * PARTSIZE)
+								{
+									if (ConCreationStage == 0)
+									{
+										NewConBall1 = Debris.Parts[i]->body[a];
+										NewConIndex1 = a;
+										NewConPart1 = i;
+										ConCreationStage++;
+										NewConDebrie1 = true;
+									}
+									else if (ConCreationStage == 1)
+									{
+										NewConBall2 = Debris.Parts[i]->body[a];
+										NewConIndex2 = a;
+										NewConPart2 = i;
+										ConCreationStage++;
+										NewConDebrie2 = true;
+									}
+								}
+							}
+
+						}
+
+
+					}
+					if (ConCreationStage == 1 && prevcon != ConCreationStage)
+					{
+						Sparks.Spawn(ballPosition[NewConBall1], rand() % 5 + 5);
+						playsound(Clang, MousePosition, 0.3f, 2.5f, { 0.0f,0.0f }, false);
+					}
+					if (ConCreationStage >= 2)
+					{
+						playsound(Clang, MousePosition, 0.3f, 2.5f, { 0.0f,0.0f }, false);
+						Sparks.Spawn(ballPosition[NewConBall2], rand() % 5 + 5);
+						ConCreationStage = 0;
+						if (NewConDebrie1)
+							NewConPart1 = Entities[0]->ClaimPart(NewConPart1);
+						if (NewConDebrie2)
+							NewConPart2 = Entities[0]->ClaimPart(NewConPart2);
+						NewConDebrie1 = false;
+						NewConDebrie2 = false;
+
+						if (NewConPart1 != NewConPart2)
+							Entities[0]->AddConnection(NewConType, -1, 0.125f, 1500, 2, NewConType == HEATPIPE ? 0.4f : 0.1f, NewConPart1, NewConIndex1, NewConPart2, NewConIndex2);
+					}
 				}
 			}
-		}
-		else
-		{
-			ConCreationStage = 0;
-			NewConDebrie1 = false;
-			NewConDebrie2 = false;
-		}
-		if (keys[GLFW_KEY_LEFT_SHIFT] && !keys[GLFW_KEY_LEFT_ALT])
-		{
-			if (JustPressedLMB && in_UI <= 0)
+			else
 			{
-				for (int i = 1; i < Entities[0]->Parts.size(); i++)
+				ConCreationStage = 0;
+				NewConDebrie1 = false;
+				NewConDebrie2 = false;
+			}
+			if (keys[GLFW_KEY_LEFT_SHIFT] && !keys[GLFW_KEY_LEFT_ALT])
+			{
+				if (JustPressedLMB && in_UI <= 0)
 				{
-					bool detached = true;
-					while (detached)
+					for (int i = 1; i < Entities[0]->Parts.size(); i++)
 					{
-						detached = false;
-						for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
+						bool detached = true;
+						while (detached)
 						{
-
-							glm::vec2 dif = ballPosition[Entities[0]->Parts[i]->body[a]] - MousePosition;
-							
-							if (i < Entities[0]->Parts.size() && sqrlength(dif) < PARTSIZE * PARTSIZE && !detached)
+							detached = false;
+							for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
 							{
-								playsound(Detach, MousePosition, 0.3f,3.5f,{0.0f,0.0f},false);
-								Entities[0]->DetachPart(i);
-								detached = true;
+
+								glm::vec2 dif = ballPosition[Entities[0]->Parts[i]->body[a]] - MousePosition;
+
+								if (i < Entities[0]->Parts.size() && sqrlength(dif) < PARTSIZE * PARTSIZE && !detached)
+								{
+									playsound(Detach, MousePosition, 0.3f, 3.5f, { 0.0f,0.0f }, false);
+									Entities[0]->DetachPart(i);
+									detached = true;
+								}
 							}
 						}
 					}
 				}
 			}
-		}
 
-		if (JustPressedbutton[GLFW_MOUSE_BUTTON_3])
-		{
-			bool found = false;
-			for (int i = 0; i < Debris.Parts.size(); i++)
+			if (JustPressedbutton[GLFW_MOUSE_BUTTON_3])
 			{
-				if (Debris.Parts[i]->bodysize > 1)
+				bool found = false;
+				for (int i = 0; i < Debris.Parts.size(); i++)
 				{
-					for (int a = 0; a < Debris.Parts[i]->bodysize; a++)
+					if (Debris.Parts[i]->bodysize > 1)
 					{
-						glm::vec2 dif = ballPosition[Debris.Parts[i]->body[a]] - MousePosition;
-						if (sqrlength(dif) < PARTSIZE * PARTSIZE)
+						for (int a = 0; a < Debris.Parts[i]->bodysize; a++)
 						{
+							glm::vec2 dif = ballPosition[Debris.Parts[i]->body[a]] - MousePosition;
+							if (sqrlength(dif) < PARTSIZE * PARTSIZE)
+							{
 
-							found = true;
-							SelectedPart = i;
+								found = true;
+								SelectedPart = i;
 
-							break;
+								break;
+							}
 						}
 					}
+
+					if (found)
+						break;
+				}
+			}
+			if (JustReleasedbutton[GLFW_MOUSE_BUTTON_3])
+				SelectedPart = -1;
+			if (SelectedPart > 0)
+			{
+				glm::vec2 mid = { 0.0f,0.0f };
+				for (int i = 0; i < Debris.Parts[SelectedPart]->bodysize; i++)
+					mid += ballPosition[Debris.Parts[SelectedPart]->body[i]];
+				mid /= Debris.Parts[SelectedPart]->bodysize;
+
+				glm::vec2 dir = Normalize(MousePosition - mid);
+
+				float rot = 0.0f;
+				float rotStep = pi * 2.0f / Debris.Parts[SelectedPart]->bodysize;
+				for (int i = 0; i < Debris.Parts[SelectedPart]->bodysize; i++)
+				{
+					ballPosition[Debris.Parts[SelectedPart]->body[i]] = mid + Rotate(dir, rot) * PARTSIZE;
+					rot += rotStep;
 				}
 
-				if (found)
-					break;
 			}
+			EndOfWindow();
+			iw->Use();
+			glm::vec2 WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
+			MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
+			MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
+			ScreenMousePosition = WindowMousePosition;
+			LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
+			foregroundMousePosition = MousePosition;
+
+			bool b = (NewConType == STRUT);
+			UI_buttonOnlyON(&b, "Strut", { -0.47f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
+			if (b && b != (NewConType == STRUT))
+				NewConType = STRUT;
+
+			b = (NewConType == SPRING);
+			UI_buttonOnlyON(&b, "Spring", { -0.47f * WIDTH ,-0.40f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
+			if (b && b != (NewConType == SPRING))
+				NewConType = SPRING;
+
+			b = (NewConType == HEATPIPE);
+			UI_buttonOnlyON(&b, "Heat pipe", { -0.47f * WIDTH ,-0.34f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
+			if (b && b != (NewConType == HEATPIPE))
+				NewConType = HEATPIPE;
+
+			b = (NewConType == ROPE);
+			UI_buttonOnlyON(&b, "Rope", { -0.47f * WIDTH ,-0.28f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
+			if (b && b != (NewConType == ROPE))
+				NewConType = ROPE;
+
+
+
+
+
+			UI_CheckBox(&align, "Align rotation", { -0.35f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
+
+			UI_CheckBox(&snapToGrid, "Snap to grid", { -0.20f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
+
+			UI_TextBox(&saveFileName, { -0.46f * WIDTH ,0.46f * HEIGHT }, 32, { 15 * UISize,UISize * 1.0f }, TextSize, { 0.4f,0.4f,0.4f,0.4f }, { 1.0f,1.0f,1.0f,1.0f }, 1200);
+
+			bool save = false;
+			UI_buttonOnlyON(&save, "Save", { -0.46f * WIDTH ,0.40f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
+			if (save)
+				Entities[0]->SaveTo(saveFileName);
+
+			bool load = false;
+			UI_buttonOnlyON(&load, "Load", { -0.46f * WIDTH ,0.34f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
+			if (load)
+				Entities[0]->LoadFrom(saveFileName);
+
+
+			iw->End();
+			sw->Use();
+			WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
+			MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
+			MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
+			ScreenMousePosition = WindowMousePosition;
+			LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
+			foregroundMousePosition = MousePosition;
+
 		}
-		if (JustReleasedbutton[GLFW_MOUSE_BUTTON_3])
-			SelectedPart = -1;
-		if (SelectedPart > 0)
-		{
-			glm::vec2 mid = { 0.0f,0.0f };
-			for (int i = 0; i < Debris.Parts[SelectedPart]->bodysize; i++)
-				mid += ballPosition[Debris.Parts[SelectedPart]->body[i]];
-			mid /= Debris.Parts[SelectedPart]->bodysize;
-
-			glm::vec2 dir = Normalize(MousePosition - mid);
-
-			float rot = 0.0f;
-			float rotStep = pi * 2.0f / Debris.Parts[SelectedPart]->bodysize;
-			for (int i = 0; i < Debris.Parts[SelectedPart]->bodysize; i++)
-			{
-				ballPosition[Debris.Parts[SelectedPart]->body[i]] = mid + Rotate(dir, rot) * PARTSIZE;
-				rot += rotStep;
-			}
-
-		}
-		EndOfWindow();
-		iw->Use();
-		glm::vec2 WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
-		MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
-		MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
-		ScreenMousePosition = WindowMousePosition;
-		LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
-		foregroundMousePosition = MousePosition;
-
-		bool b = (NewConType == STRUT);
-		UI_buttonOnlyON(&b, "Strut", { -0.47f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
-		if (b && b != (NewConType == STRUT))
-			NewConType = STRUT;
-
-		b = (NewConType == SPRING);
-		UI_buttonOnlyON(&b, "Spring", { -0.47f * WIDTH ,-0.40f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
-		if (b && b != (NewConType == SPRING))
-			NewConType = SPRING;
-
-		b = (NewConType == HEATPIPE);
-		UI_buttonOnlyON(&b, "Heat pipe", { -0.47f * WIDTH ,-0.34f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
-		if (b && b != (NewConType == HEATPIPE))
-			NewConType = HEATPIPE;
-
-		b = (NewConType == ROPE);
-		UI_buttonOnlyON(&b, "Rope", { -0.47f * WIDTH ,-0.28f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
-		if (b && b != (NewConType == ROPE))
-			NewConType = ROPE;
-
-
-
-
-
-		UI_CheckBox(&align, "Align rotation", { -0.35f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
-
-		UI_CheckBox(&snapToGrid, "Snap to grid", { -0.20f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
-
-		UI_TextBox(&saveFileName, { -0.46f * WIDTH ,0.46f * HEIGHT }, 32, { 15 * UISize,UISize * 1.0f }, TextSize, { 0.4f,0.4f,0.4f,0.4f }, { 1.0f,1.0f,1.0f,1.0f }, 1200);
-
-		bool save = false;
-		UI_buttonOnlyON(&save, "Save", { -0.46f * WIDTH ,0.40f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
-		if (save)
-			Entities[0]->SaveTo(saveFileName);
-
-		bool load = false;
-		UI_buttonOnlyON(&load, "Load", { -0.46f * WIDTH ,0.34f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
-		if (load)
-			Entities[0]->LoadFrom(saveFileName);
-
-
-		iw->End();
-		sw->Use();
-		WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
-		MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
-		MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
-		ScreenMousePosition = WindowMousePosition;
-		LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
-		foregroundMousePosition = MousePosition;
-			
 	}
-	}
-	
-	if(!CurrnetMission.compleated || MissionSelectMenu.missionSelected)
+
+	/*if (!CurrnetMission.compleated || MissionSelectMenu.missionSelected)
 	{
-		if(MissionSelectMenu.missionSelected)
-			DrawCircle(Entities[0]->mid + Normalize(MissionSelectMenu.missionPosition - Entities[0]->mid)*10.0f,5.0f,{5.0f,1.0f,1.0f,1.0f},0,0,10000);
+		if (MissionSelectMenu.missionSelected)
+			DrawCircle(Entities[0]->mid + Normalize(MissionSelectMenu.missionPosition - Entities[0]->mid) * 10.0f, 5.0f, { 5.0f,1.0f,1.0f,1.0f }, 0, 0, 10000);
 		else
-			DrawCircle(Entities[0]->mid + Normalize(glm::vec2(0.0f,0.0f) - Entities[0]->mid)*10.0f,5.0f,{5.0f,1.0f,1.0f,1.0f},0,0,10000);
+			DrawCircle(Entities[0]->mid + Normalize(glm::vec2(0.0f, 0.0f) - Entities[0]->mid) * 10.0f, 5.0f, { 5.0f,1.0f,1.0f,1.0f }, 0, 0, 10000);
 	}
 	else
 	{
-		if(!MissionSelectMenu.Hub)
-			DrawCircle(Entities[0]->mid + Normalize(-MissionSelectMenu.missionPosition - Entities[0]->mid)*10.0f,5.0f,{1.0f,1.0f,5.0f,1.0f},0,0,10000);
+		if (!MissionSelectMenu.Hub)
+			DrawCircle(Entities[0]->mid + Normalize(-MissionSelectMenu.missionPosition - Entities[0]->mid) * 10.0f, 5.0f, { 1.0f,1.0f,5.0f,1.0f }, 0, 0, 10000);
 		else
-			DrawCircle(Entities[0]->mid + Normalize(glm::vec2(0.0f,0.0f) - Entities[0]->mid)*10.0f,5.0f,{1.0f,1.0f,5.0f,1.0f},0,0,10000);
-	}
+			DrawCircle(Entities[0]->mid + Normalize(glm::vec2(0.0f, 0.0f) - Entities[0]->mid) * 10.0f, 5.0f, { 1.0f,1.0f,5.0f,1.0f }, 0, 0, 10000);
+	}*/
 
-	if(MissionSelectMenu.missionSelected && Entities.size()>0 && sqrlength(Entities[0]->mid - MissionSelectMenu.missionPosition) < (4000*4000))
+	if (MissionSelectMenu.missionSelected && Entities.size() > 0 && sqrlength(Entities[0]->mid - MissionSelectMenu.missionPosition) < (4000 * 4000))
 	{
 		CurrnetMission.story_mission = MissionSelectMenu.missionStory;
 		CurrnetMission.size = MissionSelectMenu.missionSize;
@@ -1480,15 +1480,15 @@ void ProcessPlayerControls()
 		switchScene = false;
 		OpenMenu = false;
 	}
-	if(!MissionSelectMenu.Hub && Entities.size()>0 && sqrlength(-MissionSelectMenu.missionPosition - Entities[0]->mid) < (2000*2000))
+	if (!MissionSelectMenu.Hub && Entities.size() > 0 && sqrlength(-MissionSelectMenu.missionPosition - Entities[0]->mid) < (2000 * 2000))
 	{
 		MissionSelectMenu.missionSelected = false;
 		MissionSelectMenu.Hub = true;
-		glm::vec2 plPos = (Entities[0]->mid + MissionSelectMenu.missionPosition);		
+		glm::vec2 plPos = (Entities[0]->mid + MissionSelectMenu.missionPosition);
 		Materials += GetShipCost(Entities[0]);
 		Entities[0]->SaveTo(EntityBackUpName);
-		glm::vec2 vel = {0.0f,0.0f};
-		if(Entities.size()>0)
+		glm::vec2 vel = { 0.0f,0.0f };
+		if (Entities.size() > 0)
 		{
 			vel = Entities[0]->avgvel;
 			Entities[0]->SaveTo(EntityBackUpName);
@@ -1498,11 +1498,11 @@ void ProcessPlayerControls()
 		GetWindow(BackgroundWindowID)->w_DirectionalLight = 1.0f;
 		ChangeMap("Scenes/base.sav", false);
 		SpawnPlayer(plPos, EntityBackUpName);
-		for(int i=0;i< Entities[0]->Parts.size();i++)
+		for (int i = 0; i < Entities[0]->Parts.size(); i++)
 		{
-			for(int a=0;a< Entities[0]->Parts[i]->bodysize;a++)
+			for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
 			{
-				ballVelocityBuff[Entities[0]->Parts[i]->body[a]]= vel;
+				ballVelocityBuff[Entities[0]->Parts[i]->body[a]] = vel;
 				ballVelocity[Entities[0]->Parts[i]->body[a]] = vel;
 			}
 		}
@@ -1530,6 +1530,8 @@ void ProcessPlayerControls()
 	if (Entities.size() > 0)
 		ActiveRadar.playerHeat = Entities[0]->avgheat;
 
+	foregroundFogParticleAmount = 0.0f;
+	bool forcenofog = false;
 	for (int i = 0; i < ActiveRadar.bleeps.size(); i++)
 	{
 		if (Entities.size() > 0)
@@ -1541,9 +1543,50 @@ void ProcessPlayerControls()
 				ActiveRadar.bleeps[i].infinite = false;
 				SpawnAiShip(ActiveRadar.bleeps[i].position, "Bigboy")->AIState = 1;
 			}
+			if (ActiveRadar.bleeps[i].state == 0 &&
+				1000.0f + ActiveRadar.bleeps[i].r * 100.0f > length(ActiveRadar.bleeps[i].position - Entities[0]->mid))
+			{
+				if (foregroundFogParticleAmount < ActiveRadar.bleeps[i].fogamount)
+					foregroundFogParticleAmount = ActiveRadar.bleeps[i].fogamount;
+			}
 
+			if (ActiveRadar.bleeps[i].state == 2 &&
+				5000.0f > length(ActiveRadar.bleeps[i].position - (Entities[0]->mid + ActiveRadar.offset)))
+			{
+
+				forcenofog = true;
+				if (length(CurrnetMission.missionpos - ActiveRadar.bleeps[i].position) > 5000.0f)
+				{
+					CurrnetMission.story_mission = true;
+					CurrnetMission.size = 0.0f;
+					CurrnetMission.dificulty = 0.0f;
+					CurrnetMission.type = 0.0f;
+					CurrnetMission.missionpos = ActiveRadar.bleeps[i].position;
+					MissionSelectMenu.missionPosition = ActiveRadar.bleeps[i].position;
+					MissionSelectMenu.Hub = false;
+					glm::vec2 plPos = (Entities[0]->mid - MissionSelectMenu.missionPosition);
+					CurrnetMission.Start(plPos);
+					inbase = false;
+					switchScene = false;
+					OpenMenu = false;
+				}
+			}
 		}
 	}
+	if (forcenofog)
+	{
+		foregroundFogParticleAmount = 0.0f;
+	}
+	if (MissionSelectMenu.Hub == true )
+	{
+		CurrnetMission.missionpos = { 0.0f,0.0f };
+
+	}
+	if (inbase)
+		ActiveRadar.offset = { 0.0f, 0.0f };
+	else
+		ActiveRadar.offset = CurrnetMission.missionpos;
+
 	ActiveRadar.Process(delta);
 	ActiveRadar.Draw({ 0.5f * WIDTH - 120.0f,0.5f * HEIGHT - 120.0f });
 
@@ -2350,9 +2393,9 @@ void Process(float dt)
 		ProcessMainMenu();
 
 	if(MissionSelectMenu.Hub)
-		bw->w_CameraPosition = (sw->w_CameraPosition )*0.05f;
+		bw->w_CameraPosition = (sw->w_CameraPosition )*0.02f;
 	else
-		bw->w_CameraPosition = (sw->w_CameraPosition + MissionSelectMenu.missionPosition)*0.05f;
+		bw->w_CameraPosition = (sw->w_CameraPosition + MissionSelectMenu.missionPosition)*0.02f;
 
 	bw->Use();
 	Background.DrawCollisions = false;

@@ -298,12 +298,12 @@ void Window::_Draw()
 
 
 
-	unsigned int instanceCircleVBO[3];//stock circles
-	unsigned int instanceVBO[3];//stock cubes
-	unsigned int instanceTexturedQuadVBO[4]; 
-	unsigned int instanceNormalMapCircleVBO[3];
-	unsigned int instanceNormalMapCubeVBO[3];
-	unsigned int instanceNormalMapTextureVBO[3];
+	unsigned int instanceCircleVBO[3]           = { 0 };//stock circles
+	unsigned int instanceVBO[3]                 = { 0 };//stock cubes
+	unsigned int instanceTexturedQuadVBO[4]     = { 0 }; 
+	unsigned int instanceNormalMapCircleVBO[3]  = { 0 };
+	unsigned int instanceNormalMapCubeVBO[3]    = { 0 };
+	unsigned int instanceNormalMapTextureVBO[3] = { 0 };
 
 	float aspect = (float)HEIGHT / (float)WIDTH;
 

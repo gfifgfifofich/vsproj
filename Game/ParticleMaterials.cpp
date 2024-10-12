@@ -276,7 +276,7 @@ void SetupforegroundFogPE()
 	foregroundFog.VelocityRandomness = {0.0f,0.0f,0.0f,0.0f};//{ 0,700,0,700 };
 	foregroundFog.InitialVelocity =    {0.0f,0.0f};//{ -350,-350};
 	foregroundFog.StartColor = { 10.0f,10.0f,10.0f,10.0f };
-	foregroundFog.EndColor = { 10.0f,10.0f,10.0f,4.0f };
+	foregroundFog.EndColor = { 10.0f,10.0f,10.0f,0.0f };
 	foregroundFog.OrbitalVelocityRandomness = 1.5f;
 	foregroundFog.RotationRandomness = 10.0f;
 	foregroundFog.InitialRotation = 10.0f;

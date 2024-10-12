@@ -25,6 +25,8 @@ class Mission
 	std::vector<std::vector<CentralPart*>> Bots;
 	std::vector<std::vector<Node*>> NodeHandles;
 
+	glm::vec2 missionpos = { 0.0f,0.0f };
+
 	//Shit for missions
 	glm::vec2 planetpos = {0.0f,0.0f};
 

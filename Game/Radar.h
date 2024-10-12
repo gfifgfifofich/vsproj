@@ -17,11 +17,19 @@ public:
 
 	float playerHeat = 0.0f;
 
+	int MaxEnemybleeps = 5;
+	int MaxFogBleeps = 15;
+
+	glm::vec2 offset = {0.0f,0.0f};
+
 	struct Bleep
 	{
 		glm::vec2 position = { 0.0f,0.0f };
 		glm::vec2 velocity = {0.0f,0.0f};
 		std::string string = "";
+		bool story = false;
+		bool justheat = false;
+		float fogamount = 0.0f;
 		// 0 - nothing, 1 - enemy, 2 - story mission, else -  id -3 = custom missionid
 		int state = 0;
 		float t = 0.0f;
