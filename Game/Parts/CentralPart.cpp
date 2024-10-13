@@ -8,6 +8,7 @@
 #include "smallball.h"
 #include "Base.h"
 #include "CentralPart.h"
+#include "../Radar.h"
 
 inline float Speed;
 inline bool absoluteControl;
@@ -940,13 +941,52 @@ void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2,
 		}
 	}
 }
-void CentralPart::SaveTo(std::string filename)
+void CentralPart::SaveTo(std::string filename, bool AllSave)
 {
 	std::string fn = "./Ships/"+filename + ".sav";
 	filename = fn;
 	std::ofstream f;
 	f.open(filename);
 	glm::vec2 mid = 0.5f * (ballPosition[Parts[0]->body[0]] + ballPosition[Parts[0]->body[1]]);
+	// doing it after, just to make files compatable
+	if (AllSave)
+	{
+		f << "A"; // for "all safe" data
+		f << " ";
+		f << mid.x + ActiveRadar.offset.x;
+		f << " ";
+		f << mid.y + ActiveRadar.offset.y;
+		f << " ";
+		f << Parts[0]->Health;
+		f << " ";
+		f << ballTemp[Parts[0]->body[0]];
+		f << " ";
+		f << ballTemp[Parts[0]->body[1]];
+		f << " ";
+		f << ballPosition[Parts[0]->body[0]].x - mid.x;
+		f << " ";
+		f << ballPosition[Parts[0]->body[0]].y - mid.y;
+		f << " ";
+		f << ballPosition[Parts[0]->body[1]].x - mid.x;
+		f << " ";
+		f << ballPosition[Parts[0]->body[1]].y - mid.y;
+		f << " ";
+		f << ballVelocity[Parts[0]->body[0]].x;
+		f << " ";
+		f << ballVelocity[Parts[0]->body[0]].y;
+		f << " ";
+		f << ballVelocity[Parts[0]->body[1]].x;
+		f << " ";
+		f << ballVelocity[Parts[0]->body[1]].y;
+		f << " ";
+		f << AIState;
+		f << " ";
+		f << player;
+		f << " ";
+		f << autocontrol;
+		f << "\n";
+	}
+
 	for (int i = 1; i < Parts.size(); i++) // skip part[0] - central part
 	{
 		f << "P ";
@@ -959,6 +999,21 @@ void CentralPart::SaveTo(std::string filename)
 			f << ballPosition[Parts[i]->body[a]].x - mid.x;
 			f << " ";
 			f << ballPosition[Parts[i]->body[a]].y - mid.y;
+		}
+		if (AllSave)
+		{
+			f << " ";
+			f << Parts[i]->Health;
+
+			for (int a = 0; a < Parts[i]->bodysize; a++)
+			{
+				f << " ";
+				f << ballVelocity[Parts[i]->body[a]].x;
+				f << " ";
+				f << ballVelocity[Parts[i]->body[a]].y;
+				f << " ";
+				f << ballTemp[Parts[i]->body[a]];
+			}
 		}
 		f << "\n";
 	}
@@ -1000,15 +1055,20 @@ void CentralPart::SaveTo(std::string filename)
 		f << DataConnections[i].index2;
 		f << "\n";
 	}
+
+
+
+
 	f.close();
 	std::cout<<"\n"<<filename<<" Saved";
 }
-void CentralPart::LoadFrom(std::string filename)
+void CentralPart::LoadFrom(std::string filename, bool AllSave)
 {
+	bool allsavefile = false;
 	std::string fn = "./Ships/"+filename + ".sav";
 	filename = fn;
 	std::cout<<"\nLoading Entity: "<<filename;
-	glm::vec2 mid = 0.5f * (ballPosition[Parts[0]->body[0]] + ballPosition[Parts[0]->body[1]]);
+	mid = 0.5f * (ballPosition[Parts[0]->body[0]] + ballPosition[Parts[0]->body[1]]);
 	Clear();
 	std::ifstream f(filename);
 	if (!f.is_open())
@@ -1016,17 +1076,38 @@ void CentralPart::LoadFrom(std::string filename)
 		std::cerr << "ERROR LOADING Entity: Unable to open " << filename;
 		return;
 	}
+
 	while (!f.eof())
 	{
 		char junk;
-		char line[256];
-		f.getline(line, 256);
+		char line[512];
+		f.getline(line, 512);
 		std::strstream s;
 		s << line;
+
+		if (line[0] == 'A' && AllSave)
+		{
+			s >> junk >> mid.x >> mid.y >> Parts[0]->Health >> ballTemp[Parts[0]->body[0]] >> ballTemp[Parts[0]->body[1]] >>
+				ballPosition[Parts[0]->body[0]].x >> ballPosition[Parts[0]->body[0]].y >>
+				ballPosition[Parts[0]->body[1]].x >> ballPosition[Parts[0]->body[1]].y >>
+				ballVelocity[Parts[0]->body[0]].x >> ballVelocity[Parts[0]->body[0]].y >>
+				ballVelocity[Parts[0]->body[1]].x >> ballVelocity[Parts[0]->body[1]].y >>
+				AIState >> player >> autocontrol;
+			
+			mid -= ActiveRadar.offset;
+			ballPosition[Parts[0]->body[0]] += mid;
+			ballPosition[Parts[0]->body[1]] += mid;
+			
+			ballVelocityBuff[Parts[0]->body[0]] = ballVelocity[Parts[0]->body[0]];
+			ballVelocityBuff[Parts[0]->body[1]] = ballVelocity[Parts[0]->body[1]];
+
+
+			allsavefile = true;
+
+		}
 		if (line[0] == 'P')
 		{
 			std::vector<glm::vec2> positions;
-
 			int type = 0;
 			int bodysize = 0;
 
@@ -1046,9 +1127,23 @@ void CentralPart::LoadFrom(std::string filename)
 				for (int i = 0; i < bodysize; i++)
 					ballPosition[b->body[i]] = positions[i]+ mid;
 				Parts.push_back(b);
-			}
-		}
 
+				if (AllSave && allsavefile)
+				{
+					s >> Parts.back()->Health;
+
+					for (int a = 0; a < bodysize; a++)
+					{
+						s >> ballVelocity[Parts.back()->body[a]].x;
+						s >> ballVelocity[Parts.back()->body[a]].y;
+						s >> ballTemp[Parts.back()->body[a]];
+
+						ballVelocityBuff[Parts.back()->body[a]] = ballVelocity[Parts.back()->body[a]];
+					}
+				}
+			}
+			
+		}
 		if (line[0] == 'C')
 		{
 			int type;

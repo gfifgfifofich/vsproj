@@ -1,6 +1,7 @@
 #include "engine/Components/Redactor.h"
 #include "ParticleMaterials.h"
 #include "Textures.h"
+#include "Radar.h"
 
 void SetupEnginePE()
 {
@@ -346,7 +347,7 @@ void AddSphereOfInfluence(glm::vec2 position, float r, glm::vec2 velocity, bool 
 	for (int i = 0; i < emiters.size(); i++)
 		emiters[i]->AddSpheresOfInfluence(position, r, velocity, attractive, attractiveStrehgth);
 
-	foregroundFog.AddSpheresOfInfluence(position, r*1.5f, velocity * 1.5f, attractive, attractiveStrehgth * 2.5f);
+	foregroundFog.AddSpheresOfInfluence(position + ActiveRadar.offset, r*1.5f, velocity * 1.5f, attractive, attractiveStrehgth * 2.5f);
 
 }
 void AddLightSphere(glm::vec2 position, float r, glm::vec4 color)
@@ -354,7 +355,7 @@ void AddLightSphere(glm::vec2 position, float r, glm::vec4 color)
 	for (int i = 0; i < emiters.size(); i++)
 		emiters[i]->AddLightSphere(position, r,color);
 
-	foregroundFog.AddLightSphere(position, r*1.5f, color * 0.8f);
+	foregroundFog.AddLightSphere(position + ActiveRadar.offset, r*1.5f, color * 0.8f);
 
 }
 void ProcessPE(float dt)

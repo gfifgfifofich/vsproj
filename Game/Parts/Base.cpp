@@ -285,7 +285,6 @@ void BodyComponent::DeleteBody()
 		delete[] vDataConnections;
 		vDataConnections = NULL;
 	}
-	std::cout << "a";
 }
 
 

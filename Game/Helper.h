@@ -131,7 +131,7 @@ struct LightEffect
 inline std::vector<LightEffect> LightEffects;
 
 
-void ChangeMap(std::string FilePath, bool scaleDown = true); // implemented in Source.cpp
+void ChangeMap(std::string FilePath, glm::vec2 lastoffset, glm::vec2 newoffset); // implemented in Source.cpp
 
 void LoadPlayerData();
 void SavePlayerData();
@@ -150,3 +150,5 @@ void SpawnPlayer(std::string filename = "PreMissionBackup");
 void SpawnPlayer(glm::vec2 position, std::string filename = "PreMissionBackup");
 
 CentralPart* SpawnAiShip(glm::vec2 pos, std::string name);
+
+CentralPart* SpawnShipAllSave(std::string name);

@@ -20,7 +20,7 @@ public:
 	int MaxEnemybleeps = 5;
 	int MaxFogBleeps = 15;
 
-	glm::vec2 offset = {0.0f,0.0f};
+	glm::vec2 offset = { 0.0f,0.0f };
 
 	struct Bleep
 	{
@@ -46,3 +46,4 @@ public:
 
 
 };
+inline Radar ActiveRadar;

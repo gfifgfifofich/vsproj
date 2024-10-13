@@ -114,6 +114,7 @@
     <ClCompile Include="Explodion.cpp" />
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="Misc.cpp" />
+    <ClCompile Include="Mission.cpp" />
     <ClCompile Include="ParticleMaterials.cpp" />
     <ClCompile Include="Parts\Base.cpp" />
     <ClCompile Include="Parts\CentralPart.cpp" />

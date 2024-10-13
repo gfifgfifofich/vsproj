@@ -143,8 +143,8 @@ public:
 		int part1, int  index1,
 		int part2, int  index2);
 	void AddDataConnection(int type, int part1, int  index1, int part2, int  index2);
-	void SaveTo(std::string filename);
-	void LoadFrom(std::string filename);
+	void SaveTo(std::string filename, bool AllSave = false);
+	void LoadFrom(std::string filename, bool AllSave = false);
 	void Clear();
 	void Destroy();
 };

@@ -88,24 +88,71 @@ Stages
 		-	ForeGround - Fog and other stuff "above" player, will add really great volume felling
 		-	interface layer
 		-	menulayer
-		draw foreground with half or quatter of resolution, fog only = dont care, linear filter will fix low res
+
+		probably add as quality settings (Lighting, bloom, fog can just have different framebuffer sizes/amount)
+
+
+		draw foreground fog with half or quatter of resolution (affects shit, bc of bloom, but bloom + particle lighting gives mega depth and volume), fog only = dont care, linear filter will fix low res
 		todo: make light buffer & others with less res/ color depth, they dont need full res 32bit float buffers	
 
 
 		Rewrite
 		{
-		gameHelper.h
-		{
-			inline glm::vec2 prevmissionpos = {0.0f,0.0f};
-			inline glm::vec2 currentmissionpos = {0.0f,0.0f};
-			inline glm::vec2 absolutePlayerPos = currentmissionpos + Entities[0].mid
+			gameHelper.h - done
+
+			remove dependency on beeng inbase/ different area. Base is just another are after all.
+
+
+			{
+				make base "mission" (will be just a garage + random stuff able to produce + repair & modify easier) // mostly done, maybe a little more of separation from Source will be good
+				
+				Universal Saving system, save all data (player, enemy crafts, story, resourrces etc in one file)
+				{
+				A folder per save
+					Save Scene in tmp file on exit. (if not exit, then no need, cuz we switching between these scenes) 
+					A savefile wiht player data (resources, story) // just the one that already exists
+					tmp save file for each ship/Entity
+
+				}
+
+
+				start refactoring existing missions to work in new arch.
 			
-		}
+				ecs memory idea
+				{
+
+					Node[]
+					Object[]
+
+					object - only object data, id in array gives data of node. 
+					No virtual functions, all previous functions accesable through id in array
+					if they will be just an array[100k], then they can be identified by id
+
+					+ or -, but +cusstom process() "tree"
+
+					for(nodes)
+						if nodetype == NODE
+							proces
+						else
+							continue
+
+					for(objects)
+						if nodetype == objects
+							process
+						else
+							continue
+
+					etc..
+
+
+				}
+
+			}
+
 
 			Mission
 			{
 				
-
 				area1 
 				{
 					logic
@@ -142,6 +189,7 @@ Stages
 
 */
 
+#include <filesystem>
 
 
 #include "engine/Components/Redactor.h"
@@ -180,6 +228,8 @@ glm::ivec2 StandartResolutions[] =
 #include "Entity.h"
 
 
+#include "Mission.h"
+#include "Radar.h"
 
 
 
@@ -187,15 +237,28 @@ void Delete()
 {
 }
 
-void ChangeMap(std::string FilePath, bool scaleDown)
+void ChangeMap(std::string FilePath, glm::vec2 lastoffset, glm::vec2 newoffset)
 {
 	std::cout<<"changing map to: " <<FilePath<<"\n";
 	
 	ConsoleTexts.clear();	
 	MainMenu = false;
-	for(int i=0;i<Entities.size();i++)
-		Entities[i]->Destroy();
-	
+
+	ActiveRadar.offset = lastoffset;
+	CurrnetMission.MissionClear();
+	// clear directory, save entities
+	int EntitiesSize = Entities.size();
+	for (int i = 0; i < Entities.size(); i++)
+	{
+		std::string filename = "tmp/";
+		filename += std::to_string(i);
+		Entities[i]->SaveTo(filename, true);
+
+		for (int a = 0; a < Entities[i]->Parts.size(); a++)
+		{
+			Entities[i]->Parts[a]->DeletePart();
+		}
+	}
 	//if(Entities.size()>=1)
 	Entities.clear();
 
@@ -209,7 +272,7 @@ void ChangeMap(std::string FilePath, bool scaleDown)
 	}
 	lastid = 0; 
 	freeBallIDs.clear();
-
+	lastEntityID = 0;
 	DamageSpheres.clear();
 	DamageSpheresArray.clear();
 	bullets.clear();
@@ -217,18 +280,22 @@ void ChangeMap(std::string FilePath, bool scaleDown)
 	Lasers.clear();
 	LightEffects.clear();
 	GameScene->LoadFrom(FilePath);
-	lastEntityID = 0;
+
+	ActiveRadar.offset = newoffset;
+	// SpawnEntities
+	for (int i = 0; i < EntitiesSize; i++)
+	{
+		std::string filename = "tmp/";
+		filename += std::to_string(i);
+		SpawnShipAllSave(filename);
+	}
+
 
 	std::cout<<"\nMap Changed to: "<<FilePath;
 	SavePlayerData();
 }
 
 
-#include "Mission.h"
-#include "Radar.h"
-
-Mission CurrnetMission;
-Radar ActiveRadar;
 
 
 void SetupInstances()
@@ -241,456 +308,6 @@ void SetupInstances()
 	}
 }
 
-class Shop
-{
-public:
-	int window = -1;
-
-	void Process(float dt)
-	{
-		Window* sw = GetWindow(ForeWindowID);
-		Window* www = GetWindow(window);
-		sw->End();
-		www->Use();
-		www->active = true;
-		glm::vec2 WindowMousePosition = ((GetWindow(SceneWindowID)->WindowMousePosition - www->Position) ) / (www->Scale);
-		LastJustPressedLMBScrMousePos = (GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos - www->Position )/ (www->Scale);
-		ScreenMousePosition = WindowMousePosition;
-		foregroundMousePosition =MousePosition; 
-
-		float size = 100;
-		int AssetStep = 20.0f;
-		int MaxAmountRow = www->ViewportSize.x/(size + AssetStep * 2.0f); 	
-		int counterX = 0;
-		float AssetstepX = 0.0f;
-
-		float step = 20.0f;
-		glm::vec2 Corner =  { WIDTH * -0.5f , HEIGHT * 0.5f - size};
-		Corner.x += 15.0f;
-		bool b = false;
-		
-		AssetstepX = 0.0f;
-		for(int i=0;i<PartInstances.size();i++)
-		{
-			
-			if(counterX>=MaxAmountRow)
-			{
-				AssetstepX =0.0f;
-				counterX = 0;
-			}
-			counterX++;
-			b = false;
-			
-			PartInstances[i]->DrawPreview(Corner + glm::vec2(AssetstepX + size*0.5f + 10.0f,0.0f),{size*0.5f,size*0.5f});
-			
-			glm::vec4 coloron = {1.0f,1.0f,1.0f,0.8f};
-			glm::vec4 coloroff = {1.0f,1.0f,1.0f,0.6f};
-			glm::vec2 UIObjSize = UI_button(&b, "", Corner + glm::vec2(AssetstepX,0.0f),{size+20.0f,size+20.0f},0.35f,glm::vec4(0.9f),coloron,coloroff);
-			std::string text= PartInstances[i]->Name + " " +std::to_string( PartInstances[i]->Cost.Matter);  
-			UI_DrawText(text, Corner + glm::vec2(AssetstepX,UIObjSize.y*-0.5f - step*0.5f), 0.35f).x + AssetStep;
-			
-
-			if(counterX<MaxAmountRow )
-				AssetstepX += UIObjSize.x + AssetStep;
-			else
-				Corner.y += UIObjSize.y *-1.0f - step;
-			if(b )
-			{
-				Debris.Parts.push_back(CreatePart(PurchasableParts[i],{0.0f,0.0f},{0.0f,1.0f},PARTSIZE,1.0f));
-			}
-			
-		}
-		www->End();
-		sw->Use();
-		WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
-		MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
-		MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
-		LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
-		ScreenMousePosition = WindowMousePosition;
-		foregroundMousePosition =MousePosition; 
-	}
-
-
-	
-
-};
-class MissionSelectScreen
-{
-public:
-
-	int window = -1;
-	std::string filenamestring = "";
-	std::string erroutputstring = "";
-	std::vector<Mission> missions;
-	int state = 0;
-
-	glm::vec2 missionPosition = {0.0f,0.0f};
-	bool Hub = true;
-	bool missionSelected = false;
-	bool missionStory = false;
-	int missionSize = 0;
-	int missionDificulty = 0;
-	int missionType = 0;
-
-
-	void GenerateNewMissions()
-	{
-		missions.clear();
-
-		for(int i=0;i<10;i++)
-		{
-			Mission m;
-			m.size = rand() % 5 + 1;
-			m.dificulty = rand() % 5 + 1;
-			m.type = rand() %4 + 1;
-
-			float multiplyer = 1.0f;
-			if(m.type == MissionType::pirates) multiplyer = 2.0f;
-			if(m.type == MissionType::mining) multiplyer = 1.0f;
-			if(m.type == MissionType::infestation) multiplyer = 2.0f;
-			if(m.type == MissionType::retrival) multiplyer = 1.0f;
-
-			m.materialReward = multiplyer * m.dificulty * m.size * 10;
-			missions.push_back(m);
-		}
-
-	}
-	void Process(float dt)
-	{
-		Window* sw = GetWindow(ForeWindowID);
-		Window* www = GetWindow(window);
-		sw->End();
-		www->Use();
-		www->active = true;
-		glm::vec2 WindowMousePosition = ((GetWindow(SceneWindowID)->WindowMousePosition - www->Position) ) / (www->Scale);
-		LastJustPressedLMBScrMousePos = (GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos - www->Position )/ (www->Scale);
-		ScreenMousePosition = WindowMousePosition;
-		foregroundMousePosition =MousePosition; 
-
-		float size = 100;
-		int AssetStep = 20.0f;
-		int MaxAmountRow = www->ViewportSize.x/(size + AssetStep * 2.0f)-1; 	
-		int counterX = 0;
-		float AssetstepX = 0.0f;
-
-		float step = 20.0f;
-		glm::vec2 Corner =  { WIDTH * -0.5f , HEIGHT * 0.5f - size};
-		Corner.x += 15.0f;
-		bool b = false;
-		
-		switch (state)
-		{
-		case 0:
-		{
-			int PlayrShipcost =-1;
-			if(Entities.size()>0)
-				PlayrShipcost = GetShipCost(Entities[0]);
-			else
-				erroutputstring = "No ship";
-
-			if(PlayrShipcost > Materials)
-			{
-				erroutputstring = "Cant afford current ship: ";
-				erroutputstring += std::to_string(PlayrShipcost);
-				erroutputstring += "/";
-				erroutputstring += std::to_string(Materials);
-			}
-			
-			bool cango = false;
-			if(PlayrShipcost <= Materials && Entities.size()>0)
-			{
-				std::string ssss = "";
-				ssss= "ShipCost: ";
-				ssss+= std::to_string(PlayrShipcost);
-				ssss+= "/";
-				ssss+= std::to_string(Materials);
-				erroutputstring = "";
-				cango = true;
-				Corner.y += UI_DrawText(ssss,Corner,0.35f,{1.0f,1.0f,1.0f,1.0f}).y*-1.0f - step;
-				
-			}
-			if(erroutputstring.size()>0)
-			Corner.y += UI_DrawText(erroutputstring,Corner,0.35f,{4.0f,0.0f,0.0f,1.0f}).y*-1.0f - step;
-			if(cango)
-			{
-				Corner.y +=UI_DrawText("Main missions:",Corner,0.45f).y * -1.0f;
-				b = false;
-				Corner.y += UI_button(&b, "The story mission with wery cool name", Corner,{250,20},0.35f,glm::vec4(0.0f),glm::vec4(0.5f),glm::vec4(0.0f)).y * -1.0f - 0;
-				if(b)
-				{
-					missionPosition = Rotate( glm::vec2(1.0f,0.0f),rand() % 1000000 * 0.001f) * 4000.0f * (1.0f + rand() %1000 * 0.002f);
-					missionSelected = true;
-					missionStory = true;
-					missionSize = 0;
-					missionDificulty = 0;
-					missionType = 0;
-				}
-
-				Corner.y +=UI_DrawText("Missions:",Corner,0.45f).y * -1.0f;
-
-				for(int i=0;i<missions.size();i++)
-				{
-					b = false;
-					std::string namestr = "";
-					if(missions[i].type == MissionType::pirates) namestr = "Pirates ";
-					if(missions[i].type == MissionType::mining) namestr = "Mining ";
-					if(missions[i].type == MissionType::infestation) namestr = "Infestation ";
-					if(missions[i].type == MissionType::retrival) namestr = "Retrival ";
-
-					namestr += "Size: ";
-					namestr += std::to_string(missions[i].size);
-					namestr += "  Difficulty: ";
-					namestr += std::to_string(missions[i].dificulty);
-					namestr += "  Reward: ";
-					namestr += std::to_string(missions[i].materialReward);
-
-
-					UI_DrawText(namestr.c_str(),Corner - glm::vec2(0.0f,5.0f),0.35f);
-					UI_DrawCube(Corner + glm::vec2(250*0.5f,0.0f), glm::vec2(250.0f,20.0f) * 0.5f, 0.0f, glm::vec4(0.07f));
-					Corner.y += UI_button(&b, "", Corner,{250,20},0.35f,glm::vec4(0.0f),glm::vec4(0.5f),glm::vec4(0.0f)).y * -1.0f - 0;
-
-					if(b)
-					{
-						missionPosition = Rotate( glm::vec2(1.0f,0.0f),rand() % 100000 * 0.001f) * 7000.0f * (1.0f + rand() %1000 * 0.002f);
-						missionSelected = true;
-						missionStory = false;
-						missionSize = missions[i].size;
-						missionDificulty = missions[i].dificulty;
-						missionType = missions[i].type;
-						
-					}
-				}
-			}
-
-		}
-		break;
-	
-		default:
-			break;
-		}
-		www->End();
-		sw->Use();
-		WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
-		MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
-		MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
-		LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
-		ScreenMousePosition = WindowMousePosition;
-		foregroundMousePosition = MousePosition;
-
-		
-	}
-};
-
-class SaveScreen
-{
-public:
-	int window = -1;
-	std::string filenamestring = "";
-	std::string erroutputstring = "";
-	int state = 0;
-	void Process(float dt)
-	{
-		Window* sw = GetWindow(ForeWindowID);
-		Window* www = GetWindow(window);
-		sw->End();
-		www->Use();
-		www->active = true;
-		glm::vec2 WindowMousePosition = ((GetWindow(SceneWindowID)->WindowMousePosition - www->Position) ) / (www->Scale);
-		LastJustPressedLMBScrMousePos = (GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos - www->Position )/ (www->Scale);
-		ScreenMousePosition = WindowMousePosition;
-		foregroundMousePosition =MousePosition; 
-
-		float size = 100;
-		int AssetStep = 20.0f;
-		int MaxAmountRow = www->ViewportSize.x/(size + AssetStep * 2.0f); 	
-		int counterX = 0;
-		float AssetstepX = 0.0f;
-
-		float step = 20.0f;
-		glm::vec2 Corner =  { WIDTH * -0.5f , HEIGHT * 0.5f - size};
-		Corner.x += 15.0f;
-		bool b = false;
-		Corner.x+= UI_button(&b,"Add existing ship",Corner).x + step;
-		if(b)
-		{
-			state = 1;
-			filenamestring = "";
-			erroutputstring = "";
-		}
-		b = false;
-		Corner.y+= UI_button(&b,"Save as",Corner).y * -2.0f - step;
-		if(b)
-		{
-			state = 2;
-			filenamestring = "";
-			erroutputstring = "";
-		}
-		Corner.x =   WIDTH * -0.5f;
-		Corner.x += 15.0f;
-		switch (state)
-		{
-		// list of ships
-		case 0:
-		{
-			for(int i=0;i<ShipInfos.size();i++)
-			{
-
-				if(counterX>=MaxAmountRow)
-				{
-					AssetstepX =0.0f;
-					counterX = 0;
-				}
-				counterX++;
-
-				//ShipInfos[i].DrawPreview(Corner + glm::vec2(AssetstepX + size*0.5f + 10.0f,0.0f),{size*0.5f,size*0.5f});
-
-				glm::vec4 coloron = {1.0f,1.0f,1.0f,0.8f};
-				glm::vec4 coloroff = {1.0f,1.0f,1.0f,0.6f};
-				b = false;
-				glm::vec2 UIObjSize = UI_button(&b, "", Corner + glm::vec2(AssetstepX,0.0f),{size+20.0f,size+20.0f},0.35f,glm::vec4(0.9f),coloron,coloroff);
-				std::string text= ShipInfos[i].filename + " " +std::to_string( ShipInfos[i].MateralCost);  
-				UI_DrawText(text, Corner + glm::vec2(AssetstepX,UIObjSize.y*-0.5f - step*0.5f), 0.35f).x + AssetStep;
-
-
-				if(counterX<MaxAmountRow )
-					AssetstepX += UIObjSize.x + AssetStep;
-				else
-					Corner.y += UIObjSize.y *-1.0f - step;
-				if(b)
-				{
-					if(Entities.size()==1)
-					{
-						float cst = 0.0f;
-						for (int a = 0; a < Entities[0]->Parts.size(); a++)
-						{
-							Entities[0]->Parts[a]->Health = -10.0f;
-							for(int pi=0;pi<PartInstances.size();pi++)
-							{
-								if(PartInstances[pi]->type == NodeType::LASTNODE + Entities[0]->Parts[a]->type)
-									{
-										cst +=PartInstances[pi]->Cost.Matter;
-										break;
-									}
-							}
-						}
-						Entities[0]->Destroy();
-						Entities[0]->Delete=true;
-						Entities.pop_back();
-						glm::vec2 position = glm::vec2(-10, 0.0f);
-						glm::vec2 Scale = glm::vec2(0.5f, 0.5f);
-						Entities.push_back(new CentralPart);
-						Entities[0]->Create(glm::vec2(0.0f, 0.0f) * Scale + position, { 0.0f,1.0f }, PARTSIZE);
-						Entities[0]->LoadFrom(ShipInfos[i].filename);
-						
-						
-					}
-					else
-					{
-						glm::vec2 position = glm::vec2(-10, 0.0f);
-						glm::vec2 Scale = glm::vec2(0.5f, 0.5f);
-						Entities.push_back(new CentralPart);
-						Entities[0]->Create(glm::vec2(0.0f, 0.0f) * Scale + position, { 0.0f,1.0f }, PARTSIZE);
-						Entities[0]->LoadFrom(ShipInfos[i].filename);
-					}
-				}
-			}
-		}
-		break;
-		// add by name
-		case 1:
-		{
-			Corner.y+= UI_TextBox(&filenamestring,Corner).y*-1.0f - step;
-			if(erroutputstring.size()>0)
-				Corner.y+= UI_DrawText(erroutputstring,Corner,0.35f).y*-1.0f - step;
-			b = false;
-			Corner.x+= UI_button(&b,"Add",Corner).x;
-			if(b)
-			{
-				int newshipcost = CheckShipSaveFile(filenamestring);
-				if(newshipcost<0)
-					erroutputstring = "Ship file not exists";
-				else
-				{
-					shipInfo si;
-					si.filename = filenamestring;
-					si.MateralCost = newshipcost;
-					ShipInfos.push_back(si);
-					state = 0;
-					erroutputstring = "";
-					SavePlayerData();
-				}
-			}
-			b = false;
-			Corner.y+= UI_button(&b,"Cancel",Corner).y * -1.0f - step;
-			if(b)
-			{
-				state = 0;
-				erroutputstring = "";
-			}
-		}
-		break;
-		// Save as
-		case 2:
-		{
-			Corner.y+= UI_TextBox(&filenamestring,Corner).y*-1.0f - step;
-			if(erroutputstring.size()>0)
-				Corner.y+= UI_DrawText(erroutputstring,Corner,0.35f).y*-1.0f - step;
-			b = false;
-			Corner.x+= UI_button(&b,"Save",Corner).x;
-			if(b)
-			{
-				if(Entities.size()>0)
-					Entities[0]->SaveTo(filenamestring);
-				else
-				{
-					erroutputstring = "No ship to save";
-				}
-				int newshipcost = CheckShipSaveFile(filenamestring);
-				if(newshipcost<0)
-					erroutputstring = "Something wrong with the ship";
-				else
-				{
-					shipInfo si;
-					si.filename = filenamestring;
-					si.MateralCost = newshipcost;
-					ShipInfos.push_back(si);
-					state = 0;
-					erroutputstring = "";
-					SavePlayerData();
-				}
-			}
-			b = false;
-			Corner.y+= UI_button(&b,"Cancel",Corner).y * -1.0f - step;
-			if(b)
-			{
-				state = 0;
-				erroutputstring = "";
-			}
-
-		}
-		break;
-		
-		default:
-			break;
-		}
-		www->End();
-		sw->Use();
-		WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
-		MousePosition.x = WindowMousePosition.x / CameraScale.x + CameraPosition.x;
-		MousePosition.y = WindowMousePosition.y / CameraScale.y + CameraPosition.y;
-		LastJustPressedLMBScrMousePos = GetWindow(SceneWindowID)->w_LastJustPressedLMBScrMousePos;
-		ScreenMousePosition = WindowMousePosition;
-		foregroundMousePosition =MousePosition; 
-	}
-
-
-	
-
-};
-
-MissionSelectScreen MissionSelectMenu;
-SaveScreen SaveScreenmenu;
-Shop shopmenu;
 
 void ProcessPlayerControls()
 {
@@ -1131,6 +748,7 @@ void ProcessPlayerControls()
 		CurrnetMission.size = MissionSelectMenu.missionSize;
 		CurrnetMission.dificulty = MissionSelectMenu.missionDificulty;
 		CurrnetMission.type = MissionSelectMenu.missionType;
+		CurrnetMission.missionpos = MissionSelectMenu.missionPosition;
 		MissionSelectMenu.missionSelected = false;
 		MissionSelectMenu.Hub = false;
 		glm::vec2 plPos = (Entities[0]->mid - MissionSelectMenu.missionPosition);
@@ -1156,16 +774,7 @@ void ProcessPlayerControls()
 		}
 		inbase = true;
 		GetWindow(BackgroundWindowID)->w_DirectionalLight = 1.0f;
-		ChangeMap("Scenes/base.sav", false);
-		SpawnPlayer(plPos, EntityBackUpName);
-		for (int i = 0; i < Entities[0]->Parts.size(); i++)
-		{
-			for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
-			{
-				ballVelocityBuff[Entities[0]->Parts[i]->body[a]] = vel;
-				ballVelocity[Entities[0]->Parts[i]->body[a]] = vel;
-			}
-		}
+		ChangeMap("Scenes/base.sav", MissionSelectMenu.missionPosition, {0.0f,0.0f});
 		Entities[0]->mid = plPos;
 		loadedThisFrame = true;
 	}
@@ -1199,14 +808,14 @@ void ProcessPlayerControls()
 		if (Entities.size() > 0)
 		{
 			if (ActiveRadar.bleeps[i].state == 1 &&
-				1000.0f > length(ActiveRadar.bleeps[i].position - Entities[0]->mid))
+				1000.0f > length(ActiveRadar.bleeps[i].position - (Entities[0]->mid + ActiveRadar.offset)))
 			{
 				ActiveRadar.bleeps[i].t = -10.0f;
 				ActiveRadar.bleeps[i].infinite = false;
-				SpawnAiShip(ActiveRadar.bleeps[i].position, "Bigboy")->AIState = 1;
+				SpawnAiShip(ActiveRadar.bleeps[i].position - ActiveRadar.offset, "Bigboy")->AIState = 1;
 			}
 			if (ActiveRadar.bleeps[i].state == 0 &&
-				1000.0f + ActiveRadar.bleeps[i].r * 100.0f > length(ActiveRadar.bleeps[i].position - Entities[0]->mid))
+				1000.0f + ActiveRadar.bleeps[i].r * 100.0f > length(ActiveRadar.bleeps[i].position - (Entities[0]->mid + ActiveRadar.offset)))
 			{
 				if (foregroundFogParticleAmount < ActiveRadar.bleeps[i].fogamount)
 					foregroundFogParticleAmount = ActiveRadar.bleeps[i].fogamount;
@@ -1231,7 +840,6 @@ void ProcessPlayerControls()
 					inbase = false;
 					switchScene = false;
 					OpenMenu = false;
-					Entities[0]->mid = plPos;
 					loadedThisFrame = true;
 				}
 			}
@@ -1341,33 +949,9 @@ void ProcessPlayerControls()
 		MissionSelectMenu.GenerateNewMissions();
 		CurrnetMission.exitedmission = false;
 	}
-	//base
-	if(inbase)
-	{
-		Window* shw = GetWindow(shopmenu.window);
-		shopmenu.Process(delta);
-		shw->Scale = CameraScale * 0.25f;
-		shw->Position = (glm::vec2(-255,50) - CameraPosition)* CameraScale;
-		UI_DrawTexturedQuad(shw->Position , shw->GetSize(), shw->Texture, 0.0f, {1.0f,1.0f,1.0f,1.0f}, 2, false,false,false,true);
-
-		Window* sshw = GetWindow(SaveScreenmenu.window);
-		SaveScreenmenu.Process(delta);
-		sshw->Scale = CameraScale * 0.25f;
-		sshw->Position = (glm::vec2(0,250) - CameraPosition)* CameraScale;
-		UI_DrawTexturedQuad(sshw->Position , sshw->GetSize(), sshw->Texture, 0.0f, {1.0f,1.0f,1.0f,1.0f}, 2, false,false,false,true);
-
-		Window* mshw = GetWindow(MissionSelectMenu.window);
-		MissionSelectMenu.Process(delta);
-		mshw->Scale = CameraScale * 0.25f;
-		mshw->Position = (glm::vec2(0,-250) - CameraPosition)* CameraScale;
-		UI_DrawTexturedQuad(mshw->Position , mshw->GetSize(), mshw->Texture, 0.0f, {1.0f,1.0f,1.0f,1.0f}, 2, false,false,false,true);
-
-	}
-	else
-	{
-		
-		CurrnetMission.Process(delta);
-	}
+	
+	CurrnetMission.Process(delta);
+	
 
 }
 
@@ -1416,7 +1000,7 @@ void ProcessMainMenu()
 
 		if(storyint >0)
 		{
-			ChangeMap("Scenes/base.sav", false);
+			ChangeMap("Scenes/base.sav", { 0.0f,0.0f }, { 0.0f,0.0f });
 
 			SpawnPlayer();
 			Background.LoadFrom("Scenes/Sun.sav");
@@ -1702,7 +1286,7 @@ void Ready()
 	
 	std::cout<<"loading pData ready\n";
 	LoadPlayerData();
-	ChangeMap(MapFileName, false);
+	ChangeMap(MapFileName, { 0.0f,0.0f }, { 0.0f,0.0f });
 	MainMenu = true;
 	addsound(SHHSound,true,10);
 	addsound(RocketEngineSound,true,20);
@@ -2181,7 +1765,7 @@ void PreReady()
 	newPartRotation = 0.0f;
 
 	balltaken = false;
-
+	saveFileName = "Save0.sav";
 	absoluteControl = true;
 	BuildingMode = false;
 
@@ -2301,7 +1885,6 @@ void PreReady()
 	std::cout<<"part props ready\n";
 
 
-
 	
 }
 
@@ -2325,7 +1908,6 @@ void SceneEnd()
 	clearParticleMaterials();
 	CurrnetMission.TakenAreas.clear();
 	CurrnetMission.TakenAreas.push_back({0,0,50,50});
-	CurrnetMission.AIShips.clear();
 	BuildingMode = false;
 	vLogicMode = false;
 	bLogicMode = false;
@@ -2366,6 +1948,5 @@ void Destroy()
 	SavePlayerData();
 	CurrnetMission.TakenAreas.clear();
 	CurrnetMission.TakenAreas.push_back({0,0,50,50});
-	CurrnetMission.AIShips.clear();
 	SaveSettings();
 }

@@ -207,7 +207,7 @@ void ProcessEntities(float dt,int s)
 			}
 		}
 
-	subdt = dt / substeps;
+	subdt = dt ;
 	Debris.Process(subdt, s, s == substeps - 1);
 	balltaken = false;
 
