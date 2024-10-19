@@ -2240,90 +2240,6 @@ Cube_0000000008
 	Texture CubeT
 	Type 0
 }
-DestructableStaticCube_0000000100
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 9998
-	ColdColor 0.040000 2.000000 10.000000 0.000000
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	DestrParticleAmount 10
-	DestrParticleSpeed 10.000000
-	DestructionParticleAsset None
-	DieOnOverheat 0
-	ExplodeOnDeath 0
-	ExplodeOnOverheat 0
-	Health 10.000000
-	HeatColor 60.000000 10.000000 2.000000 0.000000
-	Height 10.001768
-	ID 0
-	Invincibility 0
-	Material Cube
-	Name DestructableStaticCube
-	Position -1800.000000 3540.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 144.364258 12.561768
-	SpawnInShapeOrPoint 1
-	Type 1
-	Width 150.004257
-	Z_Index 0
-	color 1.000000 1.000000 1.000000 1.000000
-	explodionDamage 2.500000
-	explodionLifeTime 1.000000
-	explodionR 10.000000
-	explodionRecoil 40.000000
-	invertX 0
-	invertY 0
-	maxTemperature 10.000000
-	passiveCooling 1.000000
-	temperature 0.000000
-	trgtemperature 0.000000
-}
-DestructableStaticCube_0000000101
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 9998
-	ColdColor 0.040000 2.000000 10.000000 0.000000
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	DestrParticleAmount 10
-	DestrParticleSpeed 10.000000
-	DestructionParticleAsset None
-	DieOnOverheat 0
-	ExplodeOnDeath 0
-	ExplodeOnOverheat 0
-	Health 10.000000
-	HeatColor 60.000000 10.000000 2.000000 0.000000
-	Height 10.001768
-	ID 0
-	Invincibility 0
-	Material Cube
-	Name DestructableStaticCube
-	Position -1800.000000 4110.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 144.364258 12.561768
-	SpawnInShapeOrPoint 1
-	Type 1
-	Width 150.004257
-	Z_Index 0
-	color 1.000000 1.000000 1.000000 1.000000
-	explodionDamage 2.500000
-	explodionLifeTime 1.000000
-	explodionR 10.000000
-	explodionRecoil 40.000000
-	invertX 0
-	invertY 0
-	maxTemperature 10.000000
-	passiveCooling 1.000000
-	temperature 0.000000
-	trgtemperature 0.000000
-}
 EntranceTC_0000000102
 {
 	Class 9995
@@ -2400,7 +2316,7 @@ InsideTrigger_0000000106
 	Z_Index 0
 	determineInside 1
 	disable 0
-	triggered 0
+	triggered 1
 }
 InsideTrigger_0000000107
 {
@@ -2413,7 +2329,7 @@ InsideTrigger_0000000107
 	Z_Index 0
 	determineInside 1
 	disable 0
-	triggered 0
+	triggered 1
 }
 LabMonitor_0000000108
 {
@@ -2442,25 +2358,25 @@ LabMonitor_0000000108
 	color9 3.000000 3.000000 0.400000 1.000000
 	invertX 0
 	invertY 0
-	text1 Status:
-	text10 Critical errors detected, can not proceed with testing
-	text2 Structural integrity : OK
-	text3 temperature: OK
-	text4 Power supply: LOW
+	text1 
+	text10 No input
+	text2 
+	text3 
+	text4 
 	text5 
-	text6 Note: check turbines in "power supply" section
+	text6 
 	text7 
 	text8 
-	text9 1 planned operation awaiting required conditions
-	textOffset 2.500000 -10.210005
-	textScale 0.120000
+	text9 
+	textOffset 2.500000 5.000000
+	textScale 0.800000
 	textStep -8.000000
 }
 Laser1_0000000109
 {
 	Additive 0
 	Class 1
-	Color 24.123999 5.228000 2.820000 -0.000000
+	Color 24.123999 5.228000 2.820000 0.605241
 	Depth -0.200000
 	ID 0
 	Material Mgrad
@@ -2492,7 +2408,7 @@ LaserDS_0000000110
 LaserLS_0000000111
 {
 	Class 6
-	Color 47.499996 1.300000 0.800000 -0.001001
+	Color 47.499996 1.300000 0.800000 3.026205
 	Depth 0.000000
 	ID 0
 	Name LaserLS
@@ -2516,7 +2432,7 @@ LaserPE_0000000112
 	ParticleObjectType 4
 	Position -913.599976 3812.800049
 	Type 1
-	amount 0
+	amount 1
 	scale 1012.523804 249.428711
 	tick 0.017000
 	velocity 0.000000 0.000000
@@ -3677,29 +3593,29 @@ turbineMonitor_0000000178
 	Scale 83.080574 42.936775
 	Type 1
 	Z_Index -80
-	bleepLastLine 1
+	bleepLastLine 0
 	color1 1.500000 1.500000 1.500000 1.000000
-	color10 4.509997 0.104000 0.106000 1.000000
-	color2 4.500000 0.100000 0.100000 1.000000
-	color3 4.500000 0.100000 0.100000 1.000000
-	color4 4.500000 0.100000 0.100000 1.000000
-	color5 4.500000 0.100000 0.100000 1.000000
-	color6 4.500000 0.100000 0.100000 1.000000
-	color7 4.500000 0.100000 0.100000 1.000000
-	color8 4.500000 0.100000 0.100000 1.000000
-	color9 4.500000 0.100000 0.100000 1.000000
+	color10 0.100000 4.500000 0.100000 1.000000
+	color2 0.100000 4.500000 0.100000 1.000000
+	color3 0.100000 4.500000 0.100000 1.000000
+	color4 0.100000 4.500000 0.100000 1.000000
+	color5 0.100000 4.500000 0.100000 1.000000
+	color6 0.100000 4.500000 0.100000 1.000000
+	color7 0.100000 4.500000 0.100000 1.000000
+	color8 0.100000 4.500000 0.100000 1.000000
+	color9 0.100000 4.500000 0.100000 1.000000
 	invertX 0
 	invertY 0
 	text1 Status:
-	text10 Emergency power supply
-	text2 t1 - frozen
-	text3 t2 - frozen
-	text4 t3 - frozen
-	text5 t4 - frozen
-	text6 t5 - frozen
-	text7 t6 - frozen
-	text8 1 or more turbines offline
-	text9 experimental and production equpment offline
+	text10 Power supply stable
+	text2 t1 - OK
+	text3 t2 - OK
+	text4 t3 - OK
+	text5 t4 - OK
+	text6 t5 - OK
+	text7 t6 - OK
+	text8 All turbines operating
+	text9 Experimantal equipment operational
 	textOffset 2.500000 -6.900008
 	textScale 0.120000
 	textStep -8.000000
@@ -3711,7 +3627,7 @@ turbine_0000000179
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
+	Color 31.000561 6.000093 2.000019 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3742,8 +3658,8 @@ turbine_0000000179
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature -8.000000
-	trgtemperature -8.000000
+	temperature 50.000935
+	trgtemperature 50.000000
 }
 turbine_0000000180
 {
@@ -3752,7 +3668,7 @@ turbine_0000000180
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
+	Color 27.670195 5.445033 1.889006 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3783,8 +3699,8 @@ turbine_0000000180
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature -8.000000
-	trgtemperature -8.000000
+	temperature 44.450325
+	trgtemperature 50.000000
 }
 turbine_0000000181
 {
@@ -3793,7 +3709,7 @@ turbine_0000000181
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
+	Color 31.000074 6.000012 2.000002 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3824,8 +3740,8 @@ turbine_0000000181
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature -8.000000
-	trgtemperature -8.000000
+	temperature 50.000126
+	trgtemperature 50.000000
 }
 turbine_0000000182
 {
@@ -3834,7 +3750,7 @@ turbine_0000000182
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
+	Color 31.000000 6.000000 2.000000 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3865,8 +3781,8 @@ turbine_0000000182
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature -8.000000
-	trgtemperature -8.000000
+	temperature 50.000000
+	trgtemperature 50.000000
 }
 turbine_0000000183
 {
@@ -3875,7 +3791,7 @@ turbine_0000000183
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
+	Color 31.000097 6.000016 2.000003 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3906,8 +3822,8 @@ turbine_0000000183
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature -8.000000
-	trgtemperature 70.000000
+	temperature 50.000164
+	trgtemperature 50.000000
 }
 turbine_0000000184
 {
@@ -3916,7 +3832,7 @@ turbine_0000000184
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
+	Color 31.293280 6.048880 2.009776 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3947,6 +3863,6 @@ turbine_0000000184
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature -8.000000
-	trgtemperature -8.000000
+	temperature 50.488800
+	trgtemperature 50.000000
 }

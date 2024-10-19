@@ -14,6 +14,8 @@ void Scene::SaveAs(std::string filename)
 	DataStorage ds;
 	for(int N =0;N<Nodes.size();N++)
 	{
+		if (Nodes[N]->type >= NodeType::LASTNODE)
+			continue;
 		// total size of "Hash string" attachment = 11;
 		std::string HashIshString = "";
 		std::string Istr = std::to_string(N);
@@ -206,6 +208,9 @@ void Scene::LoadFrom(std::string filename)
 		if(ds.GetPropertyAsInt(Item.first,"Type") == ECSType::ECSNODE)
 		{
 			Node* NewNode = NULL;
+
+			if (ds.GetPropertyAsInt(Item.first, "Class") >= NodeType::LASTNODE)
+				continue;
 			
 			// total size of "Hash string" attachment = 11;
 			std::string NewNodeName = Item.first;

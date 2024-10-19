@@ -121,6 +121,7 @@
     <ClCompile Include="Parts\smallball.cpp" />
     <ClCompile Include="Radar.cpp" />
     <ClCompile Include="Rocket.cpp" />
+    <ClCompile Include="Save.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SubECS.cpp" />
   </ItemGroup>

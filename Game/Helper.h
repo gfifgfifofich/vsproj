@@ -135,6 +135,8 @@ void ChangeMap(std::string FilePath, glm::vec2 lastoffset, glm::vec2 newoffset);
 
 void LoadPlayerData();
 void SavePlayerData();
+void QuickSave(std::string SaveFileName);
+void QuickLoad(std::string SaveFileName);
 
 void LoadTextures();
 
@@ -152,3 +154,4 @@ void SpawnPlayer(glm::vec2 position, std::string filename = "PreMissionBackup");
 CentralPart* SpawnAiShip(glm::vec2 pos, std::string name);
 
 CentralPart* SpawnShipAllSave(std::string name);
+CentralPart* SpawnShipAllSaveFullPath(std::string name);

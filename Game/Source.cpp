@@ -113,6 +113,20 @@ Stages
 					A savefile wiht player data (resources, story) // just the one that already exists
 					tmp save file for each ship/Entity
 
+					SaveDirectory
+					{
+						Main.sav
+						{
+							Entities amount
+							storyit
+							etc
+						}
+						Scene.sav - regular scene.Save()
+						0.sav
+						1.sav
+						2.sav
+
+					}
 				}
 
 
@@ -714,7 +728,16 @@ void ProcessPlayerControls()
 			if (load)
 				Entities[0]->LoadFrom(saveFileName);
 
+			bool qsave = false;
+			UI_buttonOnlyON(&qsave, "ssssss", { -0.46f * WIDTH ,0.28f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
+			if (qsave)
+				QuickSave("TheQuickSave");
 
+			qsave = false;
+			UI_buttonOnlyON(&qsave, "llllll", { -0.46f * WIDTH ,0.22f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
+			if (qsave)
+				QuickLoad("TheQuickSave");
+				
 			iw->End();
 			sw->Use();
 			WindowMousePosition = (GetWindow(SceneWindowID)->WindowMousePosition);
@@ -752,7 +775,7 @@ void ProcessPlayerControls()
 		MissionSelectMenu.missionSelected = false;
 		MissionSelectMenu.Hub = false;
 		glm::vec2 plPos = (Entities[0]->mid - MissionSelectMenu.missionPosition);
-		CurrnetMission.Start(plPos);
+		CurrnetMission.Start();
 		inbase = false;
 		switchScene = false;
 		OpenMenu = false;
@@ -836,7 +859,7 @@ void ProcessPlayerControls()
 					MissionSelectMenu.missionPosition = ActiveRadar.bleeps[i].position;
 					MissionSelectMenu.Hub = false;
 					glm::vec2 plPos = (Entities[0]->mid - MissionSelectMenu.missionPosition);
-					CurrnetMission.Start(plPos);
+					CurrnetMission.Start();
 					inbase = false;
 					switchScene = false;
 					OpenMenu = false;
@@ -1747,7 +1770,8 @@ void Process(float dt)
 
 	mw->Draw(5);
 	
-
+	if (JustPressedkey[GLFW_KEY_9])
+		QuickLoad("TheQuickSave");
 }
 
 void PreReady()

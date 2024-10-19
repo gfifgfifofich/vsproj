@@ -20,20 +20,21 @@ class Mission
 	bool story_mission = false;
 	bool exiting = false;
 	bool compleated = true;
-	std::vector<glm::vec4> TakenAreas;
 	std::vector<std::vector<CentralPart*>> Bots;
 	std::vector<std::vector<Node*>> NodeHandles;
+	std::vector<glm::vec4> TakenAreas;
 	std::vector<float> timers;
 	std::map<std::string, bool> flags;
 
 	glm::vec2 missionpos = { 0.0f,0.0f };
 
-	//Shit for missions
+	//Shit for missions (one, tutorial.)
 	glm::vec2 planetpos = {0.0f,0.0f};
 
 
-	
-	void Start(glm::vec2 playerpos = { 100.0f,-300.0f });
+
+	void Start();
+	void UpdateScene();
 	void CheckShips(float dt);
 	void Process(float dt);
 	void exitMission(bool extracted = false);

@@ -2,6 +2,8 @@
 class CentralPart : public BodyComponent
 {
 public:
+	int saveid = -1;
+
 	glm::vec2 midvel = {0.0f,0.0f};
 	glm::vec2 avgvel = {0.0f,0.0f};
 	float rotationvelocity = 0.0f;
@@ -143,8 +145,8 @@ public:
 		int part1, int  index1,
 		int part2, int  index2);
 	void AddDataConnection(int type, int part1, int  index1, int part2, int  index2);
-	void SaveTo(std::string filename, bool AllSave = false);
-	void LoadFrom(std::string filename, bool AllSave = false);
+	void SaveTo(std::string filename, bool AllSave = false,bool fullpath = false);
+	void LoadFrom(std::string filename, bool AllSave = false, bool fullpath = false);
 	void Clear();
 	void Destroy();
 };

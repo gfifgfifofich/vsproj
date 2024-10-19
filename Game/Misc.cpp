@@ -215,7 +215,14 @@ CentralPart* SpawnAiShip(glm::vec2 pos, std::string name)
 CentralPart* SpawnShipAllSave(std::string name)
 {
 	Entities.push_back(new CentralPart);
-	Entities[Entities.size() - 1]->Create({0.0f,0.0f}, { 0.0f, 1.0f }, PARTSIZE);
-	Entities[Entities.size() - 1]->LoadFrom(name,true);
+	Entities[Entities.size() - 1]->Create({ 0.0f,0.0f }, { 0.0f, 1.0f }, PARTSIZE);
+	Entities[Entities.size() - 1]->LoadFrom(name, true);
+	return Entities[Entities.size() - 1];
+}
+CentralPart* SpawnShipAllSaveFullPath(std::string name)
+{
+	Entities.push_back(new CentralPart);
+	Entities[Entities.size() - 1]->Create({ 0.0f,0.0f }, { 0.0f, 1.0f }, PARTSIZE);
+	Entities[Entities.size() - 1]->LoadFrom(name, true,true);
 	return Entities[Entities.size() - 1];
 }

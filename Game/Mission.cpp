@@ -37,7 +37,7 @@ void Mission::MissionClear()
 
 	}
 }
-void Mission::Start(glm::vec2 playerpos)
+void Mission::Start()
 {
 	timers.clear();
 	TakenAreas.clear();
@@ -130,34 +130,16 @@ void Mission::Start(glm::vec2 playerpos)
 	{
 	case 0: // tutorial
 	{
-		Background.LoadFrom("Scenes/Sun.sav");
+		//Background.LoadFrom("Scenes/Sun.sav");
 		ChangeMap("Scenes/tutorial.sav", ActiveRadar.offset,missionpos);
-		timers.push_back(2.0f);
-		timers.push_back(0.0f);
-		timers.push_back(0.0f);
-		timers.push_back(0.5f);//door timers [3],[4]
-		timers.push_back(0.0f);
-		flags["Explode"] = false;
-		flags["Spawned"] = false;
-		for (int i = 0; i < 8; i++)
-			Debris.SpawnPart(PART::ROCKETENGINE, { i + 11.5f,5.0f }, PARTSIZE);
-
-		glm::vec2 pos = { 30.0f,100.0f };
-		Debris.SpawnPart(PART::RADIATOR, pos, PARTSIZE);
-		pos = { 30.0f,200.0f };
-		Debris.SpawnPart(PART::GUN, pos, PARTSIZE);
-
+		UpdateScene();
 
 
 	}break;
 	case 1:
 	{
 		ChangeMap("Scenes/Gun.sav", ActiveRadar.offset, missionpos);
-		timers.push_back(5.0f);
-		timers.push_back(5.0f);
-		timers.push_back(5.0f);
-		flags["Ending"] = false;
-		flags["Spawned"] = false;
+
 		std::vector<CentralPart*> arrr;
 		Bots.push_back(arrr);
 		Bots[0].push_back(SpawnAiShip({ -150.0f,400.0f }, "drone"));
@@ -167,17 +149,15 @@ void Mission::Start(glm::vec2 playerpos)
 		for (auto e : Bots[0])
 		{
 			e->AIState = 0;
+			e->saveid = 0;
 		}
 
+		UpdateScene();
 	}break;
 	case 2:
 	{
 		ChangeMap("Scenes/pstation.sav", ActiveRadar.offset, missionpos);
-		timers.push_back(5.0f);
-		timers.push_back(5.0f);
-		timers.push_back(5.0f);
-		flags["Ending"] = false;
-		flags["Spawned"] = false;
+
 		std::vector<CentralPart*> arrr;
 		Bots.push_back(arrr);
 
@@ -195,8 +175,153 @@ void Mission::Start(glm::vec2 playerpos)
 					Bots.push_back(v);
 				}
 				Bots[GameScene->Nodes[i]->id].push_back(SpawnAiShip(GameScene->Nodes[i]->position, GameScene->Nodes[i]->Name));
+				Bots[GameScene->Nodes[i]->id].back()->saveid = GameScene->Nodes[i]->id;
 
 			}
+		}
+
+		UpdateScene();
+	}break;
+	case 3:
+	{
+		AmbientLight = 0.0f;
+		ChangeMap("Scenes/mining.sav", ActiveRadar.offset, missionpos);
+
+		std::vector<CentralPart*> arrr;
+		Bots.push_back(arrr);
+
+		for (int i = 0; i < GameScene->Nodes.size(); i++)
+		{
+			if (GameScene->Nodes[i]->type == NodeType::NODE)
+			{
+				while (Bots.size() <= GameScene->Nodes[i]->id)
+				{
+					std::vector<CentralPart*> v;
+					Bots.push_back(v);
+				}
+				Bots[GameScene->Nodes[i]->id].push_back(SpawnAiShip(GameScene->Nodes[i]->position, GameScene->Nodes[i]->Name));
+				Bots[GameScene->Nodes[i]->id].back()->saveid = GameScene->Nodes[i]->id;
+
+			}
+		}
+
+		UpdateScene();
+
+	}break;
+	case 4:
+	{
+		ChangeMap("Scenes/lab.sav", ActiveRadar.offset, missionpos);
+
+		std::vector<CentralPart*> arrr;
+		Bots.push_back(arrr);
+
+		for (int i = 0; i < GameScene->Nodes.size(); i++)
+		{
+			if (GameScene->Nodes[i]->type == NodeType::NODE)
+			{
+				while (Bots.size() <= GameScene->Nodes[i]->id)
+				{
+					std::vector<CentralPart*> v;
+					Bots.push_back(v);
+				}
+				Bots[GameScene->Nodes[i]->id].push_back(SpawnAiShip(GameScene->Nodes[i]->position, GameScene->Nodes[i]->Name));
+				Bots[GameScene->Nodes[i]->id].back()->saveid = GameScene->Nodes[i]->id;
+			}
+		}
+		UpdateScene();
+
+	}break;
+	default:
+		break;
+	}
+
+}
+
+void Mission::UpdateScene()
+{
+	timers.clear();
+	TakenAreas.clear();
+	TakenAreas.push_back({ 0,0,50,50 });
+	flags.clear();
+	Bots.clear();
+	NodeHandles.clear();
+
+	std::cout << "Storyint = " << storyint << "\n";
+	std::cout << "story_mission = " << story_mission << "\n";
+
+	if (!story_mission)
+	{
+		inbase = false;
+
+
+		switch (type)
+		{
+		case MissionType::mining:
+		{
+
+		}break;
+		case MissionType::retrival:
+		{
+
+		}break;
+		case MissionType::pirates:
+		{
+			
+		}break;
+		case MissionType::infestation:
+		{
+
+		}
+		default:
+			break;
+		}
+	}
+	else switch (storyint)
+	{
+	case 0: // tutorial
+	{
+		timers.push_back(2.0f);
+		timers.push_back(0.0f);
+		timers.push_back(0.0f);
+		timers.push_back(0.5f);//door timers [3],[4]
+		timers.push_back(0.0f);
+		flags["Explode"] = false;
+		flags["Spawned"] = false;
+
+	}break;
+	case 1:
+	{
+		timers.push_back(5.0f);
+		timers.push_back(5.0f);
+		timers.push_back(5.0f);
+		flags["Ending"] = false;
+		flags["Spawned"] = false;
+		std::vector<CentralPart*> arrr;
+		Bots.push_back(arrr);
+
+		for (auto e : Entities)
+		{
+			if(e->saveid == 0)
+				Bots[0].push_back(e);
+		}
+
+	}break;
+	case 2:
+	{
+		timers.push_back(5.0f);
+		timers.push_back(5.0f);
+		timers.push_back(5.0f);
+		flags["Ending"] = false;
+		flags["Spawned"] = false;
+		std::vector<CentralPart*> arrr;
+		Bots.push_back(arrr);
+
+		std::vector<Node*> Cooolernv;
+		NodeHandles.push_back(Cooolernv);
+		std::vector<Node*> nv;
+		NodeHandles.push_back(nv);
+		for (int i = 0; i < GameScene->Nodes.size(); i++)
+		{
 			if (GameScene->Nodes[i]->Name == "Core")
 			{
 				NodeHandles[1].push_back(GameScene->Nodes[i]);
@@ -205,13 +330,23 @@ void Mission::Start(glm::vec2 playerpos)
 			{
 				NodeHandles[0].push_back(GameScene->Nodes[i]);
 			}
+		}	
+		for (auto e : Entities)
+		{
+			if (e->saveid >= 0)
+			{
+				while (Bots.size() <= e->saveid)
+				{
+					std::vector<CentralPart*> v;
+					Bots.push_back(v);
+				}
+				Bots[e->saveid].push_back(e);
+			}
 		}
 
 	}break;
 	case 3:
 	{
-		AmbientLight = 0.0f;
-		ChangeMap("Scenes/mining.sav", ActiveRadar.offset, missionpos);
 		timers.push_back(5.0f);
 		timers.push_back(5.0f);
 		timers.push_back(5.0f);
@@ -226,7 +361,6 @@ void Mission::Start(glm::vec2 playerpos)
 		flags["Laser3"] = true;
 
 
-		AqueredCameraScale = { 2.0f,2.0f };
 		std::vector<CentralPart*> arrr;
 		Bots.push_back(arrr);
 
@@ -248,16 +382,6 @@ void Mission::Start(glm::vec2 playerpos)
 		NodeHandles.push_back(LightSpheres);//7
 		for (int i = 0; i < GameScene->Nodes.size(); i++)
 		{
-			if (GameScene->Nodes[i]->type == NodeType::NODE)
-			{
-				while (Bots.size() <= GameScene->Nodes[i]->id)
-				{
-					std::vector<CentralPart*> v;
-					Bots.push_back(v);
-				}
-				Bots[GameScene->Nodes[i]->id].push_back(SpawnAiShip(GameScene->Nodes[i]->position, GameScene->Nodes[i]->Name));
-
-			}
 			if (GameScene->Nodes[i]->Name == "L1Fuse" ||
 				GameScene->Nodes[i]->Name == "L2Fuse" ||
 				GameScene->Nodes[i]->Name == "L3Fuse")
@@ -305,13 +429,26 @@ void Mission::Start(glm::vec2 playerpos)
 			}
 		}
 
+		for (auto e : Entities)
+		{
+			if (e->saveid >= 0)
+			{
+				while (Bots.size() <= e->saveid)
+				{
+					std::vector<CentralPart*> v;
+					Bots.push_back(v);
+				}
+				Bots[e->saveid].push_back(e);
+			}
+		}
 	}break;
 	case 4:
 	{
-		ChangeMap("Scenes/lab.sav", ActiveRadar.offset, missionpos);
+
 		timers.push_back(0.0f);
 		flags["LaserShot"] = false;
 
+		std::cout << "Updating the scene";
 
 		std::vector<CentralPart*> arrr;
 		Bots.push_back(arrr);
@@ -324,16 +461,6 @@ void Mission::Start(glm::vec2 playerpos)
 		NodeHandles.push_back(Misc);//2
 		for (int i = 0; i < GameScene->Nodes.size(); i++)
 		{
-			if (GameScene->Nodes[i]->type == NodeType::NODE)
-			{
-				while (Bots.size() <= GameScene->Nodes[i]->id)
-				{
-					std::vector<CentralPart*> v;
-					Bots.push_back(v);
-				}
-				Bots[GameScene->Nodes[i]->id].push_back(SpawnAiShip(GameScene->Nodes[i]->position, GameScene->Nodes[i]->Name));
-
-			}
 			if (GameScene->Nodes[i]->Name == "turbine")
 			{
 				NodeHandles[0].push_back(GameScene->Nodes[i]);
@@ -352,11 +479,33 @@ void Mission::Start(glm::vec2 playerpos)
 			}
 		}
 
+		for (auto e : Entities)
+		{
+			if (e->saveid >= 0)
+			{
+				while (Bots.size() <= e->saveid)
+				{
+					std::vector<CentralPart*> v;
+					Bots.push_back(v);
+				}
+				Bots[e->saveid].push_back(e);
+				std::cout << "Bots[" << e->saveid << "].size()=" << Bots[e->saveid].size() << "\n";
+			}
+		}
+
+		for (int i = 0; i < NodeHandles.size(); i++)
+		{
+			std::cout << "NodeHandles[" <<i <<"].size()=" << NodeHandles[i].size() << "\n";
+		}
+
+		std::cout << "Updated the scene";
 	}break;
 	default:
 		break;
 	}
+
 }
+
 void Mission::CheckShips(float dt)
 {
 }

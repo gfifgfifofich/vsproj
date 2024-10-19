@@ -941,9 +941,11 @@ void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2,
 		}
 	}
 }
-void CentralPart::SaveTo(std::string filename, bool AllSave)
+void CentralPart::SaveTo(std::string filename, bool AllSave, bool fullpath)
 {
 	std::string fn = "./Ships/"+filename + ".sav";
+	if (fullpath)
+		fn = filename;
 	filename = fn;
 	std::ofstream f;
 	f.open(filename);
@@ -979,11 +981,19 @@ void CentralPart::SaveTo(std::string filename, bool AllSave)
 		f << " ";
 		f << ballVelocity[Parts[0]->body[1]].y;
 		f << " ";
+		f << trgPos.x;
+		f << " ";
+		f <<trgPos.y;
+		f << " ";
 		f << AIState;
 		f << " ";
 		f << player;
 		f << " ";
 		f << autocontrol;
+		f << " ";
+		f << saveid;
+		f << " ";
+		f << id;
 		f << "\n";
 	}
 
@@ -1062,10 +1072,12 @@ void CentralPart::SaveTo(std::string filename, bool AllSave)
 	f.close();
 	std::cout<<"\n"<<filename<<" Saved";
 }
-void CentralPart::LoadFrom(std::string filename, bool AllSave)
+void CentralPart::LoadFrom(std::string filename, bool AllSave, bool fullpath)
 {
 	bool allsavefile = false;
 	std::string fn = "./Ships/"+filename + ".sav";
+	if (fullpath)
+		fn = filename;
 	filename = fn;
 	std::cout<<"\nLoading Entity: "<<filename;
 	mid = 0.5f * (ballPosition[Parts[0]->body[0]] + ballPosition[Parts[0]->body[1]]);
@@ -1092,7 +1104,8 @@ void CentralPart::LoadFrom(std::string filename, bool AllSave)
 				ballPosition[Parts[0]->body[1]].x >> ballPosition[Parts[0]->body[1]].y >>
 				ballVelocity[Parts[0]->body[0]].x >> ballVelocity[Parts[0]->body[0]].y >>
 				ballVelocity[Parts[0]->body[1]].x >> ballVelocity[Parts[0]->body[1]].y >>
-				AIState >> player >> autocontrol;
+				trgPos.x >> trgPos.y >>
+				AIState >> player >> autocontrol >> saveid >> id;
 			
 			mid -= ActiveRadar.offset;
 			ballPosition[Parts[0]->body[0]] += mid;
