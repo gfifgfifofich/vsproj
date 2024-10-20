@@ -251,9 +251,6 @@ void Mission::UpdateScene()
 
 	if (!story_mission)
 	{
-		inbase = false;
-
-
 		switch (type)
 		{
 		case MissionType::mining:

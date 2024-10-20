@@ -26,6 +26,7 @@ void QuickSave(std::string SaveFileName)
 	PlayerDataDS.SetProperty(SaveFileName, "lastEntityID", lastEntityID);
 	PlayerDataDS.SetProperty(SaveFileName, "MissionSelectMenu.missionPosition", MissionSelectMenu.missionPosition);
 	PlayerDataDS.SetProperty(SaveFileName, "MissionSelectMenu.Hub", MissionSelectMenu.Hub);
+	PlayerDataDS.SetProperty(SaveFileName, "inbase",inbase);
 	PlayerDataDS.SetProperty("LastSave", "LastSaveName", "Save0");
 	
 

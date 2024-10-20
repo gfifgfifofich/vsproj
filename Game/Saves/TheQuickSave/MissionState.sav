@@ -4,21 +4,9 @@ Mission
 	dificulty 0
 	exiting 0
 	materialReward 0
-	missionpos 13623.954102 4904.921875
+	missionpos 0.000000 0.000000
 	planetpos 0.000000 0.000000
 	size 0
-	story_mission 1
+	story_mission 0
 	type 0
-}
-TakenAreas
-{
-	0 0.000000 0.000000 50.000000 50.000000
-}
-flags
-{
-	LaserShot 1
-}
-timers
-{
-	0 0.000000
 }

@@ -729,15 +729,6 @@ void ProcessPlayerControls()
 			if (load)
 				Entities[0]->LoadFrom(saveFileName);
 
-			bool qsave = false;
-			UI_buttonOnlyON(&qsave, "ssssss", { -0.46f * WIDTH ,0.28f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
-			if (qsave)
-				QuickSave("TheQuickSave");
-
-			qsave = false;
-			UI_buttonOnlyON(&qsave, "llllll", { -0.46f * WIDTH ,0.22f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
-			if (qsave)
-				QuickLoad("TheQuickSave");
 				
 			iw->End();
 			sw->Use();
@@ -1776,9 +1767,11 @@ void Process(float dt)
 	cw->Draw(4);
 
 	mw->Draw(5);
-	
-	if (JustPressedkey[GLFW_KEY_9])
+
+	if (JustPressedkey[GLFW_KEY_F9])
 		QuickLoad("TheQuickSave");
+	else if (JustPressedkey[GLFW_KEY_F5])
+		QuickSave("TheQuickSave");
 }
 
 void PreReady()
