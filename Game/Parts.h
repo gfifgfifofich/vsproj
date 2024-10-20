@@ -568,7 +568,7 @@ public:
 
 		mid = (ballPosition[body[0]] + ballPosition[body[2]] + ballPosition[body[3]] + ballPosition[body[4]]) * 0.25f;
 		DrawTexturedQuad(mid, glm::vec2(0.5f * PARTSIZE * 0.2f, 4.0f * PARTSIZE * 0.2f), LaserGunTexture, get_angle_between_points(ballPosition[body[1]], mid), color, Z_Index + 2, LaserGunNormalMap);
-		DrawTexturedQuad(mid, glm::vec2(PARTSIZE * 2.0f), GunBaseTexture, get_angle_between_points(ballPosition[body[0]],mid) - pi*0.25f, color, Z_Index + 1, GunBaseNormalMap);
+		DrawTexturedQuad(mid, glm::vec2(PARTSIZE * 2.0f), LaserGunBaseTexture, get_angle_between_points(ballPosition[body[0]],mid) - pi*0.25f, color, Z_Index + 1, LaserGunBaseNormalMap);
 	}
 
 	void DeletePart() override
@@ -581,7 +581,7 @@ public:
 	void DrawPreview(glm::vec2 ui_position, glm::vec2 size) override
 	{
 		UI_DrawTexturedQuad(ui_position, {size.x*0.125f*0.75f,size.y*0.75f}, LaserGunTexture, 0.0f, color, Z_Index+2, LaserGunNormalMap);
-		UI_DrawTexturedQuad(ui_position, {size.x,size.y}, GunBaseTexture, 0.0f, color, Z_Index, GunBaseNormalMap);
+		UI_DrawTexturedQuad(ui_position, {size.x,size.y}, LaserGunBaseTexture, 0.0f, color, Z_Index, LaserGunBaseNormalMap);
 	};
 };
 
@@ -1169,7 +1169,7 @@ public:
 		glm::vec2 mid2 = (ballPosition[body[4]] + mid) * 0.5f;
 		//GunTexture
 		DrawTexturedQuad(mid - dir* PARTSIZE*2.0f, glm::vec2(1.5f *PARTSIZE, 4.0f * PARTSIZE), MiniGunTexture, get_angle_between_points(mid2, mid), color, Z_Index + 5, MiniGunNormalMap);
-		DrawTexturedQuad(mid, glm::vec2(PARTSIZE * 2.0f), GunBaseTexture, get_angle_between_points(ballPosition[body[0]], ballPosition[body[2]]) + pi*0.25f, color, Z_Index + 1, GunBaseNormalMap,false);
+		DrawTexturedQuad(mid, glm::vec2(PARTSIZE * 2.0f), MiniGunBaseTexture, get_angle_between_points(ballPosition[body[0]], ballPosition[body[2]]) + pi*0.25f, color, Z_Index + 1, MiniGunBaseNormalMap,false);
 
 		for (int i = 0; i < 6; i++)
 		{
@@ -1192,7 +1192,7 @@ public:
 
 			;
 			z += 2;
-			DrawTexturedQuad(ballPosition[body[4]] + Rotate(dir, pi * 0.5f) * berrrelPos.x * PARTSIZE * 0.5f *0.6f, { PARTSIZE * 0.5f * 0.35f ,PARTSIZE * 3.8f }, PipeTexture, get_angle_between_points({ 0.0f,0.0f }, dir), color, z + Z_Index, PipeNormalMap);
+			DrawTexturedQuad(ballPosition[body[4]] + Rotate(dir, pi * 0.5f) * berrrelPos.x * PARTSIZE * 0.5f *0.6f, { PARTSIZE * 0.5f * 0.35f ,PARTSIZE * 3.8f }, MiniGunPipeTexture, get_angle_between_points({ 0.0f,0.0f }, dir), color, z + Z_Index, MiniGunPipeNormalMap);
 		}
 	}
 
@@ -1207,7 +1207,7 @@ public:
 		ui_position.y -= size.y*0.3f; 
 		size *= 0.5f;
 		UI_DrawTexturedQuad(ui_position + glm::vec2(0.0f,size.y*0.5f), {size.x*0.5f,size.y * 1.25f}, MiniGunTexture, 0.0f, color, Z_Index+2, MiniGunNormalMap);
-		UI_DrawTexturedQuad(ui_position, {size.x,size.y}, GunBaseTexture, 0.0f, color, Z_Index, GunBaseNormalMap);
+		UI_DrawTexturedQuad(ui_position, {size.x,size.y}, MiniGunBaseTexture, 0.0f, color, Z_Index, MiniGunBaseNormalMap);
 		size *= 0.75f;
 		for (int i = 0; i < 6; i++)
 		{
@@ -1229,7 +1229,7 @@ public:
 					z = -2;
 		
 			z += 2;
-			UI_DrawTexturedQuad(ui_position + glm::vec2(0.0f,size.y*0.5f * 3.8f) + Rotate({0.0f,1.0f}, pi * 0.5f) * berrrelPos.x * size.y*0.5f*0.75f *0.6f, {size.y*0.5f*0.75f * 0.35f ,size.y*0.5f * 3.8f }, PipeTexture, 0.0f, color, z + Z_Index, PipeNormalMap);
+			UI_DrawTexturedQuad(ui_position + glm::vec2(0.0f,size.y*0.5f * 3.8f) + Rotate({0.0f,1.0f}, pi * 0.5f) * berrrelPos.x * size.y*0.5f*0.75f *0.6f, {size.y*0.5f*0.75f * 0.35f ,size.y*0.5f * 3.8f }, MiniGunPipeTexture, 0.0f, color, z + Z_Index, MiniGunPipeNormalMap);
 		}
 		
 		
@@ -1615,10 +1615,8 @@ public:
 	}
 	void Draw() override
 	{
-		for (int i = 0; i < 5; i++)
-		{
-			DrawCircle(ballPosition[body[i]],PARTSIZE, color, true, BallNormalMapTexture, Z_Index);
-		}
+		DrawTexturedQuad(ballPosition[body[0]], { PARTSIZE * 3.0f ,PARTSIZE * 3.0f }, RotorTexture, get_angle_between_points({ 0.0f,0.0f }, dir), color, Z_Index, RotorNormalMap);
+
 	}
 
 	void DeletePart() override
@@ -1628,12 +1626,7 @@ public:
 	}
 	void DrawPreview(glm::vec2 ui_position, glm::vec2 size) override
 	{
-		UI_DrawCircle(ui_position, size.x*0.25f, color, true, BallNormalMapTexture, Z_Index);
-		size *=0.25f;
-		UI_DrawCircle(ui_position + glm::vec2(-size.x,0.0f) * 2.0f, size.x, color, true, BallNormalMapTexture, Z_Index);
-		UI_DrawCircle(ui_position + glm::vec2(0.0f,-size.x) * 2.0f, size.x, color, true, BallNormalMapTexture, Z_Index);
-		UI_DrawCircle(ui_position + glm::vec2(size.x,0.0f) * 2.0f,  size.x, color, true, BallNormalMapTexture, Z_Index);
-		UI_DrawCircle(ui_position + glm::vec2(0.0f,size.x) * 2.0f,  size.x, color, true, BallNormalMapTexture, Z_Index);
+		UI_DrawTexturedQuad(ui_position, { size.x ,size.x }, RotorTexture, 0.0f, color, Z_Index , RotorNormalMap);
 	};
 };
 

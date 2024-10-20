@@ -2240,7 +2240,7 @@ Cube_0000000008
 	Texture CubeT
 	Type 0
 }
-EntranceTC_0000000102
+EntranceTC_0000000100
 {
 	Class 9995
 	ID 6
@@ -2251,7 +2251,7 @@ EntranceTC_0000000102
 	Z_Index 0
 	determineInside 0
 	disable 0
-	triggered 0
+	triggered 1
 }
 Fog_0000000009
 {
@@ -2263,7 +2263,7 @@ Fog_0000000009
 	Texture Noize
 	Type 0
 }
-HolePA_0000000103
+HolePA_0000000101
 {
 	AttractionStrength 610.000000
 	Attractive 1
@@ -2277,7 +2277,7 @@ HolePA_0000000103
 	Type 1
 	velocity 0.000000 -0.000002
 }
-HolePO_0000000104
+HolePO_0000000102
 {
 	Class 7
 	ID 0
@@ -2291,7 +2291,7 @@ HolePO_0000000104
 	tick 0.017000
 	velocity 146.899994 -565.599854
 }
-HolePO_0000000105
+HolePO_0000000103
 {
 	Class 7
 	ID 0
@@ -2305,7 +2305,7 @@ HolePO_0000000105
 	tick 0.017000
 	velocity 146.899994 -249.699921
 }
-InsideTrigger_0000000106
+InsideTrigger_0000000104
 {
 	Class 9995
 	ID 0
@@ -2316,9 +2316,9 @@ InsideTrigger_0000000106
 	Z_Index 0
 	determineInside 1
 	disable 0
-	triggered 1
+	triggered 0
 }
-InsideTrigger_0000000107
+InsideTrigger_0000000105
 {
 	Class 9995
 	ID 0
@@ -2331,7 +2331,7 @@ InsideTrigger_0000000107
 	disable 0
 	triggered 1
 }
-LabMonitor_0000000108
+LabMonitor_0000000106
 {
 	Additive 0
 	Class 9996
@@ -2372,11 +2372,11 @@ LabMonitor_0000000108
 	textScale 0.800000
 	textStep -8.000000
 }
-Laser1_0000000109
+Laser1_0000000107
 {
 	Additive 0
 	Class 1
-	Color 24.123999 5.228000 2.820000 0.605241
+	Color 24.123999 5.228000 2.820000 0.000000
 	Depth -0.200000
 	ID 0
 	Material Mgrad
@@ -2389,7 +2389,7 @@ Laser1_0000000109
 	invertX 1
 	invertY 0
 }
-LaserDS_0000000110
+LaserDS_0000000108
 {
 	Class 9997
 	Friction 1.000000
@@ -2400,15 +2400,15 @@ LaserDS_0000000110
 	Z_Index 2272
 	attractionForce 0.000000
 	attractive 0
-	damage 5.000000
+	damage 0.000000
 	disable 0
-	heat 1.000000
+	heat 0.000000
 	radius 815.000000
 }
-LaserLS_0000000111
+LaserLS_0000000109
 {
 	Class 6
-	Color 47.499996 1.300000 0.800000 3.026205
+	Color 47.499996 1.300000 0.800000 0.000000
 	Depth 0.000000
 	ID 0
 	Name LaserLS
@@ -2423,7 +2423,7 @@ LaserLS_0000000111
 	invertY 0
 	sizeZ 1.000000
 }
-LaserPE_0000000112
+LaserPE_0000000110
 {
 	Class 7
 	ID 0
@@ -2437,7 +2437,7 @@ LaserPE_0000000112
 	tick 0.017000
 	velocity 0.000000 0.000000
 }
-LightSource_0000000113
+LightSource_0000000111
 {
 	Class 6
 	Color 8.900002 1.100000 8.400001 1.000001
@@ -2455,7 +2455,7 @@ LightSource_0000000113
 	invertY 0
 	sizeZ 2.000001
 }
-LightSource_0000000114
+LightSource_0000000112
 {
 	Class 6
 	Color 1.000001 1.000000 1.000000 1.000001
@@ -2473,7 +2473,7 @@ LightSource_0000000114
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000115
+LightSource_0000000113
 {
 	Class 6
 	Color 2.200001 1.000000 4.400000 1.000001
@@ -2491,7 +2491,7 @@ LightSource_0000000115
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000116
+LightSource_0000000114
 {
 	Class 6
 	Color 2.200001 1.000000 4.400000 1.000001
@@ -2509,7 +2509,7 @@ LightSource_0000000116
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000117
+LightSource_0000000115
 {
 	Class 6
 	Color 2.600001 1.200000 0.600000 1.000001
@@ -2527,7 +2527,7 @@ LightSource_0000000117
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000118
+LightSource_0000000116
 {
 	Class 6
 	Color 2.600001 1.200000 0.600000 1.000001
@@ -2545,7 +2545,7 @@ LightSource_0000000118
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000119
+LightSource_0000000117
 {
 	Class 6
 	Color 2.600001 1.200000 0.600000 1.000001
@@ -2563,7 +2563,7 @@ LightSource_0000000119
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000120
+LightSource_0000000118
 {
 	Class 6
 	Color 1.200001 1.200000 1.200000 1.000001
@@ -2581,7 +2581,7 @@ LightSource_0000000120
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000121
+LightSource_0000000119
 {
 	Class 6
 	Color 2.600001 1.200000 0.600000 1.000001
@@ -2599,7 +2599,7 @@ LightSource_0000000121
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000122
+LightSource_0000000120
 {
 	Class 6
 	Color 2.600001 1.200000 0.600000 1.000001
@@ -2617,7 +2617,7 @@ LightSource_0000000122
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000123
+LightSource_0000000121
 {
 	Class 6
 	Color 2.600001 1.200000 0.600000 1.000001
@@ -2635,7 +2635,7 @@ LightSource_0000000123
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000124
+LightSource_0000000122
 {
 	Class 6
 	Color 2.600001 1.200000 0.600000 1.000001
@@ -2653,7 +2653,7 @@ LightSource_0000000124
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000125
+LightSource_0000000123
 {
 	Class 6
 	Color 1.200001 1.200000 1.200000 1.000001
@@ -2671,7 +2671,7 @@ LightSource_0000000125
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000126
+LightSource_0000000124
 {
 	Class 6
 	Color 1.200001 1.200000 1.200000 1.000001
@@ -2689,7 +2689,7 @@ LightSource_0000000126
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000127
+LightSource_0000000125
 {
 	Class 6
 	Color 1.200001 1.200000 1.200000 1.000001
@@ -2707,7 +2707,7 @@ LightSource_0000000127
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000128
+LightSource_0000000126
 {
 	Class 6
 	Color 1.200001 1.200000 1.200000 1.000001
@@ -2725,7 +2725,7 @@ LightSource_0000000128
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000129
+LightSource_0000000127
 {
 	Class 6
 	Color 1.200001 1.200000 1.200000 1.000001
@@ -2743,7 +2743,7 @@ LightSource_0000000129
 	invertY 0
 	sizeZ 193.000000
 }
-LightSource_0000000130
+LightSource_0000000128
 {
 	Class 6
 	Color 1.200001 1.200000 1.200000 1.000001
@@ -2771,7 +2771,7 @@ Mgrad_0000000010
 	Texture gradient
 	Type 0
 }
-Monitor_0000000131
+Monitor_0000000129
 {
 	Additive 0
 	Class 9996
@@ -2812,7 +2812,7 @@ Monitor_0000000131
 	textScale 0.120000
 	textStep -8.000000
 }
-Monitor_0000000132
+Monitor_0000000130
 {
 	Additive 0
 	Class 9996
@@ -2853,7 +2853,7 @@ Monitor_0000000132
 	textScale 0.120000
 	textStep -8.000000
 }
-Monitor_0000000133
+Monitor_0000000131
 {
 	Additive 0
 	Class 9996
@@ -2894,7 +2894,7 @@ Monitor_0000000133
 	textScale 0.240000
 	textStep -8.000000
 }
-Monitor_0000000134
+Monitor_0000000132
 {
 	Additive 0
 	Class 9996
@@ -2950,7 +2950,7 @@ Noize_0000000011
 	texture_Type 1
 	texture_filter 0
 }
-PO2_0000000135
+PO2_0000000133
 {
 	AttractionStrength 374.016998
 	Attractive 1
@@ -2964,7 +2964,7 @@ PO2_0000000135
 	Type 1
 	velocity 0.000000 0.000000
 }
-PO2_0000000136
+PO2_0000000134
 {
 	AttractionStrength 374.016998
 	Attractive 1
@@ -2978,7 +2978,7 @@ PO2_0000000136
 	Type 1
 	velocity 0.000000 0.000000
 }
-PO3_0000000137
+PO3_0000000135
 {
 	AttractionStrength -429.983032
 	Attractive 1
@@ -2992,7 +2992,7 @@ PO3_0000000137
 	Type 1
 	velocity 0.000000 0.000000
 }
-PO3_0000000138
+PO3_0000000136
 {
 	AttractionStrength -449.983032
 	Attractive 1
@@ -3006,7 +3006,7 @@ PO3_0000000138
 	Type 1
 	velocity 0.000000 0.000000
 }
-PO_0000000139
+PO_0000000137
 {
 	Class 7
 	ID 0
@@ -3051,7 +3051,7 @@ ParticleAsset_0000000012
 	lifetimeRandomness 0.000000
 	lighted 0
 }
-PipePO_0000000140
+PipePO_0000000138
 {
 	Class 7
 	ID 0
@@ -3065,7 +3065,7 @@ PipePO_0000000140
 	tick 0.017000
 	velocity 20.400000 51.399994
 }
-PipePO_0000000141
+PipePO_0000000139
 {
 	Class 7
 	ID 0
@@ -3104,7 +3104,7 @@ SG_0000000014
 	texture_Type 5
 	texture_filter 0
 }
-Sparks_0000000142
+Sparks_0000000140
 {
 	Class 7
 	ID 0
@@ -3118,7 +3118,7 @@ Sparks_0000000142
 	tick 1.757000
 	velocity -38.599998 -6.099997
 }
-Sparks_0000000143
+Sparks_0000000141
 {
 	Class 7
 	ID 0
@@ -3132,7 +3132,7 @@ Sparks_0000000143
 	tick 0.617000
 	velocity -9.429996 -32.999996
 }
-Sparks_0000000144
+Sparks_0000000142
 {
 	Class 7
 	ID 0
@@ -3146,7 +3146,7 @@ Sparks_0000000144
 	tick 2.017000
 	velocity 47.099998 -32.999996
 }
-Sparks_0000000145
+Sparks_0000000143
 {
 	Class 7
 	ID 0
@@ -3160,7 +3160,7 @@ Sparks_0000000145
 	tick 2.177000
 	velocity 17.900002 -12.200000
 }
-Sparks_0000000146
+Sparks_0000000144
 {
 	Class 7
 	ID 0
@@ -3174,7 +3174,7 @@ Sparks_0000000146
 	tick 1.617000
 	velocity 28.800001 19.200001
 }
-Sparks_0000000147
+Sparks_0000000145
 {
 	Class 7
 	ID 0
@@ -3188,7 +3188,7 @@ Sparks_0000000147
 	tick 2.357000
 	velocity 47.099998 8.400002
 }
-Sparks_0000000148
+Sparks_0000000146
 {
 	Class 7
 	ID 0
@@ -3202,7 +3202,7 @@ Sparks_0000000148
 	tick 1.017000
 	velocity 10.099998 -32.999996
 }
-Sparks_0000000149
+Sparks_0000000147
 {
 	Class 7
 	ID 0
@@ -3216,7 +3216,7 @@ Sparks_0000000149
 	tick 2.217000
 	velocity 47.099998 49.400002
 }
-StaticDamageSphere_0000000150
+StaticDamageSphere_0000000148
 {
 	Class 9997
 	Friction 0.960000
@@ -3232,7 +3232,7 @@ StaticDamageSphere_0000000150
 	heat 0.140000
 	radius 141.000000
 }
-StaticDamageSphere_0000000151
+StaticDamageSphere_0000000149
 {
 	Class 9997
 	Friction 1.000000
@@ -3247,6 +3247,38 @@ StaticDamageSphere_0000000151
 	disable 0
 	heat 0.000000
 	radius 324.055725
+}
+StaticDamageSphere_0000000150
+{
+	Class 9997
+	Friction 1.000000
+	ID 0
+	Name StaticDamageSphere
+	Position 225.000000 -345.000000
+	Type 1
+	Z_Index 0
+	attractionForce -5.000000
+	attractive 1
+	damage 0.020000
+	disable 0
+	heat 0.100000
+	radius 32.353119
+}
+StaticDamageSphere_0000000151
+{
+	Class 9997
+	Friction 1.000000
+	ID 0
+	Name StaticDamageSphere
+	Position -105.000000 -345.000000
+	Type 1
+	Z_Index 0
+	attractionForce -5.000000
+	attractive 1
+	damage 0.020000
+	disable 0
+	heat 0.100000
+	radius 32.353119
 }
 StaticDamageSphere_0000000152
 {
@@ -3257,38 +3289,6 @@ StaticDamageSphere_0000000152
 	Position 225.000000 -345.000000
 	Type 1
 	Z_Index 0
-	attractionForce -5.000000
-	attractive 1
-	damage 0.020000
-	disable 0
-	heat 0.100000
-	radius 32.353119
-}
-StaticDamageSphere_0000000153
-{
-	Class 9997
-	Friction 1.000000
-	ID 0
-	Name StaticDamageSphere
-	Position -105.000000 -345.000000
-	Type 1
-	Z_Index 0
-	attractionForce -5.000000
-	attractive 1
-	damage 0.020000
-	disable 0
-	heat 0.100000
-	radius 32.353119
-}
-StaticDamageSphere_0000000154
-{
-	Class 9997
-	Friction 1.000000
-	ID 0
-	Name StaticDamageSphere
-	Position 225.000000 -345.000000
-	Type 1
-	Z_Index 0
 	attractionForce 1.000000
 	attractive 1
 	damage 0.000000
@@ -3296,7 +3296,7 @@ StaticDamageSphere_0000000154
 	heat 0.000000
 	radius 324.055725
 }
-StaticDamageSphere_0000000155
+StaticDamageSphere_0000000153
 {
 	Class 9997
 	Friction 1.000000
@@ -3312,7 +3312,7 @@ StaticDamageSphere_0000000155
 	heat 0.000000
 	radius 734.055725
 }
-StaticDamageSphere_0000000156
+StaticDamageSphere_0000000154
 {
 	Class 9997
 	Friction 1.000000
@@ -3328,7 +3328,7 @@ StaticDamageSphere_0000000156
 	heat 0.100000
 	radius 100.353149
 }
-TriggerCube_0000000157
+TriggerCube_0000000155
 {
 	Class 9995
 	ID 5
@@ -3341,7 +3341,7 @@ TriggerCube_0000000157
 	disable 0
 	triggered 0
 }
-TriggerCube_0000000158
+TriggerCube_0000000156
 {
 	Class 9995
 	ID 7
@@ -3354,7 +3354,7 @@ TriggerCube_0000000158
 	disable 0
 	triggered 0
 }
-TriggerCube_0000000159
+TriggerCube_0000000157
 {
 	Class 9995
 	ID 8
@@ -3367,7 +3367,7 @@ TriggerCube_0000000159
 	disable 0
 	triggered 0
 }
-TriggerCube_0000000160
+TriggerCube_0000000158
 {
 	Class 9995
 	ID 10
@@ -3380,7 +3380,7 @@ TriggerCube_0000000160
 	disable 0
 	triggered 0
 }
-drone_0000000161
+drone_0000000159
 {
 	Class 0
 	ID 5
@@ -3389,7 +3389,7 @@ drone_0000000161
 	Type 1
 	Z_Index 1620
 }
-drone_0000000162
+drone_0000000160
 {
 	Class 0
 	ID 5
@@ -3398,7 +3398,7 @@ drone_0000000162
 	Type 1
 	Z_Index 1620
 }
-drone_0000000163
+drone_0000000161
 {
 	Class 0
 	ID 5
@@ -3407,7 +3407,7 @@ drone_0000000163
 	Type 1
 	Z_Index 1620
 }
-drone_0000000164
+drone_0000000162
 {
 	Class 0
 	ID 5
@@ -3416,7 +3416,7 @@ drone_0000000164
 	Type 1
 	Z_Index 1620
 }
-drone_0000000165
+drone_0000000163
 {
 	Class 0
 	ID 5
@@ -3425,7 +3425,7 @@ drone_0000000165
 	Type 1
 	Z_Index 1620
 }
-drone_0000000166
+drone_0000000164
 {
 	Class 0
 	ID 5
@@ -3434,7 +3434,7 @@ drone_0000000166
 	Type 1
 	Z_Index 1620
 }
-drone_0000000167
+drone_0000000165
 {
 	Class 0
 	ID 5
@@ -3443,7 +3443,7 @@ drone_0000000167
 	Type 1
 	Z_Index 1620
 }
-drone_0000000168
+drone_0000000166
 {
 	Class 0
 	ID 5
@@ -3452,7 +3452,7 @@ drone_0000000168
 	Type 1
 	Z_Index 1620
 }
-drone_0000000169
+drone_0000000167
 {
 	Class 0
 	ID 5
@@ -3461,7 +3461,7 @@ drone_0000000169
 	Type 1
 	Z_Index 1620
 }
-drone_0000000170
+drone_0000000168
 {
 	Class 0
 	ID 5
@@ -3470,7 +3470,7 @@ drone_0000000170
 	Type 1
 	Z_Index 1620
 }
-drone_0000000171
+drone_0000000169
 {
 	Class 0
 	ID 6
@@ -3479,7 +3479,7 @@ drone_0000000171
 	Type 1
 	Z_Index 0
 }
-drone_0000000172
+drone_0000000170
 {
 	Class 0
 	ID 6
@@ -3488,7 +3488,7 @@ drone_0000000172
 	Type 1
 	Z_Index 0
 }
-drone_0000000173
+drone_0000000171
 {
 	Class 0
 	ID 7
@@ -3497,7 +3497,7 @@ drone_0000000173
 	Type 1
 	Z_Index 0
 }
-drone_0000000174
+drone_0000000172
 {
 	Class 0
 	ID 7
@@ -3506,7 +3506,7 @@ drone_0000000174
 	Type 1
 	Z_Index 0
 }
-drone_0000000175
+drone_0000000173
 {
 	Class 0
 	ID 7
@@ -3515,7 +3515,7 @@ drone_0000000175
 	Type 1
 	Z_Index 0
 }
-drone_0000000176
+drone_0000000174
 {
 	Class 0
 	ID 8
@@ -3524,7 +3524,7 @@ drone_0000000176
 	Type 1
 	Z_Index 0
 }
-drone_0000000177
+drone_0000000175
 {
 	Class 0
 	ID 10
@@ -3579,7 +3579,7 @@ sparks_0000000016
 	lifetimeRandomness 1.000000
 	lighted 0
 }
-turbineMonitor_0000000178
+turbineMonitor_0000000176
 {
 	Additive 0
 	Class 9996
@@ -3620,14 +3620,14 @@ turbineMonitor_0000000178
 	textScale 0.120000
 	textStep -8.000000
 }
-turbine_0000000179
+turbine_0000000177
 {
 	Additive 0
 	Bounciness 0.000000
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 31.000561 6.000093 2.000019 1.000000
+	Color 31.000422 6.000071 2.000014 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3658,17 +3658,17 @@ turbine_0000000179
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature 50.000935
+	temperature 50.000706
 	trgtemperature 50.000000
 }
-turbine_0000000180
+turbine_0000000178
 {
 	Additive 0
 	Bounciness 0.000000
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 27.670195 5.445033 1.889006 1.000000
+	Color 31.000000 6.000000 2.000000 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3699,17 +3699,17 @@ turbine_0000000180
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature 44.450325
+	temperature 50.000000
 	trgtemperature 50.000000
 }
-turbine_0000000181
+turbine_0000000179
 {
 	Additive 0
 	Bounciness 0.000000
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 31.000074 6.000012 2.000002 1.000000
+	Color 31.000000 6.000000 2.000000 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3740,10 +3740,10 @@ turbine_0000000181
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature 50.000126
+	temperature 50.000000
 	trgtemperature 50.000000
 }
-turbine_0000000182
+turbine_0000000180
 {
 	Additive 0
 	Bounciness 0.000000
@@ -3784,14 +3784,14 @@ turbine_0000000182
 	temperature 50.000000
 	trgtemperature 50.000000
 }
-turbine_0000000183
+turbine_0000000181
 {
 	Additive 0
 	Bounciness 0.000000
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 31.000097 6.000016 2.000003 1.000000
+	Color 31.000000 6.000000 2.000000 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3822,17 +3822,17 @@ turbine_0000000183
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature 50.000164
+	temperature 50.000000
 	trgtemperature 50.000000
 }
-turbine_0000000184
+turbine_0000000182
 {
 	Additive 0
 	Bounciness 0.000000
 	Class 9999
 	ColdColor 0.040000 2.000000 10.000000 0.000000
 	Collision_layer 0
-	Color 31.293280 6.048880 2.009776 1.000000
+	Color 31.000132 6.000022 2.000004 1.000000
 	Depth 0.000000
 	DestrParticleAmount 10
 	DestrParticleSpeed 10.000000
@@ -3863,6 +3863,6 @@ turbine_0000000184
 	invertY 0
 	maxTemperature 100.000000
 	passiveCooling 1.000000
-	temperature 50.488800
+	temperature 50.000221
 	trgtemperature 50.000000
 }

@@ -30,17 +30,30 @@ RopeNormalMap,
 StrutTexture,
 StrutNormalMap,
 
+
 GunBaseTexture,
 GunBaseNormalMap,
 
 GunTexture,
 GunNormalMap,
 
+
+LaserGunBaseTexture,
+LaserGunBaseNormalMap,
+
 LaserGunTexture,
 LaserGunNormalMap,
 
+
+MiniGunBaseTexture,
+MiniGunBaseNormalMap,
+
 MiniGunTexture,
 MiniGunNormalMap,
+
+MiniGunPipeTexture,
+MiniGunPipeNormalMap,
+
 
 RocketLauncherTexture,
 RocketLauncherNormalMap,

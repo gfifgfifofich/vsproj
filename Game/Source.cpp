@@ -245,6 +245,7 @@ glm::ivec2 StandartResolutions[] =
 #include "Mission.h"
 #include "Radar.h"
 
+bool disablefog = false;
 
 
 void Delete()
@@ -1062,6 +1063,7 @@ void ProcessMainMenu()
 		s_Corner.y += UI_DrawText("Settings", s_Corner, TextSize * 2.0, textColor, textZ).y * -1.0f - step;
 
 		s_Corner.y += UI_CheckBox(&bloom, "Bloom", s_Corner, UISize, TextSize, textColor, textColorOff, textZ).y * -1.0f - step;
+		s_Corner.y += UI_CheckBox(&disablefog, "disable fog", s_Corner, UISize, TextSize, textColor, textColorOff, textZ).y * -1.0f - step;
 		s_Corner.y += UI_Slider(&brightness, "Brightness", s_Corner, 0.1f,1.5f, { 10 * UISize,UISize * 0.35f }, TextSize, textColor, textColor, textZ).y * -1.0f - step;
 
 		s_Corner.y += UI_CheckBox(&b, "Reset to default", s_Corner , UISize, TextSize, textColor, textColorOff, textZ).y * -1.0f - step;
@@ -1756,16 +1758,21 @@ void Process(float dt)
 	cw->w_DirectionalLight = 1.0f;
 
 	bw->Draw(0);
-	fw->Scale = { 1.0f,1.0f };
+	
+	if (!disablefog)
+	{
+		fw->Scale = { 1.0f,1.0f };
 
-	fw->Draw(1);
-
+		fw->Draw(1);
+	}
 	sw->Draw(2);
 
-	fw->Scale = { 1.6f,1.6f };
-	
-	fw->Draw(3);
+	if (!disablefog)
+	{
+		fw->Scale = { 1.6f,1.6f };
 
+		fw->Draw(3);
+	}
 	cw->Draw(4);
 
 	mw->Draw(5);
