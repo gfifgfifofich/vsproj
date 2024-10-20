@@ -2604,7 +2604,7 @@ int main()
 	//initEngine();
 	//initEngine("Redactor", 1920,1000,false);
 	PreReady();
-	initEngine("Redactor",s_Resolution.x,s_Resolution.y,false);
+	initEngine("Redactor",s_Resolution.x,s_Resolution.y,s_Fullscreen);
 	std::cout<<"\nexited, saving...";
 	Map.SaveAs(MapFileName + ".back");
 	std::cout<<"\nsaved, sound...";

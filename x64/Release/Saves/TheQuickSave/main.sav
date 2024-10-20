@@ -1,0 +1,31 @@
+LastSave
+{
+	LastSaveName 1
+}
+ShipFileNames
+{
+	Bigboy 0
+	Cube 0
+	NoWeapons 339
+	Rotator 0
+	Save0 0
+	Save1 0
+	Spinner 0
+	ada 339
+	asd 382
+	huh 233
+	laser 357
+	sss 167
+}
+TheQuickSave
+{
+	EntityBackUpName PreMissionBackup
+	EntityCount 1
+	Materials 1474208
+	MissionSelectMenu.Hub 1
+	MissionSelectMenu.missionPosition 0.000000 0.000000
+	inbase 1
+	lastEntityID 0
+	lastEntityName 
+	storyint 4
+}
