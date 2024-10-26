@@ -98,39 +98,89 @@ Stages
 
 		Rewrite
 		{
-			gameHelper.h - done
-
-			remove dependency on beeng inbase/ different area. Base is just another are after all.
-
-
 			{
-				make base "mission" (will be just a garage + random stuff able to produce + repair & modify easier) // mostly done, maybe a little more of separation from Source will be good
-				
-				Universal Saving system, save all data (player, enemy crafts, story, resourrces etc in one file)
+				Fix bleeps
 				{
-				A folder per save
-					Save Scene in tmp file on exit. (if not exit, then no need, cuz we switching between these scenes) 
-					A savefile wiht player data (resources, story) // just the one that already exists
-					tmp save file for each ship/Entity
-
-					SaveDirectory
-					{
-						Main.sav
-						{
-							Entities amount
-							storyit
-							etc
-						}
-						Scene.sav - regular scene.Save()
-						0.sav
-						1.sav
-						2.sav
-
-					}
+					type
+					fraction
+					questid
+					SaveString
 				}
+				make quest, vector with quests
+				make reputations
+				make stations/mission selectors
+				a few missions
+			}
 
+			remake all multithreading through cpp20 std::for_each(par)
 
-				start refactoring existing missions to work in new arch.
+			Solid bleeps. will be one of: enemy(es), asteroids, resources, debrie.
+			Gas bleeps - 95% just smoke, some possibility to have hiden solid bleep
+			Blue bleeps - Live stations, bleeps only once a few seconds
+			Yellow constant bleeps - marks, missions
+			
+			two enemy bleeps colliding/beng close = high heat for 10-120sec. after - debrie spawn, 50/50 one lives, exits to random ditrection.
+			Fast bleep - carrier. can haul materials or parts. fast, hard to hit/catch
+			asteroid field bleep
+				chance for resources
+				chance for enemy
+				chance for chill station
+			DebrieStation. Just like pirate station, but disabled, full of debrie.
+			PirateStation. There is a possibility to use a full scene in theese bleeps, so just make blocks and spawn custom pirate base
+			random flying asteroid. big fast bleep crossing map. turns other bleeps into debrie, deletes fog bleeps.
+
+			Station
+			Stations will be of one corpo
+			maybe a possibility to explore station rooms, fight through to get to reactor, make a little boom.
+			station may hint towards other stations/pirates/other bullshit. 
+			each corpo - reputation int 
+			{
+				possible mission - send towards an area to get data. 
+				Destroing data - mission failed. 
+				Reading data - mission failed. Spawn new marker on map. maybe timer. 
+				Possibility to get a message from corpo, mistake on place, mission abort when get the box of data, possible start of story.
+			}
+			{
+				attach large cargo/ multiple cargos to ship.
+				deliver to other station.
+				loosing cargo - less pay/rep per cargo untill full lose
+			}
+			{
+				Test weapon prototype	
+				get weapon
+				fight some stuff with it/ go through a cloud of shit/ test it
+				turn back
+				destroing equipment - mission failed
+			}
+			{
+				Delete station/ pirateStation
+			}
+			{
+				Explore area
+				may cause story moment
+				may be a suspicious building
+				may be nothing, but fog on radar ill sugest were source of signal is now (giant bruse/void/ocasional heat/radio bleep)
+			}
+			{
+				Bounties
+				a list of ships that have a bounty
+				short description of ship look, vage orientation were it was last spoted. updates every ~5 mins
+			}
+			{
+				Get some weapons/materials
+				after enough of supply missions - random event - a fleet of ships will fly towards nearest competitor station
+			}
+			
+			each corpo has their own compaign.
+			1 will serch total domination
+				end - no other corpos. just destruction. fastest and most aggressive campaign
+			other will serach technological ascention
+				will mostly ignore all other factions, but sometimes will collide in fights over resources/data/tech
+				end - all the parts are at your disposal, other corpos mostly destroyed
+			third will try to control balance
+				will want some boring goverment stuff from other corpos
+				end - other fractions exist, bit only under control of this corpo
+
 			
 				ecs memory idea
 				{
@@ -161,33 +211,8 @@ Stages
 
 				}
 
-			}
-
-
-			Mission
-			{
-				
-				area1 
-				{
-					logic
-				}
-				area2
-				{
-					logic
-				}
-				etc.
-				StoryArea
-				{
-					1{}
-					2{}
-					3{}
-				}
-
-
-			}
-		}
-
 			
+		}			
 	}
 
 
@@ -262,13 +287,16 @@ void ChangeMap(std::string FilePath, glm::vec2 lastoffset, glm::vec2 newoffset)
 	ActiveRadar.offset = lastoffset;
 	CurrnetMission.MissionClear();
 	// clear directory, save entities
-	int EntitiesSize = Entities.size();
+	int EntitiesSize = 0;
 	for (int i = 0; i < Entities.size(); i++)
 	{
-		std::string filename = "tmp/";
-		filename += std::to_string(i);
-		Entities[i]->SaveTo(filename, true);
-
+		if (!Entities[i]->missionPawn)
+		{
+			std::string filename = "tmp/";
+			filename += std::to_string(i);
+			Entities[i]->SaveTo(filename, true);
+			EntitiesSize++;
+		}
 		for (int a = 0; a < Entities[i]->Parts.size(); a++)
 		{
 			Entities[i]->Parts[a]->DeletePart();
@@ -757,42 +785,42 @@ void ProcessPlayerControls()
 			DrawCircle(Entities[0]->mid + Normalize(glm::vec2(0.0f, 0.0f) - Entities[0]->mid) * 10.0f, 5.0f, { 1.0f,1.0f,5.0f,1.0f }, 0, 0, 10000);
 	}*/
 
-	if (MissionSelectMenu.missionSelected && Entities.size() > 0 && sqrlength(Entities[0]->mid - MissionSelectMenu.missionPosition) < (4000 * 4000))
-	{
-		CurrnetMission.story_mission = MissionSelectMenu.missionStory;
-		CurrnetMission.size = MissionSelectMenu.missionSize;
-		CurrnetMission.dificulty = MissionSelectMenu.missionDificulty;
-		CurrnetMission.type = MissionSelectMenu.missionType;
-		CurrnetMission.missionpos = MissionSelectMenu.missionPosition;
-		MissionSelectMenu.missionSelected = false;
-		MissionSelectMenu.Hub = false;
-		glm::vec2 plPos = (Entities[0]->mid - MissionSelectMenu.missionPosition);
-		CurrnetMission.Start();
-		inbase = false;
-		switchScene = false;
-		OpenMenu = false;
-		Entities[0]->mid = plPos;
-		loadedThisFrame = true;
-	}
-	if (!MissionSelectMenu.Hub && Entities.size() > 0 && sqrlength(-MissionSelectMenu.missionPosition - Entities[0]->mid) < (2000 * 2000))
-	{
-		MissionSelectMenu.missionSelected = false;
-		MissionSelectMenu.Hub = true;
-		glm::vec2 plPos = (Entities[0]->mid + MissionSelectMenu.missionPosition);
-		Materials += GetShipCost(Entities[0]);
-		Entities[0]->SaveTo(EntityBackUpName);
-		glm::vec2 vel = { 0.0f,0.0f };
-		if (Entities.size() > 0)
-		{
-			vel = Entities[0]->avgvel;
-			Entities[0]->SaveTo(EntityBackUpName);
-		}
-		inbase = true;
-		GetWindow(BackgroundWindowID)->w_DirectionalLight = 1.0f;
-		ChangeMap("Scenes/base.sav", MissionSelectMenu.missionPosition, {0.0f,0.0f});
-		Entities[0]->mid = plPos;
-		loadedThisFrame = true;
-	}
+	//if (MissionSelectMenu.missionSelected && Entities.size() > 0 && sqrlength(Entities[0]->mid - MissionSelectMenu.missionPosition) < (4000 * 4000))
+	//{
+	//	CurrnetMission.story_mission = MissionSelectMenu.missionStory;
+	//	CurrnetMission.size = MissionSelectMenu.missionSize;
+	//	CurrnetMission.dificulty = MissionSelectMenu.missionDificulty;
+	//	CurrnetMission.type = MissionSelectMenu.missionType;
+	//	CurrnetMission.missionpos = MissionSelectMenu.missionPosition;
+	//	MissionSelectMenu.missionSelected = false;
+	//	MissionSelectMenu.Hub = false;
+	//	glm::vec2 plPos = (Entities[0]->mid - MissionSelectMenu.missionPosition);
+	//	CurrnetMission.Start();
+	//	inbase = false;
+	//	switchScene = false;
+	//	OpenMenu = false;
+	//	Entities[0]->mid = plPos;
+	//	loadedThisFrame = true;
+	//}
+	//if (!MissionSelectMenu.Hub && Entities.size() > 0 && sqrlength(-MissionSelectMenu.missionPosition - Entities[0]->mid) < (2000 * 2000))
+	//{
+	//	MissionSelectMenu.missionSelected = false;
+	//	MissionSelectMenu.Hub = true;
+	//	glm::vec2 plPos = (Entities[0]->mid + MissionSelectMenu.missionPosition);
+	//	Materials += GetShipCost(Entities[0]);
+	//	Entities[0]->SaveTo(EntityBackUpName);
+	//	glm::vec2 vel = { 0.0f,0.0f };
+	//	if (Entities.size() > 0)
+	//	{
+	//		vel = Entities[0]->avgvel;
+	//		Entities[0]->SaveTo(EntityBackUpName);
+	//	}
+	//	inbase = true;
+	//	GetWindow(BackgroundWindowID)->w_DirectionalLight = 1.0f;
+	//	ChangeMap("Scenes/base.sav", MissionSelectMenu.missionPosition, {0.0f,0.0f});
+	//	Entities[0]->mid = plPos;
+	//	loadedThisFrame = true;
+	//}
 
 	EndOfWindow();
 	iw->Use();
@@ -835,14 +863,54 @@ void ProcessPlayerControls()
 				if (foregroundFogParticleAmount < ActiveRadar.bleeps[i].fogamount)
 					foregroundFogParticleAmount = ActiveRadar.bleeps[i].fogamount;
 			}
+			if (ActiveRadar.bleeps[i].state == -1 &&
+				5000.0f > length(ActiveRadar.bleeps[i].position - (Entities[0]->mid + ActiveRadar.offset)))
+			{
 
+				if (ActiveRadar.enteredBleep != i)
+				{
+					if (ActiveRadar.enteredBleep >= 0 && ActiveRadar.enteredBleep < ActiveRadar.bleeps.size())
+					{
+						std::string savestr = "Saves/" + GameSaveName + "/bleeps/" + std::to_string(ActiveRadar.BleepsCounter);
+						CurrnetMission.Save(savestr);
+						ActiveRadar.bleeps[ActiveRadar.enteredBleep].SaveString = savestr;
+						ActiveRadar.BleepsCounter++;
+					}
+					ActiveRadar.enteredBleep = i;
+					MissionSelectMenu.missionSelected = false;
+					CurrnetMission.story_mission = false;
+					CurrnetMission.size = 0.0f;
+					CurrnetMission.dificulty = 0.0f;
+					CurrnetMission.type = -1;
+					MissionSelectMenu.Hub = true;
+					CurrnetMission.missionpos = ActiveRadar.bleeps[i].position;
+					inbase = true;
+					switchScene = false;
+					OpenMenu = false;
+					loadedThisFrame = true;
+					if(ActiveRadar.bleeps[i].SaveString == "")
+						CurrnetMission.Start();
+					else
+					{
+						CurrnetMission.Load(ActiveRadar.bleeps[i].SaveString);
+					}
+				}
+			}
 			if (ActiveRadar.bleeps[i].state == 2 &&
 				5000.0f > length(ActiveRadar.bleeps[i].position - (Entities[0]->mid + ActiveRadar.offset)))
 			{
 
 				forcenofog = true;
-				if (length(CurrnetMission.missionpos - ActiveRadar.bleeps[i].position) > 5000.0f)
+				if (ActiveRadar.enteredBleep!=i)
 				{
+					if (ActiveRadar.enteredBleep >= 0 && ActiveRadar.enteredBleep < ActiveRadar.bleeps.size())
+					{
+						std::string savestr = "Saves/" + GameSaveName + "/bleeps/" + std::to_string(ActiveRadar.BleepsCounter);
+						CurrnetMission.Save(savestr);
+						ActiveRadar.bleeps[ActiveRadar.enteredBleep].SaveString = savestr;
+						ActiveRadar.BleepsCounter++;
+					}
+					ActiveRadar.enteredBleep = i;
 					CurrnetMission.story_mission = true;
 					CurrnetMission.size = 0.0f;
 					CurrnetMission.dificulty = 0.0f;
@@ -851,11 +919,54 @@ void ProcessPlayerControls()
 					MissionSelectMenu.missionPosition = ActiveRadar.bleeps[i].position;
 					MissionSelectMenu.Hub = false;
 					glm::vec2 plPos = (Entities[0]->mid - MissionSelectMenu.missionPosition);
-					CurrnetMission.Start();
+					CurrnetMission.outside = false;
 					inbase = false;
 					switchScene = false;
 					OpenMenu = false;
 					loadedThisFrame = true;
+					if (ActiveRadar.bleeps[i].SaveString == "")
+						CurrnetMission.Start();
+					else
+					{
+						CurrnetMission.Load(ActiveRadar.bleeps[i].SaveString);
+					}
+				}
+			}
+			// side missions
+			if (ActiveRadar.bleeps[i].state > 2 &&
+				3000.0f > length(ActiveRadar.bleeps[i].position - (Entities[0]->mid + ActiveRadar.offset)))
+			{
+
+				if (ActiveRadar.enteredBleep != i)
+				{
+					if (ActiveRadar.enteredBleep  >= 0 && ActiveRadar.enteredBleep < ActiveRadar.bleeps.size())
+					{
+						std::string savestr = "Saves/" + GameSaveName + "/bleeps/" + std::to_string(ActiveRadar.BleepsCounter);
+						CurrnetMission.Save(savestr);
+						ActiveRadar.bleeps[ActiveRadar.enteredBleep].SaveString = savestr;
+						ActiveRadar.BleepsCounter++;
+					}
+
+					ActiveRadar.enteredBleep = i;
+					CurrnetMission.story_mission = false;
+					CurrnetMission.size = 5;
+					CurrnetMission.dificulty = 2;
+					CurrnetMission.type = ActiveRadar.bleeps[i].state - 3;
+					CurrnetMission.missionpos = ActiveRadar.bleeps[i].position;
+					MissionSelectMenu.missionPosition = ActiveRadar.bleeps[i].position;
+					MissionSelectMenu.Hub = false;
+					glm::vec2 plPos = (Entities[0]->mid - MissionSelectMenu.missionPosition);
+					CurrnetMission.outside = false;
+					inbase = false;
+					switchScene = false;
+					OpenMenu = false;
+					loadedThisFrame = true;
+					if (ActiveRadar.bleeps[i].SaveString == "")
+						CurrnetMission.Start();
+					else
+					{
+						CurrnetMission.Load(ActiveRadar.bleeps[i].SaveString);
+					}
 				}
 			}
 		}
@@ -864,15 +975,36 @@ void ProcessPlayerControls()
 	{
 		foregroundFogParticleAmount = 0.0f;
 	}
-	if (MissionSelectMenu.Hub == true )
-	{
-		CurrnetMission.missionpos = { 0.0f,0.0f };
+	ActiveRadar.offset = CurrnetMission.missionpos;
 
+	if (!CurrnetMission.outside && sqrlength(Entities[0]->mid) > 7000.0f * 7000.0f)
+	{
+		if (ActiveRadar.enteredBleep >= 0 && ActiveRadar.enteredBleep < ActiveRadar.bleeps.size())
+		{
+			std::string savestr = "Saves/" + GameSaveName + "/bleeps/" + std::to_string(ActiveRadar.BleepsCounter);
+			CurrnetMission.Save(savestr);
+			ActiveRadar.bleeps[ActiveRadar.enteredBleep].SaveString = savestr;
+			ActiveRadar.BleepsCounter++;
+
+		}
+
+		ActiveRadar.enteredBleep = -1;
+
+		CurrnetMission.story_mission = false;
+		CurrnetMission.size = 0;
+		CurrnetMission.dificulty = 0;
+		CurrnetMission.type = -1;
+		CurrnetMission.missionpos = (Entities[0]->mid + ActiveRadar.offset);
+		MissionSelectMenu.missionPosition = (Entities[0]->mid + ActiveRadar.offset);
+		MissionSelectMenu.Hub = false;
+		CurrnetMission.outside = true;
+		inbase = false;
+		switchScene = false;
+		OpenMenu = false;
+		loadedThisFrame = true;
+		CurrnetMission.MissionClear();
+		ChangeMap("0", ActiveRadar.offset, CurrnetMission.missionpos);
 	}
-	if (inbase)
-		ActiveRadar.offset = { 0.0f, 0.0f };
-	else
-		ActiveRadar.offset = CurrnetMission.missionpos;
 
 	ActiveRadar.Process(delta);
 	ActiveRadar.Draw({ 0.5f * WIDTH - 120.0f,0.5f * HEIGHT - 120.0f });
@@ -1489,6 +1621,7 @@ void Process(float dt)
 			Entities[Entities.size() - 1]->LoadFrom("Save0.sav");
 			Entities[Entities.size() - 1]->autocontrol = true;
 			Entities[Entities.size() - 1]->trgPos = MousePosition;
+			Entities[Entities.size() - 1]->AIState = 1;
 			lastEntityID++;
 			Entities[Entities.size() - 1]->id = lastEntityID;
 			//Entities[Entities.size() - 1]->CP.Health = -10;
@@ -1662,7 +1795,7 @@ void Process(float dt)
 	if(MissionSelectMenu.Hub)
 		bw->w_CameraPosition = (sw->w_CameraPosition )*0.02f;
 	else
-		bw->w_CameraPosition = (sw->w_CameraPosition + MissionSelectMenu.missionPosition)*0.02f;
+		bw->w_CameraPosition = (sw->w_CameraPosition + ActiveRadar.offset)*0.02f;
 
 	bw->Use();
 	Background.DrawCollisions = false;
@@ -1674,7 +1807,7 @@ void Process(float dt)
 	if (MissionSelectMenu.Hub)
 		fw->w_CameraPosition = (sw->w_CameraPosition) * 1.0f;
 	else
-		fw->w_CameraPosition = (sw->w_CameraPosition + MissionSelectMenu.missionPosition) * 1.0f;
+		fw->w_CameraPosition = (sw->w_CameraPosition + ActiveRadar.offset) * 1.0f;
 	fw->w_CameraScale = (sw->w_CameraScale * 0.75f);
 
 	fw->Use();

@@ -3,6 +3,7 @@ class CentralPart : public BodyComponent
 {
 public:
 	int saveid = -1;
+	bool missionPawn = false;
 
 	glm::vec2 midvel = {0.0f,0.0f};
 	glm::vec2 avgvel = {0.0f,0.0f};

@@ -51,10 +51,35 @@ void Radar::Init()
 		bl.fogamount = 0.5f + rand() %1000*0.002f;
 		bleeps.push_back(bl);
 	}
+	for (int i = 0; i < 1; i++)
+	{
+		Bleep bl;
+		bl.state = 3;
+		bl.position = Rotate(glm::vec2(9000.0f + (rand() % 2000), 0.0f), (rand() % 1000) * 0.002f * pi);
+		bl.velocity = { 0.0f,0.0f };
+		bl.infinite = true;
+		bl.r = 15.0f;
+		bl.fogamount = 0.0f;
+		bleeps.push_back(bl);
+
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		Bleep bl;
+		bl.state = -1;
+		bl.position = Rotate(glm::vec2(9000.0f + (rand() % 2000), 0.0f), (rand() % 1000) * 0.002f * pi);
+		bl.velocity = { 0.0f,0.0f };
+		bl.infinite = true;
+		bl.r = 15.0f;
+		bl.fogamount = 0.0f;
+		bleeps.push_back(bl);
+
+	}
 }
 
 void Radar::Process(float dt)
 {
+	glm::vec2 pos = Entities[0]->mid + offset;
 	int a= 0;
 	while (a < bleeps.size())
 	{
@@ -68,16 +93,26 @@ void Radar::Process(float dt)
 	}
 	int fogbleeps = 0;
 	int Enemybleeps = 0;
+	int SideMissionbleeps = 0;
+	int Stationbleeps = 0;
 
 	for (int i = 0; i < bleeps.size(); i++)
 	{
 		bleeps[i].t -= dt;
 		bleeps[i].position += bleeps[i].velocity * dt;
-		if (bleeps[i].state == 1)
-			Enemybleeps++;
-		if (bleeps[i].state == 0)
-			fogbleeps++;
 
+		glm::vec2 bpos = (bleeps[i].position - pos) * 0.01f;
+		if (sqrlength(bpos) < 105 * 105)
+		{
+			if (bleeps[i].state == 1)
+				Enemybleeps++;
+			if (bleeps[i].state == 0)
+				fogbleeps++;
+			if (bleeps[i].state > 2)
+				SideMissionbleeps++;
+			if (bleeps[i].state ==-1)
+				Stationbleeps++;
+		}
 
 		if (bleeps[i].t <= 0.0f && bleeps[i].infinite)
 		{
@@ -85,6 +120,7 @@ void Radar::Process(float dt)
 			if (length(bleeps[i].velocity) > 75.0f)
 			{
 				Bleep bl;
+				bl.state = -100;
 				bl.t = 1.0f * bleeps[i].r * (0.8f + rand()%60*0.01f);
 				bleeps[i].t = (500.0f / length(bleeps[i].velocity)) + (rand() % 60 * 0.01f) ;
 				bl.infinite = false;
@@ -111,7 +147,7 @@ void Radar::Process(float dt)
 	{
 		Bleep bl;
 		bl.state = 0;
-		bl.position = Entities[0]->mid + offset + Rotate(Normalize(Entities[0]->avgvel) * (10000.0f + (rand() % 2000)), ((rand() % 2000) * 0.001f - 1.0f) * 2.0f);
+		bl.position = Entities[0]->mid + offset + Rotate(Normalize(Entities[0]->avgvel) * (9000.0f + (rand() % 2000)), ((rand() % 2000) * 0.001f - 1.0f) * pi * 0.5f);
 		bl.velocity = { 0.0f, 0.0f };
 		bl.infinite = true;
 		bl.r = 25.0f + 25.0f * (rand() % 1000 * 0.001f);
@@ -124,13 +160,35 @@ void Radar::Process(float dt)
 	{
 		Bleep bl;
 		bl.state = 1;
-		bl.position = Entities[0]->mid + offset + Rotate( Normalize(Entities[0]->avgvel) * (10000.0f + (rand() % 2000)), ((rand() % 2000) * 0.001f - 1.0f) * 4.0f);
+		bl.position = Entities[0]->mid + offset + Rotate(Normalize(Entities[0]->avgvel) * (9000.0f + (rand() % 2000)), ((rand() % 2000) * 0.001f - 1.0f) * pi * 0.5f);
 		bl.velocity = Rotate(glm::vec2((rand() % 150), 0.0f), (rand() % 1000) * 0.002f * pi);
 		bl.infinite = true;
 		bl.r = 5.0f;
 		bl.fogamount = 0.0f;
 		bleeps.push_back(bl);
 
+	}
+	for (int i = 0; i < 1 - SideMissionbleeps; i++)
+	{
+		Bleep bl;
+		bl.state = 3;
+		bl.position = Entities[0]->mid + offset + Rotate(Normalize(Entities[0]->avgvel) * (9000.0f + (rand() % 2000)), ((rand() % 2000) * 0.001f - 1.0f) * pi * 0.5f);
+		bl.velocity = { 0.0f,0.0f };
+		bl.infinite = true;
+		bl.r = 15.0f;
+		bl.fogamount = 0.0f;
+		bleeps.push_back(bl);
+	}
+	for (int i = 0; i < 0 - Stationbleeps; i++)
+	{
+		Bleep bl;
+		bl.state = -1;
+		bl.position = Entities[0]->mid + offset + Rotate(Normalize(Entities[0]->avgvel) * (9000.0f + (rand() % 2000)), ((rand() % 2000) * 0.001f - 1.0f) * pi * 0.5f);
+		bl.velocity = { 0.0f,0.0f };
+		bl.infinite = true;
+		bl.r = 15.0f;
+		bl.fogamount = 0.0f;
+		bleeps.push_back(bl);
 	}
 
 }
@@ -180,14 +238,18 @@ void Radar::Draw(glm::vec2 screenpos)
 				color = { 0.2f,0.6f,0.2f,1.0f };
 			else
 				color = { 0.2f,0.2f,2.0f,1.0f };
+			if (bleeps[i].state > 2)
+				color = { 0.1f,2.0f,0.1f,1.0f };
+			if (bleeps[i].state ==-1)
+				color = { 2.1f,1.0f,3.1f,1.0f };
+
 
 			glm::vec2 bpos = (bleeps[i].position - pos) * 0.01f;
 			if (sqrlength(bpos) > 100 * 100)
 			{
-				if (bleeps[i].state != 2 && sqrlength(bpos) > 125 * 125)
+				if (bleeps[i].state != 2 && sqrlength(bpos) > 105 * 105)
 				{
-					bleeps[i].t = -10.0f;
-					bleeps[i].infinite = false;					
+					continue;
 				}
 				bpos = Normalize(bpos) * 100.0f;
 			}
@@ -204,4 +266,16 @@ void Radar::Draw(glm::vec2 screenpos)
 		}
 
 	}
+}
+
+
+
+
+void Quest::Start()
+{
+
+}
+void Quest::Process(float dt)
+{
+
 }

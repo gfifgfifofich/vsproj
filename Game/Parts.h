@@ -1000,45 +1000,48 @@ public:
 		if (!debris && !deactivated && !overheated)
 		{
 			glm::vec2 targetrotpoint = vDataConnections[0].data;
-			if(sqrlength(targetrotpoint) < 2.0f) // its normalized
-				targetrotpoint = mid + targetrotpoint * 10.0f;
-
-			glm::vec2 dif = ballPosition[body[4]] - mid;
-			if(dt<0.0001f) // 10k fps probably unreachable with enough stability, shouldnt cause speed issues 
-				 dt = 0.0001f;
-			glm::vec2 trgvel = (targetrotpoint - prevtrgpos) * (1.0f/dt); // probably 
-			glm::vec2 trgvec = targetrotpoint - mid;
-			glm::vec2 rotvec = Normalize(glm::vec2(-dif.y, dif.x)); // probably
-
-			
-			float D = length(trgvec);
-			if(D<1.0f)
-				D = 1.0f;
-			if(bulletSpeed<1.0f)
-				bulletSpeed = 1.0f;
-			float T = D / bulletSpeed;
-			float lastT = 0;
-			for (int i = 0; i < 4; i++)
+			if (!glm::isnan(targetrotpoint).x && !glm::isnan(targetrotpoint).y)
 			{
-				targetrotpoint += trgvel * (T- lastT) - avgvel * 1.4f * (T - lastT) ;
-				lastT = T;
-				trgvec = targetrotpoint - mid;
-				D = length(trgvec); 
-				if(D<1.0f)
+				if (sqrlength(targetrotpoint) < 2.0f) // its normalized
+					targetrotpoint = mid + targetrotpoint * 10.0f;
+
+				glm::vec2 dif = ballPosition[body[4]] - mid;
+				if (dt < 0.0001f) // 10k fps probably unreachable with enough stability, shouldnt cause speed issues 
+					dt = 0.0001f;
+				glm::vec2 trgvel = (targetrotpoint - prevtrgpos) * (1.0f / dt); // probably 
+				glm::vec2 trgvec = targetrotpoint - mid;
+				glm::vec2 rotvec = Normalize(glm::vec2(-dif.y, dif.x)); // probably
+
+
+
+				float D = length(trgvec);
+				if (D < 1.0f)
 					D = 1.0f;
-				T = D / bulletSpeed;
+				if (bulletSpeed < 1.0f)
+					bulletSpeed = 1.0f;
+				float T = D / bulletSpeed;
+				float lastT = 0;
+				for (int i = 0; i < 4; i++)
+				{
+					targetrotpoint += trgvel * (T - lastT) - avgvel * 1.4f * (T - lastT);
+					lastT = T;
+					trgvec = targetrotpoint - mid;
+					D = length(trgvec);
+					if (D < 1.0f)
+						D = 1.0f;
+					T = D / bulletSpeed;
+				}
+				if (D < 1.0f)
+					D = 1.0f;
+				trgvec = trgvec / D;
+				ballVelocity[body[4]] -= dt * RotationalFriction * DOT(ballVelocity[body[4]] - ballVelocity[body[0]], rotvec) * rotvec;
+
+				ballForce[body[4]] += speed * rotvec * DOT(rotvec, trgvec);
+
+				prevtrgpos = vDataConnections[0].data;
+				if (sqrlength(vDataConnections[0].data) < 2.0f) // its normalized
+					prevtrgpos = mid + vDataConnections[0].data * 10.0f;
 			}
-			if(D<1.0f)
-				D = 1.0f;
-			trgvec = trgvec / D;
-			ballVelocity[body[4]] -= dt * RotationalFriction * DOT(ballVelocity[body[4]] - ballVelocity[body[0]] , rotvec) * rotvec;
-
-			ballForce[body[4]] += speed * rotvec * DOT(rotvec, trgvec);
-			
-			prevtrgpos = vDataConnections[0].data;
-			if(sqrlength(vDataConnections[0].data) < 2.0f) // its normalized
-				prevtrgpos = mid + vDataConnections[0].data * 10.0f;
-
 		}
 
 		BarrelRotation += RotationSpeed * dt;
@@ -1724,7 +1727,7 @@ public:
 			}
 
 			
-
+			
 		}
 		else
 		{

@@ -889,6 +889,9 @@ void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2,
 		std::cout << index1amount;
 		std::cout << " index2amount ";
 		std::cout << index2amount;*/
+		if (Parts[part1]->Delete || Parts[part2]->Delete)
+			return;
+
 		if (it == -1)
 		{
 			DataConnection dc;
@@ -899,13 +902,13 @@ void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2,
 			dc.type = type;
 			bool s1 = false;
 			bool s2 = false;
-			if (Parts[part1]->bDataConnections[index1].source && type == 0 ||
-				Parts[part1]->fDataConnections[index1].source && type == 1 ||
-				Parts[part1]->vDataConnections[index1].source && type == 2)
+			if (type == 0 && index1 < Parts[part1]->bDataConnections.size() && Parts[part1]->bDataConnections[index1].source ||
+				type == 1 && index1 < Parts[part1]->fDataConnections.size() && Parts[part1]->fDataConnections[index1].source ||
+				type == 2 && index1 < Parts[part1]->vDataConnections.size() && Parts[part1]->vDataConnections[index1].source)
 				s1 = true;
-			if (Parts[part2]->bDataConnections[index2].source && type == 0 ||
-				Parts[part2]->fDataConnections[index2].source && type == 1 ||
-				Parts[part2]->vDataConnections[index2].source && type == 2)
+			if (type == 0 && index2 < Parts[part2]->bDataConnections.size() && Parts[part2]->bDataConnections[index2].source ||
+				type == 1 && index2 < Parts[part2]->fDataConnections.size() && Parts[part2]->fDataConnections[index2].source ||
+				type == 2 && index2 < Parts[part2]->vDataConnections.size() && Parts[part2]->vDataConnections[index2].source)
 				s2 = true;
 			//std::cout << " s1 ";
 			//std::cout << s1;

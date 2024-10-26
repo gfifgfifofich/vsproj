@@ -1,23 +1,36 @@
 #pragma once
 
+class Quest
+{
+public:
+	// -1 no one, 0,1,2 fractions 4 pirates
+	int fraction = -1;
+	//-1 no mission, other - link to quests[]
+	int missiontype = -1;
+	std::string name = "";
+	std::string Description = "";
+
+	std::map<std::string, bool> flags;
+	void Start();
+	void Process(float dt);
+};
+inline std::map<int, Quest> quests;
+
 class Radar
 {
-	/*
-	Strength of enemies will depend on storyint
-	the further player in compaign, the harder enemies will spawn
-
-	*/
 public:
-	float Scale = 5.0f; // 1 unit = 1'000 meters 
-
+	float Scale = 5.0f; // 1 unit = 1'000 meters // may have been absolutly not used
+	long unsigned int BleepsCounter = 0;
 	float minSpawnRadius = 1000.0f;// 1km * Scale
 	float maxSpawnRadius = 5000.0f;// 5km * Scale
+
+	int enteredBleep = -1;
 
 	float timer = 0.5f;
 
 	float playerHeat = 0.0f;
 
-	int MaxEnemybleeps = 5;
+	int MaxEnemybleeps = 15;
 	int MaxFogBleeps = 15;
 
 	glm::vec2 offset = { 0.0f,0.0f };
@@ -30,8 +43,16 @@ public:
 		bool story = false;
 		bool justheat = false;
 		float fogamount = 0.0f;
-		// 0 - nothing, 1 - enemy, 2 - story mission, else -  id -3 = custom missionid
+		
+		// -1 - station, 0 - nothing, 1 - enemy, 2 - story mission, else -  (id -3) = custom missionid
 		int state = 0;
+		// -1 no one, 0,1,2 fractions 4 pirates
+		int fraction = -1;
+		//-1 no mission, other - link to quests[]
+		int questid = -1;
+		//save file for string
+		std::string SaveString = "";
+
 		float t = 0.0f;
 		float r = 2.5f;
 		bool infinite = false;

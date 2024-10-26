@@ -16,7 +16,13 @@ void QuickSave(std::string SaveFileName)
 {
 	std::string fullpath = "Saves/";
 	fullpath += SaveFileName;
-	
+
+	std::filesystem::create_directories(fullpath);
+	std::filesystem::create_directories(fullpath + "/bleeps");
+	if("Saves/" + GameSaveName + "/bleeps" != fullpath + "/bleeps")
+		std::filesystem::copy("Saves/" + GameSaveName + "/bleeps", fullpath + "/bleeps",
+			std::filesystem::copy_options::update_existing
+			| std::filesystem::copy_options::recursive);
 	DataStorage PlayerDataDS;
 	PlayerDataDS.SetProperty(SaveFileName, "lastEntityName", lastEntityName);
 	PlayerDataDS.SetProperty(SaveFileName, "EntityCount", int(Entities.size()));
@@ -39,7 +45,33 @@ void QuickSave(std::string SaveFileName)
 
 	DataStorage RadarDataDS;
 	RadarDataDS.SetProperty("Radar", "offset", ActiveRadar.offset);
+
+	RadarDataDS.SetProperty("Radar", "minSpawnRadius", ActiveRadar.minSpawnRadius);
+	RadarDataDS.SetProperty("Radar", "maxSpawnRadius", ActiveRadar.maxSpawnRadius);
+	RadarDataDS.SetProperty("Radar", "timer", ActiveRadar.timer);
+	RadarDataDS.SetProperty("Radar", "playerHeat", ActiveRadar.playerHeat);
+	RadarDataDS.SetProperty("Radar", "MaxEnemybleeps", ActiveRadar.MaxEnemybleeps);
+	RadarDataDS.SetProperty("Radar", "MaxFogBleeps", ActiveRadar.MaxFogBleeps);
+	RadarDataDS.SetProperty("Radar", "bleepsSize", int(ActiveRadar.bleeps.size()));
+
+	for (int i = 0; i < ActiveRadar.bleeps.size(); i++)
+	{
+		RadarDataDS.SetProperty(std::to_string(i), "position", ActiveRadar.bleeps[i].position);
+		RadarDataDS.SetProperty(std::to_string(i), "velocity", ActiveRadar.bleeps[i].velocity);
+		RadarDataDS.SetProperty(std::to_string(i), "string", ActiveRadar.bleeps[i].string);
+		RadarDataDS.SetProperty(std::to_string(i), "story", ActiveRadar.bleeps[i].story);
+		RadarDataDS.SetProperty(std::to_string(i), "justheat", ActiveRadar.bleeps[i].justheat);
+		RadarDataDS.SetProperty(std::to_string(i), "fogamount", ActiveRadar.bleeps[i].fogamount);
+		RadarDataDS.SetProperty(std::to_string(i), "state", ActiveRadar.bleeps[i].state);
+		RadarDataDS.SetProperty(std::to_string(i), "t", ActiveRadar.bleeps[i].t);
+		RadarDataDS.SetProperty(std::to_string(i), "r", ActiveRadar.bleeps[i].r);
+		RadarDataDS.SetProperty(std::to_string(i), "infinite", ActiveRadar.bleeps[i].infinite);
+
+	}
+	
 	RadarDataDS.Save(fullpath + "/radar.sav");
+
+
 
 
 	int EntitiesSize = Entities.size();
@@ -80,10 +112,34 @@ void QuickLoad(std::string SaveFileName)
 {
 	std::string fullpath = "Saves/";
 	fullpath += SaveFileName;
-
+	GameSaveName = SaveFileName;
 	DataStorage RadarDataDS;
 	RadarDataDS.Load(fullpath + "/radar.sav");
 	ActiveRadar.offset = RadarDataDS.GetPropertyAsVec2("Radar", "offset");
+
+	ActiveRadar.minSpawnRadius = RadarDataDS.GetPropertyAsFloat("Radar", "minSpawnRadius");
+	ActiveRadar.maxSpawnRadius = RadarDataDS.GetPropertyAsFloat("Radar", "maxSpawnRadius");
+	ActiveRadar.timer = RadarDataDS.GetPropertyAsFloat("Radar", "timer");
+	ActiveRadar.playerHeat = RadarDataDS.GetPropertyAsFloat("Radar", "playerHeat");
+	ActiveRadar.MaxEnemybleeps = RadarDataDS.GetPropertyAsInt("Radar", "MaxEnemybleeps");
+	ActiveRadar.MaxFogBleeps = RadarDataDS.GetPropertyAsInt("Radar", "MaxFogBleeps");
+	ActiveRadar.bleeps.resize(RadarDataDS.GetPropertyAsInt("Radar", "bleepsSize"));
+
+	for (int i = 0; i < ActiveRadar.bleeps.size(); i++)
+	{
+		ActiveRadar.bleeps[i].position = RadarDataDS.GetPropertyAsVec2(std::to_string(i), "position");
+		ActiveRadar.bleeps[i].velocity = RadarDataDS.GetPropertyAsVec2(std::to_string(i), "velocity");
+		ActiveRadar.bleeps[i].string = RadarDataDS.GetProperty(std::to_string(i), "string");
+		ActiveRadar.bleeps[i].story = RadarDataDS.GetPropertyAsBool(std::to_string(i), "story");
+		ActiveRadar.bleeps[i].justheat = RadarDataDS.GetPropertyAsBool(std::to_string(i), "justheat");
+		ActiveRadar.bleeps[i].fogamount = RadarDataDS.GetPropertyAsFloat(std::to_string(i), "fogamount");
+		ActiveRadar.bleeps[i].state = RadarDataDS.GetPropertyAsInt(std::to_string(i), "state");
+		ActiveRadar.bleeps[i].t = RadarDataDS.GetPropertyAsFloat(std::to_string(i), "t");
+		ActiveRadar.bleeps[i].r = RadarDataDS.GetPropertyAsFloat(std::to_string(i), "r");
+		ActiveRadar.bleeps[i].infinite = RadarDataDS.GetPropertyAsBool(std::to_string(i), "infinite");
+
+	}
+
 
 	int EntitiesSize = 0;
 	DataStorage PlayerDataDS;

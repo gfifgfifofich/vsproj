@@ -28,6 +28,14 @@ void BodyComponent::ProcessBody(float dt)
 	float avgT = 0.0f;
 	for (int i = 0; i < bodysize; i++)
 	{
+		if (glm::isnan(ballPosition[body[i]]).x || glm::isnan(ballPosition[body[i]]).y)
+		{
+			Health = 0;
+			Delete = true;
+			dead = true;
+			return;
+		}
+
 		if (ballTemp[body[i]] > MinAutocooltemp)
 			ballTemp[body[i]] -= dt * CoolingSpeed;
 		if (ballTemp[body[i]] <= MinAutocooltemp)
@@ -39,7 +47,7 @@ void BodyComponent::ProcessBody(float dt)
 		if (ballTemp[body[i]] > MaxTemp) ballTemp[body[i]] = MaxTemp;
 		if (ballTemp[body[i]] < MinTemp) ballTemp[body[i]] = MinTemp;
 		avgT += ballTemp[body[i]] ;
-
+		
 		ballVelocityBuff[body[i]]= ballVelocity[body[i]];
 		for (int a = 0; a < GameScene->Collision_balls.size(); a++)
 			BalltoStaticBallCollision(body[i], GameScene->Collision_balls[a]);
@@ -250,11 +258,11 @@ void BodyComponent::DamageSphereCollide(DamageSphere* DS)
 }
 void BodyComponent::CreateBody(int size, int boolDCsize,int floatDCsize, int vectorDCsize)
 {
-	bDataConnections = new BoolDataPoint[boolDCsize];
+	bDataConnections.resize(boolDCsize);
 	bDCsize = boolDCsize;
-	fDataConnections = new FloatDataPoint[floatDCsize];
+	fDataConnections.resize(floatDCsize);
 	fDCsize = floatDCsize;
-	vDataConnections = new VectorDataPoint[vectorDCsize];
+	vDataConnections.resize(vectorDCsize);
 	vDCsize = vectorDCsize;
 
 	//Temperatures = new float[size];
@@ -270,21 +278,10 @@ void BodyComponent::DeleteBody()
 	for(int i= 0;i < body.size();i++)
 		DeleteBall(body[i]);
 	body.clear();
-	if (bDCsize > 0 && bDataConnections != NULL)
-	{
-		delete[] bDataConnections;
-		bDataConnections = NULL;
-	}
-	if (fDCsize > 0 && fDataConnections != NULL)
-	{
-		delete[] fDataConnections;
-		fDataConnections = NULL;
-	}
-	if (vDCsize > 0 && vDataConnections != NULL)
-	{
-		delete[] vDataConnections;
-		vDataConnections = NULL;
-	}
+	bDataConnections.clear();
+	fDataConnections.clear();
+	vDataConnections.clear();
+
 }
 
 

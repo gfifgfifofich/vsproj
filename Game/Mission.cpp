@@ -46,11 +46,19 @@ void Mission::Start()
 	Bots.clear();
 	NodeHandles.clear();
 
-	
+	if (inbase)
+	{
+
+		ChangeMap("Scenes/base.sav", ActiveRadar.offset, missionpos);
+
+		UpdateScene();
+		return;
+	}
 
 	if (!story_mission)
 	{
 		inbase = false;
+		ChangeMap("0", ActiveRadar.offset, missionpos);
 		for (int i = 0; i < size * 5; i++)
 		{
 			glm::vec2 randpos = glm::vec2(float((rand() % 1000) - 500), float((rand() % 1000) - 500));
@@ -143,8 +151,11 @@ void Mission::Start()
 		std::vector<CentralPart*> arrr;
 		Bots.push_back(arrr);
 		Bots[0].push_back(SpawnAiShip({ -150.0f,400.0f }, "drone"));
+		Bots[0].back()->missionPawn = true;
 		Bots[0].push_back(SpawnAiShip({ -150.0f,380.0f }, "drone"));
+		Bots[0].back()->missionPawn = true;
 		Bots[0].push_back(SpawnAiShip({ -170.0f,400.0f }, "drone"));
+		Bots[0].back()->missionPawn = true;
 
 		for (auto e : Bots[0])
 		{
@@ -176,6 +187,7 @@ void Mission::Start()
 				}
 				Bots[GameScene->Nodes[i]->id].push_back(SpawnAiShip(GameScene->Nodes[i]->position, GameScene->Nodes[i]->Name));
 				Bots[GameScene->Nodes[i]->id].back()->saveid = GameScene->Nodes[i]->id;
+				Bots[GameScene->Nodes[i]->id].back()->missionPawn = true;
 
 			}
 		}
@@ -201,6 +213,7 @@ void Mission::Start()
 				}
 				Bots[GameScene->Nodes[i]->id].push_back(SpawnAiShip(GameScene->Nodes[i]->position, GameScene->Nodes[i]->Name));
 				Bots[GameScene->Nodes[i]->id].back()->saveid = GameScene->Nodes[i]->id;
+				Bots[GameScene->Nodes[i]->id].back()->missionPawn = true;
 
 			}
 		}
@@ -226,6 +239,7 @@ void Mission::Start()
 				}
 				Bots[GameScene->Nodes[i]->id].push_back(SpawnAiShip(GameScene->Nodes[i]->position, GameScene->Nodes[i]->Name));
 				Bots[GameScene->Nodes[i]->id].back()->saveid = GameScene->Nodes[i]->id;
+				Bots[GameScene->Nodes[i]->id].back()->missionPawn = true;
 			}
 		}
 		UpdateScene();
@@ -248,7 +262,11 @@ void Mission::UpdateScene()
 
 	std::cout << "Storyint = " << storyint << "\n";
 	std::cout << "story_mission = " << story_mission << "\n";
+	if (inbase)
+	{
 
+		return;
+	}
 	if (!story_mission)
 	{
 		switch (type)
@@ -1484,6 +1502,117 @@ void Mission::exitMission(bool extracted)
 	}
 }
 
+void Mission::Save(std::string filename)
+{
+
+	DataStorage MissionDataDS;
+
+	MissionDataDS.SetProperty("Mission", "type", type);
+	MissionDataDS.SetProperty("Mission", "dificulty", dificulty);
+	MissionDataDS.SetProperty("Mission", "size", size);
+	MissionDataDS.SetProperty("Mission", "materialReward",materialReward);
+	MissionDataDS.SetProperty("Mission", "story_mission", story_mission);
+	MissionDataDS.SetProperty("Mission", "exiting", exiting);
+	MissionDataDS.SetProperty("Mission", "compleated",compleated);
+	MissionDataDS.SetProperty("Mission", "missionpos",missionpos);
+	MissionDataDS.SetProperty("Mission", "planetpos",planetpos); // why not? save all the shit, sort out later
+
+	std::filesystem::create_directories(filename);
+
+	int EntitiesCount = 0;
+	if (Bots.size() > 0)
+	{
+		for (int i = 0; i < Bots.size(); i++)
+		{
+			if (Bots[i].size() > 0)
+				for (int a = 0; a < Bots[i].size(); a++)
+					if (!Bots[i][a]->Delete)
+					{
+						std::string filename = filename + "/";
+						filename += EntitiesCount + ".sav";
+						Bots[i][a]->SaveTo(filename, true, true);
+						EntitiesCount++;
+						
+					}
+		}
+	}
+	MissionDataDS.SetProperty("Mission", "EntitiesCount", EntitiesCount);
+
+	for (int i = 0; i < TakenAreas.size(); i++)
+		MissionDataDS.SetProperty("TakenAreas", std::to_string(i), TakenAreas[i]);
+
+	for (int i = 0; i < timers.size(); i++)
+		MissionDataDS.SetProperty("timers", std::to_string(i), timers[i]);
+
+	for (auto a : flags)
+		MissionDataDS.SetProperty("flags", a.first, a.second);
+
+	GameScene->SaveAs(filename + "/Scene.sav");
+	MissionDataDS.Save(filename + "/MissionState.sav");
+}
+void Mission::Load(std::string filename, bool ingame)
+{
+	DataStorage MissionDataDS;
+	MissionDataDS.Load(filename + "/MissionState.sav");
+
+	type = MissionDataDS.GetPropertyAsInt("Mission", "type");
+	dificulty = MissionDataDS.GetPropertyAsInt("Mission", "dificulty");
+	size = MissionDataDS.GetPropertyAsInt("Mission", "size");
+	materialReward = MissionDataDS.GetPropertyAsInt("Mission", "materialReward");
+	story_mission = MissionDataDS.GetPropertyAsBool("Mission", "story_mission");
+	exiting = MissionDataDS.GetPropertyAsBool("Mission", "exiting");
+	compleated = MissionDataDS.GetPropertyAsBool("Mission", "compleated");
+	missionpos = MissionDataDS.GetPropertyAsVec2("Mission", "missionpos");
+	planetpos = MissionDataDS.GetPropertyAsVec2("Mission", "planetpos");
+	int EntitiesCount = 0;
+	EntitiesCount = MissionDataDS.GetPropertyAsFloat("Mission", "EntitiesCount");
+
+	if(ingame)
+		ChangeMap(filename + "/Scene.sav", ActiveRadar.offset, missionpos);
+	else
+	{
+		GameScene->LoadFrom(filename + "/Scene.sav");
+		//instantly delete all parts from scene.
+		for (int i = 0; i < GameScene->Nodes.size(); i++)
+			if (GameScene->Nodes[i]->type >= NodeType::LASTNODE)
+				GameScene->Nodes[i]->Delete = true;
+	}
+
+	std::map<std::string, std::string> S_TakenAreas;
+	std::map<std::string, std::string> S_timers;
+	std::map<std::string, std::string> S_flags;
+
+	S_TakenAreas = MissionDataDS.GetObject("TakenAreas");
+	S_timers = MissionDataDS.GetObject("timers");
+	S_flags = MissionDataDS.GetObject("flags");
+
+	int i = 0;
+	for (auto a : S_TakenAreas)
+	{
+		TakenAreas[i] = MissionDataDS.GetPropertyAsVec4("TakenAreas", a.first);
+		i++;
+	}
+
+	i = 0;
+	for (auto a : S_timers)
+	{
+		timers[i] = MissionDataDS.GetPropertyAsFloat("timers", a.first);
+		i++;
+	}
+
+	i = 0;
+	for (auto a : S_flags)
+		flags[a.first] = MissionDataDS.GetPropertyAsBool("flags", a.first);
+
+	for (int i = 0; i < EntitiesCount; i++)
+	{
+		std::string filename = filename + "/";
+		filename += std::to_string(i) + ".sav";
+		SpawnShipAllSaveFullPath(filename);
+	}
+
+	UpdateScene();
+}
 
 
 void Shop::Process(float dt)

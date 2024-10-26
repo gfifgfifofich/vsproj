@@ -10,3 +10,7 @@ Mission
 	story_mission 0
 	type 0
 }
+TakenAreas
+{
+	0 0.000000 0.000000 50.000000 50.000000
+}

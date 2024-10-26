@@ -79,9 +79,9 @@ public:
 		bool connected;
 	};
 
-	BoolDataPoint* bDataConnections = nullptr;
-	FloatDataPoint* fDataConnections = nullptr;
-	VectorDataPoint* vDataConnections = nullptr;
+	std::vector<BoolDataPoint> bDataConnections;
+	std::vector<FloatDataPoint> fDataConnections;
+	std::vector<VectorDataPoint> vDataConnections;
 
 	int bDCsize=0;
 	int fDCsize=0;

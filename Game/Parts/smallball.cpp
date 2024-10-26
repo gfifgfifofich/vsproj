@@ -2,6 +2,11 @@
 #include "../engine/Components/Include/sounds.h"
 #include "smallball.h"
 
+/*
+Some physics interactions lead to nans
+like spawning inside a cube
+*/
+
 const float collisionRoughness = 0.4f;
 
 int NewBall()

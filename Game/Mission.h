@@ -20,6 +20,7 @@ class Mission
 	bool story_mission = false;
 	bool exiting = false;
 	bool compleated = true;
+	bool outside = false;
 	std::vector<std::vector<CentralPart*>> Bots;
 	std::vector<std::vector<Node*>> NodeHandles;
 	std::vector<glm::vec4> TakenAreas;
@@ -39,6 +40,8 @@ class Mission
 	void Process(float dt);
 	void exitMission(bool extracted = false);
 	void MissionClear();
+	void Save(std::string filename);
+	void Load(std::string filename, bool ingame = true);
 };
 
 inline Mission CurrnetMission;
