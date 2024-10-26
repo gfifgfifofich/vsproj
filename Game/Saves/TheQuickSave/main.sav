@@ -22,9 +22,9 @@ TheQuickSave
 	EntityBackUpName PreMissionBackup
 	EntityCount 1
 	Materials 1474577
-	MissionSelectMenu.Hub 1
-	MissionSelectMenu.missionPosition 0.000000 0.000000
-	inbase 1
+	MissionSelectMenu.Hub 0
+	MissionSelectMenu.missionPosition 6857.201172 1421.102783
+	inbase 0
 	lastEntityID 0
 	lastEntityName 
 	storyint 4

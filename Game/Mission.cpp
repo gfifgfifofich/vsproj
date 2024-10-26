@@ -1528,9 +1528,9 @@ void Mission::Save(std::string filename)
 				for (int a = 0; a < Bots[i].size(); a++)
 					if (!Bots[i][a]->Delete)
 					{
-						std::string filename = filename + "/";
-						filename += EntitiesCount + ".sav";
-						Bots[i][a]->SaveTo(filename, true, true);
+						std::string filen = filename +"/";
+						filen += std::to_string(EntitiesCount) + ".sav";
+						Bots[i][a]->SaveTo(filen, true, true);
 						EntitiesCount++;
 						
 					}
@@ -1606,9 +1606,9 @@ void Mission::Load(std::string filename, bool ingame)
 
 	for (int i = 0; i < EntitiesCount; i++)
 	{
-		std::string filename = filename + "/";
-		filename += std::to_string(i) + ".sav";
-		SpawnShipAllSaveFullPath(filename);
+		std::string filen = filename  + "/";
+		filen += std::to_string(i) + ".sav";
+		SpawnShipAllSaveFullPath(filen);
 	}
 
 	UpdateScene();

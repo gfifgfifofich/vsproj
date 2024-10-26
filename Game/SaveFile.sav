@@ -25,3 +25,10 @@ ShipFileNames
 	laser 357
 	sss 167
 }
+TheQuickSave
+{
+	EntityBackUpName PreMissionBackup
+	Materials 1474577
+	lastEntityName 
+	storyint 4
+}

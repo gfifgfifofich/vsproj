@@ -4,13 +4,9 @@ Mission
 	dificulty 0
 	exiting 0
 	materialReward 0
-	missionpos 0.000000 0.000000
+	missionpos 6857.201172 1421.102783
 	planetpos 0.000000 0.000000
 	size 0
 	story_mission 0
-	type 0
-}
-TakenAreas
-{
-	0 0.000000 0.000000 50.000000 50.000000
+	type -1
 }
