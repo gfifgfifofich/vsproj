@@ -149,6 +149,6 @@ public:
 	void SaveTo(std::string filename, bool AllSave = false,bool fullpath = false);
 	void LoadFrom(std::string filename, bool AllSave = false, bool fullpath = false);
 	void Clear();
-	void Destroy();
+	void Destroy(bool silent = false);
 };
 inline std::vector <CentralPart*> Entities;

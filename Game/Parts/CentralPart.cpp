@@ -299,8 +299,10 @@ void CentralPart::ProcessConnections()
 }
 void CentralPart::MTProcess (float dt) 
 {
-	if(Health<=0.0f || destroyed || Delete || !Alive)
+	if (Health <= 0.0f || destroyed || Delete || !Alive)
+	{
 		return;
+	}
 	ProcessConnections();
 	ProcessBody(dt);
 	mid = 0.5f * (ballPosition[body[0]] + ballPosition[body[1]]);
@@ -410,6 +412,7 @@ void CentralPart::MTProcess (float dt)
 		{
 			Parts[i]->id = id;
 			Parts[i]->player = player;
+			Parts[i]->debris = false;
 			for (int d = 0; d < CloseDamageSpheres.size(); d++)
 				Parts[i]->DamageSphereCollide(CloseDamageSpheres[d]);
 			if (Parts[i]->WasHitThisFrame)
@@ -561,8 +564,12 @@ void CentralPart::MTProcess (float dt)
 void CentralPart::Process(float dt) 
 {
 	
-	if(Health<=0.0f || destroyed || Delete || !Alive)
+	if (Health <= 0.0f || destroyed || Delete || !Alive)
+	{
+		Clear();
+		Destroy();
 		return;
+	}
 	
 	if (player && !deactivated)
 	{
@@ -749,7 +756,7 @@ void CentralPart::DetachPart( int  index)
 }
 void CentralPart::DetachDetachedParts()
 {
-	for (int i = 0; i < Parts.size(); i++)
+	for (int i = 1; i < Parts.size(); i++)
 	{
 		bool del = true;
 		while (i < Parts.size() && del)
@@ -953,6 +960,12 @@ void CentralPart::SaveTo(std::string filename, bool AllSave, bool fullpath)
 	std::ofstream f;
 	f.open(filename);
 	glm::vec2 mid = 0.5f * (ballPosition[Parts[0]->body[0]] + ballPosition[Parts[0]->body[1]]);
+
+
+	f << "Q ";
+	f << questid;
+	f << "\n";
+
 	// doing it after, just to make files compatable
 	if (AllSave)
 	{
@@ -1012,12 +1025,14 @@ void CentralPart::SaveTo(std::string filename, bool AllSave, bool fullpath)
 			f << ballPosition[Parts[i]->body[a]].x - mid.x;
 			f << " ";
 			f << ballPosition[Parts[i]->body[a]].y - mid.y;
+			Parts[i]->mid = ballPosition[Parts[i]->body[a]];
 		}
 		if (AllSave)
 		{
 			f << " ";
 			f << Parts[i]->Health;
-
+			f << " ";
+			f << Parts[i]->questid;
 			for (int a = 0; a < Parts[i]->bodysize; a++)
 			{
 				f << " ";
@@ -1099,7 +1114,10 @@ void CentralPart::LoadFrom(std::string filename, bool AllSave, bool fullpath)
 		f.getline(line, 512);
 		std::strstream s;
 		s << line;
-
+		if (line[0] == 'Q')
+		{
+			s >> junk >> questid;
+		}
 		if (line[0] == 'A' && AllSave)
 		{
 			s >> junk >> mid.x >> mid.y >> Parts[0]->Health >> ballTemp[Parts[0]->body[0]] >> ballTemp[Parts[0]->body[1]] >>
@@ -1146,7 +1164,7 @@ void CentralPart::LoadFrom(std::string filename, bool AllSave, bool fullpath)
 
 				if (AllSave && allsavefile)
 				{
-					s >> Parts.back()->Health;
+					s >> Parts.back()->Health >> Parts.back()->questid;
 
 					for (int a = 0; a < bodysize; a++)
 					{
@@ -1156,6 +1174,7 @@ void CentralPart::LoadFrom(std::string filename, bool AllSave, bool fullpath)
 
 						ballVelocityBuff[Parts.back()->body[a]] = ballVelocity[Parts.back()->body[a]];
 					}
+
 				}
 			}
 			
@@ -1214,7 +1233,7 @@ void CentralPart::Clear()
 		Parts[i]->Health = -10.0f;
 	}
 
-	while (Parts.size() > 0)
+	while (Parts.size() > 1)
 		DetachPart(Parts.size() - 1);
 	Parts.clear();
 	Parts.push_back(this);
@@ -1222,27 +1241,44 @@ void CentralPart::Clear()
 	DataConnections.clear();
 	firstdrawafterload = true;
 }
-void CentralPart::Destroy()
+void CentralPart::Destroy(bool silent)
 {
-	for (int i = 0; i < Parts.size(); i++)
+	if (!silent)
 	{
-		if (rand() % 100 < 50)
-			for (int b = 0; b < Parts[i]->bodysize; b++)
-			{
-				ballForce[Parts[i]->body[b]] = glm::vec2(rand() % 5000 - 2500, rand() % 5000 - 2500);
-				ballTemp[Parts[i]->body[b]] = 30.0f;
-			}	
-		else
-			Parts[i]->Health = -1.0f;
+		for (int i = 0; i < Parts.size(); i++)
+		{
+			if (rand() % 100 < 50)
+				for (int b = 0; b < Parts[i]->bodysize; b++)
+				{
+					ballForce[Parts[i]->body[b]] = glm::vec2(rand() % 5000 - 2500, rand() % 5000 - 2500);
+					ballTemp[Parts[i]->body[b]] = 30.0f;
+				}
+			else
+				Parts[i]->Health = -1.0f;
+		}
+
+		Connections.clear();
+		DataConnections.clear();
+		while (Parts.size() > 0)
+			DetachPart(Parts.size() - 1);
+		Balls.clear();
+		Engines.clear();
+		CloseDamageSpheres.clear();
+		destroyed = true;
+		firstdrawafterload = true;
 	}
-	Connections.clear();
-	DataConnections.clear();
-	while(Parts.size()>0)
-		DetachPart(Parts.size()-1);
-	Balls.clear();
-	Engines.clear();
-	CloseDamageSpheres.clear();
-	destroyed = true;
-	firstdrawafterload = true;
+	else
+	{
+		for (int i = 0; i < Parts.size(); i++)
+		{
+			Parts[i]->DeletePart();
+		}
+		Parts.clear();
+		Connections.clear();
+		DataConnections.clear();
+		Balls.clear();
+		Engines.clear();
+		CloseDamageSpheres.clear();
+	}
 }
 

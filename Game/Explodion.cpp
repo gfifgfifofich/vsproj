@@ -59,7 +59,7 @@ void DrawExplodions(float dt)
 		
 		DrawLight(glm::vec3(ExplodionArray[i].DS.body.position.x, ExplodionArray[i].DS.body.position.y,  0.010f ), glm::vec2(ExplodionArray[i].DS.body.r * stage * 15.0f), glm::vec4(Color.x * stage*2.0f, Color.y * stage * 2.0f, Color.z* stage * 2.0f, 1.0f));
 		AddSphereOfInfluence(ExplodionArray[i].DS.body.position, ExplodionArray[i].DS.body.r * stage*7.5f, { 0.0f,0.0f },true, -220.0f*stage);
-		AddLightSphere(ExplodionArray[i].DS.body.position, ExplodionArray[i].DS.body.r * stage * 35.0f, glm::vec4(Color.x * stage * 2.0f, Color.y * stage * 2.0f, Color.z * stage * 2.0f, 2.0f));
+		AddLightSphere(ExplodionArray[i].DS.body.position, ExplodionArray[i].DS.body.r * stage * 55.0f, glm::vec4(Color.x * stage * 2.0f, Color.y * stage * 2.0f, Color.z * stage * 2.0f, 2.0f));
 		ExplodionPE.influenced = true;
 		bool del = true;
 		

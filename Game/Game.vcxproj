@@ -119,6 +119,7 @@
     <ClCompile Include="Parts\Base.cpp" />
     <ClCompile Include="Parts\CentralPart.cpp" />
     <ClCompile Include="Parts\smallball.cpp" />
+    <ClCompile Include="Quest.cpp" />
     <ClCompile Include="Radar.cpp" />
     <ClCompile Include="Rocket.cpp" />
     <ClCompile Include="Save.cpp" />
@@ -181,6 +182,10 @@
     <IncludePath>$(ProjectDir)\Deps\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\Deps\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)\Deps\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Deps\Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -212,13 +217,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;OpenAL32.lib;glew32s.lib;glad.lib;freetype.lib;stb_image.lib;%(AdditionalDependencies)$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

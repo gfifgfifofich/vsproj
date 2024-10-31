@@ -758,6 +758,15 @@ public:
 		{
 		
 			
+			
+			shot = bDataConnections[0].data && bDataConnections[0].connected;
+			targetrotpoint = vDataConnections[0].data;
+		
+			if(sqrlength(targetrotpoint) < 2.0f) // its normalized
+				targetrotpoint = mid + targetrotpoint;
+			t -= dt;
+			if (shot && t <= 0 && FiredRockets.size()<2)
+				Shoot();
 			for (int i = 0; i < FiredRockets.size(); i++)
 			{
 				FiredRockets[i]->target = targetrotpoint;
@@ -767,14 +776,6 @@ public:
 				if (FiredRockets[i]->timeLeft <= 0.0f)
 					FiredRockets[i]->Explode();
 			}
-			
-			shot = bDataConnections[0].data && bDataConnections[0].connected;
-			targetrotpoint = vDataConnections[0].data;
-			if(sqrlength(targetrotpoint) < 2.0f) // its normalized
-				targetrotpoint = mid + targetrotpoint;
-			t -= dt;
-			if (shot && t <= 0 && FiredRockets.size()<2)
-				Shoot();
 
 		}
 		else

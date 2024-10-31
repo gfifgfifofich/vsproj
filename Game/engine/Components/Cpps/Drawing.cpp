@@ -315,6 +315,7 @@ void Window::_Draw()
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// instancing
+		if(SceneLayers[i].Circlecolors.size()>0)
 		{
 			glGenBuffers(3, &instanceCircleVBO[0]);
 			glBindBuffer(GL_ARRAY_BUFFER, instanceCircleVBO[0]);
@@ -347,8 +348,19 @@ void Window::_Draw()
 
 			glBindVertexArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+			UseShader(CircleShader);
+			glUniform1f(glGetUniformLocation(CircleShader, "aspect"), aspect);
+			glBindVertexArray(CircleVAO);
+			glDrawArraysInstanced(GL_TRIANGLES, 0, 6, SceneLayers[i].Circlecolors.size());
+			glBindVertexArray(0);
+
+			glDeleteBuffers(3, instanceCircleVBO);
+			DetachShader();
 		}
 		//quads
+		if(SceneLayers[i].Quadcolors.size()>0)
 		{
 			glGenBuffers(3, instanceVBO);
 			glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[0]);
@@ -392,82 +404,74 @@ void Window::_Draw()
 			glBindVertexArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+			UseShader(InctanceQuadShader);
+			glUniform1f(glGetUniformLocation(InctanceQuadShader, "aspect"), aspect);
+			glBindVertexArray(quadVAO);
+			glDrawArraysInstanced(GL_TRIANGLES, 0, 6, SceneLayers[i].Quadcolors.size());
+			glBindVertexArray(0);
+
+
+			glDeleteBuffers(3, instanceVBO);
+			DetachShader();
+
 		}
 
-		UseShader(InctanceQuadShader);
-		glUniform1f(glGetUniformLocation(InctanceQuadShader, "aspect"), aspect);
-		glBindVertexArray(quadVAO);
-		glDrawArraysInstanced(GL_TRIANGLES, 0, 6, SceneLayers[i].Quadcolors.size());
-		glBindVertexArray(0);
+		if (SceneLayers[i].SmoothQuadcolors.size() > 0)
+		{
+			glGenBuffers(3, instanceVBO);
+			glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[0]);
 
+			glBindVertexArray(quadVAO);
 
-		DetachShader();
-		UseShader(CircleShader);
-		glUniform1f(glGetUniformLocation(CircleShader, "aspect"), aspect);
-		glBindVertexArray(CircleVAO);
-		glDrawArraysInstanced(GL_TRIANGLES, 0, 6, SceneLayers[i].Circlecolors.size());
-		glBindVertexArray(0);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].SmoothQuadcolors.size(), &SceneLayers[i].SmoothQuadcolors[0], GL_DYNAMIC_DRAW);
 
-		glDeleteBuffers(3, instanceCircleVBO);
-		glDeleteBuffers(3, instanceVBO);
+			glEnableVertexAttribArray(3);
+			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+
+			glVertexAttribDivisor(3, 1);
 
 
 
+			glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[1]);
+
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].SmoothQuadPosScale.size(), &SceneLayers[i].SmoothQuadPosScale[0], GL_DYNAMIC_DRAW);
+			glBindVertexArray(quadVAO);
 
 
-		glGenBuffers(3, instanceVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[0]);
-
-		glBindVertexArray(quadVAO);
-
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].SmoothQuadcolors.size(), &SceneLayers[i].SmoothQuadcolors[0], GL_DYNAMIC_DRAW);
-
-		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
-
-		glVertexAttribDivisor(3, 1);
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
 
 
-
-		glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[1]);
-
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].SmoothQuadPosScale.size(), &SceneLayers[i].SmoothQuadPosScale[0], GL_DYNAMIC_DRAW);
-		glBindVertexArray(quadVAO);
+			glVertexAttribDivisor(2, 1);
 
 
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+			glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[2]);
+
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].SmoothQuadRotations.size(), &SceneLayers[i].SmoothQuadRotations[0], GL_DYNAMIC_DRAW);
+			glBindVertexArray(quadVAO);
 
 
-		glVertexAttribDivisor(2, 1);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
 
 
-		glBindBuffer(GL_ARRAY_BUFFER, instanceVBO[2]);
+			glVertexAttribDivisor(1, 1);
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].SmoothQuadRotations.size(), &SceneLayers[i].SmoothQuadRotations[0], GL_DYNAMIC_DRAW);
-		glBindVertexArray(quadVAO);
-
-
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
-
-
-		glVertexAttribDivisor(1, 1);
-
-		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindVertexArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
 
-		UseShader(InctanceSmoothQuadShader);
-		glUniform1f(glGetUniformLocation(InctanceSmoothQuadShader, "aspect"), aspect);
-		glBindVertexArray(quadVAO);
-		glDrawArraysInstanced(GL_TRIANGLES, 0, 6, SceneLayers[i].SmoothQuadcolors.size());
-		glBindVertexArray(0);
+			UseShader(InctanceSmoothQuadShader);
+			glUniform1f(glGetUniformLocation(InctanceSmoothQuadShader, "aspect"), aspect);
+			glBindVertexArray(quadVAO);
+			glDrawArraysInstanced(GL_TRIANGLES, 0, 6, SceneLayers[i].SmoothQuadcolors.size());
+			glBindVertexArray(0);
 
 
-		glDeleteBuffers(3, instanceVBO);
-
+			glDeleteBuffers(3, instanceVBO);
+		}
+		
 		SceneLayers[i].SmoothQuadRotations.clear();
 		SceneLayers[i].SmoothQuadcolors.clear();
 		SceneLayers[i].SmoothQuadPosScale.clear();
@@ -485,6 +489,8 @@ void Window::_Draw()
 
 		for (int TQA = 0; TQA < SceneLayers[i].TexturedQuads.size(); TQA++)
 		{
+			if (SceneLayers[i].TexturedQuads[TQA].QuadRotations.size() <= 0)
+				continue;
 			UseShader(InstanceTexturedQuadShader);
 
 			glUniform1f(glGetUniformLocation(InstanceTexturedQuadShader, "aspect"), aspect);
@@ -596,7 +602,8 @@ void Window::_Draw()
 		
 		for (int PA = 0; PA < SceneLayers[i].Polygons.size(); PA++)
 		{
-
+			if (SceneLayers[i].Polygons[PA].colors.size() <= 0)
+				continue;
 			UseShader(InstanceTexturedQuadShader);
 
 
@@ -764,60 +771,63 @@ void Window::_Draw()
 					glUniform1i(glGetUniformLocation(InstancedNormalMapShader, "AlphaTexture"), true);
 				else
 					glUniform1i(glGetUniformLocation(InstancedNormalMapShader, "AlphaTexture"), false);
-				
+
 
 				glActiveTexture(GL_TEXTURE2);
 				glBindTexture(GL_TEXTURE_2D, SceneLayers[i].NormalMaps[NQA].material.HeightMap);
 				glUniform1i(glGetUniformLocation(InstancedNormalMapShader, "HeightMap"), 2);
-				
+
 				if (SceneLayers[i].NormalMaps[NQA].material.HeightMap != NULL)
 					glUniform1i(glGetUniformLocation(InstancedNormalMapShader, "HeightMapped"), true);
 				else
 					glUniform1i(glGetUniformLocation(InstancedNormalMapShader, "HeightMapped"), false);
 
+				if (SceneLayers[i].NormalMaps[NQA].QuadRotations.size() > 0)
+				{
+					glGenBuffers(3, instanceNormalMapTextureVBO);
+					glBindVertexArray(quadVAO);
+					glBindBuffer(GL_ARRAY_BUFFER, instanceNormalMapTextureVBO[0]);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].NormalMaps[NQA].QuadRotations.size(), &SceneLayers[i].NormalMaps[NQA].QuadRotations[0], GL_DYNAMIC_DRAW);
 
-				glGenBuffers(3, instanceNormalMapTextureVBO);
-				glBindVertexArray(quadVAO);
-				glBindBuffer(GL_ARRAY_BUFFER, instanceNormalMapTextureVBO[0]);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].NormalMaps[NQA].QuadRotations.size(), &SceneLayers[i].NormalMaps[NQA].QuadRotations[0], GL_DYNAMIC_DRAW);
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
 
-				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+					glVertexAttribDivisor(1, 1);
 
-				glVertexAttribDivisor(1, 1);
+					glBindBuffer(GL_ARRAY_BUFFER, instanceNormalMapTextureVBO[2]);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].NormalMaps[NQA].QuadDepth.size(), &SceneLayers[i].NormalMaps[NQA].QuadDepth[0], GL_DYNAMIC_DRAW);
 
-				glBindBuffer(GL_ARRAY_BUFFER, instanceNormalMapTextureVBO[2]);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SceneLayers[i].NormalMaps[NQA].QuadDepth.size(), &SceneLayers[i].NormalMaps[NQA].QuadDepth[0], GL_DYNAMIC_DRAW);
+					glEnableVertexAttribArray(4);
+					glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
 
-				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
-
-				glVertexAttribDivisor(4, 1);
+					glVertexAttribDivisor(4, 1);
 
 
-				glBindBuffer(GL_ARRAY_BUFFER, instanceNormalMapTextureVBO[1]);
-				glBindVertexArray(quadVAO);
+					glBindBuffer(GL_ARRAY_BUFFER, instanceNormalMapTextureVBO[1]);
+					glBindVertexArray(quadVAO);
 
-				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].NormalMaps[NQA].QuadPosScale.size(), &SceneLayers[i].NormalMaps[NQA].QuadPosScale[0], GL_DYNAMIC_DRAW);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * SceneLayers[i].NormalMaps[NQA].QuadPosScale.size(), &SceneLayers[i].NormalMaps[NQA].QuadPosScale[0], GL_DYNAMIC_DRAW);
 
-				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
 
-				glVertexAttribDivisor(2, 1);
+					glVertexAttribDivisor(2, 1);
 
-				glDrawArraysInstanced(GL_TRIANGLES, 0, 6, SceneLayers[i].NormalMaps[NQA].QuadPosScale.size());
-				glDeleteBuffers(3, instanceNormalMapTextureVBO);
+					glDrawArraysInstanced(GL_TRIANGLES, 0, 6, SceneLayers[i].NormalMaps[NQA].QuadPosScale.size());
+					glDeleteBuffers(3, instanceNormalMapTextureVBO);
 
-				glBindVertexArray(0);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
+					glBindVertexArray(0);
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-				SceneLayers[i].NormalMaps[NQA].clear();
-				DetachShader();
+					SceneLayers[i].NormalMaps[NQA].clear();
+					DetachShader();
+				}
 			}
 			SceneLayers[i].NormalMaps.clear();
 			for (int PA = 0; PA < SceneLayers[i].PolygonNormalMaps.size(); PA++)
 			{
-
+				if (SceneLayers[i].PolygonNormalMaps[PA].Rotations.size() <= 0)
+					continue;
 				UseShader(InstancedNormalMapShader);
 
 				glUniform1f(glGetUniformLocation(InstancedNormalMapShader, "aspect"), aspect);
@@ -896,8 +906,7 @@ void Window::_Draw()
 	}
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-
+	
 	if (Lighting) {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

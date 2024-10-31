@@ -59,6 +59,7 @@ void Mission::Start()
 	{
 		inbase = false;
 		ChangeMap("0", ActiveRadar.offset, missionpos);
+		// generate asteroids
 		for (int i = 0; i < size * 5; i++)
 		{
 			glm::vec2 randpos = glm::vec2(float((rand() % 1000) - 500), float((rand() % 1000) - 500));
@@ -104,6 +105,8 @@ void Mission::Start()
 		}break;
 		case MissionType::pirates:
 		{
+			std::vector<CentralPart*> arrr;
+			Bots.push_back(arrr);
 			for (int i = 0; i < size; i++)
 			{
 				glm::vec2 randpos = glm::vec2(float((rand() % 1000) - 500), float((rand() % 1000) - 500));
@@ -121,9 +124,18 @@ void Mission::Start()
 				int randshipid = rand() % shipNames.size();
 				//AIShips.push_back(SpawnAiShip(randpos, "Save0"));
 				//AIShipsIds.push_back(AIShips[AIShips.size() - 1]->id);
-				//TakenAreas.push_back(glm::vec4(randpos, AIShips[AIShips.size() - 1]->maxR, AIShips[AIShips.size() - 1]->maxR));
-			}
+				
+				Bots[0].push_back(SpawnAiShip(randpos, "drone"));
+				Bots[0].back()->missionPawn = true;
 
+				TakenAreas.push_back(glm::vec4(randpos, Bots[0].back()->maxR, Bots[0].back()->maxR));
+				
+			}
+			for (auto e : Bots[0])
+			{
+				e->AIState = 1;
+				e->saveid = 0;
+			}
 
 		}break;
 		case MissionType::infestation:
@@ -249,6 +261,8 @@ void Mission::Start()
 		break;
 	}
 
+	compleated = false;
+	
 }
 
 void Mission::UpdateScene()
@@ -633,7 +647,12 @@ void Mission::Process(float dt)
 		}break;
 		case MissionType::pirates:
 		{
-
+			compleated = true;
+			if (Bots.size() > 0)
+				for (auto e : Bots)
+					if (e.size() > 0)
+						compleated = false;
+					
 		}break;
 		case MissionType::infestation:
 		{
@@ -1696,7 +1715,7 @@ void MissionSelectScreen::GenerateNewMissions()
 		if (m.type == MissionType::mining) multiplyer = 1.0f;
 		if (m.type == MissionType::infestation) multiplyer = 2.0f;
 		if (m.type == MissionType::retrival) multiplyer = 1.0f;
-
+		m.type = MissionType::Transportation;
 		m.materialReward = multiplyer * m.dificulty * m.size * 10;
 		missions.push_back(m);
 	}
@@ -1725,95 +1744,56 @@ void MissionSelectScreen::Process(float dt)
 	Corner.x += 15.0f;
 	bool b = false;
 
-	switch (state)
+
+
+	Corner.y += UI_DrawText("Missions:", Corner, 0.45f).y * -1.0f;
+
+	for (int i = 0; i < missions.size(); i++)
 	{
-	case 0:
-	{
-		int PlayrShipcost = -1;
-		if (Entities.size() > 0)
-			PlayrShipcost = GetShipCost(Entities[0]);
-		else
-			erroutputstring = "No ship";
+		b = false;
+		std::string namestr = "";
+		if (missions[i].type == MissionType::pirates) namestr = "Pirates ";
+		if (missions[i].type == MissionType::mining) namestr = "Mining ";
+		if (missions[i].type == MissionType::infestation) namestr = "Infestation ";
+		if (missions[i].type == MissionType::retrival) namestr = "Retrival ";
+		if (missions[i].type == MissionType::SupplySabotage) namestr = "SupplySabotage ";
 
-		if (PlayrShipcost > Materials)
+		namestr += "Size: ";
+		namestr += std::to_string(missions[i].size);
+		namestr += "  Difficulty: ";
+		namestr += std::to_string(missions[i].dificulty);
+		namestr += "  Reward: ";
+		namestr += std::to_string(missions[i].materialReward);
+
+
+		UI_DrawText(namestr.c_str(), Corner - glm::vec2(0.0f, 5.0f), 0.35f);
+		UI_DrawCube(Corner + glm::vec2(250 * 0.5f, 0.0f), glm::vec2(250.0f, 20.0f) * 0.5f, 0.0f, glm::vec4(0.07f));
+		Corner.y += UI_button(&b, "", Corner, { 250,20 }, 0.35f, glm::vec4(0.0f), glm::vec4(0.5f), glm::vec4(0.0f)).y * -1.0f - 0;
+
+		if (b)
 		{
-			erroutputstring = "Cant afford current ship: ";
-			erroutputstring += std::to_string(PlayrShipcost);
-			erroutputstring += "/";
-			erroutputstring += std::to_string(Materials);
+
+			Quest q;
+			// -1 no one, 0,1,2 fractions 4 pirates
+			q.fraction = ActiveRadar.bleeps[ActiveRadar.enteredBleep].fraction;
+			// -1 no one, 0,1,2 fractions 4 pirates
+			q.fraction2 = 4;
+			//-1 no mission, other - link to quests[]
+			q.missiontype = missions[i].type;
+			q.name = namestr;
+			q.id = lastquestid;
+			q.size = missions[i].size;
+			q.dificulty = missions[i].dificulty;
+			q.materialreward = missions[i].materialReward;
+			q.Start();
+			quests.insert({ q.id,q });
+
+			
+
+			lastquestid++;
+
+
 		}
-
-		bool cango = false;
-		if (PlayrShipcost <= Materials && Entities.size() > 0)
-		{
-			std::string ssss = "";
-			ssss = "ShipCost: ";
-			ssss += std::to_string(PlayrShipcost);
-			ssss += "/";
-			ssss += std::to_string(Materials);
-			erroutputstring = "";
-			cango = true;
-			Corner.y += UI_DrawText(ssss, Corner, 0.35f, { 1.0f,1.0f,1.0f,1.0f }).y * -1.0f - step;
-
-		}
-		if (erroutputstring.size() > 0)
-			Corner.y += UI_DrawText(erroutputstring, Corner, 0.35f, { 4.0f,0.0f,0.0f,1.0f }).y * -1.0f - step;
-		if (cango)
-		{
-			Corner.y += UI_DrawText("Main missions:", Corner, 0.45f).y * -1.0f;
-			b = false;
-			Corner.y += UI_button(&b, "The story mission with wery cool name", Corner, { 250,20 }, 0.35f, glm::vec4(0.0f), glm::vec4(0.5f), glm::vec4(0.0f)).y * -1.0f - 0;
-			if (b)
-			{
-				missionPosition = Rotate(glm::vec2(1.0f, 0.0f), rand() % 1000000 * 0.001f) * 4000.0f * (1.0f + rand() % 1000 * 0.002f);
-				missionSelected = true;
-				missionStory = true;
-				missionSize = 0;
-				missionDificulty = 0;
-				missionType = 0;
-			}
-
-			Corner.y += UI_DrawText("Missions:", Corner, 0.45f).y * -1.0f;
-
-			for (int i = 0; i < missions.size(); i++)
-			{
-				b = false;
-				std::string namestr = "";
-				if (missions[i].type == MissionType::pirates) namestr = "Pirates ";
-				if (missions[i].type == MissionType::mining) namestr = "Mining ";
-				if (missions[i].type == MissionType::infestation) namestr = "Infestation ";
-				if (missions[i].type == MissionType::retrival) namestr = "Retrival ";
-
-				namestr += "Size: ";
-				namestr += std::to_string(missions[i].size);
-				namestr += "  Difficulty: ";
-				namestr += std::to_string(missions[i].dificulty);
-				namestr += "  Reward: ";
-				namestr += std::to_string(missions[i].materialReward);
-
-
-				UI_DrawText(namestr.c_str(), Corner - glm::vec2(0.0f, 5.0f), 0.35f);
-				UI_DrawCube(Corner + glm::vec2(250 * 0.5f, 0.0f), glm::vec2(250.0f, 20.0f) * 0.5f, 0.0f, glm::vec4(0.07f));
-				Corner.y += UI_button(&b, "", Corner, { 250,20 }, 0.35f, glm::vec4(0.0f), glm::vec4(0.5f), glm::vec4(0.0f)).y * -1.0f - 0;
-
-				if (b)
-				{
-					missionPosition = Rotate(glm::vec2(1.0f, 0.0f), rand() % 100000 * 0.001f) * 7000.0f * (1.0f + rand() % 1000 * 0.002f);
-					missionSelected = true;
-					missionStory = false;
-					missionSize = missions[i].size;
-					missionDificulty = missions[i].dificulty;
-					missionType = missions[i].type;
-
-				}
-			}
-		}
-
-	}
-	break;
-
-	default:
-		break;
 	}
 	www->End();
 	sw->Use();

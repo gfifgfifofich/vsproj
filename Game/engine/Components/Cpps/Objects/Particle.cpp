@@ -407,36 +407,46 @@ void ParticleEmiter::Process(float dt)
 	_ptheadstarget = this;
 	if(ParticleMultithreading) // Multithreaded drawing is not working stable, only particle processing is MT, Pushing to draw arrays is singlethread
 	{
-		if (Particles.size() > 1000)
+		if (Particles.size() > 400)
 		{
-			for(auto thr : iter)
-			{
-				_pthreadsStates[thr].store(0);
-				std::unique_lock<std::mutex> lm(_pMutexes[thr]);
-				_pConVars[thr].notify_one();
-			}
+			//for(auto thr : iter)
+			//{
+			//	_pthreadsStates[thr].store(0);
+			//	std::unique_lock<std::mutex> lm(_pMutexes[thr]);
+			//	_pConVars[thr].notify_one();
+			//}
+			//
+			//bool wait = true;
+			//float startWaittime = glfwGetTime(); 
+			//while(wait)
+			//{
+			//	wait = false;
+			//	for(int thr = 0;thr<threadcount;thr++)
+			//	{
+			//		if(!_pthreadsStates[thr].load())
+			//			wait = true;
+			//	}
+			//	if(glfwGetTime() - startWaittime > Partdelta*10.0f) // something happend with threads
+			//	{
+			//		std::cout<<"\nsomething happend with threads in particles";
+			//		for(int thr = 0;thr<threadcount;thr++)
+			//		{						
+			//			_pConVars[thr].notify_one();
+			//			_pthreadsStates[thr].store(1);
+			//		}
+			//		break;
+			//	}	
+			//}
+			std::vector<int> threadints;
+			threadints.resize(threadcount);
+			for (int i = 0; i < threadcount; i++)
+				threadints[i] = i;
 
-			bool wait = true;
-			float startWaittime = glfwGetTime(); 
-			while(wait)
-			{
-				wait = false;
-				for(int thr = 0;thr<threadcount;thr++)
+			std::for_each(std::execution::par_unseq, threadints.begin(), threadints.end(), [](int thr)
 				{
-					if(!_pthreadsStates[thr].load())
-						wait = true;
+					_ptheadstarget->_Process(thr);
 				}
-				if(glfwGetTime() - startWaittime > Partdelta*10.0f) // something happend with threads
-				{
-					std::cout<<"\nsomething happend with threads in particles";
-					for(int thr = 0;thr<threadcount;thr++)
-					{						
-						_pConVars[thr].notify_one();
-						_pthreadsStates[thr].store(1);
-					}
-					break;
-				}	
-			}
+			);
 		}
 		else
 		{

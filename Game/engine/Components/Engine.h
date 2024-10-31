@@ -125,6 +125,8 @@ glm::vec2 LastJustPressedRMBMousePos = { 0.0f,0.0f };
 glm::vec2 LastJustPressedMMBMousePos = { 0.0f,0.0f };
 
 
+inline float UpdateTime;
+inline float DrawTime;
 
 bool SettingsWindow = true;
 int  threadcount;

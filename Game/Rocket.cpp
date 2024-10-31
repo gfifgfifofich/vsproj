@@ -108,7 +108,8 @@ void Rocket::Draw()
 				dir * 5000.0f * throtle * 0.025f, 1,
 				EngineSmoke.lifetime * 0.5f * abs(throtle) * (rand() % 1000 * 0.0005f + 0.5f));
 	}
-	DrawLight(body[1].position + dir * body[0].r, glm::vec2(30.0f * abs(throtle)), glm::vec4(10.0f, 2.0f, 1.0f, abs(0.5f + abs(throtle) + (rand() % 100 - 50) * 0.01f)), 0.0f);
+	AddLightSphere(body[1].position + dir * body[0].r, 80.0f * abs(throtle), glm::vec4(15.0f, 2.0f, 1.0f, abs(0.5f + abs(throtle) + (rand() % 100 - 50) * 0.01f)));
+	DrawLight(body[1].position + dir * body[0].r, glm::vec2(30.0f * abs(throtle)), glm::vec4(10.0f, 2.0f, 1.0f, abs(0.5f + abs(throtle) + (rand() % 100 - 50) * 0.01f)), 0.2f);
 	DrawTexturedQuad(mid, glm::vec2(1.0f * body[1].r, 3.0f * body[1].r), RocketEngineTexture, get_angle_between_points(mid, mid - dir), glm::vec4(1.0f), 100, CubeNormalMapTexture);
 }
 

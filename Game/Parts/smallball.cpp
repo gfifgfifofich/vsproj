@@ -58,6 +58,8 @@ void DeleteBall(int id)
 
 void Strut(int b1, int b2, float StrutLength)
 {
+	if (b1 < 0 || b1 >= 100000 || b2 < 0 || b2 >= 100000)
+		return;
 	glm::vec2 posdif = ballPosition[b2] - ballPosition[b1];
 
 	float dist = length(posdif);
@@ -85,6 +87,8 @@ void Strut(int b1, int b2, float StrutLength)
 void SpringBetweenBalls(int b1, int b2, float springLength, float stiffnes, float absorbtion)
 {
 
+	if (b1 < 0 || b1 >= 100000 || b2 < 0 || b2 >= 100000)
+		return;
 	glm::vec2 posdif = ballPosition[b2] - ballPosition[b1];
 	float dist = length(posdif);
 	glm::vec2 Difference = posdif - (posdif / dist) * springLength;
@@ -114,6 +118,8 @@ void SpringBetweenBalls(int b1, int b2, float springLength, float stiffnes, floa
 void Rope(int b1, int b2, float maxlength)
 {
 
+	if (b1 < 0 || b1 >= 100000 || b2 < 0 || b2 >= 100000)
+		return;
 	glm::vec2 posdif = ballPosition[b2] - ballPosition[b1];
 	if (sqrlength(posdif) > maxlength * maxlength)
 	{
@@ -146,6 +152,8 @@ void Rope(int b1, int b2, float maxlength)
 
 void BallToPointCollision(int b, glm::vec2 point)
 {
+	if (b < 0 || b >= 100000)
+		return;
 	if (sqrlength(ballPosition[b] - point) < PARTSIZE * PARTSIZE && sqrlength(ballPosition[b] - point) != 0.0f)
 	{
 		glm::vec2 dif = glm::vec2(0.0f);
@@ -173,6 +181,8 @@ void BallToPointCollision(int b, glm::vec2 point)
 }
 void BalltoStaticBallCollision(int b1, ball* b2)
 {
+	if (b1 < 0 || b1 >= 100000 || b2 ==nullptr)
+		return;
 	glm::vec2 dif = b2->position - ballPosition[b1];
 	if (dif.x * dif.x + dif.y * dif.y < (PARTSIZE + b2->r) * (PARTSIZE + b2->r))
 	{
@@ -211,6 +221,8 @@ void BalltoStaticBallCollision(int b1, ball* b2)
 void BallToStaticQuadCollision(int b, cube* c)
 {
 
+	if (b < 0 || b >= 100000 )
+		return;
 	float roughness = collisionRoughness;
 	glm::vec2 posdifference = c->position - ballPosition[b];
 
@@ -275,6 +287,8 @@ void BallToStaticQuadCollision(int b, cube* c)
 }
 void BtBCollision(int b1, int b2)
 {
+	if (b1 < 0 || b1 >= 100000 || b2 < 0 || b2 >= 100000)
+		return;
 	glm::vec2 dif = ballPosition[b2]- ballPosition[b1];
 	if (dif.x * dif.x + dif.y * dif.y < (PARTSIZE+PARTSIZE) * (PARTSIZE + PARTSIZE))
 	{

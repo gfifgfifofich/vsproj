@@ -11,6 +11,9 @@
 #include "Radar.h"
 
 
+
+
+
 void Radar::Spawn(glm::vec2 pos)
 {
 
@@ -27,17 +30,7 @@ void Radar::Init()
 		bl.infinite = true;
 		bl.r = 5.0f;
 		bl.fogamount = 0.0f;
-		bleeps.push_back(bl);
-	}
-	for (int i = 0; i < 1; i++)
-	{
-		Bleep bl;
-		bl.state = 2;
-		bl.position = Rotate(glm::vec2(10000.0f + (rand() % 5000), 0.0f), (rand() % 1000) * 0.002f * pi);
-		bl.velocity = { 0.0f, 0.0f};
-		bl.infinite = true;
-		bl.r = 15.0f;
-		bl.fogamount = 0.0f;
+		bl.SaveString = "Ships/BigBoy.sav";
 		bleeps.push_back(bl);
 	}
 	for (int i = 0; i < 15; i++)
@@ -51,29 +44,59 @@ void Radar::Init()
 		bl.fogamount = 0.5f + rand() %1000*0.002f;
 		bleeps.push_back(bl);
 	}
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 7; i++)
 	{
 		Bleep bl;
 		bl.state = 3;
-		bl.position = Rotate(glm::vec2(9000.0f + (rand() % 2000), 0.0f), (rand() % 1000) * 0.002f * pi);
+		bl.position = Rotate(glm::vec2(9000.0f + (rand() % 22000), 0.0f), (rand() % 1000) * 0.002f * pi);
 		bl.velocity = { 0.0f,0.0f };
 		bl.infinite = true;
 		bl.r = 15.0f;
 		bl.fogamount = 0.0f;
-		bleeps.push_back(bl);
+		bl.colisionR = 5500.0f;
+		for (int aaa = 0; aaa < 5; aaa++)
+			for (int a = 0; a < bleeps.size(); a++)
+			{
+				if (bleeps[a].state == -1 || bleeps[a].state >= 2)
+				{// get 10k away
+					glm::vec2 dif = bl.position - bleeps[a].position;
 
+					if (sqrlength(dif) < (bl.colisionR + bleeps[a].colisionR) * (bl.colisionR + bleeps[a].colisionR))
+					{
+						glm::vec2 norm = dif / length(dif);
+						glm::vec2 dd = norm * ((bl.colisionR + bleeps[a].colisionR) - length(dif));
+						bl.position += dd;
+					}
+				}
+			}
+		bleeps.push_back(bl);
 	}
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 15; i++)
 	{
 		Bleep bl;
 		bl.state = -1;
-		bl.position = Rotate(glm::vec2(9000.0f + (rand() % 2000), 0.0f), (rand() % 1000) * 0.002f * pi);
+		bl.position = Rotate(glm::vec2(5000.0f + (rand() % 22000), 0.0f), (rand() % 1000) * 0.002f * pi);
 		bl.velocity = { 0.0f,0.0f };
 		bl.infinite = true;
 		bl.r = 15.0f;
 		bl.fogamount = 0.0f;
-		bleeps.push_back(bl);
+		bl.colisionR = 5500.0f;
+		for (int aaa = 0; aaa < 5; aaa++)
+			for (int a = 0; a < bleeps.size(); a++)
+			{
+				if (bleeps[a].state == -1 || bleeps[a].state >= 2)
+				{// get 10k away
+					glm::vec2 dif = bl.position - bleeps[a].position;
 
+					if (sqrlength(dif) < (bl.colisionR + bleeps[a].colisionR) * (bl.colisionR + bleeps[a].colisionR))
+					{
+						glm::vec2 norm = dif / length(dif);
+						glm::vec2 dd = norm * ((bl.colisionR + bleeps[a].colisionR) - length(dif));
+						bl.position += dd;
+					}
+				}
+			}
+		bleeps.push_back(bl);
 	}
 }
 
@@ -165,6 +188,10 @@ void Radar::Process(float dt)
 		bl.infinite = true;
 		bl.r = 5.0f;
 		bl.fogamount = 0.0f;
+		bl.fraction = rand() % 10;
+		bl.SaveString = "Ships/BigBoy.sav";
+		if (bl.fraction > 4)
+			bl.fraction = 4;
 		bleeps.push_back(bl);
 
 	}
@@ -177,9 +204,25 @@ void Radar::Process(float dt)
 		bl.infinite = true;
 		bl.r = 15.0f;
 		bl.fogamount = 0.0f;
+		bl.colisionR = 3500.0f;
+		for (int aaa = 0; aaa < 5; aaa++)
+			for (int a = 0; a < bleeps.size(); a++)
+			{
+				if (bleeps[a].state == -1 || bleeps[a].state >= 2)
+				{// get 10k away
+					glm::vec2 dif = bl.position - bleeps[a].position;
+
+					if (sqrlength(dif) < (bl.colisionR + bleeps[a].colisionR)* (bl.colisionR + bleeps[a].colisionR))
+					{
+						glm::vec2 norm = dif / length(dif);
+						glm::vec2 dd = norm * ((bl.colisionR + bleeps[a].colisionR) - length(dif));
+						bl.position += dd;
+					}
+				}
+			}
 		bleeps.push_back(bl);
 	}
-	for (int i = 0; i < 0 - Stationbleeps; i++)
+	for (int i = 0; i < 1 - Stationbleeps; i++)
 	{
 		Bleep bl;
 		bl.state = -1;
@@ -188,6 +231,25 @@ void Radar::Process(float dt)
 		bl.infinite = true;
 		bl.r = 15.0f;
 		bl.fogamount = 0.0f;
+		bl.colisionR = 5500.0f;
+		bl.fraction = rand() % 4;
+		if (bl.fraction > 4)
+			bl.fraction = 4;
+		for (int aaa = 0; aaa < 5; aaa++)
+			for (int a =0;a<bleeps.size();a++)
+			{
+				if (bleeps[a].state == -1 || bleeps[a].state >= 2)
+				{// get 10k away
+					glm::vec2 dif = bl.position - bleeps[a].position;
+					
+					if (sqrlength(dif) < (bl.colisionR + bleeps[a].colisionR) * (bl.colisionR + bleeps[a].colisionR))
+					{
+						glm::vec2 norm = dif / length(dif);
+						glm::vec2 dd = norm * ((bl.colisionR + bleeps[a].colisionR) - length(dif));
+						bl.position += dd;
+					}
+				}
+			}
 		bleeps.push_back(bl);
 	}
 
@@ -270,12 +332,3 @@ void Radar::Draw(glm::vec2 screenpos)
 
 
 
-
-void Quest::Start()
-{
-
-}
-void Quest::Process(float dt)
-{
-
-}

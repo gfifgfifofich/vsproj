@@ -1,25 +1,17 @@
 Mission
 {
-	EntitiesCount 17
+	EntitiesCount 0
 	compleated 1
 	dificulty 0
 	exiting 0
 	materialReward 0
-	missionpos 13623.954102 4904.921875
+	missionpos 10901.010742 -1516.572754
 	planetpos 0.000000 0.000000
 	size 0
-	story_mission 1
-	type 0
+	story_mission 0
+	type -1
 }
 TakenAreas
 {
 	0 0.000000 0.000000 50.000000 50.000000
-}
-flags
-{
-	LaserShot 0
-}
-timers
-{
-	0 0.000000
 }

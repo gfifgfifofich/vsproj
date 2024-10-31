@@ -3,155 +3,688 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 2552.868652 -2256.398682
+	position 16857.980469 1067.759399
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 2.811013
-	velocity 35.231182 127.211494
+	t 0.750969
+	velocity 27.306507 30.583569
 }
 1
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 848.001709 -913.160034
-	r 5.000000
-	state 1
+	position 12646.234375 -3807.002441
+	r 15.000000
+	state 3
 	story 0
 	string 
-	t 1.307105
-	velocity 122.254883 158.283737
+	t 0.517387
+	velocity 0.000000 0.000000
 }
 10
+{
+	fogamount 0.978000
+	infinite 1
+	justheat 0
+	position 9860.430664 3549.970947
+	r 46.474998
+	state 0
+	story 0
+	string 
+	t 0.316182
+	velocity 0.000000 0.000000
+}
+100
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 13623.954102 4904.921875
-	r 15.000000
-	state 2
+	position 18408.736328 -9504.431641
+	r 5.000000
+	state 1
 	story 0
 	string 
-	t 1.117538
-	velocity 0.000000 0.000000
+	t 0.669649
+	velocity 5.337205 21.342779
 }
-11
+101
 {
-	fogamount 1.436000
+	fogamount 0.994000
 	infinite 1
 	justheat 0
-	position 7109.420410 -8704.668945
-	r 43.150002
+	position -3696.207520 -5933.357422
+	r 36.100002
 	state 0
 	story 0
 	string 
-	t 0.403040
+	t 0.666601
+	velocity 0.000000 0.000000
+}
+102
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 20064.660156 -12641.842773
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.018064
+	velocity 63.068668 -111.383766
+}
+103
+{
+	fogamount 1.012000
+	infinite 1
+	justheat 0
+	position 15634.406250 -17159.574219
+	r 31.700001
+	state 0
+	story 0
+	string 
+	t 1.129775
+	velocity 0.000000 0.000000
+}
+104
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 9004.363281 -10025.844727
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.057640
+	velocity 19.634842 -10.832000
+}
+105
+{
+	fogamount 1.378000
+	infinite 1
+	justheat 0
+	position 18816.082031 -4247.299805
+	r 49.025002
+	state 0
+	story 0
+	string 
+	t 0.590969
+	velocity 0.000000 0.000000
+}
+106
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position -25396.007812 17475.408203
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 4.439619
+	velocity 0.000000 0.000000
+}
+107
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 16927.568359 -19415.814453
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 3.870616
+	velocity 0.000000 0.000000
+}
+108
+{
+	fogamount 2.274000
+	infinite 1
+	justheat 0
+	position 4246.089355 -19695.898438
+	r 42.974998
+	state 0
+	story 0
+	string 
+	t 1.061557
+	velocity 0.000000 0.000000
+}
+109
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position -1258.640015 -5937.449219
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.320028
+	velocity -3.640420 1.657510
+}
+11
+{
+	fogamount 2.474000
+	infinite 1
+	justheat 0
+	position -2774.435059 -18258.410156
+	r 39.750000
+	state 0
+	story 0
+	string 
+	t 1.009489
+	velocity 0.000000 0.000000
+}
+110
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 42694.628906 10291.794922
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 0.073220
+	velocity 0.000000 0.000000
+}
+111
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position -2734.714355 -12883.714844
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.225072
+	velocity -1.054253 -11.953600
+}
+112
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 2284.375000 202.005203
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.575817
+	velocity -31.893303 2.610976
+}
+113
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 2626.329346 -11047.384766
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 2.552462
+	velocity 0.000000 0.000000
+}
+114
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 17169.339844 -8813.257812
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 1.179628
+	velocity 0.000000 0.000000
+}
+115
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 21108.775391 -37880.312500
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 5.417047
+	velocity 0.000000 0.000000
+}
+116
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 5493.014648 -9342.926758
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.106513
+	velocity 7.327404 17.358244
+}
+117
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 14572.512695 14815.886719
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 2.748278
+	velocity 0.000000 0.000000
+}
+118
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 6966.515137 -9894.335938
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.971557
+	velocity 10.136042 5.374416
+}
+119
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 253.325104 -2705.675049
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 0.371344
 	velocity 0.000000 0.000000
 }
 12
 {
-	fogamount 2.256000
+	fogamount 1.634000
 	infinite 1
 	justheat 0
-	position -10965.305664 -6958.751953
-	r 46.150002
+	position 4468.916504 -6487.809570
+	r 42.300003
 	state 0
 	story 0
 	string 
-	t 0.545416
+	t 0.739489
 	velocity 0.000000 0.000000
+}
+120
+{
+	fogamount 2.206000
+	infinite 1
+	justheat 0
+	position 16015.656250 -18405.007812
+	r 43.724998
+	state 0
+	story 0
+	string 
+	t 0.102614
+	velocity 0.000000 0.000000
+}
+121
+{
+	fogamount 0.542000
+	infinite 1
+	justheat 0
+	position 13303.779297 -18325.722656
+	r 30.500000
+	state 0
+	story 0
+	string 
+	t 0.229512
+	velocity 0.000000 0.000000
+}
+122
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 38525.027344 19087.066406
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 4.660997
+	velocity 0.000000 0.000000
+}
+123
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 8292.725586 -9373.274414
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 1.209489
+	velocity 13.153349 -2.346003
+}
+124
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position -9350.190430 35804.992188
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 3.287701
+	velocity 0.000000 0.000000
+}
+125
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 43225.929688 10315.183594
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 3.744953
+	velocity 0.000000 0.000000
+}
+126
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 7128.368164 -9066.609375
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.064222
+	velocity -10.821467 4.548818
+}
+127
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 19794.062500 -3118.384033
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.719602
+	velocity 28.873829 35.809246
+}
+128
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 17322.835938 -19403.394531
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 1.086277
+	velocity 147.926971 4.648789
+}
+129
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 21179.140625 -15604.262695
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.679649
+	velocity 56.594276 -6.788795
 }
 13
 {
-	fogamount 2.004000
+	fogamount 2.432000
 	infinite 1
 	justheat 0
-	position -1271.332153 -3332.747314
-	r 34.700001
+	position -5910.445312 5015.988770
+	r 39.575001
 	state 0
 	story 0
 	string 
-	t 0.312190
+	t 0.146535
+	velocity 0.000000 0.000000
+}
+130
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 17089.085938 -8406.425781
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 1.124957
+	velocity -20.516106 103.995621
+}
+131
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 38551.824219 -18496.001953
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 2.109916
+	velocity 0.000000 0.000000
+}
+132
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 19802.416016 -12178.694336
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 1.034130
+	velocity 0.000000 0.000000
+}
+133
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 11348.531250 -10657.939453
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.564686
+	velocity 61.298553 1.159877
+}
+134
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position -25023.949219 17130.337891
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 2.062779
+	velocity 0.000000 0.000000
+}
+135
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 9510.264648 -9740.957031
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.858827
+	velocity -0.065035 0.163910
+}
+136
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 34834.472656 -30532.931641
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 2.083065
+	velocity 0.000000 0.000000
+}
+137
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 35276.261719 -30813.277344
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 5.117283
+	velocity 0.000000 0.000000
+}
+138
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 26927.753906 12454.284180
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 5.529196
+	velocity 0.000000 0.000000
+}
+139
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 11191.108398 12033.458008
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 3.836311
 	velocity 0.000000 0.000000
 }
 14
 {
-	fogamount 0.818000
+	fogamount 1.896000
 	infinite 1
 	justheat 0
-	position -9508.313477 -5463.069336
-	r 41.100002
+	position -10601.889648 -13491.893555
+	r 27.325001
 	state 0
 	story 0
 	string 
-	t 0.534318
+	t 0.527408
+	velocity 0.000000 0.000000
+}
+140
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 33590.894531 11250.086914
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 6.037408
 	velocity 0.000000 0.000000
 }
 15
 {
-	fogamount 0.634000
+	fogamount 1.792000
 	infinite 1
 	justheat 0
-	position 5586.658691 3694.921631
-	r 38.125000
+	position -6979.996094 -1105.505127
+	r 34.125000
 	state 0
 	story 0
 	string 
-	t 0.754128
+	t 0.517408
 	velocity 0.000000 0.000000
 }
 16
 {
-	fogamount 1.262000
+	fogamount 0.656000
 	infinite 1
 	justheat 0
-	position -5717.691406 6485.469727
-	r 49.825001
+	position 6374.828125 -280.591187
+	r 32.924999
 	state 0
 	story 0
 	string 
-	t 0.277042
+	t 0.619439
 	velocity 0.000000 0.000000
 }
 17
 {
-	fogamount 2.134000
+	fogamount 1.482000
 	infinite 1
 	justheat 0
-	position -440.522095 983.882263
-	r 46.849998
+	position 5492.589355 -5562.099121
+	r 31.575001
 	state 0
 	story 0
 	string 
-	t 0.404129
+	t 0.066975
 	velocity 0.000000 0.000000
 }
 18
 {
-	fogamount 2.076000
+	fogamount 0.922000
 	infinite 1
 	justheat 0
-	position -692.774841 8462.691406
-	r 48.475002
+	position 4440.599609 -1790.536133
+	r 26.549999
 	state 0
 	story 0
 	string 
-	t 0.544129
+	t 1.320000
 	velocity 0.000000 0.000000
 }
 19
 {
-	fogamount 0.914000
+	fogamount 0.724000
 	infinite 1
 	justheat 0
-	position 14996.428711 6156.594238
-	r 25.325001
+	position 2199.641846 180.070343
+	r 26.900000
 	state 0
 	story 0
 	string 
-	t 0.775657
+	t 0.790000
 	velocity 0.000000 0.000000
 }
 2
@@ -159,90 +692,90 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -2761.581543 -736.278076
+	position -15753.253906 -164.474380
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 0.250724
+	t 0.469756
 	velocity -40.960346 1.802786
 }
 20
 {
-	fogamount 1.614000
+	fogamount 1.010000
 	infinite 1
 	justheat 0
-	position 16974.066406 8783.484375
-	r 44.825001
+	position 682.458801 -2464.244141
+	r 48.725002
 	state 0
 	story 0
 	string 
-	t 1.011273
+	t 0.086985
 	velocity 0.000000 0.000000
 }
 21
 {
-	fogamount 1.942000
+	fogamount 2.014000
 	infinite 1
 	justheat 0
-	position 8783.872070 -2915.238281
-	r 33.950001
+	position -7984.845703 9902.832031
+	r 25.225000
 	state 0
 	story 0
 	string 
-	t 0.072545
+	t 0.685030
 	velocity 0.000000 0.000000
 }
 22
 {
-	fogamount 1.308000
+	fogamount 1.454000
 	infinite 1
 	justheat 0
-	position 6746.199707 381.895447
-	r 39.674999
+	position -6325.081055 -3848.709473
+	r 26.924999
 	state 0
 	story 0
 	string 
-	t 0.332684
+	t 0.735639
 	velocity 0.000000 0.000000
 }
 23
 {
-	fogamount 2.368000
+	fogamount 0.750000
 	infinite 1
 	justheat 0
-	position 18126.884766 9524.892578
-	r 46.575001
+	position 4519.792969 -5258.500488
+	r 42.900002
 	state 0
 	story 0
 	string 
-	t 0.048768
+	t 0.455455
 	velocity 0.000000 0.000000
 }
 24
 {
-	fogamount 2.296000
+	fogamount 2.104000
 	infinite 1
 	justheat 0
-	position -3842.687744 -17712.972656
-	r 37.174999
+	position -1891.671509 154.863480
+	r 34.724998
 	state 0
 	story 0
 	string 
-	t 0.716536
+	t 0.010972
 	velocity 0.000000 0.000000
 }
 25
 {
-	fogamount 1.314000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -9812.628906 8222.135742
-	r 47.599998
-	state 0
+	position 25041.078125 -17249.058594
+	r 15.000000
+	state 3
 	story 0
 	string 
-	t 1.040415
+	t 0.464685
 	velocity 0.000000 0.000000
 }
 26
@@ -255,7 +788,7 @@
 	state 3
 	story 0
 	string 
-	t 0.796900
+	t 0.167760
 	velocity 0.000000 0.000000
 }
 27
@@ -263,12 +796,12 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -4351.516602 -8953.565430
+	position -7848.465820 -16148.796875
 	r 15.000000
-	state -1
+	state 3
 	story 0
 	string 
-	t 0.223040
+	t 0.740488
 	velocity 0.000000 0.000000
 }
 28
@@ -276,25 +809,25 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 16372.718750 487.671021
-	r 5.000000
-	state 1
+	position 14045.792969 -17571.085938
+	r 15.000000
+	state 3
 	story 0
 	string 
-	t 0.932986
-	velocity 30.389999 33.188068
+	t 0.429255
+	velocity 0.000000 0.000000
 }
 29
 {
-	fogamount 1.172000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 8020.132812 -5315.370605
-	r 45.075001
-	state 0
+	position -5126.574219 14591.357422
+	r 15.000000
+	state 3
 	story 0
 	string 
-	t 0.115801
+	t 0.096551
 	velocity 0.000000 0.000000
 }
 3
@@ -302,12 +835,12 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -531.627075 -6806.551758
+	position -5716.709961 -2625.686035
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 0.678789
+	t 0.437750
 	velocity -16.347683 13.181549
 }
 30
@@ -315,129 +848,129 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 8005.956055 -8711.481445
-	r 5.000000
-	state 1
+	position -5167.059570 -5480.617188
+	r 15.000000
+	state 3
 	story 0
 	string 
-	t 0.322684
-	velocity -6.571132 2.412514
+	t 0.809970
+	velocity 0.000000 0.000000
 }
 31
 {
 	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 124.198792 6991.308105
-	r 5.000000
-	state -100
+	infinite 1
+	justheat 0
+	position 3322.713135 21634.761719
+	r 15.000000
+	state 3
 	story 0
 	string 
-	t 4.336959
+	t 0.045296
 	velocity 0.000000 0.000000
 }
 32
 {
 	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 14413.021484 4270.627930
-	r 5.000000
-	state -100
+	infinite 1
+	justheat 0
+	position -18440.181641 -3039.477783
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 3.342745
+	t 0.425455
 	velocity 0.000000 0.000000
 }
 33
 {
-	fogamount 2.428000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -9188.607422 -3082.070312
-	r 42.924999
-	state 0
+	position 6939.167969 -965.392395
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.427825
+	t 0.243930
 	velocity 0.000000 0.000000
 }
 34
 {
-	fogamount 0.918000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -8212.843750 -6123.323242
-	r 42.325001
-	state 0
+	position 16265.816406 -6797.512695
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.519175
+	t 0.416601
 	velocity 0.000000 0.000000
 }
 35
 {
-	fogamount 0.960000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -9318.378906 -4546.274414
-	r 40.300003
-	state 0
+	position 4317.266113 9717.567383
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.299065
+	t 0.466794
 	velocity 0.000000 0.000000
 }
 36
 {
-	fogamount 1.792000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -9225.394531 3199.735352
-	r 39.349998
-	state 0
+	position 16773.685547 4190.756836
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.070993
+	t 0.094184
 	velocity 0.000000 0.000000
 }
 37
 {
-	fogamount 2.096000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 6192.447754 -8391.708008
-	r 47.775002
-	state 0
+	position 26292.826172 -2274.340576
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 1.165546
+	t 0.225894
 	velocity 0.000000 0.000000
 }
 38
 {
-	fogamount 1.640000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -8008.745605 -6310.424316
-	r 45.375000
-	state 0
+	position -13058.682617 -12633.197266
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 1.222916
+	t 0.417750
 	velocity 0.000000 0.000000
 }
 39
 {
-	fogamount 2.416000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 980.306946 -9207.123047
-	r 47.250000
-	state 0
+	position 4553.538574 -11703.584961
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.009065
+	t 0.214184
 	velocity 0.000000 0.000000
 }
 4
@@ -445,25 +978,25 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -717.039062 -3434.131836
+	position -2427.966309 -16325.342773
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 0.240993
+	t 0.438479
 	velocity -5.394280 -40.643597
 }
 40
 {
-	fogamount 1.360000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 5320.821289 -8692.728516
-	r 48.675003
-	state 0
+	position 29528.876953 8238.887695
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.015473
+	t 0.625325
 	velocity 0.000000 0.000000
 }
 41
@@ -471,77 +1004,77 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 3445.831787 -9463.662109
-	r 5.000000
-	state 1
+	position 13465.390625 15825.908203
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.876859
-	velocity -42.238373 -8.057293
+	t 0.729649
+	velocity 0.000000 0.000000
 }
 42
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -3508.264893 -9848.016602
-	r 5.000000
-	state 1
+	position -26025.525391 4926.861328
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.018639
-	velocity -22.281412 35.602509
+	t 0.676942
+	velocity 0.000000 0.000000
 }
 43
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -10443.891602 -105.928154
-	r 5.000000
-	state 1
+	position 24302.757812 17710.445312
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.548136
-	velocity -11.184845 4.347328
+	t 1.050488
+	velocity 0.000000 0.000000
 }
 44
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 455.146149 -11903.360352
-	r 5.000000
-	state 1
+	position -21470.390625 -19721.437500
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 6.314853
-	velocity 28.713449 -72.522667
+	t 1.049500
+	velocity 0.000000 0.000000
 }
 45
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -9347.941406 1182.358521
-	r 5.000000
-	state 1
+	position 20870.802734 7259.527344
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.824670
-	velocity -23.749819 3.456310
+	t 0.285072
+	velocity 0.000000 0.000000
 }
 46
 {
 	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 312.974274 -1605.860962
-	r 5.000000
-	state -100
+	infinite 1
+	justheat 0
+	position -6824.786133 -3570.166504
+	r 15.000000
+	state -1
 	story 0
 	string 
-	t 0.809277
+	t 0.160802
 	velocity 0.000000 0.000000
 }
 47
@@ -549,38 +1082,38 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 2690.129639 -9342.206055
+	position 21126.937500 -38049.710938
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 0.959237
-	velocity -105.746910 7.320619
+	t 2.441473
+	velocity 14.818458 -138.207870
 }
 48
 {
-	fogamount 0.000000
+	fogamount 2.100000
 	infinite 1
 	justheat 0
-	position -7809.477051 -1270.812012
-	r 5.000000
-	state 1
-	story 0
-	string 
-	t 0.142366
-	velocity 89.755951 78.133652
-}
-49
-{
-	fogamount 1.616000
-	infinite 1
-	justheat 0
-	position 11253.685547 504.802032
-	r 34.299999
+	position 8355.955078 -9261.741211
+	r 34.775002
 	state 0
 	story 0
 	string 
-	t 0.845412
+	t 0.194685
+	velocity 0.000000 0.000000
+}
+49
+{
+	fogamount 2.022000
+	infinite 1
+	justheat 0
+	position 1668.803833 9718.560547
+	r 31.375000
+	state 0
+	story 0
+	string 
+	t 1.159650
 	velocity 0.000000 0.000000
 }
 5
@@ -588,129 +1121,129 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 3805.836182 3651.833008
+	position 2301.411377 -11093.335938
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 3.525403
-	velocity 47.040813 -112.566254
+	t 2.346328
+	velocity -89.259254 -12.622878
 }
 50
 {
-	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 2507.882812 -2418.830566
-	r 5.000000
-	state -100
+	fogamount 0.654000
+	infinite 1
+	justheat 0
+	position 3119.376709 10007.062500
+	r 26.625000
+	state 0
 	story 0
 	string 
-	t 4.961349
+	t 0.790009
 	velocity 0.000000 0.000000
 }
 51
 {
-	fogamount 1.530000
-	infinite 1
-	justheat 0
-	position 7759.074707 -6373.456543
-	r 38.325001
-	state 0
-	story 0
-	string 
-	t 0.474596
-	velocity 0.000000 0.000000
-}
-52
-{
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 10383.307617 -5402.226074
+	position 8968.865234 16662.072266
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 2.325301
-	velocity 112.964317 2.839699
+	t 0.669255
+	velocity 10.878494 24.711502
+}
+52
+{
+	fogamount 2.394000
+	infinite 1
+	justheat 0
+	position 7154.221680 -8151.124023
+	r 29.924999
+	state 0
+	story 0
+	string 
+	t 0.414642
+	velocity 0.000000 0.000000
 }
 53
 {
-	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 3757.244385 3768.110107
-	r 5.000000
-	state -100
+	fogamount 1.560000
+	infinite 1
+	justheat 0
+	position -10708.140625 1162.947754
+	r 29.650000
+	state 0
 	story 0
 	string 
-	t 4.003952
+	t 0.716805
 	velocity 0.000000 0.000000
 }
 54
 {
-	fogamount 1.482000
+	fogamount 1.178000
 	infinite 1
 	justheat 0
-	position 10409.894531 -1704.585693
-	r 33.650002
+	position -4776.925781 -9143.253906
+	r 45.425003
 	state 0
 	story 0
 	string 
-	t 0.162545
+	t 0.294642
 	velocity 0.000000 0.000000
 }
 55
 {
-	fogamount 0.854000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 6640.717773 -8280.394531
-	r 28.375000
-	state 0
+	position -9430.577148 36199.449219
+	r 5.000000
+	state 1
 	story 0
 	string 
-	t 0.050067
-	velocity 0.000000 0.000000
+	t 0.851119
+	velocity -28.158920 138.159592
 }
 56
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 6394.814453 8663.740234
-	r 15.000000
-	state 3
+	position 9610.705078 -34905.382812
+	r 5.000000
+	state 1
 	story 0
 	string 
-	t 0.030724
-	velocity 0.000000 0.000000
+	t 4.950167
+	velocity 28.713449 -72.522667
 }
 57
 {
 	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position -8198.954102 -1609.858887
+	infinite 1
+	justheat 0
+	position 1327.666382 10199.162109
 	r 5.000000
-	state -100
+	state 1
 	story 0
 	string 
-	t 2.049956
-	velocity 0.000000 0.000000
+	t 0.201878
+	velocity 26.815248 13.451487
 }
 58
 {
 	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 10087.400391 -5409.663086
+	infinite 1
+	justheat 0
+	position -7584.833008 -6742.977539
 	r 5.000000
-	state -100
+	state 1
 	story 0
 	string 
-	t 3.666345
+	t 1.240000
 	velocity 0.000000 0.000000
 }
 59
@@ -718,77 +1251,77 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 9139.718750 -3616.609131
+	position 2187.949219 -6614.378418
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 0.516854
-	velocity -55.591820 -27.450855
+	t 0.679352
+	velocity -3.449082 6.091292
 }
 6
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -3174.402100 -6411.553711
+	position 35388.785156 -30884.695312
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 1.797065
+	t 2.836747
 	velocity 121.582886 -77.159584
 }
 60
 {
-	fogamount 0.000000
+	fogamount 1.444000
 	infinite 1
 	justheat 0
-	position 7418.155762 -8313.231445
-	r 5.000000
-	state 1
+	position -8011.400391 6018.187988
+	r 48.475002
+	state 0
 	story 0
 	string 
-	t 3.454268
-	velocity 91.983658 1.734055
+	t 0.870676
+	velocity 0.000000 0.000000
 }
 61
 {
-	fogamount 0.000000
+	fogamount 0.762000
 	infinite 1
 	justheat 0
-	position 14422.758789 1815.996094
-	r 5.000000
-	state 1
+	position 5739.147461 -9031.145508
+	r 27.225000
+	state 0
 	story 0
 	string 
-	t 0.716536
-	velocity 40.430130 57.143719
+	t 0.205325
+	velocity 0.000000 0.000000
 }
 62
 {
-	fogamount 0.000000
+	fogamount 1.424000
 	infinite 1
 	justheat 0
-	position 14099.507812 4123.096191
-	r 5.000000
-	state 1
+	position -9520.308594 -5474.197266
+	r 49.525002
+	state 0
 	story 0
 	string 
-	t 1.194355
-	velocity -125.771111 -59.182999
+	t 0.380480
+	velocity 0.000000 0.000000
 }
 63
 {
-	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 436.040253 -11855.103516
-	r 5.000000
-	state -100
+	fogamount 2.290000
+	infinite 1
+	justheat 0
+	position -8253.627930 3636.503906
+	r 26.299999
+	state 0
 	story 0
 	string 
-	t 3.622102
+	t 0.670488
 	velocity 0.000000 0.000000
 }
 64
@@ -796,155 +1329,220 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 7380.998047 -9286.833984
+	position -25422.394531 17499.875000
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 0.354596
-	velocity -9.484740 -26.344633
+	t 4.056788
+	velocity -87.990494 81.594566
 }
 65
 {
-	fogamount 1.274000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 10931.742188 9037.228516
-	r 48.050003
-	state 0
+	position -3134.446045 -7533.764648
+	r 5.000000
+	state 1
 	story 0
 	string 
-	t 0.760790
-	velocity 0.000000 0.000000
+	t 0.458175
+	velocity 10.752015 -7.307131
 }
 66
 {
-	fogamount 1.556000
+	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 13449.870117 5918.716309
-	r 31.025000
-	state 0
+	position 9121.328125 -35658.398438
+	r 5.000000
+	state 1
 	story 0
 	string 
-	t 0.387472
-	velocity 0.000000 0.000000
+	t 4.069391
+	velocity 1.658354 -87.984375
 }
 67
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 4350.655762 11515.257812
+	position 38704.292969 19215.566406
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 0.205835
-	velocity 130.294830 -61.312778
+	t 3.096311
+	velocity 86.145607 61.765152
 }
 68
 {
 	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 3884.672852 11734.545898
-	r 5.000000
-	state -100
-	story 0
-	string 
-	t 0.659506
-	velocity 0.000000 0.000000
-}
-69
-{
-	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 16543.312500 2504.050293
+	position 6568.648438 6479.710449
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 0.369968
-	velocity -23.873135 -38.145424
+	t 0.566795
+	velocity -3.246744 -5.045657
+}
+69
+{
+	fogamount 2.232000
+	infinite 1
+	justheat 0
+	position 13883.870117 -58.598206
+	r 47.800003
+	state 0
+	story 0
+	string 
+	t 0.506975
+	velocity 0.000000 0.000000
 }
 7
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position -743.528015 4629.054688
+	position -2273.185547 -6366.195801
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 0.185029
+	t 0.000972
 	velocity -4.822784 -34.666134
 }
 70
 {
-	fogamount 0.000000
+	fogamount 2.110000
 	infinite 1
 	justheat 0
-	position 6812.091309 11758.244141
-	r 5.000000
-	state 1
+	position 10426.257812 1296.545410
+	r 32.275002
+	state 0
 	story 0
 	string 
-	t 1.291121
-	velocity 138.609161 -51.879696
+	t 0.349756
+	velocity 0.000000 0.000000
 }
 71
 {
 	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 6464.563965 11888.327148
+	infinite 1
+	justheat 0
+	position 43292.859375 10318.129883
 	r 5.000000
-	state -100
+	state 1
 	story 0
 	string 
-	t 1.582094
-	velocity 0.000000 0.000000
+	t 3.820524
+	velocity 122.881050 5.408074
 }
 72
 {
 	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 7217.583008 -8317.007812
+	infinite 1
+	justheat 0
+	position -3828.902344 -27998.015625
 	r 5.000000
-	state -100
+	state 1
 	story 0
 	string 
-	t 4.405722
-	velocity 0.000000 0.000000
+	t 0.861410
+	velocity -13.568663 -62.545116
 }
 73
 {
-	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position -3424.273682 -6252.977051
-	r 5.000000
-	state -100
+	fogamount 1.634000
+	infinite 1
+	justheat 0
+	position 14813.569336 -8690.746094
+	r 27.525000
+	state 0
 	story 0
 	string 
-	t 4.830903
+	t 0.745639
 	velocity 0.000000 0.000000
 }
 74
 {
 	fogamount 0.000000
-	infinite 0
-	justheat 1
-	position 663.042969 -1152.626709
+	infinite 1
+	justheat 0
+	position 6206.745605 -8451.668945
 	r 5.000000
-	state -100
+	state 1
 	story 0
 	string 
-	t 3.473654
+	t 0.423074
+	velocity 9.505809 -35.888763
+}
+75
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 3943.254639 -22345.849609
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.338479
+	velocity -6.580799 -33.357056
+}
+76
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 4040.741943 -14228.661133
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.889649
+	velocity -1.556928 -1.255378
+}
+77
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 3490.713135 -4588.286133
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.549905
+	velocity 18.331394 16.998825
+}
+78
+{
+	fogamount 0.958000
+	infinite 1
+	justheat 0
+	position 3166.925781 -10935.635742
+	r 40.900002
+	state 0
+	story 0
+	string 
+	t 0.163819
+	velocity 0.000000 0.000000
+}
+79
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position -4341.822266 -13071.999023
+	r 15.000000
+	state 3
+	story 0
+	string 
+	t 0.659620
 	velocity 0.000000 0.000000
 }
 8
@@ -952,35 +1550,295 @@
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 254.958405 7017.959961
+	position 26982.585938 12465.459961
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 4.722235
+	t 5.333209
 	velocity 84.267532 17.175045
+}
+80
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 38970.855469 -18825.265625
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.132286
+	velocity 96.713173 -75.997116
+}
+81
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 829.722778 -21978.070312
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.400958
+	velocity -42.696880 -36.235016
+}
+82
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 11178.797852 12082.703125
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 4.471080
+	velocity -27.170963 108.654213
+}
+83
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 2987.081543 -709.243652
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.253317
+	velocity -9.230371 17.893286
+}
+84
+{
+	fogamount 2.428000
+	infinite 1
+	justheat 0
+	position 15211.292969 -11120.412109
+	r 28.674999
+	state 0
+	story 0
+	string 
+	t 0.489429
+	velocity 0.000000 0.000000
+}
+85
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 13247.158203 3082.973633
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.800290
+	velocity 3.469738 12.528404
+}
+86
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 14110.757812 -1702.744263
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 1.160000
+	velocity -0.844160 4.928224
+}
+87
+{
+	fogamount 1.462000
+	infinite 1
+	justheat 0
+	position 14157.731445 -15468.988281
+	r 45.125000
+	state 0
+	story 0
+	string 
+	t 0.268009
+	velocity 0.000000 0.000000
+}
+88
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 14541.927734 15220.866211
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 1.467938
+	velocity -7.381913 97.721581
+}
+89
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 20366.541016 -12795.783203
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.785817
+	velocity 14.861816 -30.579838
 }
 9
 {
 	fogamount 0.000000
 	infinite 1
 	justheat 0
-	position 1715.664795 3599.649658
+	position 19765.876953 2577.750732
 	r 5.000000
 	state 1
 	story 0
 	string 
-	t 0.942916
+	t 1.019775
 	velocity 56.908875 -3.221814
+}
+90
+{
+	fogamount 0.618000
+	infinite 1
+	justheat 0
+	position -672.517090 -13140.216797
+	r 47.825001
+	state 0
+	story 0
+	string 
+	t 0.758175
+	velocity 0.000000 0.000000
+}
+91
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 19373.416016 -9798.266602
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.163819
+	velocity 56.114933 1.470271
+}
+92
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position -12064.305664 -16496.658203
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.157248
+	velocity -89.882477 -31.503239
+}
+93
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 9557.864258 -34771.960938
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 3.551733
+	velocity 0.000000 0.000000
+}
+94
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position -172.779892 -2573.120850
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 1.037280
+	velocity -72.569656 22.575321
+}
+95
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 9118.419922 -35504.183594
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 2.689907
+	velocity 0.000000 0.000000
+}
+96
+{
+	fogamount 0.764000
+	infinite 1
+	justheat 0
+	position 16324.068359 -8405.412109
+	r 48.525002
+	state 0
+	story 0
+	string 
+	t 0.180480
+	velocity 0.000000 0.000000
+}
+97
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 15144.791016 -2671.934814
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 0.349994
+	velocity -16.377029 57.721684
+}
+98
+{
+	fogamount 0.000000
+	infinite 0
+	justheat 1
+	position 33123.589844 11037.330078
+	r 5.000000
+	state -100
+	story 0
+	string 
+	t 2.170090
+	velocity 0.000000 0.000000
+}
+99
+{
+	fogamount 0.000000
+	infinite 1
+	justheat 0
+	position 33641.414062 11273.089844
+	r 5.000000
+	state 1
+	story 0
+	string 
+	t 3.580939
+	velocity 125.594643 57.183792
 }
 Radar
 {
 	MaxEnemybleeps 15
 	MaxFogBleeps 15
-	bleepsSize 75
+	bleepsSize 141
 	maxSpawnRadius 5000.000000
 	minSpawnRadius 1000.000000
-	offset 6857.201172 1421.102783
-	playerHeat 4.558407
+	offset 16265.816406 -6797.512695
+	playerHeat -0.162654
 	timer 0.500000
 }

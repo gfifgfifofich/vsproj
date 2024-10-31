@@ -3,17 +3,28 @@
 class Quest
 {
 public:
+	int id = -1;
 	// -1 no one, 0,1,2 fractions 4 pirates
 	int fraction = -1;
+	// -1 no one, 0,1,2 fractions 4 pirates
+	int fraction2 = -1;
 	//-1 no mission, other - link to quests[]
 	int missiontype = -1;
+
+	int size = -1;
+	int dificulty = -1;
+	int materialreward = 0;
+	
 	std::string name = "";
 	std::string Description = "";
 
 	std::map<std::string, bool> flags;
+	std::map<std::string, int> counters;
+	std::map<std::string, glm::vec2> positions;
 	void Start();
 	void Process(float dt);
 };
+inline long unsigned int lastquestid;
 inline std::map<int, Quest> quests;
 
 class Radar
@@ -35,6 +46,7 @@ public:
 
 	glm::vec2 offset = { 0.0f,0.0f };
 
+
 	struct Bleep
 	{
 		glm::vec2 position = { 0.0f,0.0f };
@@ -43,6 +55,10 @@ public:
 		bool story = false;
 		bool justheat = false;
 		float fogamount = 0.0f;
+
+		int size = 0;
+		int dificulty = 0;
+		int materialReward = 0;
 		
 		// -1 - station, 0 - nothing, 1 - enemy, 2 - story mission, else -  (id -3) = custom missionid
 		int state = 0;
@@ -55,6 +71,7 @@ public:
 
 		float t = 0.0f;
 		float r = 2.5f;
+		float colisionR = 10;
 		bool infinite = false;
 	};
 

@@ -221,11 +221,11 @@ void SpawnPlayer(glm::vec2 position, std::string filename)
 	std::cout << "\nPlayer Spawned";
 }
 
-CentralPart* SpawnAiShip(glm::vec2 pos, std::string name)
+CentralPart* SpawnAiShip(glm::vec2 pos, std::string name,bool fullpath)
 {
 	Entities.push_back(new CentralPart);
 	Entities[Entities.size() - 1]->Create(pos, { 0.0f,1.0f }, PARTSIZE);
-	Entities[Entities.size() - 1]->LoadFrom(name);
+	Entities[Entities.size() - 1]->LoadFrom(name,false, fullpath);
 	Entities[Entities.size() - 1]->autocontrol = true;
 	Entities[Entities.size() - 1]->trgPos = pos;
 	lastEntityID++;

@@ -855,7 +855,9 @@ void ProcessPlayerControls()
 			{
 				ActiveRadar.bleeps[i].t = -10.0f;
 				ActiveRadar.bleeps[i].infinite = false;
-				SpawnAiShip(ActiveRadar.bleeps[i].position - ActiveRadar.offset, "Bigboy")->AIState = 1;
+				CentralPart* cp = SpawnAiShip(ActiveRadar.bleeps[i].position - ActiveRadar.offset, ActiveRadar.bleeps[i].SaveString,true);
+				cp->questid = ActiveRadar.bleeps[i].questid;
+				if(cp->questid <0)cp->AIState = 1;
 			}
 			if (ActiveRadar.bleeps[i].state == 0 &&
 				1000.0f + ActiveRadar.bleeps[i].r * 100.0f > length(ActiveRadar.bleeps[i].position - (Entities[0]->mid + ActiveRadar.offset)))
@@ -912,9 +914,11 @@ void ProcessPlayerControls()
 					}
 					ActiveRadar.enteredBleep = i;
 					CurrnetMission.story_mission = true;
-					CurrnetMission.size = 0.0f;
-					CurrnetMission.dificulty = 0.0f;
-					CurrnetMission.type = 0.0f;
+					CurrnetMission.size = ActiveRadar.bleeps[i].size;
+					CurrnetMission.dificulty = ActiveRadar.bleeps[i].dificulty;
+					CurrnetMission.type = ActiveRadar.bleeps[i].state - 3;
+					CurrnetMission.questid = ActiveRadar.bleeps[i].questid;
+					CurrnetMission.materialReward = ActiveRadar.bleeps[i].materialReward;
 					CurrnetMission.missionpos = ActiveRadar.bleeps[i].position;
 					MissionSelectMenu.missionPosition = ActiveRadar.bleeps[i].position;
 					MissionSelectMenu.Hub = false;
@@ -949,9 +953,16 @@ void ProcessPlayerControls()
 
 					ActiveRadar.enteredBleep = i;
 					CurrnetMission.story_mission = false;
-					CurrnetMission.size = 5;
-					CurrnetMission.dificulty = 2;
+					
+					
+					
+					
+
+					CurrnetMission.size = ActiveRadar.bleeps[i].size;
+					CurrnetMission.dificulty = ActiveRadar.bleeps[i].dificulty;
 					CurrnetMission.type = ActiveRadar.bleeps[i].state - 3;
+					CurrnetMission.questid = ActiveRadar.bleeps[i].questid;
+					CurrnetMission.materialReward = ActiveRadar.bleeps[i].materialReward;
 					CurrnetMission.missionpos = ActiveRadar.bleeps[i].position;
 					MissionSelectMenu.missionPosition = ActiveRadar.bleeps[i].position;
 					MissionSelectMenu.Hub = false;
@@ -976,6 +987,29 @@ void ProcessPlayerControls()
 		foregroundFogParticleAmount = 0.0f;
 	}
 	ActiveRadar.offset = CurrnetMission.missionpos;
+	ConsoleTexts.clear();
+	for (int i = 1; i < Entities.size(); i++)
+	{
+		if (sqrlength(Entities[i]->mid - (Entities[0]->mid)) > 2500 * 2500 && Entities[i]->Parts.size()>1 && !Entities[i]->Delete && Entities[i]->saveid<0)
+		{
+			Radar::Bleep bl;
+			bl.state = 1;
+			bl.position = ActiveRadar.offset + Entities[i]->mid;
+			bl.velocity = Entities[i]->avgvel;
+			bl.infinite = true;
+			bl.r = 5.0f;
+			bl.fogamount = 0.0f;
+			bl.questid = Entities[i]->questid;
+			std::string savestr = "Saves/" + GameSaveName + "/bleeps/" + std::to_string(ActiveRadar.BleepsCounter) + "/ship.sav";
+			ActiveRadar.BleepsCounter++;
+			Entities[i]->SaveTo(savestr,false,true);
+
+			Entities[i]->Clear();
+			Entities[i]->Destroy();
+			bl.SaveString = savestr;
+			ActiveRadar.bleeps.push_back(bl);
+		}
+	}
 
 	if (!CurrnetMission.outside && sqrlength(Entities[0]->mid) > 7000.0f * 7000.0f)
 	{
@@ -989,11 +1023,11 @@ void ProcessPlayerControls()
 		}
 
 		ActiveRadar.enteredBleep = -1;
-
 		CurrnetMission.story_mission = false;
 		CurrnetMission.size = 0;
 		CurrnetMission.dificulty = 0;
 		CurrnetMission.type = -1;
+		CurrnetMission.questid = -1;
 		CurrnetMission.missionpos = (Entities[0]->mid + ActiveRadar.offset);
 		MissionSelectMenu.missionPosition = (Entities[0]->mid + ActiveRadar.offset);
 		MissionSelectMenu.Hub = false;
@@ -1009,7 +1043,22 @@ void ProcessPlayerControls()
 	ActiveRadar.Process(delta);
 	ActiveRadar.Draw({ 0.5f * WIDTH - 120.0f,0.5f * HEIGHT - 120.0f });
 
-
+	ConsoleTexts.push_back("Materials: " + std::to_string(Materials));
+	for (auto q : quests)
+	{
+		quests[q.first].Process(delta);
+	}
+	for (auto q : quests)
+	{
+		if (q.second.flags["Failed"])
+			quests.erase(q.first);
+		else if (q.second.flags["Done"])
+		{
+			Materials += q.second.materialreward;
+			quests.erase(q.first);
+		}
+	}
+	
 	UI_CheckBox(&bLogicMode, "Bools Logic", { 0.40f * WIDTH ,-0.46f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 	UI_CheckBox(&fLogicMode, "Number Logic", { 0.40f * WIDTH ,-0.40f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
 	UI_CheckBox(&vLogicMode, "Vector Logic", { 0.40f * WIDTH ,-0.34f * HEIGHT }, UISize, TextSize, UI_ColorON, UI_ColorOFF, 1200);
@@ -1526,7 +1575,9 @@ void Process(float dt)
 	ImGui::Begin("Settings");
 	ImGui::SliderFloat("speed", &Speed, 0.0f, 10.0f);
 	ImGui::Text("ballssize = %.i", lastid);
-	ImGui::Text("%.1ffps (%.4fms)", 1.0f/delta,delta);
+	ImGui::Text("%.1ffps (%.3fms)", 1.0f / delta, delta);
+	ImGui::Text("%.3fms DrawTime", DrawTime);
+	ImGui::Text("%.3fms UpdateTime", UpdateTime);
 
 
 	unsigned int soundsrc;
@@ -1561,7 +1612,7 @@ void Process(float dt)
 	ImGui::Text("parts size (%.i)", Debris.Parts.size());
 
 	ImGui::Text("Camera position { %.2f ; %.2f }", CameraPosition.x, CameraPosition.y);
-	ImGui::Text("Mission position { %.2f ; %.2f }", MissionSelectMenu.missionPosition.x, MissionSelectMenu.missionPosition.y);
+	ImGui::Text("Mission position { %.2f ; %.2f }", CurrnetMission.missionpos.x, CurrnetMission.missionpos.y);
 	ImGui::Text("Exposure { %.2f }", Exposure );
 	
 	if (ImGui::Button("inside"))
@@ -1616,14 +1667,9 @@ void Process(float dt)
 		}
 		if (JustPressedkey[GLFW_KEY_2])
 		{
-			Entities.push_back(new CentralPart);
-			Entities[Entities.size() - 1]->Create(MousePosition, { 0.0f,1.0f }, PARTSIZE);
-			Entities[Entities.size() - 1]->LoadFrom("Save0.sav");
-			Entities[Entities.size() - 1]->autocontrol = true;
-			Entities[Entities.size() - 1]->trgPos = MousePosition;
-			Entities[Entities.size() - 1]->AIState = 1;
-			lastEntityID++;
-			Entities[Entities.size() - 1]->id = lastEntityID;
+			CentralPart* ent = SpawnAiShip(MousePosition,"Save0.sav");
+			ent ->trgPos = MousePosition;
+			ent ->AIState = 1;
 			//Entities[Entities.size() - 1]->CP.Health = -10;
 
 		}
@@ -1792,10 +1838,8 @@ void Process(float dt)
 	if (OpenMenu || MainMenu)
 		ProcessMainMenu();
 
-	if(MissionSelectMenu.Hub)
-		bw->w_CameraPosition = (sw->w_CameraPosition )*0.02f;
-	else
-		bw->w_CameraPosition = (sw->w_CameraPosition + ActiveRadar.offset)*0.02f;
+
+	bw->w_CameraPosition = (sw->w_CameraPosition + ActiveRadar.offset)*0.02f;
 
 	bw->Use();
 	Background.DrawCollisions = false;
@@ -1804,10 +1848,8 @@ void Process(float dt)
 
 	bw->End();
 
-	if (MissionSelectMenu.Hub)
-		fw->w_CameraPosition = (sw->w_CameraPosition) * 1.0f;
-	else
-		fw->w_CameraPosition = (sw->w_CameraPosition + ActiveRadar.offset) * 1.0f;
+	
+	fw->w_CameraPosition = (sw->w_CameraPosition + ActiveRadar.offset) * 1.0f;
 	fw->w_CameraScale = (sw->w_CameraScale * 0.75f);
 
 	fw->Use();
@@ -1943,7 +1985,7 @@ void PreReady()
 	StarsSpread = 2520.0f;
 	StarsDepth = 10.0f;
 	
-
+	lastquestid = 0;
 	MainMenu = false;
 	switchScene = false;
 	switchToMission = false;

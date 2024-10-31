@@ -295,7 +295,7 @@ void PartsPile::Process(float dt, int iter,bool lastiter)
 		while (del && i < Parts.size())
 		{
 			del = false;
-			if (Parts[i]->Health <= 0.0f)
+			if (Parts[i]->Delete || Parts[i]->Health <= 0.0f)
 			{
 				DeletePart(i);
 				del = true;
@@ -313,6 +313,8 @@ void PartsPile::Process(float dt, int iter,bool lastiter)
 	}
 	for (int i = 0; i < Parts.size(); i++)
 	{
+		if (Parts[i]->Delete || Parts[i]->Health <= 0.0f)
+			continue;
 		Parts[i]->debris = true;
 		if (sqrlength(ballPosition[Parts[i]->body[0]] - CameraPosition) < DrawingDistance)
 		{
@@ -346,7 +348,8 @@ void PartsPile::DeletePart(int  index)
 		if (SelectedPart = index)
 			SelectedPart = -1;
 	}
-	Parts[index]->Delete=true;
+	Parts[index]->DeleteBody();
+	Parts[index]->Delete = true;
 	Parts[index] = Parts[Parts.size() - 1];
 	Parts.pop_back();
 	playsound(PartDestrSOund, mid, 0.25f,0.085f+rand()%100*0.001f,{0.0f,0.0f},false);

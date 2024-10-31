@@ -1,0 +1,17 @@
+Mission
+{
+	EntitiesCount 0
+	compleated 1
+	dificulty 0
+	exiting 0
+	materialReward 0
+	missionpos 4553.538574 -11703.584961
+	planetpos 0.000000 0.000000
+	size 0
+	story_mission 0
+	type -1
+}
+TakenAreas
+{
+	0 0.000000 0.000000 50.000000 50.000000
+}

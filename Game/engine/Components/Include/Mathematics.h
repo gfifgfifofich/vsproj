@@ -6,13 +6,16 @@
 
 static const float pi = 3.14159;
 
-glm::vec2 Normalize(glm::vec2 a);
+inline glm::vec2 Normalize(glm::vec2 a);
 
-float length(glm::vec2 a);
-float sqrlength(glm::vec2 a);
+inline float length(glm::vec2 a);
+inline float sqrlength(glm::vec2 a)
+{
+	float length = a.x * a.x + a.y * a.y;
+	return length;
+}
 
-
-float DOT(glm::vec2 v1, glm::vec2 v2);
+inline float DOT(glm::vec2 v1, glm::vec2 v2);
 
 glm::vec2 NormalizeSquered(glm::vec2 a);
 
@@ -32,11 +35,16 @@ float SmoothStep(float a0, float a1, float w);
 
 float SmootherStep(float a0, float a1, float w);
 
-glm::vec2 Rotate(glm::vec2 a, float angle);
+inline glm::vec2 Rotate(glm::vec2 a, float angle)
+{
+	float Sin = sin(angle);
+	float Cos = cos(angle);
+	return glm::vec2(Cos * a.x - Sin * a.y, Sin * a.x + Cos * a.y);
 
+}
 
 
 float sigmoid(float x);
 float sigmoidApprox(float x);
 
-float ReLu(float x);
+inline float ReLu(float x);

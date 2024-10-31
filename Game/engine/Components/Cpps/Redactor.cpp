@@ -3,6 +3,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <latch>
+#include <execution>
 
 #include "../Include/sounds.h"
 
@@ -1496,33 +1497,60 @@ void ProcessScene(Scene* scn,bool mt,bool mainScene)
 	
 	if (scn->Nodes.size() > threadcount && mt)
 	{
-		for(auto thr : iter)
-		{
-			_ScenethreadsStates[thr] = 0;
-			std::unique_lock<std::mutex> lm(_SceneMutexes[thr]);
-			_SceneConVars[thr].notify_one();
-		}
-		bool wait = true;
-		float startWaittime = glfwGetTime(); 
-		while(wait)
-		{
-			wait = false;
-			for(int thr = 0;thr<threadcount;thr++)
+		//for(auto thr : iter)
+		//{
+		//	_ScenethreadsStates[thr] = 0;
+		//	std::unique_lock<std::mutex> lm(_SceneMutexes[thr]);
+		//	_SceneConVars[thr].notify_one();
+		//}
+		//bool wait = true;
+		//float startWaittime = glfwGetTime(); 
+		//
+		//while(wait)
+		//{
+		//	wait = false;
+		//	for(int thr = 0;thr<threadcount;thr++)
+		//	{
+		//		if(!_ScenethreadsStates[thr].load())
+		//			wait = true;
+		//	}
+		//	if(glfwGetTime() - startWaittime  > delta*3.0f) // something happend with threads
+		//	{
+		//		std::cout<<"something happend with threads\n";
+		//		for(int thr = 0;thr<threadcount;thr++)
+		//		{						
+		//			_SceneConVars[thr].notify_one();
+		//			_ScenethreadsStates[thr].store(1);
+		//		}
+		//		break;
+		//	}	
+		//}
+		std::vector<int> threadints;
+		threadints.resize(threadcount);
+		for (int i = 0; i < threadcount; i++)
+			threadints[i] = i;
+
+		std::for_each(std::execution::par_unseq,threadints.begin(), threadints.end(), [](int thr)
 			{
-				if(!_ScenethreadsStates[thr].load())
-					wait = true;
-			}
-			if(glfwGetTime() - startWaittime  > delta*3.0f) // something happend with threads
-			{
-				std::cout<<"something happend with threads\n";
-				for(int thr = 0;thr<threadcount;thr++)
-				{						
-					_SceneConVars[thr].notify_one();
-					_ScenethreadsStates[thr].store(1);
+				int step = threadNodestep;
+				int begin = thr * step;
+				int end = (thr + 1) * step;
+				if (thr == 0)
+					begin = 0;
+
+				if (thr == threadcount - 1)
+					end = threadNodeEnd;
+
+				for (int i = begin; i < end; i++)
+				{
+					if (threadsprepass)
+						GameScene->Nodes[i]->MTPreProcess();
+					else if (!Paused && Running)
+						GameScene->Nodes[i]->MTProcess(GameScene->dt);
 				}
-				break;
-			}	
-		}
+			}
+		);
+	
 	}
 	else
 	{
@@ -1538,39 +1566,58 @@ void ProcessScene(Scene* scn,bool mt,bool mainScene)
 
 		if (scn->Nodes.size() > threadcount && mt)
 		{
-			for(auto thr : iter)
-			{
-				_ScenethreadsStates[thr].store(0);
-				std::unique_lock<std::mutex> lm(_SceneMutexes[thr]);
-				_SceneConVars[thr].notify_one();
-			}
-			//_SceneBarrier.arrive_and_wait();
 			//for(auto thr : iter)
 			//{
-			//	std::unique_lock<std::mutex> lm(_SceneMutexWaiters[thr]);
-			//	_SceneConVarWaiters[thr].wait(lm);		
+			//	_ScenethreadsStates[thr].store(0);
+			//	std::unique_lock<std::mutex> lm(_SceneMutexes[thr]);
+			//	_SceneConVars[thr].notify_one();
 			//}
-			bool wait = true;
-			float startWaittime = glfwGetTime(); 
-			while(wait)
-			{
-				wait = false;
-				for(int thr = 0;thr<threadcount;thr++)
+			//bool wait = true;
+			//float startWaittime = glfwGetTime(); 
+			//while(wait)
+			//{
+			//	wait = false;
+			//	for(int thr = 0;thr<threadcount;thr++)
+			//	{
+			//		if(!_ScenethreadsStates[thr].load())
+			//			wait = true;
+			//	}
+			//	if(glfwGetTime() - startWaittime > delta*3.0f) // something happend with threads
+			//	{
+			//		std::cout<<"\nsomething happend with threads";
+			//		for(int thr = 0;thr<threadcount;thr++)
+			//		{						
+			//			_SceneConVars[thr].notify_one();
+			//			_ScenethreadsStates[thr].store(1);
+			//		}
+			//		break;
+			//	}	
+			//}
+			std::vector<int> threadints;
+			threadints.resize(threadcount);
+			for (int i = 0; i < threadcount; i++)
+				threadints[i] = i;
+
+			std::for_each(std::execution::par_unseq,threadints.begin(), threadints.end(), [](int thr)
 				{
-					if(!_ScenethreadsStates[thr].load())
-						wait = true;
-				}
-				if(glfwGetTime() - startWaittime > delta*3.0f) // something happend with threads
-				{
-					std::cout<<"\nsomething happend with threads";
-					for(int thr = 0;thr<threadcount;thr++)
-					{						
-						_SceneConVars[thr].notify_one();
-						_ScenethreadsStates[thr].store(1);
+					int step = threadNodestep;
+					int begin = thr * step;
+					int end = (thr + 1) * step;
+					if (thr == 0)
+						begin = 0;
+
+					if (thr == threadcount - 1)
+						end = threadNodeEnd;
+
+					for (int i = begin; i < end; i++)
+					{
+						if (threadsprepass)
+							GameScene->Nodes[i]->MTPreProcess();
+						else if (!Paused && Running)
+							GameScene->Nodes[i]->MTProcess(GameScene->dt);
 					}
-					break;
-				}	
-			}
+				}
+			);
 		}
 		else
 		{
@@ -1621,11 +1668,11 @@ void On_Create()
 
 	//SetShader2f(&sh.program, "position",MousePosition)
 
-	DefaultTriangle.add_Point(PrevMousePosition - glm::vec2(5, 5 * 0.5f), false);
-	DefaultTriangle.add_Point(PrevMousePosition - glm::vec2(-5, 5 * 0.5f), false);
-	DefaultTriangle.add_Point(PrevMousePosition + glm::vec2(0, 5), false);
-	DefaultTriangle.indexes.push_back(glm::ivec3(0, 1, 2));
-	DefaultTriangle.Update();
+	//DefaultTriangle.add_Point(PrevMousePosition - glm::vec2(5, 5 * 0.5f), false);
+	//DefaultTriangle.add_Point(PrevMousePosition - glm::vec2(-5, 5 * 0.5f), false);
+	//DefaultTriangle.add_Point(PrevMousePosition + glm::vec2(0, 5), false);
+	//DefaultTriangle.indexes.push_back(glm::ivec3(0, 1, 2));
+	//DefaultTriangle.Update();
 	//Map.polygonMeshes.push_back(DefaultTriangle);
 	GetWindow(0)->backgroundColor = EditorColor;
 
@@ -1670,6 +1717,7 @@ void On_Create()
 
 	w->RecalculateSize();
 
+	std::cout << "On_Create windows created\n";
 
 
 	
@@ -1689,8 +1737,9 @@ void On_Create()
 	
 	Ready();
 	w->End();
+	std::cout << "On_Create'd\n";
 	
-	_StartScenethreads();
+	//_StartScenethreads();
 }
 
 
@@ -2612,7 +2661,7 @@ int main()
 	std::cout<<"\ndeleted, scene...";
 	Destroy();
 	std::cout<<"\ndeleted, threads...";
-	_DeleteScenethreads();
+	//_DeleteScenethreads();
 	std::cout<<"\ndeleted";
 	return 0;
 }

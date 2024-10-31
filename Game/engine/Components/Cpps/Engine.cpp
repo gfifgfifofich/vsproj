@@ -349,9 +349,9 @@ void initEngine(const char* Name, GLuint width, GLuint height, bool fullScreen)
 
 	int wId = CreateWindow();
 	Window* w = GetWindow(wId);
-	Windows[0].Init({ WIDTH,HEIGHT });
+	w->Init({ WIDTH,HEIGHT });
 
-	Windows[0].Use();
+	w->Use();
 
 	GenNormalMapTexture(&BallNormalMapTexture, 1000, 0);
 	GenNormalMapTexture(&CubeNormalMapTexture, 1000, 1);
@@ -384,7 +384,7 @@ void initEngine(const char* Name, GLuint width, GLuint height, bool fullScreen)
 	std::cout << "Scene created\n";
 
 
-	_Startpthreads();
+	//_Startpthreads();
 
 	bool loop = false;
 	while (!glfwWindowShouldClose(window)) {
@@ -451,20 +451,32 @@ void initEngine(const char* Name, GLuint width, GLuint height, bool fullScreen)
 
 		bscrollmovement = scrollmovement;
 
+		if (!loop)
+			std::cout << "pre Update()\n";
 
 		// update Scene
 		Windows[0].Use(false);
+
+		float UpdateT = glfwGetTime();
 		On_Update();
+		UpdateTime = glfwGetTime() - UpdateT;
+
 		Windows[0].Use(false);
 		scrollmovement = 0;
 		bscrollmovement = 0;
 		TextFromKeyboard.clear();
-		
+		DrawTime = glfwGetTime();
+		if (!loop)
+			std::cout << "post Update()\n";
 
 		//Drawing from back, so the main scene (window 0) will get updated data.
+		if (!loop)
+			std::cout << "Window count "<< Windows.size() << "\n";
 		for (int i = Windows.size() - 1; i >= 0; i--)
 			if (Windows[i].AutoDraw)
 				Windows[i]._Draw();
+		if (!loop)
+			std::cout << "Widows drawn\n";
 		// Post Processing
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -599,6 +611,7 @@ void initEngine(const char* Name, GLuint width, GLuint height, bool fullScreen)
 
 
 		glfwSwapBuffers(window);
+		DrawTime = glfwGetTime() - DrawTime;
 
 		if (!loop)
 			std::cout << "Frame swapped\n";
@@ -608,7 +621,7 @@ void initEngine(const char* Name, GLuint width, GLuint height, bool fullScreen)
 
 	}
 	glfwTerminate();
-	_Deletepthreads();
+	//_Deletepthreads();
 	std::cout << "Exiting";
 	//AL_Destroy();
 }

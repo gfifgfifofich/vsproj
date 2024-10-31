@@ -96,6 +96,9 @@ public:
 	int parttype = TYPE::STRUCTUREPART;
 	int partid = -1;
 	int id = 0;
+
+	int questid = -1;
+
 	bool player=false;
 
 	bool dead = false;

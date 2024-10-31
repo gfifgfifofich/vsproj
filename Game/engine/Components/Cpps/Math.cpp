@@ -2,7 +2,7 @@
 
 
 
-glm::vec2 Normalize(glm::vec2 a)
+inline glm::vec2 Normalize(glm::vec2 a)
 {
 	float length = sqrt(a.x * a.x + a.y * a.y);
 	if(length< 0.000001f)
@@ -10,19 +10,15 @@ glm::vec2 Normalize(glm::vec2 a)
 	return a / length;
 }
 
-float length(glm::vec2 a)
+inline float length(glm::vec2 a)
 {
 	float length = sqrt(a.x * a.x + a.y * a.y);
 	return length;
 }
-float sqrlength(glm::vec2 a)
-{
-	float length = a.x * a.x + a.y * a.y;
-	return length;
-}
 
 
-float DOT(glm::vec2 v1, glm::vec2 v2)
+
+inline float DOT(glm::vec2 v1, glm::vec2 v2)
 {
 	return v1.x * v2.x + v1.y * v2.y;
 }
@@ -115,13 +111,7 @@ float SmootherStep(float a0, float a1, float w) {
 	return (a1 - a0) * ((w * (w * 6.0 - 15.0) + 10.0) * w * w * w) + a0;
 }
 
-glm::vec2 Rotate(glm::vec2 a, float angle)
-{
-	float Sin = sin(angle);
-	float Cos = cos(angle);
-	return glm::vec2(Cos * a.x - Sin * a.y, Sin * a.x + Cos * a.y);
 
-}
 
 
 
@@ -150,7 +140,7 @@ float sigmoidApprox(float x)
 	if (x > 2.05f)
 		return x * 0.03f + 0.85f;
 }
-float ReLu(float x)
+inline float ReLu(float x)
 {
 	return x >= 0.0f ? x : 0.0f;
 }

@@ -4,7 +4,11 @@ enum MissionType
 	mining =1,
 	retrival =2,
 	pirates =3,
-	infestation =4
+	infestation = 4,
+	Transportation = 5,
+	Search = 6,
+	SupplySabotage = 7,
+	DataRecovery = 8,
 };
 
 
@@ -16,6 +20,7 @@ class Mission
 	int type = 0;
 	int dificulty = 0;
 	int size = 0;
+	int questid = -1;
 	int materialReward = 0;
 	bool story_mission = false;
 	bool exiting = false;
@@ -62,7 +67,6 @@ public:
 	std::string filenamestring = "";
 	std::string erroutputstring = "";
 	std::vector<Mission> missions;
-	int state = 0;
 
 	glm::vec2 missionPosition = { 0.0f,0.0f };
 	bool Hub = true;
@@ -71,7 +75,6 @@ public:
 	int missionSize = 0;
 	int missionDificulty = 0;
 	int missionType = 0;
-
 
 	void GenerateNewMissions();
 	void Process(float dt);

@@ -14,6 +14,9 @@ inline int InterfaceWindowID;// player interface window
 inline int MenuWindowID;
 inline glm::vec2 foregroundMousePosition;
 
+inline float UpdateTime;
+inline float DrawTime;
+
 inline float TextSize;
 inline float UISize;
 
@@ -151,7 +154,7 @@ void ProcessCamera(float dt);
 void SpawnPlayer(std::string filename = "PreMissionBackup");
 void SpawnPlayer(glm::vec2 position, std::string filename = "PreMissionBackup");
 
-CentralPart* SpawnAiShip(glm::vec2 pos, std::string name);
+CentralPart* SpawnAiShip(glm::vec2 pos, std::string name, bool fullpath = false);
 
 CentralPart* SpawnShipAllSave(std::string name);
 CentralPart* SpawnShipAllSaveFullPath(std::string name);
