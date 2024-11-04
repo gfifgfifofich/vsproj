@@ -366,8 +366,8 @@ void ProcessPlayerControls()
 
 	if (AqueredCameraScale.x > 80.0f)
 		AqueredCameraScale = { 80.0f, 80.0f };
-	if (AqueredCameraScale.x < 1.0f)
-		AqueredCameraScale = { 1.0f ,1.0f };
+	//if (AqueredCameraScale.x < 1.0f)
+	//	AqueredCameraScale = { 1.0f ,1.0f };
 
 	CameraScale += (AqueredCameraScale - CameraScale) * 0.25f * (delta > 0.017f ? 0.017f : delta) * 60.0f;
 
@@ -982,6 +982,8 @@ void ProcessPlayerControls()
 			}
 		}
 	}
+	if (inbase && sqrlength(Entities[0]->mid) < 5000 * 5000)
+		forcenofog = true;
 	if (forcenofog)
 	{
 		foregroundFogParticleAmount = 0.0f;

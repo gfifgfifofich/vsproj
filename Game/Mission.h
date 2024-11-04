@@ -9,6 +9,7 @@ enum MissionType
 	Search = 6,
 	SupplySabotage = 7,
 	DataRecovery = 8,
+	PartRecovery = 9,
 };
 
 
@@ -31,12 +32,30 @@ class Mission
 	std::vector<glm::vec4> TakenAreas;
 	std::vector<float> timers;
 	std::map<std::string, bool> flags;
+	std::map<std::string, int> Counters;
+	std::map<std::string, float> values;
 
 	glm::vec2 missionpos = { 0.0f,0.0f };
 
 	//Shit for missions (one, tutorial.)
 	glm::vec2 planetpos = {0.0f,0.0f};
 
+
+	//int materials = 0;
+	////Modifiers to needs
+	//int	deliveryQuests = 0;  //[0, 1, 2, 0]
+	//int	FightingQuests = 0;  //[1, 2, 0, 1]
+	//int	RNDQuests = 0;  //[0, 1, 0, 2]
+	//int	TotalSize = 0;  //[1, 1, 1, 0]
+	//
+	//	//supply of Needs
+	//int Housing = 0;  //(3)[0, 0, 0, 0]
+	//int Processing = 0;  //(2)[1, 0, 1, 0]
+	//int Cargo = 0;  //(2)[0, 0, 0, 0]
+	//int Labs = 0;  //(1)[1, 1, 0, 0]
+
+	int GetNextBlockType();
+	void SpawnBlock(int bt);
 
 
 	void Start();

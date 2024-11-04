@@ -337,9 +337,15 @@ void ProcessSelectedNodeUI()
 
 			if(datapacks[i].t_texturedata[a]->Type  == 0)
 			{
+				std::string buffname = datapacks[i].t_texturedata[a]->FileName;
 				xsize = UI_DrawText("FileName", Corner,0.35f).x;
 				Corner.y += UI_TextBox(&datapacks[i].t_texturedata[a]->FileName, Corner + glm::vec2(xsize, 0.0f)).y * -1.0f - step;
 				xsize = 0.0f;
+				if (datapacks[i].t_texturedata[a]->FileName != buffname)
+				{
+					datapacks[i].t_texturedata[a]->Delete();
+					datapacks[i].t_texturedata[a]->Load();
+				}
 			}
 			if (datapacks[i].t_texturedata[a]->Type > 0 && datapacks[i].t_texturedata[a]->Type < 4)
 			{
@@ -2227,6 +2233,18 @@ void On_Update()
 		s += std::to_string(w->w_CameraScale.y);
 		for (int i = 0; i < 4; i++)s.pop_back();
 		Corner.y += UI_DrawText(s, Corner, 0.35f).y * -1.0f - step;
+		EndOfWindow();
+		w->Use();
+		s = "MousePosition X =";
+		s += std::to_string(MousePosition.x);
+		for (int i = 0; i < 4; i++)s.pop_back();
+		s += ";  Y = ";
+		s += std::to_string(MousePosition.y);
+		for (int i = 0; i < 4; i++)s.pop_back();
+
+		EndOfWindow();
+		GetWindow(ProjectWindowID)->Use();
+		Corner.y += UI_DrawText(s, Corner, 0.35f).y * -1.0f - step;
 
 		Corner.y += UI_DrawText(std::to_string(1.0f/delta), Corner, 0.35f).y * -1.0f - step;
 
@@ -2432,6 +2450,7 @@ void On_Update()
 	Map.DrawRegularScene = !Map.DrawCollisions;
 
 	GetWindow(SceneWindowID)->Use();
+
 	if(cleanSelection)
 	{
 		SelectedNode = NULL;
@@ -2643,7 +2662,6 @@ void On_Update()
 			}
 		}
 	}
-	
 	//for (int i = 0; i < Windows.size(); i++)
 	//	std::cout<<"\ni "<<i<<" ls = "<<Windows[i].w_LightSources.size();
 }

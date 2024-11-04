@@ -390,6 +390,213 @@ void Scene::LoadFrom(std::string filename)
 	}	
 }
 
+
+void Scene::AddFromFile(std::string filename, glm::vec2 offset)
+{
+	firstframe = true;
+	DataStorage ds;
+	ds.Load(filename);
+	for (auto Item : ds.data)
+	{
+
+		if (ds.GetPropertyAsInt(Item.first, "Type") == ECSType::ECSNODE)
+		{
+			Node* NewNode = NULL;
+
+			if (ds.GetPropertyAsInt(Item.first, "Class") >= NodeType::LASTNODE)
+				continue;
+
+			// total size of "Hash string" attachment = 11;
+			std::string NewNodeName = Item.first;
+			for (int i = 0; i < 11; i++)
+				NewNodeName.pop_back();
+
+			int type = -1;
+
+			NewNode = NodeConstructors[ds.GetPropertyAsInt(Item.first, "Class")]();
+			if (NewNode == NULL)
+			{
+				std::cout << "Error loading Node: " << Item.first;
+				continue;
+			}
+			Nodes.push_back(NewNode);
+			for (int i = 0; i < 2; i++)
+			{
+				std::vector<UI_DataPack> datapacks;
+				datapacks = NewNode->GetUIData();
+
+				for (int i = 0; i < datapacks.size(); i++)
+				{
+					for (int a = 0; a < datapacks[i].bdata.size(); a++)
+						*datapacks[i].bdata[a] = ds.GetPropertyAsBool(Item.first, datapacks[i].bdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].idata.size(); a++)
+						*datapacks[i].idata[a] = ds.GetPropertyAsInt(Item.first, datapacks[i].idatanames[a]);
+
+					for (int a = 0; a < datapacks[i].fdata.size(); a++)
+						*datapacks[i].fdata[a] = ds.GetPropertyAsFloat(Item.first, datapacks[i].fdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].iSliderdata.size(); a++)
+						datapacks[i].iSliderdata[a]->x = ds.GetPropertyAsInt(Item.first, datapacks[i].iSliderdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].fSliderdata.size(); a++)
+						datapacks[i].fSliderdata[a]->x = ds.GetPropertyAsFloat(Item.first, datapacks[i].fSliderdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].v2data.size(); a++)
+						*datapacks[i].v2data[a] = ds.GetPropertyAsVec2(Item.first, datapacks[i].v2datanames[a]);
+
+					for (int a = 0; a < datapacks[i].v3data.size(); a++)
+						*datapacks[i].v3data[a] = ds.GetPropertyAsVec3(Item.first, datapacks[i].v3datanames[a]);
+
+					for (int a = 0; a < datapacks[i].v4data.size(); a++)
+						*datapacks[i].v4data[a] = ds.GetPropertyAsVec4(Item.first, datapacks[i].v4datanames[a]);
+
+					for (int a = 0; a < datapacks[i].colordata.size(); a++)
+						*datapacks[i].colordata[a] = ds.GetPropertyAsVec4(Item.first, datapacks[i].colordatanames[a]);
+
+					for (int a = 0; a < datapacks[i].textdata.size(); a++)
+						*datapacks[i].textdata[a] = ds.GetProperty(Item.first, datapacks[i].textdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].NoUitextdata.size(); a++)
+						*datapacks[i].NoUitextdata[a] = ds.GetProperty(Item.first, datapacks[i].NoUitextdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].texturedata.size(); a++)
+						*datapacks[i].texturedata[a] = ds.GetProperty(Item.first, datapacks[i].texturedatanames[a]);
+
+					for (int a = 0; a < datapacks[i].materialdata.size(); a++)
+						*datapacks[i].materialdata[a] = ds.GetProperty(Item.first, datapacks[i].materialdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].shaderdata.size(); a++)
+						*datapacks[i].shaderdata[a] = ds.GetProperty(Item.first, datapacks[i].shaderdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].ParticleAssetdata.size(); a++)
+						*datapacks[i].ParticleAssetdata[a] = ds.GetProperty(Item.first, datapacks[i].ParticleAssetdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].polygonDatadata.size(); a++)
+						*datapacks[i].polygonDatadata[a] = ds.GetProperty(Item.first, datapacks[i].polygonDatadatanames[a]);
+
+					for (int a = 0; a < datapacks[i].t_texturedata.size(); a++)
+					{
+						datapacks[i].t_texturedata[a]->FileName = ds.GetProperty(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("FileName"));
+						datapacks[i].t_texturedata[a]->filter = ds.GetPropertyAsBool(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("filter"));
+						datapacks[i].t_texturedata[a]->Gradient_Color1 = ds.GetPropertyAsVec4(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Gradient_Color1"));
+						datapacks[i].t_texturedata[a]->Gradient_Color2 = ds.GetPropertyAsVec4(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Gradient_Color2"));
+						datapacks[i].t_texturedata[a]->Noize_Frequency = ds.GetPropertyAsFloat(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Noize_Frequency"));
+						datapacks[i].t_texturedata[a]->Noize_Layers = ds.GetPropertyAsInt(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Noize_Layers"));
+						datapacks[i].t_texturedata[a]->Size = ds.GetPropertyAsInt(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Size"));
+						datapacks[i].t_texturedata[a]->Type = ds.GetPropertyAsInt(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Type"));
+					}
+				}
+				NewNode->position += offset;
+				NewNode->Name = NewNodeName;
+			}
+			NewNode->Ready();
+		}
+		else if (ds.GetPropertyAsInt(Item.first, "Type") == ECSType::ECSASSET)
+		{
+			Asset* NewAsset = NULL;
+
+			// total size of "Hash string" attachment = 11;
+			std::string NewAssetName = Item.first;
+			for (int i = 0; i < 11; i++)
+				NewAssetName.pop_back();
+
+			int type = -1;
+
+			NewAsset = AssetConstructors[ds.GetPropertyAsInt(Item.first, "Class")]();
+			if (NewAsset == NULL)
+			{
+				std::cout << "Error loading Asset: " << Item.first;
+				continue;
+			}
+			bool nameexists = false;
+			for (auto asset : Assets)
+			{
+				if (asset->Name == NewAssetName)
+				{
+					nameexists = true;
+					break;
+				}
+			}
+			if (nameexists)
+				continue;
+			Assets.push_back(NewAsset);
+			for (int i = 0; i < 2; i++)
+			{
+				std::vector<UI_DataPack> datapacks;
+				datapacks = NewAsset->GetUIData();
+				for (int i = 0; i < datapacks.size(); i++)
+				{
+					for (int a = 0; a < datapacks[i].bdata.size(); a++)
+						*datapacks[i].bdata[a] = ds.GetPropertyAsBool(Item.first, datapacks[i].bdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].idata.size(); a++)
+						*datapacks[i].idata[a] = ds.GetPropertyAsInt(Item.first, datapacks[i].idatanames[a]);
+
+					for (int a = 0; a < datapacks[i].fdata.size(); a++)
+						*datapacks[i].fdata[a] = ds.GetPropertyAsFloat(Item.first, datapacks[i].fdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].iSliderdata.size(); a++)
+						datapacks[i].iSliderdata[a]->x = ds.GetPropertyAsInt(Item.first, datapacks[i].iSliderdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].fSliderdata.size(); a++)
+						datapacks[i].fSliderdata[a]->x = ds.GetPropertyAsFloat(Item.first, datapacks[i].fSliderdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].v2data.size(); a++)
+						*datapacks[i].v2data[a] = ds.GetPropertyAsVec2(Item.first, datapacks[i].v2datanames[a]);
+
+					for (int a = 0; a < datapacks[i].v3data.size(); a++)
+						*datapacks[i].v3data[a] = ds.GetPropertyAsVec3(Item.first, datapacks[i].v3datanames[a]);
+
+					for (int a = 0; a < datapacks[i].v4data.size(); a++)
+						*datapacks[i].v4data[a] = ds.GetPropertyAsVec4(Item.first, datapacks[i].v4datanames[a]);
+
+					for (int a = 0; a < datapacks[i].colordata.size(); a++)
+						*datapacks[i].colordata[a] = ds.GetPropertyAsVec4(Item.first, datapacks[i].colordatanames[a]);
+
+					for (int a = 0; a < datapacks[i].textdata.size(); a++)
+						*datapacks[i].textdata[a] = ds.GetProperty(Item.first, datapacks[i].textdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].NoUitextdata.size(); a++)
+						*datapacks[i].NoUitextdata[a] = ds.GetProperty(Item.first, datapacks[i].NoUitextdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].texturedata.size(); a++)
+						*datapacks[i].texturedata[a] = ds.GetProperty(Item.first, datapacks[i].texturedatanames[a]);
+
+					for (int a = 0; a < datapacks[i].materialdata.size(); a++)
+						*datapacks[i].materialdata[a] = ds.GetProperty(Item.first, datapacks[i].materialdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].shaderdata.size(); a++)
+						*datapacks[i].shaderdata[a] = ds.GetProperty(Item.first, datapacks[i].shaderdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].ParticleAssetdata.size(); a++)
+						*datapacks[i].ParticleAssetdata[a] = ds.GetProperty(Item.first, datapacks[i].ParticleAssetdatanames[a]);
+
+					for (int a = 0; a < datapacks[i].polygonDatadata.size(); a++)
+						*datapacks[i].polygonDatadata[a] = ds.GetProperty(Item.first, datapacks[i].polygonDatadatanames[a]);
+
+					for (int a = 0; a < datapacks[i].t_texturedata.size(); a++)
+					{
+						datapacks[i].t_texturedata[a]->FileName = ds.GetProperty(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("FileName"));
+						datapacks[i].t_texturedata[a]->filter = ds.GetPropertyAsBool(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("filter"));
+						datapacks[i].t_texturedata[a]->Gradient_Color1 = ds.GetPropertyAsVec4(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Gradient_Color1"));
+						datapacks[i].t_texturedata[a]->Gradient_Color2 = ds.GetPropertyAsVec4(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Gradient_Color2"));
+						datapacks[i].t_texturedata[a]->Noize_Frequency = ds.GetPropertyAsFloat(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Noize_Frequency"));
+						datapacks[i].t_texturedata[a]->Noize_Layers = ds.GetPropertyAsInt(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Noize_Layers"));
+						datapacks[i].t_texturedata[a]->Size = ds.GetPropertyAsInt(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Size"));
+						datapacks[i].t_texturedata[a]->Type = ds.GetPropertyAsInt(Item.first, datapacks[i].t_texturedatanames[a] + "_" + std::string("Type"));
+					}
+				}
+				NewAsset->Name = NewAssetName;
+			}
+			if (LoadAssets)
+				NewAsset->Load();
+			NewAsset->Ready();
+		}
+	}
+}
+
+
 DataStorage Scene::SaveAsds()
 {
 	DataStorage ds;

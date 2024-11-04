@@ -111,6 +111,41 @@ void Quest::Start()
 			pos.x += 2.0f;
 		}
 	}
+	if (missiontype == MissionType::PartRecovery)
+	{
+		Radar::Bleep bl;
+		bl.state = MissionType::PartRecovery + 3;
+		bl.size = size;
+		bl.dificulty = dificulty;
+		bl.materialReward = materialreward;
+		bl.position = Entities[0]->mid + ActiveRadar.offset + Rotate(Normalize(Entities[0]->avgvel) * (9000.0f + (rand() % 2000)), ((rand() % 2000) * 0.001f - 1.0f) * pi * 0.5f);
+		bl.velocity = { 0.0f,0.0f };
+		bl.infinite = true;
+		bl.r = 35.0f;
+		bl.fogamount = 0.0f;
+		bl.colisionR = 3500.0f;
+		bl.questid = id;
+		bl.fraction = fraction2;
+		for (int aaa = 0; aaa < 5; aaa++)
+			for (int a = 0; a < ActiveRadar.bleeps.size(); a++)
+			{
+				if (ActiveRadar.bleeps[a].state == -1 || ActiveRadar.bleeps[a].state >= 2)
+				{
+					glm::vec2 dif = bl.position - ActiveRadar.bleeps[a].position;
+
+					if (sqrlength(dif) < (bl.colisionR + ActiveRadar.bleeps[a].colisionR) * (bl.colisionR + ActiveRadar.bleeps[a].colisionR))
+					{
+						glm::vec2 norm = dif / length(dif);
+						glm::vec2 dd = norm * ((bl.colisionR + ActiveRadar.bleeps[a].colisionR) - length(dif));
+						bl.position += dd;
+					}
+				}
+			}
+		ActiveRadar.bleeps.push_back(bl);
+		positions["supply_target"] = ActiveRadar.offset;
+		counters["delivered"] = 0;
+		counters["destroyed"] = 0;
+	}
 }
 void Quest::Process(float dt)
 {
@@ -225,6 +260,55 @@ void Quest::Process(float dt)
 			{
 				ConsoleTexts.push_back("pos = " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])).x)
 						+ "  " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])).x));
+			}
+			if (Entities[0]->Parts[i]->questid == id && sqrlength(positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])) < 1000.0f * 1000.0f)
+			{
+				counters["delivered"]++;
+				Entities[0]->DestroyPart(i);
+			}
+		}
+		if (counters["delivered"] >= size)
+		{
+			materialreward = materialreward - materialreward * (counters["destroyed"] / size);
+			flags["Done"] = true;
+		}
+		if (counters["destroyed"] >= size)
+		{
+			flags["Failed"] = true;
+		}
+	}
+	if (missiontype == MissionType::PartRecovery)
+	{
+
+		if (state == 0)
+			ConsoleTexts.push_back("goto mission bleep");
+		if (state == 1)
+			ConsoleTexts.push_back("transfer parts to base");
+
+		for (int i = 0; i < Debris.Parts.size(); i++)
+		{
+			if (Debris.Parts[i]->questid == id && (Debris.Parts[i]->Health < 0 || Debris.Parts[i]->Delete))
+			{
+				counters["destroyed"]++;
+				Debris.Parts[i]->DeletePart();
+			}
+			if (Debris.Parts[i]->questid == id && Debris.Parts[i]->Health > 0 && !Debris.Parts[i]->Delete && sqrlength(positions["supply_target"] - (ActiveRadar.offset + ballPosition[Debris.Parts[i]->body[0]])) < 1000.0f * 1000.0f)
+			{
+				counters["delivered"]++;
+				Debris.Parts[i]->DeletePart();
+			}
+		}
+		for (int i = 0; i < Entities[0]->Parts.size(); i++)
+		{
+			if (Entities[0]->Parts[i]->questid == id && (Entities[0]->Parts[i]->Health < 0 || Entities[0]->Parts[i]->Delete))
+			{
+				counters["destroyed"]++;
+				Entities[0]->DestroyPart(i);
+			}
+			if (Entities[0]->Parts[i]->questid == id)
+			{
+				ConsoleTexts.push_back("pos = " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])).x)
+					+ "  " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])).x));
 			}
 			if (Entities[0]->Parts[i]->questid == id && sqrlength(positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])) < 1000.0f * 1000.0f)
 			{

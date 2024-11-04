@@ -272,6 +272,16 @@ M_Light_0000000009
 	Texture Light
 	Type 0
 }
+MaterialObject_0000000014
+{
+	Class 2
+	Height_Map No_texture
+	ID 0
+	Name MaterialObject
+	Normal_Map No_texture
+	Texture No_texture
+	Type 0
+}
 Noize_0000000010
 {
 	Class 1
@@ -431,4 +441,19 @@ Sparks_0000000012
 	lifetime 20.039845
 	lifetimeRandomness 13.459375
 	lighted 0
+}
+_0000000013
+{
+	Class 1
+	ID 0
+	Name 
+	Type 0
+	texture_FileName 
+	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
+	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
+	texture_Noize_Frequency 10.000000
+	texture_Noize_Layers 3
+	texture_Size 100.000000
+	texture_Type 0
+	texture_filter 0
 }

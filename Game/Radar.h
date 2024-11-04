@@ -11,6 +11,8 @@ public:
 	//-1 no mission, other - link to quests[]
 	int missiontype = -1;
 
+	int state = 0;
+
 	int size = -1;
 	int dificulty = -1;
 	int materialreward = 0;

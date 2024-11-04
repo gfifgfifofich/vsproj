@@ -22,6 +22,7 @@ public:
 
 	void SaveAs(std::string filename);
 	void LoadFrom(std::string filename);
+	void AddFromFile(std::string filename, glm::vec2 offset = {0.0f,0.0f});
 
 	DataStorage SaveAsds();
 	void LoadFromds(DataStorage ds);

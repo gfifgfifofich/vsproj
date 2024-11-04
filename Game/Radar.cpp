@@ -44,7 +44,7 @@ void Radar::Init()
 		bl.fogamount = 0.5f + rand() %1000*0.002f;
 		bleeps.push_back(bl);
 	}
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 0; i++)
 	{
 		Bleep bl;
 		bl.state = 3;
@@ -71,7 +71,7 @@ void Radar::Init()
 			}
 		bleeps.push_back(bl);
 	}
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		Bleep bl;
 		bl.state = -1;
@@ -195,7 +195,7 @@ void Radar::Process(float dt)
 		bleeps.push_back(bl);
 
 	}
-	for (int i = 0; i < 1 - SideMissionbleeps; i++)
+	for (int i = 0; i < 0 - SideMissionbleeps; i++)
 	{
 		Bleep bl;
 		bl.state = 3;

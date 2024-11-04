@@ -11,9 +11,127 @@
 #include "Mission.h"
 #include "Radar.h"
 
+/*
+
+implement station gen
+
+Stationblocks -- done
+{
+	Block1.sav
+}
+
+params
+{
+	
+	
+
+
+	
+}
+
+
+
+*/
+
 // implemented in Entity.h
 int GetShipCost(CentralPart* Ent);
 int CheckShipSaveFile(std::string filename);
+
+
+int Mission::GetNextBlockType()
+{
+	int TotalHousingNeed = Counters["deliveryQuests"] * 0 + Counters["FightingQuests"] * 1 + Counters["RNDQuests"] * 0 + Counters["TotalSize"] * 0.5 - Counters["Housing"] * 8;
+	int TotalProcessingNeed = Counters["deliveryQuests"] * 1 + Counters["FightingQuests"] * 2 + Counters["RNDQuests"] * 1 + Counters["TotalSize"] * 0.5 - Counters["Processing"] * 3;
+	int TotalCargoNeed = Counters["deliveryQuests"] * 2 + Counters["FightingQuests"] * 0 + Counters["RNDQuests"] * 0 + Counters["TotalSize"] * 0.5 - Counters["Cargo"] * 5;
+	int TotalLabsNeed = Counters["deliveryQuests"] * 0 + Counters["FightingQuests"] * 1 + Counters["RNDQuests"] * 2 + Counters["TotalSize"] * 0 - Counters["Labs"] * 3;
+
+	TotalHousingNeed += Counters["Housing"] * 0 + Counters["Processing"] * 1 + Counters["Cargo"] * 0 + Counters["Labs"] * 1;
+	TotalProcessingNeed += Counters["Housing"] * 0 + Counters["Processing"] * 0 + Counters["Cargo"] * 0 + Counters["Labs"] * 1;
+	TotalCargoNeed += Counters["Housing"] * 0 + Counters["Processing"] * 0 + Counters["Cargo"] * 0 + Counters["Labs"] * 0;
+	TotalLabsNeed += Counters["Housing"] * 0 + Counters["Processing"] * 0 + Counters["Cargo"] * 0 + Counters["Labs"] * 0;
+
+	if (TotalHousingNeed > 0 && TotalCargoNeed < 4 && TotalProcessingNeed < 4)
+		return 0;
+	if (TotalProcessingNeed > 0 && TotalCargoNeed < 4)
+		return 1;
+	if (TotalCargoNeed > 0)
+		return 2;
+	if (TotalLabsNeed > 0)
+		return 3;
+	
+	return 3;
+}
+void  Mission::SpawnBlock(int bt)
+{
+	glm::vec2 BlockScale = { 1000.0f,1000.0f };
+
+	int size = 0;
+	int quadrant = sqrt(size);
+	glm::vec2 vec = { 1.0f,0.0f };
+
+	if (bt == 0)
+	{
+		vec = { 0.0f,1.0f };
+		size += Counters["Housing"];
+	}
+	if (bt == 1)
+	{
+		vec = { 1.0f,0.0f };
+		size += Counters["Processing"];
+	}
+	if (bt == 2)
+	{
+		vec = { -1.0f,0.0f };
+		size += Counters["Cargo"];
+	}
+	if (bt == 3)
+	{
+		vec = { 0.0f,-1.0f };
+		size += Counters["Labs"];
+	}
+	int layer = size;
+	glm::vec2 norm = { vec.y,-vec.x };
+	glm::vec2 normbuff = { vec.y,-vec.x };
+	glm::vec2 vecbuff = vec;
+	vec += vec;
+
+	int step = 3;
+	while (layer >= step)
+	{
+		vec += vecbuff;
+		layer -= step;
+		step += 2;
+	}
+
+	glm::vec2 pos = vec;
+
+	if (layer == 0)
+		pos = vec;
+	else if (layer == 1)
+		pos = vec + norm;
+	else
+	{
+		bool b = true;
+		for (int i = 0; i < layer - 1; i++)
+		{
+			if (b)
+				norm = -norm;
+			else
+				norm = -norm + normbuff;
+			pos = vec + norm;
+			b = !b;
+		}
+	}
+	
+	if(bt == 0)
+		GameScene->AddFromFile("Scenes/StationBlocks/housing.sav", pos * BlockScale);
+	if (bt == 1)
+		GameScene->AddFromFile("Scenes/StationBlocks/Processing.sav", pos * BlockScale);
+	if (bt == 2)
+		GameScene->AddFromFile("Scenes/StationBlocks/Labs.sav", pos * BlockScale);
+	if (bt == 3)
+		GameScene->AddFromFile("Scenes/StationBlocks/Cargo.sav", pos * BlockScale);
+}
 
 void Mission::MissionClear()
 {
@@ -48,8 +166,31 @@ void Mission::Start()
 
 	if (inbase)
 	{
+		Counters["materials"] = 0;
+		//Modifiers to needs
+		Counters["deliveryQuests"] = 0;
+		Counters["FightingQuests"] = 0;
+		Counters["RNDQuests"] = 0;
+		Counters["TotalSize"] = 0;
+
+		//supply of Needs
+		Counters["Housing"] = 0;
+		Counters["Processing"] = 0;
+		Counters["Cargo"] = 0;
+		Counters["Labs"] = 0;
 
 		ChangeMap("Scenes/base.sav", ActiveRadar.offset, missionpos);
+		glm::vec2 BlockScale = { 1000.0f,1000.0f };
+		GameScene->AddFromFile("Scenes/StationBlocks/HorI.sav",  glm::vec2( 0.0f,1.0f)   * BlockScale);
+		GameScene->AddFromFile("Scenes/StationBlocks/HorI.sav",  glm::vec2( 0.0f,-1.0f)  * BlockScale);
+		GameScene->AddFromFile("Scenes/StationBlocks/leftT.sav", glm::vec2( 1.0f,0.0f)   * BlockScale);
+		GameScene->AddFromFile("Scenes/StationBlocks/VertI.sav", glm::vec2( -1.0f,0.0f)  * BlockScale);
+		GameScene->AddFromFile("Scenes/StationBlocks/housing.sav",  glm::vec2( 1.0f,1.0f)   * BlockScale);
+		GameScene->AddFromFile("Scenes/StationBlocks/Processing.sav",  glm::vec2( 1.0f,-1.0f)  * BlockScale);
+		GameScene->AddFromFile("Scenes/StationBlocks/Labs.sav",  glm::vec2( -1.0f,1.0f)  * BlockScale);
+		GameScene->AddFromFile("Scenes/StationBlocks/Cargo.sav",  glm::vec2( -1.0f,-1.0f) * BlockScale);
+
+
 
 		UpdateScene();
 		return;
@@ -142,6 +283,18 @@ void Mission::Start()
 		{
 
 		}
+		case MissionType::PartRecovery:
+		{
+			glm::vec2 pos = { 0.0f,0.0f };
+			for (int i = 0; i < size; i++)
+			{
+				BodyComponent* bc = CreatePart(PurchasableParts[4], pos, { 0.0f,1.0f }, PARTSIZE, 1.0f);
+				bc->questid = questid;
+				Debris.Parts.push_back(bc);
+				pos.x += 2.0f;
+			}
+			quests[questid].state = 1;
+		}break;
 		default:
 			break;
 		}
@@ -543,30 +696,74 @@ void Mission::Process(float dt)
 	if (exiting)
 		exitMission(true);
 
-	if (inbase)
+	if (JustPressedkey[GLFW_KEY_5])
+		Counters["materials"] += 100;
+	if (JustPressedkey[GLFW_KEY_6])
+		Counters["deliveryQuests"] += 1;
+	if (JustPressedkey[GLFW_KEY_7])
+		Counters["FightingQuests"] += 1;
+	if (JustPressedkey[GLFW_KEY_8])
+		Counters["RNDQuests"] += 1;
+	if (JustPressedkey[GLFW_KEY_9])
+		Counters["TotalSize"] += 1;
+	
+	ConsoleTexts.clear();
+	for (auto a : Counters)
 	{
-		Window* shw = GetWindow(shopmenu.window);
-		shopmenu.Process(delta);
-		shw->Scale = CameraScale * 0.25f;
-		shw->Position = (glm::vec2(-255, 50) - CameraPosition) * CameraScale;
-		UI_DrawTexturedQuad(shw->Position, shw->GetSize(), shw->Texture, 0.0f, { 1.0f,1.0f,1.0f,1.0f }, 2, false, false, false, true);
-
-		Window* sshw = GetWindow(SaveScreenmenu.window);
-		SaveScreenmenu.Process(delta);
-		sshw->Scale = CameraScale * 0.25f;
-		sshw->Position = (glm::vec2(0, 250) - CameraPosition) * CameraScale;
-		UI_DrawTexturedQuad(sshw->Position, sshw->GetSize(), sshw->Texture, 0.0f, { 1.0f,1.0f,1.0f,1.0f }, 2, false, false, false, true);
-
-		Window* mshw = GetWindow(MissionSelectMenu.window);
-		MissionSelectMenu.Process(delta);
-		mshw->Scale = CameraScale * 0.25f;
-		mshw->Position = (glm::vec2(0, -250) - CameraPosition) * CameraScale;
-		UI_DrawTexturedQuad(mshw->Position, mshw->GetSize(), mshw->Texture, 0.0f, { 1.0f,1.0f,1.0f,1.0f }, 2, false, false, false, true);
-
-		
-
-		return;
+		ConsoleTexts.push_back(a.first + std::string(" = ") + std::to_string(a.second));
 	}
+	ConsoleTexts.push_back("Next requered block = " + std::to_string(GetNextBlockType()));
+	ConsoleTexts.push_back("");
+
+	int TotalHousingNeed = Counters["deliveryQuests"] * 0 + Counters["FightingQuests"] * 1 + Counters["RNDQuests"] * 0 + Counters["TotalSize"] * 0.5 - Counters["Housing"] * 3;
+	int TotalProcessingNeed = Counters["deliveryQuests"] * 1 + Counters["FightingQuests"] * 2 + Counters["RNDQuests"] * 1 + Counters["TotalSize"] * 0.5 - Counters["Processing"] * 2;
+	int TotalCargoNeed = Counters["deliveryQuests"] * 2 + Counters["FightingQuests"] * 0 + Counters["RNDQuests"] * 0 + Counters["TotalSize"] * 0.5 - Counters["Cargo"] * 2;
+	int TotalLabsNeed = Counters["deliveryQuests"] * 0 + Counters["FightingQuests"] * 1 + Counters["RNDQuests"] * 2 + Counters["TotalSize"] * 0 - Counters["Labs"] * 1;
+
+	TotalHousingNeed += Counters["Housing"] * 0 + Counters["Processing"] * 1 + Counters["Cargo"] * 0 + Counters["Labs"] * 1;
+	TotalProcessingNeed += Counters["Housing"] * 0 + Counters["Processing"] * 0 + Counters["Cargo"] * 0 + Counters["Labs"] * 1;
+	TotalCargoNeed += Counters["Housing"] * 0 + Counters["Processing"] * 0 + Counters["Cargo"] * 0 + Counters["Labs"] * 0;
+	TotalLabsNeed += Counters["Housing"] * 0 + Counters["Processing"] * 0 + Counters["Cargo"] * 0 + Counters["Labs"] * 0;
+
+	ConsoleTexts.push_back("TotalHousingNeed = " + std::to_string(TotalHousingNeed));
+	ConsoleTexts.push_back("TotalProcessingNeed = " + std::to_string(TotalProcessingNeed));
+	ConsoleTexts.push_back("TotalCargoNeed = " + std::to_string(TotalCargoNeed));
+	ConsoleTexts.push_back("TotalLabsNeed = " + std::to_string(TotalLabsNeed));
+
+	ConsoleTexts.push_back("");
+
+	int bt = GetNextBlockType();
+	if(bt == 0 && Counters["materials"] >= 50)
+	{
+		Counters["materials"] -= 50;
+		SpawnBlock(bt);
+		Counters["Housing"] += 1;
+		Counters["TotalSize"] += 1;
+	}
+	if (bt == 1 && Counters["materials"] >= 75)
+	{
+		Counters["materials"] -= 75;
+		SpawnBlock(bt);
+		Counters["Processing"] += 1;
+		Counters["TotalSize"] += 1;
+	}
+	if (bt == 2 && Counters["materials"] >= 50)
+	{
+		Counters["materials"] -= 50;
+		SpawnBlock(bt);
+		Counters["Cargo"] += 1;
+		Counters["TotalSize"] += 1;
+	}
+	if (bt == 3 && Counters["materials"] >= 75)
+	{
+		Counters["materials"] -= 75;
+		SpawnBlock(bt);
+		Counters["Labs"] += 1;
+		Counters["TotalSize"] += 1;
+	}
+
+
+
 
 	for(int i=0;i<Bots.size();i++)
 	{
@@ -631,7 +828,30 @@ void Mission::Process(float dt)
 		}
 	}
 
+	if (inbase)
+	{
+		Window* shw = GetWindow(shopmenu.window);
+		shopmenu.Process(delta);
+		shw->Scale = CameraScale * 0.25f;
+		shw->Position = (glm::vec2(-255, 50) - CameraPosition) * CameraScale;
+		UI_DrawTexturedQuad(shw->Position, shw->GetSize(), shw->Texture, 0.0f, { 1.0f,1.0f,1.0f,1.0f }, 2, false, false, false, true);
 
+		Window* sshw = GetWindow(SaveScreenmenu.window);
+		SaveScreenmenu.Process(delta);
+		sshw->Scale = CameraScale * 0.25f;
+		sshw->Position = (glm::vec2(0, 250) - CameraPosition) * CameraScale;
+		UI_DrawTexturedQuad(sshw->Position, sshw->GetSize(), sshw->Texture, 0.0f, { 1.0f,1.0f,1.0f,1.0f }, 2, false, false, false, true);
+
+		Window* mshw = GetWindow(MissionSelectMenu.window);
+		MissionSelectMenu.Process(delta);
+		mshw->Scale = CameraScale * 0.25f;
+		mshw->Position = (glm::vec2(0, -250) - CameraPosition) * CameraScale;
+		UI_DrawTexturedQuad(mshw->Position, mshw->GetSize(), mshw->Texture, 0.0f, { 1.0f,1.0f,1.0f,1.0f }, 2, false, false, false, true);
+
+
+
+		return;
+	}
 
 
 	if (!story_mission)
@@ -658,6 +878,15 @@ void Mission::Process(float dt)
 		{
 
 		}
+		case MissionType::PartRecovery:
+		{
+			bool gotit = true;
+			for (auto p : Debris.Parts)
+				if (p->questid == questid)
+					gotit = false;
+			if (gotit)
+				ActiveRadar.bleeps[ActiveRadar.enteredBleep].infinite = false;
+		}break;
 		default:
 			break;
 		}
@@ -1566,6 +1795,12 @@ void Mission::Save(std::string filename)
 	for (auto a : flags)
 		MissionDataDS.SetProperty("flags", a.first, a.second);
 
+	for (auto a : Counters)
+		MissionDataDS.SetProperty("Counters", a.first, a.second);
+
+	for (auto a : values)
+		MissionDataDS.SetProperty("values", a.first, a.second);
+
 	GameScene->SaveAs(filename + "/Scene.sav");
 	MissionDataDS.Save(filename + "/MissionState.sav");
 }
@@ -1600,10 +1835,14 @@ void Mission::Load(std::string filename, bool ingame)
 	std::map<std::string, std::string> S_TakenAreas;
 	std::map<std::string, std::string> S_timers;
 	std::map<std::string, std::string> S_flags;
+	std::map<std::string, std::string> S_Counters;
+	std::map<std::string, std::string> S_Values;
 
 	S_TakenAreas = MissionDataDS.GetObject("TakenAreas");
 	S_timers = MissionDataDS.GetObject("timers");
 	S_flags = MissionDataDS.GetObject("flags");
+	S_Counters = MissionDataDS.GetObject("Counters");
+	S_Values = MissionDataDS.GetObject("values");
 
 	int i = 0;
 	for (auto a : S_TakenAreas)
@@ -1622,6 +1861,12 @@ void Mission::Load(std::string filename, bool ingame)
 	i = 0;
 	for (auto a : S_flags)
 		flags[a.first] = MissionDataDS.GetPropertyAsBool("flags", a.first);
+
+	for (auto a : S_Counters)
+		Counters[a.first] = MissionDataDS.GetPropertyAsInt("Counters", a.first);
+
+	for (auto a : S_Values)
+		values[a.first] = MissionDataDS.GetPropertyAsFloat("values", a.first);
 
 	for (int i = 0; i < EntitiesCount; i++)
 	{
@@ -1715,7 +1960,7 @@ void MissionSelectScreen::GenerateNewMissions()
 		if (m.type == MissionType::mining) multiplyer = 1.0f;
 		if (m.type == MissionType::infestation) multiplyer = 2.0f;
 		if (m.type == MissionType::retrival) multiplyer = 1.0f;
-		m.type = MissionType::Transportation;
+		m.type = MissionType::PartRecovery;
 		m.materialReward = multiplyer * m.dificulty * m.size * 10;
 		missions.push_back(m);
 	}
