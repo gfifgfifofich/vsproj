@@ -232,6 +232,7 @@ Stages
 
 
 #include "engine/Components/Redactor.h"
+#include "engine/Components/Include/sounds.h"
 glm::ivec2 StandartResolutions[] =
 {
 	{800, 600},
@@ -243,7 +244,6 @@ glm::ivec2 StandartResolutions[] =
 	{ 1920,1080 },
 	{ 2560,1440 }
 };
-#include "engine/Components/Include/sounds.h"
 
 #include "Parts/smallball.h"
 
@@ -611,11 +611,11 @@ void ProcessPlayerControls()
 					if (ConCreationStage == 1 && prevcon != ConCreationStage)
 					{
 						Sparks.Spawn(ballPosition[NewConBall1], rand() % 5 + 5);
-						playsound(Clang, MousePosition, 0.3f, 2.5f, { 0.0f,0.0f }, false);
+						playsound(Clang, MousePosition, 0.3f, 2.5f);
 					}
 					if (ConCreationStage >= 2)
 					{
-						playsound(Clang, MousePosition, 0.3f, 2.5f, { 0.0f,0.0f }, false);
+						playsound(Clang, MousePosition, 0.3f, 2.5f);
 						Sparks.Spawn(ballPosition[NewConBall2], rand() % 5 + 5);
 						ConCreationStage = 0;
 						if (NewConDebrie1)
@@ -653,7 +653,7 @@ void ProcessPlayerControls()
 
 								if (i < Entities[0]->Parts.size() && sqrlength(dif) < PARTSIZE * PARTSIZE && !detached)
 								{
-									playsound(Detach, MousePosition, 0.3f, 3.5f, { 0.0f,0.0f }, false);
+									playsound(Detach, MousePosition, 0.3f, 3.5f);
 									Entities[0]->DetachPart(i);
 									detached = true;
 								}
@@ -1487,21 +1487,23 @@ void Ready()
 	LoadPlayerData();
 	ChangeMap(MapFileName, { 0.0f,0.0f }, { 0.0f,0.0f });
 	MainMenu = true;
-	addsound(SHHSound,true,10);
-	addsound(RocketEngineSound,true,20);
-	addsound(MiniGunSound,true,10);
-	addsound(ExplodionSound,false,10);
-	addsound(BulletHit,false,10);
-	addsound(Hit,false,20);
-	addsound(PartDestrSOund,false,10);
-	addsound(Scratch,true,10);
-	addsound(Detach,false,10);
-	addsound(Clang,false,10);
-	addsound(LaserGunSound,true,10);
-	addsound(HeavyHit,false,10);
-	addsound(GunSound,false,10);
+
+	addsound(SHHSound, true, 10);
+	addsound(RocketEngineSound, true, 4);
+	addsound(MiniGunSound, true, 10);
+	addsound(ExplodionSound, false, 10);
+	addsound(BulletHit, false, 10);
+	addsound(Hit, false, 4);
+	addsound(PartDestrSOund, false, 10);
+	addsound(Scratch, true, 10);
+	addsound(Detach, false, 10);
+	addsound(Clang, false, 10);
+	addsound(LaserGunSound, true, 10);
+	addsound(HeavyHit, false, 10);
+	addsound(GunSound, false, 10);
 	std::cout<<"added all sounds ready\n";
 	//150 sources used
+
 	MissionSelectMenu.GenerateNewMissions();
 	SetupInstances();
 	VSync = 1;
@@ -1527,12 +1529,11 @@ void SubSteppedProcess(float dt, int SubStep)
 	
 	ProcessEntities(dt, SubStep);
 
-	for(int i=0;i<Sounds.size();i++)
-	{
-		Sounds[i].Update();
-	}
 	sw->End();
 	UseWindow(SceneWindowID);
+
+	for (int i = 0; i < Sounds.size(); i++)
+		Sounds[i].Update();
 }
 
 void Process(float dt)
@@ -1580,12 +1581,10 @@ void Process(float dt)
 	ImGui::Text("%.1ffps (%.3fms)", 1.0f / delta, delta);
 	ImGui::Text("%.3fms DrawTime", DrawTime);
 	ImGui::Text("%.3fms UpdateTime", UpdateTime);
+	ImGui::Text("%.i channels count", channelcount);
 
 
-	unsigned int soundsrc;
-	GenSource(&soundsrc);
-	ImGui::Text("sound source id %.i", soundsrc);
-	DeleteSource(&soundsrc);
+	
 
 
 	ImGui::Text("sources size (%.i)", sources.size());
@@ -1601,14 +1600,6 @@ void Process(float dt)
 		if (*sources[i] < 0)
 			res = true;
 
-	}
-	if (sources.size() > 10000 || ImGui::Button("Relopad sound") || res)
-	{
-		for (int i = 0; i < sources.size();i++)
-			DeleteSource(sources[i]);
-		sources.clear();
-		AL_Reload();
-		reloadSources = true;
 	}
 
 	ImGui::Text("parts size (%.i)", Debris.Parts.size());
@@ -1705,7 +1696,26 @@ void Process(float dt)
 
 	if (Entities.size() > 0 && !Entities[0]->dead && !Entities[0]->destroyed)
 		camerapos = Entities[0]->mid;
+	
 
+	if (Entities.size() > 0)
+	{
+		listenerVel.x = Entities[0]->avgvel.x;
+		listenerVel.y = Entities[0]->avgvel.y;
+		listenerPos.x = Entities[0]->mid.x;
+		listenerPos.y = Entities[0]->mid.y;
+		ListenerPos = { listenerPos.x, listenerPos.y };
+		UpdateListenerPosition();
+	}
+	else
+	{
+
+		listenerVel.x = 0.0f;
+		listenerVel.y = 0.0f;
+		ListenerPos = { listenerPos.x, listenerPos.y };
+		UpdateListenerPosition();
+	}
+	
 	sw->End();
 	ProcessCamera(dt);
 	sw->Use();

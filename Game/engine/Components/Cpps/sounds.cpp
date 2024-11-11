@@ -1,502 +1,359 @@
 #pragma once
 // openAL
-#include <AL/alext.h>
 #include "../Include/Helper.h"
-#include "../Include/LoadWAV.h"
 #include "../Include/sounds.h"
-unsigned int LoadSound(const char* FileName)
+
+
+#include <Objbase.h>
+void ERRCHECK_fn(FMOD_RESULT result, const char* file, int line)
 {
-	std::ifstream ifs(FileName, std::ios::binary);
-	if(!ifs.is_open())
-	{
-		return -1;
-	}
-	ReadFrom4(&ifs);//ChunkID 
-	int ChunkSize = ReadFrom4(&ifs);//ChunkSize 
-	ReadFrom4(&ifs);//Format 
-	ReadFrom4(&ifs);//SubChunk1ID 
-	int SubChunk1Size = ReadFrom4(&ifs);//SubChunk1Size 
-	short AudioFormat = ReadFrom2(&ifs);//AudioFormat 
-	short NumChannels = ReadFrom2(&ifs);//NumChannels 
-	int SampleRate = ReadFrom4(&ifs);//SampleRate 
-	int ByteRate = ReadFrom4(&ifs);//ByteRate 
-	short BlockAlign = ReadFrom2(&ifs);//BlockAlign 
-	short BPS = ReadFrom2(&ifs);//BPS 
-	if (SubChunk1Size > 16)
-	{// skip the data that i dont understand, ez
-		char* jnk = new char[SubChunk1Size - 16];
-		ifs.read(jnk, SubChunk1Size - 16);
-	}
-	ReadFrom4(&ifs);//SubChunk2ID 
-	int SubChunk2Size = ReadFrom4(&ifs);//SubChunk2Size 
-
-	unsigned int buffer;
-	alGenBuffers(1, &buffer);
-	ALenum format;
-	if (BPS == 16 && NumChannels == 2)
-		format = AL_FORMAT_STEREO16;
-	else if (BPS == 16 && NumChannels == 1)
-		format = AL_FORMAT_MONO16;
-	else if (BPS == 32 && NumChannels == 2)
-		format = AL_FORMAT_STEREO_FLOAT32;
-	else if (BPS == 32 && NumChannels == 1)
-		format = AL_FORMAT_MONO_FLOAT32;
-
-	char* membuf = new char[SubChunk2Size];
-	ifs.read(membuf, SubChunk2Size);
-
-	alBufferData(buffer, format, membuf, SubChunk2Size, SampleRate);
-
-	delete[] membuf;
-	ifs.close();
-	return buffer;
-}
-void DeleteSound(unsigned int* sound)
-{
-	alDeleteBuffers(1,sound);
-}
-void AL_init()
-{
-
-
-	if (Device) {
-		Context = alcCreateContext(Device, NULL);
-		alcMakeContextCurrent(Context);
-	}
 	
-	contextMadeCurrent = alcMakeContextCurrent(Context);
-	if (!contextMadeCurrent)
-		std::cerr << "ERROR: Could not make audio context current" << "\n";
+}
+#define ERRCHECK(_result) ERRCHECK_fn(_result, __FILE__, __LINE__)
 
-
-	ALfloat lpos[] = { listenerPos.x, listenerPos.y, listenerPos.y };
-	ALfloat lvel[] = { listenerVel.x, listenerVel.y, listenerVel.y };
-	ListenerPos = {listenerPos.x, listenerPos.y};
-	alListenerfv(AL_POSITION, lpos);
-	alListenerfv(AL_VELOCITY, lvel);
-	alListenerfv(AL_ORIENTATION, listenerOri);
-	ALCint size;
-	alcGetIntegerv( Device, ALC_ATTRIBUTES_SIZE, 1, &size);
-	std::vector<ALCint> attrs(size);
-	alcGetIntegerv( Device, ALC_ALL_ATTRIBUTES, size, &attrs[0] );
-	for(size_t i=0; i<attrs.size(); ++i)
-	{
-	if( attrs[i] == ALC_MONO_SOURCES )
-	{
-		std::cout << "max mono sources: " << attrs[i+1] << std::endl;
-	}
-	}
+FMOD::Sound* LoadSound(const char* FileName, bool sound_3d)
+{
+	FMOD::Sound* sound = nullptr;
+	_sound_result = _sound_system->createSound(FileName, sound_3d ? FMOD_3D : FMOD_2D, 0, &sound);
+	ERRCHECK(_sound_result);
+	
+	return sound;
+}
+void DeleteSound(FMOD::Sound* sound)
+{
+	_sound_result = sound->release();
+	ERRCHECK(_sound_result);
 }
 
-void AL_Reload()
+void Common_Init(void** /*extraDriverData*/)
 {
-	alcMakeContextCurrent(nullptr);
-	alcDestroyContext(Context);
-	if (Device) {
-		Context = alcCreateContext(Device, NULL);
-		alcMakeContextCurrent(Context);
-	}
-
-	contextMadeCurrent = alcMakeContextCurrent(Context);
-	if (!contextMadeCurrent)
-		std::cerr << "Sound Error" << "\n";
+	CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 }
 
-void  AL_Destroy()
+void FMOD_init(int maxsources, float distancefactor)
 {
-	for(auto x : Sounds)
-		x.Delete();
-	alcCloseDevice(Device);
-	alcMakeContextCurrent(nullptr);
-	alcDestroyContext(Context);
+	void* extradriverdata = 0;
+	Common_Init(&extradriverdata);
+	channelcount = 0;
+	_sound_result = FMOD::System_Create(&_sound_system);
+	ERRCHECK(_sound_result);
+	
+	_sound_result = _sound_system->init(maxsources, FMOD_INIT_MIX_FROM_UPDATE, extradriverdata);
+	ERRCHECK(_sound_result);
+
+	_sound_result = _sound_system->set3DSettings(1.0, distancefactor, 1.0f);
+	ERRCHECK(_sound_result);
+
+
+	std::cout << "\n\n\n inited sound \n\n\n";
+}
+
+
+void  FMOD_Destroy()
+{
+	_sound_result = _sound_system->close();
+	ERRCHECK(_sound_result);
+	_sound_result = _sound_system->release();
+	ERRCHECK(_sound_result);
 }
 
 void UpdateListenerPosition()
 {
 
-	listenerPos.x = CameraPosition.x / WIDTH;
-	listenerPos.y = CameraPosition.y / HEIGHT;
+	listenerPos.x = listenerPos.x / WIDTH * soundscale.x;
+	listenerPos.y = listenerPos.y / WIDTH * soundscale.y;
+	FMOD_VECTOR forward = { 0.0f, 0.0f, 1.0f };
+	FMOD_VECTOR up = { 0.0f, 1.0f, 0.0f };
+	FMOD_VECTOR listenpos = { listenerPos.x, listenerPos.y,listenerPos.z };
+	FMOD_VECTOR listenvel = { listenerVel.x, listenerVel.y,listenerVel.z };
 
-	ALfloat lpos[] = { listenerPos.x * soundscale.x, listenerPos.y * soundscale.y, listenerPos.z * soundscale.z };
-	ALfloat lvel[] = { listenerVel.x * soundSpeedscale.x, listenerVel.y * soundSpeedscale.y, listenerVel.z * soundSpeedscale.z };
 
-	alListenerfv(AL_POSITION, lpos);
-	alListenerfv(AL_VELOCITY, lvel);
-	alListenerfv(AL_ORIENTATION, listenerOri);
+	_sound_result = _sound_system->set3DListenerAttributes(0, &listenpos, &listenvel, &forward, &up);
+	ERRCHECK(_sound_result);
+
+	_sound_result = _sound_system->update();
+	ERRCHECK(_sound_result);
+
+	_sound_system->getChannelsPlaying(&channelcount);
 }
 
-void GenSource(unsigned int* source)
+FMOD::Channel* GenSource(FMOD::Sound* sound,int priority)
 {
-	alGenSources(1, source);
-	alSourcef(*source, AL_GAIN, 1.0f);
-	alSourcef(*source, AL_PITCH, 1.0f);
-	alSource3f(*source, AL_POSITION, 0.0f, 0.0f, 0.0f);
-	alSource3f(*source, AL_VELOCITY, 0.0f, 0.0f, 0.0f);
-	alSourcei(*source, AL_LOOPING, AL_FALSE);
-
-	sources.push_back(source);
+	FMOD::Channel* channel = nullptr;
+	_sound_result = _sound_system->playSound(sound, 0, true, &channel);
+	ERRCHECK(_sound_result);
+	_sound_result = channel->setPriority(priority);
+	ERRCHECK(_sound_result);
+	return channel;
 }
-void SetSourcePitch(unsigned int* source, float pitch)// stock = 1.0f;
+void SetSourcePitch(FMOD::Channel* source, float pitch)// stock = 1.0f;
 {
-	alSourcef(*source, AL_PITCH, pitch);
-}
-void SetSourceGain(unsigned int* source, float gain)// stock = 1.0f;
-{
-	alSourcef(*source, AL_GAIN, gain);
-}
-
-void SetSourceRefDist(unsigned int* source, float Distance)
-{
-	alSourcef(*source, AL_REFERENCE_DISTANCE, Distance);
-}
-void SetSourceMaxDistance(unsigned int* source, float Distance)
-{
-	alSourcef(*source, AL_MAX_DISTANCE, Distance);
-}
-void SetSourceRollOff(unsigned int* source, float rolloff)
-{
-	alSourcef(*source, AL_ROLLOFF_FACTOR, rolloff);
-}
-void SetSourceRelative(unsigned int* source, bool relative)
-{
-	alSourcei(*source, AL_SOURCE_RELATIVE, relative);
-}
-
-void SetSourcePosition(unsigned int* source, glm::vec3 position)// stock = 0.0f,0.0f,0.0f;
-{
-	glm::vec3 pos;
-	pos.x = position.x / WIDTH * soundscale.x;
-	pos.y = position.y / HEIGHT * soundscale.y;
-	pos.z = position.z * soundscale.z;
-	alSource3f(*source, AL_POSITION, pos.x, pos.y, pos.z);
-}
-void SetSourcePosition(unsigned int* source, glm::vec2 position)// stock = 0.0f,0.0f,0.0f;
-{
-	glm::vec3 pos;
-	pos.x = position.x / WIDTH * soundscale.x;
-	pos.y = position.y / HEIGHT * soundscale.y;
-	pos.z = 0;
-	alSource3f(*source, AL_POSITION, pos.x, pos.y, pos.z);
-}
-
-void SetSourceVelocity(unsigned int* source, glm::vec3 velocity)// stock = 0.0f,0.0f,0.0f;
-{
-	alSource3f(*source, AL_VELOCITY, velocity.x * soundSpeedscale.x, velocity.y * soundSpeedscale.y, velocity.z * soundSpeedscale.z);
-}
-void SetSourceLooping(unsigned int* source, bool looping)// stock = false;
-{
-	alSourcei(*source, AL_LOOPING, looping);
-}
-
-
-void SetSourceSound(unsigned int* source, unsigned int* sound)
-{
-	alSourcei(*source, AL_BUFFER, *sound);
-}
-
-
-
-// helpfull when source is running on loop
-void SwapSourceSound(unsigned int* source, unsigned int* sound)
-{
-	alSourceStop(*source);
-	alSourcei(*source, AL_BUFFER, *sound);
-	alSourcePlay(*source);
-}
-void PlaySource(unsigned int* source)
-{
-	alSourcePlay(*source);
-}
-void StopSource(unsigned int* source)
-{
-	alSourceStop(*source);
-}
-
-bool SourcePlaying(unsigned int* source)
-{
-	int playing;
-	alGetSourcei(*source, AL_SOURCE_STATE, &playing);
-	return playing == AL_PLAYING;
-}
-
-void DeleteSource(unsigned int* source)
-{
-
-	int i = 0;
-	bool go = true;
-	while (go && i < sources.size())
-	{
-		if (sources[i] == source)
-		{
-			go = false;
-			sources[i] = sources[sources.size() - 1];
-			sources.pop_back();
-		}
-		i++;
-	}
-
-	alSourceStop(*source);
-	alDeleteSources(1, source);
-	*source = 0;
-}
-
-void PlaySound(unsigned int* sound, glm::vec2 position, float pitch , float gain)
-{
-	unsigned int src;
-
-	alGenSources(1, &src);
-	alSourcef(src, AL_GAIN, 1.0f);
-	alSourcef(src, AL_PITCH, 1.0f);
-	alSource3f(src, AL_POSITION, 0.0f, 0.0f, 0.0f);
-	alSource3f(src, AL_VELOCITY, 0.0f, 0.0f, 0.0f);
-	alSourcei(src, AL_LOOPING, AL_FALSE);
-
-	soundsArray.push_back(src);
-	SetSourcePosition(&soundsArray[soundsArray.size() - 1], position);
-	SetSourceSound(&soundsArray[soundsArray.size() - 1], sound);
-	SetSourceGain(&soundsArray[soundsArray.size() - 1], gain);
-	SetSourcePitch(&soundsArray[soundsArray.size() - 1], pitch);
-	PlaySource(&soundsArray[soundsArray.size() - 1]);
-
+	_sound_result = source->setFrequency(48000.0f * pitch);
+	ERRCHECK(_sound_result);
 
 
 }
-void PlaySound(unsigned int* dst, unsigned int* sound, glm::vec2 position, float pitch, float gain)
+void SetSourceLooping(FMOD::Channel* source, bool looping)// stock = 1.0f;
 {
-	if (dst == NULL) {
-		std::cout << "asdasd";
-		dst = new unsigned int;
-	}
-	if (*dst == NULL)
-	{
-
-		alGenSources(1, dst);
-
-		alSourcef(*dst, AL_GAIN, 1.0f);
-		alSourcef(*dst, AL_PITCH, 1.0f);
-		alSource3f(*dst, AL_POSITION, 0.0f, 0.0f, 0.0f);
-		alSource3f(*dst, AL_VELOCITY, 0.0f, 0.0f, 0.0f);
-		alSourcei(*dst, AL_LOOPING, AL_FALSE);
-		soundsArray2.push_back(dst);
-	}
-	SetSourcePosition(dst, position);
-	SetSourceSound(dst, sound);
-	SetSourceGain(dst, gain);
-	SetSourcePitch(dst, pitch);
-	PlaySource(dst);
-
+	_sound_result = source->setMode(looping ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF);
+	ERRCHECK(_sound_result);
 }
-void PlaySound(unsigned int** dst, unsigned int* sound, glm::vec2 position, float pitch, float gain)
+void SetSourceGain(FMOD::Channel* source, float gain)// stock = 1.0f;
 {
-	if (*dst == NULL) {
-		*dst = new unsigned int();
-	}
-	if (**dst == NULL)
-	{
-
-		alGenSources(1, *dst);
-
-		alSourcef(**dst, AL_GAIN, 1.0f);
-		alSourcef(**dst, AL_PITCH, 1.0f);
-		alSource3f(**dst, AL_POSITION, 0.0f, 0.0f, 0.0f);
-		alSource3f(**dst, AL_VELOCITY, 0.0f, 0.0f, 0.0f);
-		alSourcei(**dst, AL_LOOPING, AL_FALSE);
-		soundsArray2.push_back(*dst);
-	}
-	SetSourcePosition(*dst, position);
-	SetSourceSound(*dst, sound);
-	SetSourceGain(*dst, gain);
-	SetSourcePitch(*dst, pitch);
-	PlaySource(*dst);
-
+	_sound_result = source->setVolume(gain*0.8f);
+	ERRCHECK(_sound_result);
 }
-void ProcessAL()
+void SetSource3D(FMOD::Channel* source, glm::vec3 position, glm::vec3 velocity)// stock = 0.0f,0.0f,0.0f;
 {
+	glm::vec3 gpos;
+	gpos.x = position.x / WIDTH * soundscale.x;
+	gpos.y = position.y / WIDTH * soundscale.y;
+	gpos.z = position.z * soundscale.z;
+	glm::vec3 gvel;
+	gvel.x = velocity.x / WIDTH * soundscale.x;
+	gvel.y = velocity.y / WIDTH * soundscale.y;
+	gvel.z = velocity.z * soundscale.z;
+	FMOD_VECTOR pos = { gpos.x,gpos.y,gpos.z },
+		vel = { gvel.x,gvel.y,gvel. z};
+
+	_sound_result = source->set3DAttributes(&pos,&vel);
+	if (_sound_result != FMOD_ERR_NEEDS3D)
+		ERRCHECK(_sound_result);
+}
+void SetSource3D(FMOD::Channel* source, glm::vec2 position, glm::vec2 velocity)// stock = 0.0f,0.0f,0.0f;
+{
+	glm::vec3 gpos;
+	gpos.x = position.x / WIDTH * soundscale.x;
+	gpos.y = position.y / WIDTH * soundscale.y;
+	gpos.z = 0;
+	glm::vec3 gvel;
+	gvel.x = velocity.x / WIDTH * soundscale.x;
+	gvel.y = velocity.y / WIDTH * soundscale.y;
+	gvel.z = 0;
+	FMOD_VECTOR pos = { gpos.x,gpos.y,gpos.z },
+		vel = { gvel.x,gvel.y,gvel.z };
 	
-	int i = 0;
-	while (i < soundsArray.size())
-	{
-		if (!SourcePlaying(&soundsArray[i]) || soundsArray[i] == 0)
-		{
-			alSourceStop(soundsArray[i]);
-			alDeleteSources(1, &soundsArray[i]);
+	_sound_result = source->set3DAttributes(&pos, &vel);
+	if(_sound_result != FMOD_ERR_NEEDS3D)
+		ERRCHECK(_sound_result);
+}
 
-			soundsArray[i] = soundsArray[soundsArray.size() - 1];
-			soundsArray.pop_back();
-		}
-		else i++;
+void PlaySource(FMOD::Channel* source, bool reset)
+{
+	if (!SourcePlaying(source))
+	{
+		_sound_result = source->setPaused(false);
+		ERRCHECK(_sound_result);
 	}
-	for (int i = 0; i < soundsArray2.size(); i++)
+	if (reset)
 	{
-
-		bool del = true;
-		while (del && i < soundsArray2.size())
-		{
-			del = false;
-			if (soundsArray2[i] == 0 || *soundsArray2[i] == 0)
-			{
-				del = true;
-				soundsArray2[i] = soundsArray2[soundsArray2.size() - 1];
-				soundsArray2.pop_back();
-			}
-			else if (!SourcePlaying(soundsArray2[i]))
-			{
-				del = true;
-
-				alSourceStop(*soundsArray2[i]);
-				alDeleteSources(1, soundsArray2[i]);
-				*soundsArray2[i] = 0;
-				soundsArray2[i] = soundsArray2[soundsArray2.size() - 1];
-				soundsArray2.pop_back();
-			}
-
-		}
+		_sound_result = source->setPosition(0.0f, FMOD_TIMEUNIT_MS);
+		ERRCHECK(_sound_result);
 	}
 }
+
+void StopSource(FMOD::Channel* source)
+{
+	SetSourceGain(source, 0.0f);
+	_sound_result = source->setPaused(true);
+	ERRCHECK(_sound_result);
+}
+
+bool SourcePlaying(FMOD::Channel* source)
+{
+	bool playing = false;
+	_sound_result = source->getPaused(&playing);
+	ERRCHECK(_sound_result);
+	return !playing;
+}
+
+void DeleteSource(FMOD::Channel* source)
+{
+	SetSourceGain(source, 0.0f);
+	source->stop();
+
+}
+#undef PlaySound
+
+void PlaySound(FMOD::Sound* sound, glm::vec2 position, float gain, float pitch)
+{
+	FMOD::Channel* channel = nullptr;
+	_sound_result = _sound_system->playSound(sound, 0, true, &channel);
+	ERRCHECK(_sound_result);
+	
+	SetSource3D(channel, position, {0.0f,0.0f});
+	SetSourceGain(channel, gain);
+	SetSourcePitch(channel, pitch);
+	SetSourceLooping(channel, false);
+	PlaySource(channel);
+}
+
 
 
 void soundpool::Update()
 {
 
-	for(int i=0;i<ssources.size();i++)
+	for (int i = 0; i < sourcePlayPositions.size(); i++)
 	{
-		
-		if(avggains[i]>0.0f && sourceUsageAmount[i]>0)
+
+		if (avggains[i] > 0.0f && sourceUsageAmount[i] > 0)
 		{
 
-			
-			if(!alIsSource(ssources[i]))
-			{
-				GenSource(&ssources[i]);
-				SetSourceSound(&ssources[i],&sound);
-				SetSourceLooping(&ssources[i],continuous);
-			}
+
 			avgpositions[i] /= (float)sourceUsageAmount[i];
 			avgvelocities[i] /= (float)sourceUsageAmount[i];
 			avgpitches[i] /= (float)sourceUsageAmount[i];
-			SetSourceGain(&ssources[i],avggains[i]);
-			SetSourcePosition(&ssources[i],avgpositions[i]);
-			SetSourceVelocity(&ssources[i],glm::vec3(avgvelocities[i],0.0f));
-			SetSourcePitch(&ssources[i],avgpitches[i]);
-			SetSourceLooping(&ssources[i],continuous);
-			if(continuous)
-			{	if(!SourcePlaying(&ssources[i]))
-					PlaySource(&ssources[i]);
+			
+			if (sourcesBuff[i] != nullptr)
+			{
+				SetSourceGain(sourcesBuff[i], avggains[i]);
+				SetSource3D(sourcesBuff[i], avgpositions[i], avgvelocities[i]);
+				SetSourcePitch(sourcesBuff[i], avgpitches[i]);
+				SetSourceLooping(sourcesBuff[i], continuous);
+				if (continuous)
+				{
+					if (!SourcePlaying(sourcesBuff[i]))
+						PlaySource(sourcesBuff[i]);
+				}
+				else
+				{
+					PlaySource(sourcesBuff[i],true);
+				}
+				_sound_result = sourcesBuff[i]->getPosition(&sourcePlayPositions[i], FMOD_TIMEUNIT_MS);
+				ERRCHECK(_sound_result);
 			}
 			else
 			{
-				if(SourcePlaying(&ssources[i]))
-					StopSource(&ssources[i]);
-				PlaySource(&ssources[i]);	
+				sourcesBuff[i] = GenSource(sound);
+				SetSourceGain(sourcesBuff[i], avggains[i]);
+				SetSource3D(sourcesBuff[i], avgpositions[i], avgvelocities[i]);
+				SetSourcePitch(sourcesBuff[i], avgpitches[i]);
+				SetSourceLooping(sourcesBuff[i], continuous);
+
+				if (continuous)
+				{
+					_sound_result = sourcesBuff[i]->setPosition(sourcePlayPositions[i], FMOD_TIMEUNIT_MS);
+					ERRCHECK(_sound_result);
+				}
+				PlaySource(sourcesBuff[i]);
+
 			}
+
 		}
-		else if(avggains[i] < 0.002f && SourcePlaying(&ssources[i]) && continuous)
+		else if (avggains[i] < 0.001f && sourcesBuff[i] != nullptr && continuous)
 		{
-			SetSourceGain(&ssources[i],0.0f);
+			DeleteSource(sourcesBuff[i]);
+			sourcesBuff[i] = nullptr;
 		}
-		
+
 		avgvelocities[i] = glm::vec2(0.0f);
 		avggains[i] = 0.0f;
 		avgpitches[i] = 0.0f;
 		avgpositions[i] = ListenerPos;
 		sourceUsageAmount[i] = 0;
-		
+
 	}
 }
-void soundpool::AddSound(glm::vec2 position,float gain,float pitch,glm::vec2 velocity,bool startover)
+void soundpool::AddSound(glm::vec2 position, float gain, float pitch, glm::vec2 velocity, bool startover)
 {
-	if(gain<0.001f)
-		return;
-	if(sqrlength(ListenerPos - position) > (1000)*(1000))
+	if (sqrlength(ListenerPos - position) > (3000) * (3000))
 		return;
 	float ll = -1;
 	int id = -1;
 	bool first = true;
-	for(int i=0;i<ssources.size();i++)
+	for (int i = 0; i < avgpositions.size(); i++)
 	{
 		float score = 0.0f;
 		glm::vec2 spos = avgpositions[i];
-		if(sourceUsageAmount[i]>1)
+		if (sourceUsageAmount[i] > 1)
 			spos = spos / (float)sourceUsageAmount[i];
 		score += sqrlength(spos - position);
-		score -= sourceUsageAmount[i] * 100.0f;
+		score -= sourceUsageAmount[i] * 1000.0f;
 		//if(sourceUsageAmount[i]==0)
 		//{
 		//	id = i;
 		//	return;
 		//}
-		if(score < ll|| first)
+		if (score < ll || first)
 		{
 			ll = score;
 			id = i;
 			first = false;
 		}
 	}
-	if(id <0)
+	if (id < 0)
 	{
 		return;
 	}
 	sourceUsageAmount[id]++;
-	if(sourceUsageAmount[id]==1)
+	if (sourceUsageAmount[id] == 1)
 		avgpositions[id] = position;
-	else 
+	else
 		avgpositions[id] += position;
-	
+
 	avgvelocities[id] += velocity;
 	avggains[id] += gain;
 	avgpitches[id] += pitch;
-	if(startover || !continuous)
+	if (startover || !continuous)
 	{
-		if(SourcePlaying(&ssources[id]))
-			StopSource(&ssources[id]);
-		PlaySource(&ssources[id]);	
+		sourcePlayPositions[id] = 0.0f;
+
+		if (sourcesBuff[id] == nullptr)
+			return;
+		if (SourcePlaying(sourcesBuff[id]))
+		{
+			DeleteSource(sourcesBuff[id]);
+			sourcesBuff[id] = nullptr;
+		}
 	}
 
 }
 void soundpool::Delete()
 {
-	for(int i=0;i<ssources.size();i++)
+	for (int i = 0; i < sourcesBuff.size(); i++)
 	{
-		StopSource(&ssources[i]);
-		DeleteSource(&ssources[i]);
+		if (sourcesBuff[i] == nullptr)
+			continue;
+		DeleteSource(sourcesBuff[i]);
+		sourcesBuff[i] = nullptr;
 	}
 }
 
 
-void addsound(unsigned int sound, bool looping, unsigned int sourceamount)
+void addsound(FMOD::Sound* sound, bool looping, unsigned int sourceamount)
 {
 	soundpool ss;
 	ss.sound = sound;
 	ss.sourceamount = sourceamount;
 	ss.continuous = looping;
-	ss.ssources.resize(sourceamount);
+	ss.sourcesBuff.resize(sourceamount);
 	ss.avgpositions.resize(sourceamount);
 	ss.avgvelocities.resize(sourceamount);
 	ss.avggains.resize(sourceamount);
 	ss.avgpitches.resize(sourceamount);
 	ss.sourceUsageAmount.resize(sourceamount);
+	ss.sourcePlayPositions.resize(sourceamount);
+	ss.startover.resize(sourceamount);
+	
 	int divider = sqrt(sourceamount);
-	for(int i=0;i<sourceamount;i++)
+	for (int i = 0; i < sourceamount; i++)
 	{
-		GenSource(&ss.ssources[i]);
-		SetSourceSound(&ss.ssources[i],&sound);
-		SetSourceLooping(&ss.ssources[i],looping);
-		int y = i/divider;
+		ss.sourcesBuff[i] = nullptr;
+		ss.startover[i] = false;
+		int y = i / divider;
 
-		ss.avgpositions[i]=glm::vec2(((i%divider)-divider/2),y - divider/2);
-		ss.avgpositions[i].x = ss.avgpositions[i].x ;
-		ss.avgpositions[i].y = ss.avgpositions[i].y ;
-		SetSourcePosition(&ss.ssources[i],ss.avgpositions[i]);
-		ss.avgvelocities[i]=glm::vec2(0.0f);
-		ss.avggains[i]=0.0f;
-		ss.avgpitches[i]=0.0f;
+		ss.avgpositions[i] = glm::vec2(((i % divider) - divider / 2), y - divider / 2);
+		ss.avgpositions[i].x = ss.avgpositions[i].x;
+		ss.avgpositions[i].y = ss.avgpositions[i].y;
+		ss.avgvelocities[i] = glm::vec2(0.0f);
+		ss.avggains[i] = 0.0f;
+		ss.avgpitches[i] = 0.0f;
 		ss.sourceUsageAmount[i] = 0;
 	}
 	Sounds.push_back(ss);
 }
-void playsound(unsigned int sound, glm::vec2 position,float gain,float pitch ,glm::vec2 velocity,bool startover)
+void playsound(FMOD::Sound* sound, glm::vec2 position, float gain, float pitch, glm::vec2 velocity, bool startover)
 {
-	for(int i=0;i<Sounds.size();i++)
-		if(Sounds[i].sound == sound) Sounds[i].AddSound(position,gain,pitch,velocity,startover); 
+	for (int i = 0; i < Sounds.size(); i++)
+		if (Sounds[i].sound == sound) Sounds[i].AddSound(position, gain, pitch, velocity, startover);
 }
-

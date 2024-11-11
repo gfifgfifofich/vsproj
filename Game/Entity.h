@@ -87,11 +87,11 @@ void EntityToEntityCollision(CentralPart* e1, CentralPart* e2)
 					glm::vec2 dif = prevvel - ballVelocity[i];
 					float len = sqrlength(dif);
 					if (len > maxdif * maxdif)
-						playsound(Hit, ballPosition[i],0.5f,0.1f + (rand() % 100 * 0.00025f), ballVelocity[i],false);
+						playsound(Hit, ballPosition[i],0.5f,0.1f + (rand() % 100 * 0.00025f));
 					 dif = prevvel2 - ballVelocity[a];
 					len = sqrlength(dif);
 					if (len > maxdif * maxdif)
-						playsound(Hit, ballPosition[a],0.5f,0.1f + (rand() % 100 * 0.00025f), ballVelocity[a],false);
+						playsound(Hit, ballPosition[a],0.5f,0.1f + (rand() % 100 * 0.00025f));
 				}
 	else
 		for(auto i : e2->Balls)
@@ -104,11 +104,11 @@ void EntityToEntityCollision(CentralPart* e1, CentralPart* e2)
 					glm::vec2 dif = prevvel - ballVelocity[i];
 					float len = sqrlength(dif);
 					if (len > maxdif * maxdif)
-						playsound(Hit, ballPosition[i],0.5f,0.1f + (rand() % 100 * 0.00025f), ballVelocity[i],false);
+						playsound(Hit, ballPosition[i],0.5f,0.1f + (rand() % 100 * 0.00025f));
 					 dif = prevvel2 - ballVelocity[a];
 					len = sqrlength(dif);
 					if (len > maxdif * maxdif)
-						playsound(Hit, ballPosition[a],0.5f,0.1f + (rand() % 100 * 0.00025f), ballVelocity[a],false);
+						playsound(Hit, ballPosition[a],0.5f,0.1f + (rand() % 100 * 0.00025f));
 				}
 
 	/*
@@ -265,7 +265,7 @@ void ProcessEntities(float dt,int s)
 				CollisionSmoke.Spawn(position,
 					15);
 				
-				playsound(Hit,ballPosition[i],0.5f,0.1f + (rand() % 100 * 0.00025f), ballVelocity[i],false);
+				playsound(Hit,ballPosition[i],0.5f,0.1f + (rand() % 100 * 0.00025f));
 				ballSoundcd[i] = 1.0f;
 				
 			}

@@ -25,7 +25,6 @@ public:
 	int fraction = 0;
 	
 
-	unsigned int source;
 
 	Ray RayCast; 
 	Laser(glm::vec2 position, glm::vec2 direction, float length, int steps);

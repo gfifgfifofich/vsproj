@@ -196,8 +196,6 @@ void ProcessCamera(float dt)
 	if (ScreenShake > 1.0f) ScreenShake = 1.0f;
 	if (ChromaticAbberation > 0.3f) ChromaticAbberation = 0.3f;
 	ChromaticStrength = ChromaticAbberation * s_ChromaticAbberation;
-	ListenerPos = CameraPosition;
-	UpdateListenerPosition();
 	sw->End();
 }
 

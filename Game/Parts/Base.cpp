@@ -352,7 +352,7 @@ void PartsPile::DeletePart(int  index)
 	Parts[index]->Delete = true;
 	Parts[index] = Parts[Parts.size() - 1];
 	Parts.pop_back();
-	playsound(PartDestrSOund, mid, 0.25f,0.085f+rand()%100*0.001f,{0.0f,0.0f},false);
+	PlaySound(PartDestrSOund, mid, 0.25f,0.085f+rand()%100*0.001f);
 }
 void PartsPile::SpawnPart(int type, glm::vec2 position, float size)
 {

@@ -3,7 +3,6 @@ class Rocket
 {
 public:
 	DamageSphere DS;
-
 	float timeLeft = 10.0f;
 	float lifet = 10.0f;
 	ball body[2];

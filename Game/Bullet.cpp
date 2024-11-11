@@ -56,7 +56,7 @@ void Bullet::Dead()
 	if (!wasdead)
 	{
 		wasdead = true;
-		playsound(BulletHit, body.body.position,0.5f,1.0f,{0.0f,0.0f}, false);
+		playsound(BulletHit, body.body.position,0.5f,1.0f);
 		float speed = length(body.body.velocity);
 		ScreenShake += body.body.r * speed * 0.000001f;
 		ChromaticAbberation += body.body.r * speed * 0.000001f;

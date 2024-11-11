@@ -39,8 +39,8 @@ void Rocket::Process(float dt)
 	if (DS.dead)
 		Explode();
 	if (fired && !Exploded) {
+
 		DamageSpheres.push_back(&DS);
-		playsound(RocketEngineSound,mid,0.25f,4.0f,midvel,false);
 		timeLeft -= dt;
 		// NeuralNetwork without NeuralNetwork
 		Force.x = sigmoid(((mid.x - target.x) * 0.1f * -0.269978 - midvel.x * 0.1f * 0.0435735)) * 250.0f - 125.0f;
@@ -61,6 +61,7 @@ void Rocket::Process(float dt)
 		glm::vec2 trgdir = Normalize(Force);
 		body[0].position = mid + trgdir * body[0].r;
 		body[1].position = mid - trgdir * body[1].r;
+		playsound(RocketEngineSound, mid, 0.25f * throtle, 4.0f * throtle + 0.1f, midvel);
 	}
 	else
 	{

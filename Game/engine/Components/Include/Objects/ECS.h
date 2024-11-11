@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fmod.hpp"
 /*Tree
 
 	Scene has vector of nodes.
@@ -344,7 +345,7 @@ class SoundAsset : public Asset
 {
 	std::string PrevSoundName="";
 public:
-	unsigned int Sound = -1;
+	FMOD::Sound* Sound = nullptr;
 	std::string SoundName = "";
 
 	SoundAsset();
@@ -593,8 +594,8 @@ public:
 
 class SoundSource : public Node
 {
-	unsigned int prevsound = 0;
-	unsigned int soundid = 0;
+	FMOD::Sound* prevsound = 0;
+	FMOD::Sound* soundid = 0;
 	bool changedSound = false;
 	bool prevLooping = false;
 	glm::vec2 prevvelocity = {0.0f,0.0f};
@@ -625,13 +626,13 @@ public:
 	bool Looping = false;
 	bool Temporary = false;
 	bool NoAsset = true;
-	unsigned int noAssetSound = NULL; 
+	FMOD::Sound* noAssetSound = nullptr;
 
 	glm::vec2 velocity = {0.0f,0.0f};
 	float gain = 1.0f;
 	float pitch = 1.0f;
-	unsigned int soundSource = -1;
-	SoundAsset* sound = NULL;
+	FMOD::Channel* soundSource = nullptr;
+	SoundAsset* sound = nullptr;
 	std::string SoundAssetName = "";
 	
 	SoundSource();

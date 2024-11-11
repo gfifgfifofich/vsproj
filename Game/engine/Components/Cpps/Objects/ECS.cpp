@@ -324,14 +324,15 @@ void ParticleAsset::DrawPreview(glm::vec2 ui_position, glm::vec2 size)
 
 void SoundAsset::Load()
 {
-	if(Sound>=0)
-		UnLoad();
-	Sound = LoadSound(SoundName.c_str());
+	//if(Sound!=nullptr)
+	//	UnLoad();
+	//Sound = LoadSound(SoundName.c_str());
 }
 void SoundAsset::UnLoad()
 {
-	if(Sound<0)
-		DeleteSound(&Sound);
+	//if(Sound==nullptr)
+	//	DeleteSound(Sound);
+	//Sound = nullptr;
 }
 void SoundAsset::DrawProcess(float dt)
 {
@@ -620,11 +621,12 @@ SoundSource::SoundSource()
 }
 SoundSource::~SoundSource()
 {
-	if(soundSource>=0)
-	{
-		StopSource(&soundSource);
-		DeleteSource(&soundSource);
-	} 
+	//if(soundSource!= nullptr)
+	//{
+	//	StopSource(soundSource);
+	//	DeleteSource(soundSource);
+	//	soundSource = nullptr;
+	//} 
 }
 
 
@@ -1340,210 +1342,41 @@ std::vector<UI_DataPack> SoundSource::GetUIData()
 }
 void SoundSource::CustomUIDraw(glm::vec2* Corner, float Xstep,float step)
 {
-	bool b = false;
-	Corner->y += UI_button(&b ,"PlayOnce", *Corner + glm::vec2(Xstep,0.0f)).y * -1.0f - step;
-	if(b)
-	{
-		if(soundSource>=0)
-		{
-			PlaySource(&soundSource);
-			//PlaySound(&sound->Sound,{0.0f,0.0f});
-		}
-	}
-	b = false;
-	Corner->y += UI_button(&b ,"Reload", *Corner + glm::vec2(Xstep,0.0f)).y * -1.0f - step;
-	if(b)
-	{
-		if(soundSource>=0)
-		{
-			DeleteSource(&soundSource);
-			GenSource(&soundSource);
-			SetSourceSound(&soundSource,&sound->Sound);
-		}
-	}
+	//bool b = false;
+	//Corner->y += UI_button(&b ,"PlayOnce", *Corner + glm::vec2(Xstep,0.0f)).y * -1.0f - step;
+	//if(b)
+	//{
+	//	if(soundSource!= nullptr)
+	//	{
+	//		PlaySource(soundSource);
+	//		//PlaySound(&sound->Sound,{0.0f,0.0f});
+	//	}
+	//}
+	//b = false;
+	//Corner->y += UI_button(&b ,"Reload", *Corner + glm::vec2(Xstep,0.0f)).y * -1.0f - step;
+	//if(b)
+	//{
+	//	if(soundSource!= nullptr)
+	//	{
+	//		DeleteSource(soundSource);
+	//		soundSource = GenSource(sound->Sound);
+	//	}
+	//}
 }
 void SoundSource::MTPreProcess()
 {	
-	bool texexists = false;
-	for(auto tex : AvailableSoundAssets)
-	{
-		
-		if(tex->Name == SoundAssetName && !texexists && !tex->Delete)
-		{
-			sound = tex;
-			texexists=true;
-			break;
-		}
-	}
 
-	if(!texexists)
-	{
-		sound = NULL;
-		soundid = -1;
-		prevsound = -1;
-		changedSound = true;
-		return;
-	}
-
-	changedSound = prevsound != sound->Sound;
-	prevsound =sound->Sound; 
-	soundid = sound->Sound;
-	if(prevposition != position)
-	{
-		prevposition = position;
-		SetSourcePosition(&soundSource,position);
-	}
-	if(prevgain != gain)
-	{
-		prevgain = gain;
-		SetSourceGain(&soundSource,gain);
-	}
-	if(prevpitch != pitch)
-	{
-		prevpitch = pitch;
-		SetSourcePitch(&soundSource,pitch);
-	}
-	if(prevLooping != Looping)
-	{
-		prevLooping = Looping;
-		SetSourceLooping(&soundSource,Looping);
-	}
-	if(prevvelocity != velocity)
-	{
-		prevvelocity = velocity;
-		SetSourceVelocity(&soundSource,{velocity,0.0f});
-	}
-	alGetSourcef(soundSource,AL_SEC_OFFSET,&Time);
-
-	if(HalfVolumeDist != prevHalfVolumeDist)
-	{
-		prevHalfVolumeDist = HalfVolumeDist;
-		SetSourceRefDist(&soundSource, HalfVolumeDist);
-	}
-	if(RollOff != prevRollOff)
-	{
-		prevRollOff = RollOff;
-		SetSourceRollOff(&soundSource, RollOff);
-	}
-	if(MaxDist != prevMaxDist)
-	{
-		prevMaxDist = MaxDist;
-		SetSourceMaxDistance(&soundSource, MaxDist);
-	}
-	if(CamRelative != prevCamRelative)
-	{
-		prevCamRelative = CamRelative;
-		SetSourceRelative(&soundSource,CamRelative);
-	}
 
 }
 void SoundSource::Play()
 {
-	if(soundSource>0)
-	{
-		StopSource(&soundSource);
-		DeleteSource(&soundSource);
-	}
-
-	GenSource(&soundSource);
-	if(NoAsset && noAssetSound!=NULL)
-		SetSourceSound(&soundSource,&noAssetSound);
-	else if(!NoAsset && sound!=NULL)
-		SetSourceSound(&soundSource,&sound->Sound);
-
-
-	prevposition = position;
-	SetSourcePosition(&soundSource,position);
-	prevgain = gain;
-	SetSourceGain(&soundSource,gain);
-	prevpitch = pitch;
-	SetSourcePitch(&soundSource,pitch);
-	prevLooping = Looping;
-	SetSourceLooping(&soundSource,Looping);
-	prevvelocity = velocity;
-	SetSourceVelocity(&soundSource,{velocity,0.0f});
-	prevHalfVolumeDist = HalfVolumeDist;
-	SetSourceRefDist(&soundSource, HalfVolumeDist);
-	prevRollOff = RollOff;
-	SetSourceMaxDistance(&soundSource, RollOff);
-	prevMaxDist = MaxDist;
-	SetSourceRollOff(&soundSource, MaxDist);
-	prevCamRelative = CamRelative;
-	SetSourceRelative(&soundSource,CamRelative);
-
-	PlaySource(&soundSource);
 
 
 }
 
 void SoundSource::PreProcess()
 {
-	if(!NoAsset && sound==NULL)
-	{
-		if(soundSource>=0)
-		{
-			DeleteSource(&soundSource);
-			soundSource = -1;
-			soundid = -1;
-		}
-		return;
-	}
-	else
-	{
-
-		if(noAssetSound == NULL)
-		{
-			if(soundSource>=0)
-			{
-				DeleteSource(&soundSource);
-				soundSource = -1;
-				soundid = -1;
-			}
-			return;
-		}		
-
-	}
-
-	if(soundSource ==0)
-		GenSource(&soundSource);
-
-	if(changedSound)
-	{
-		if(soundSource>0)
-			DeleteSource(&soundSource);
-		GenSource(&soundSource);
-		if(NoAsset && noAssetSound!=NULL)
-			SetSourceSound(&soundSource,&noAssetSound);
-		else if(!NoAsset && sound!=NULL)
-			SetSourceSound(&soundSource,&sound->Sound);
-		prevposition = position;
-		SetSourcePosition(&soundSource,position);
-		prevgain = gain;
-		SetSourceGain(&soundSource,gain);
-		prevpitch = pitch;
-		SetSourcePitch(&soundSource,pitch);
-		prevLooping = Looping;
-		SetSourceLooping(&soundSource,Looping);
-		prevvelocity = velocity;
-		SetSourceVelocity(&soundSource,{velocity,0.0f});
-		prevHalfVolumeDist = HalfVolumeDist;
-		SetSourceRefDist(&soundSource, HalfVolumeDist);
-		prevRollOff = RollOff;
-		SetSourceMaxDistance(&soundSource, RollOff);
-		prevMaxDist = MaxDist;
-		SetSourceRollOff(&soundSource, MaxDist);
-		prevCamRelative = CamRelative;
-		SetSourceRelative(&soundSource,CamRelative);
-	}
 	
-	if(soundSource >0)
-	{
-		if(SourcePlaying(&soundSource))
-			wasplaying = true;
-
-		if(Temporary && !SourcePlaying(&soundSource) && wasplaying)
-			Delete=true;
-	}
 }
 void SoundSource::DebugDraw()
 {

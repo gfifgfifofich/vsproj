@@ -72,6 +72,9 @@ public:
 
 	void Create(glm::vec2 position, glm::vec2 direction, float size, float mass = 1.0f) override
 	{
+
+
+
 		ballPosition[body[0]]= position;
 		ballPosition[body[1]]= position + direction * 3.0f;
 		ballPosition[body[2]]= position + direction * 3.0f;
@@ -219,13 +222,8 @@ public:
 
 
 
-			ballTemp[body[1]] += HeatPerShot;
-			playsound(GunSound,
-				ballPosition[body[1]],
-			 freq <= 0.001f ? 0.0f : 1.0f,
-			 (1.0f + rand() % 10 * 0.04f - 0.2f) * freq,
-			  ballVelocity[body[0]]);
 
+			playsound(GunSound, ballPosition[body[1]], freq <= 0.001f ? 0.0f : 1.0f, (1.0f + rand() % 10 * 0.04f - 0.2f) * freq, ballVelocity[body[0]],true);
 
 			ScreenShake += PARTSIZE * 0.2f * bulletSpeed * 0.000001f;
 			ChromaticAbberation += PARTSIZE * 0.2f * bulletSpeed * 0.000001f;
@@ -543,8 +541,10 @@ public:
 				t = 0.0f;
 
 			if (t > 0.0f)
-				playsound(LaserGunSound,ballPosition[body[1]],t * (freq <= 0.0001f ? 0.0f : 1.0f),t * freq,ballVelocity[body[0]]);
-			
+			{			
+				playsound(GunSound, ballPosition[body[1]], freq <= 0.001f ? 0.0f : 1.0f, t * freq, ballVelocity[body[0]]);
+
+			}
 			ballTemp[body[1]] += t * HeatPerShot * dt;
 
 			ScreenShake += PARTSIZE * recoil * 0.000021f * t;
@@ -816,7 +816,8 @@ public:
 		
 		//Position 
 		//Velocity 
-		playsound(GunSound, ballPosition[body[1]], (1.0f + rand() % 10 * 0.04f - 0.2f) * freq, freq <= 0.001f ? 0.0f : 1.0f, ballVelocity[body[0]]);
+
+		playsound(GunSound, ballPosition[body[1]], freq <= 0.001f ? 0.0f : 1.0f, (1.0f + rand() % 10 * 0.04f - 0.2f) * freq, ballVelocity[body[0]], true);
 
 		ScreenShake += PARTSIZE * bulletSpeed * 0.000001f;
 		ChromaticAbberation += PARTSIZE * bulletSpeed * 0.000001f;
@@ -939,6 +940,7 @@ public:
 	}
 	void Create(glm::vec2 position, glm::vec2 direction, float size, float mass = 1.0f) override
 	{
+
 
 		Health = PartsData.GetPropertyAsFloat("MiniGun", "Health");
 		HeatPerShot = PartsData.GetPropertyAsFloat("MiniGun", "HeatPerShot");
@@ -1117,7 +1119,9 @@ public:
 		if (!debris && !deactivated && !overheated)
 		{
 			if (shot)
-				playsound(MiniGunSound,ballPosition[body[4]],1.0f,freq + 0.25f + (((rand() % 100) * 0.01f) - 0.5f) * 0.5f + 0.02f*ballTemp[body[4]],ballVelocity[body[0]]);
+			{
+				playsound(MiniGunSound, ballPosition[body[1]], freq <= 0.001f ? 0.0f : 1.0f, freq + 0.25f + (((rand() % 100) * 0.01f) - 0.5f) * 0.5f + 0.02f * ballTemp[body[4]], ballVelocity[body[0]]);
+			}
 
 			t -= dt;
 			if (shot && t <= 0)
@@ -1279,7 +1283,6 @@ public:
 	void Create(glm::vec2 position, glm::vec2 direction, float size, float mass = 1.0f) override
 	{
 
-
 		Health = PartsData.GetPropertyAsFloat("RocketEngine", "Health");
 		HeatPerSecond = PartsData.GetPropertyAsFloat("RocketEngine", "HeatPerSecond");
 		Power = PartsData.GetPropertyAsFloat("RocketEngine", "Power");
@@ -1366,12 +1369,8 @@ public:
 				{
 					throtle *= 2.5f;
 				}
-				playsound(RocketEngineSound,(ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f,
-				throtle * 0.25f * (freq <= 0.001f ? 0.0f : 1.0f),
-				freq,
-				ballVelocity[body[0]],
-				false);
 				
+				playsound(RocketEngineSound, (ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f, throtle * 0.25f * (freq <= 0.001f ? 0.0f : 1.0f), freq, ballVelocity[body[0]]);
 
 
 			}
@@ -1724,7 +1723,7 @@ public:
 			MinAutocooltemp = mintemp;
 			if (gain > 0.1f)
 			{
-				playsound(SHHSound,(ballPosition[body[0]] + ballPosition[body[1]]) * 0.5f,gain * 0.03f,1.0f,ballVelocity[body[0]]);
+				playsound(SHHSound, (ballPosition[body[0]] + ballPosition[body[1]]) * 0.5f, gain * 0.03f, 1.0f, ballVelocity[body[0]]);
 			}
 
 			
@@ -2161,13 +2160,7 @@ public:
 			}
 			if (abs(throtle) > 0.0f && !shutdown && !deactivated)
 			{
-			
-				playsound(RocketEngineSound,mid,
-				throtle * 0.25f * (freq <= 0.001f ? 0.0f : 1.0f),
-				freq,
-					ballVelocity[body[0]],
-				false);
-				
+				playsound(RocketEngineSound, (ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f, throtle * 0.25f * (freq <= 0.001f ? 0.0f : 1.0f), freq, ballVelocity[body[0]]);
 
 
 			}

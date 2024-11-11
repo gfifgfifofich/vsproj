@@ -16,7 +16,6 @@ Explodion NewExplodion(glm::vec2 position, float r, float dmg, float lifetime,fl
 	e.DS.Heat = r *0.005f;
 	e.DS.singleHit = false;
 	e.DS.timeLeft = 0.001f;
-
 	e.timeLeft = lifetime;
 	e.lifet = lifetime;
 	ExplodionPE.SpawnInCircle(e.DS.body.position, e.DS.body.r, 100);

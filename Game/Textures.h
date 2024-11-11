@@ -1,22 +1,24 @@
 #pragma once
 
+#include "fmod.hpp"
 inline MaterialObject MO_Ball;
 inline MaterialObject MO_Cube;
 inline Material PrimitiveQuad;
-inline  unsigned int 
+
+inline FMOD::Sound*
 RocketEngineSound,
-SHHSound,
-GunSound,
-HeavyHit,
-LaserGunSound,
-MiniGunSound,
-Clang,
-Detach,
-Scratch,
-Hit,
-BulletHit, 
-PartDestrSOund,
-ExplodionSound
+*SHHSound,
+*GunSound,
+*HeavyHit,
+*LaserGunSound,
+*MiniGunSound,
+*Clang,
+*Detach,
+*Scratch,
+*Hit,
+*BulletHit, 
+*PartDestrSOund,
+*ExplodionSound
 
 ;
 

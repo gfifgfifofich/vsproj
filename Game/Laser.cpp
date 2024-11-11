@@ -60,7 +60,7 @@ void Laser::Dead()
 }
 Laser::~Laser()
 {
-	DeleteSource(&source);
+
 }
 
 void ProcessLasers(float dt, bool draw, bool updateRaycasts)

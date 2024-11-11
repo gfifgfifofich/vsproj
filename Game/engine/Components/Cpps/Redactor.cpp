@@ -1665,7 +1665,7 @@ void On_Create()
 	std::cout<<"On_Create\n";
 	_FillVectorsOfNodesAndAssets();
 
-	AL_init();
+	FMOD_init(512);
 	sTesti[0] = 0;
 	Map.LoadAssets = true;
 	std::cout<<"On_Create loading map\n";
@@ -1752,9 +1752,6 @@ void On_Create()
 
 void On_Update()
 {
-	ProcessAL();
-
-
 	Window* w = GetWindow(SceneWindowID);
 	Window* iw = GetWindow(InspectorWindowID);
 	Window* pw = GetWindow(ProjectWindowID);
@@ -2675,7 +2672,7 @@ int main()
 	std::cout<<"\nexited, saving...";
 	Map.SaveAs(MapFileName + ".back");
 	std::cout<<"\nsaved, sound...";
-	AL_Destroy();
+	FMOD_Destroy();
 	std::cout<<"\ndeleted, scene...";
 	Destroy();
 	std::cout<<"\ndeleted, threads...";

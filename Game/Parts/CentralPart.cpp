@@ -734,7 +734,7 @@ void CentralPart::DestroyPart(int  index)
 	}
 	Parts[index]->Health = -10;
 	DetachPart(index);
-	playsound(PartDestrSOund, mid, 0.25f,0.085f + rand() % 100 * 0.001f,{0.0f,0.0f},false);
+	playsound(PartDestrSOund, mid, 0.25f,0.085f + rand() % 100 * 0.001f);
 }
 void CentralPart::DetachPart( int  index)
 {
@@ -852,7 +852,7 @@ void CentralPart::AddConnection(int type, float len, float width, float stiffnes
 	{
 		Connections[it] = Connections[Connections.size() - 1];
 		Connections.pop_back();
-		PlaySound(&Detach, MousePosition, 3.5f, 0.3f);
+		playsound(Detach, MousePosition, 0.3f, 3.5f);
 		CheckPartsConnections();
 	}
 	
@@ -928,14 +928,14 @@ void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2,
 				{
 					DataConnections[lasti1] = DataConnections[DataConnections.size() - 1];
 					DataConnections.pop_back();
-					PlaySound(&Detach, MousePosition, 3.5f, 0.3f);
+					playsound(Detach, MousePosition, 3.5f, 0.3f);
 					DataConnections.push_back(dc);
 				}
 				else if (!s2 && index2amount > 0)
 				{
 					DataConnections[lasti2] = DataConnections[DataConnections.size() - 1];
 					DataConnections.pop_back();
-					PlaySound(&Detach, MousePosition, 3.5f, 0.3f);
+					playsound(Detach, MousePosition, 3.5f, 0.3f);
 					DataConnections.push_back(dc);
 				}
 				else
@@ -947,7 +947,7 @@ void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2,
 		{
 			DataConnections[it] = DataConnections[DataConnections.size() - 1];
 			DataConnections.pop_back();
-			PlaySound(&Detach, MousePosition, 3.5f, 0.3f);
+			playsound(Detach, MousePosition, 3.5f, 0.3f);
 		}
 	}
 }
