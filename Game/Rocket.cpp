@@ -53,6 +53,11 @@ void Rocket::Process(float dt)
 		throtle = length(Force) * 0.008f;
 		if (throtle > 1.0f) throtle = 1.0f;
 		if (throtle < 0.0f) throtle = 0.0f;
+		if (throtle < 1.0f)
+		{
+			Force += Normalize(target - mid) * (1.0f - throtle) * 125.0f;
+		}
+		throtle = 1.0f;
 		float stage = timeLeft / lifet;
 		if (timeLeft <= 0.0f)
 		{

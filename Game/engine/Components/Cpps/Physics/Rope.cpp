@@ -96,7 +96,7 @@ void DecorativeRope::Process(float dt)
 		for (int i = 1; i < 5; i++)
 		{
 			rope[i].Force = Force;
-			rope[i].Process(delta * 0.5f);
+			rope[i].Process(dt);
 			if (b1 != nullptr)
 			{
 				rope[4].position = b2->position;

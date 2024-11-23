@@ -51,6 +51,8 @@ enum PART
 
 #define SpawnablePartAmount 9-1
 inline DataStorage PartsData;
+inline bool drawHeat;
+inline bool drawHealth;
 class BodyComponent : public Node
 {
 public:

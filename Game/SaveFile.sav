@@ -27,8 +27,8 @@ ShipFileNames
 }
 TheQuickSave
 {
-	EntityBackUpName PreMissionBackup 
-	Materials 1486537 
+	EntityBackUpName PreMissionBackup
+	Materials 1486657
 	lastEntityName 
-	storyint 4 
+	storyint 4
 }

@@ -56,6 +56,7 @@ public:
 
 
 		Health = PartsData.GetPropertyAsFloat("Gun", "Health");
+		maxHealth = Health;
 
 		HeatPerShot = PartsData.GetPropertyAsFloat("Gun", "HeatPerShot");
 		dmg = PartsData.GetPropertyAsFloat("Gun", "Damage");
@@ -81,6 +82,7 @@ public:
 		deactivated = true;
 
 		Health = PartsData.GetPropertyAsFloat("Gun", "Health");
+		maxHealth = Health;
 
 		HeatPerShot = PartsData.GetPropertyAsFloat("Gun", "HeatPerShot");
 		dmg = PartsData.GetPropertyAsFloat("Gun", "Damage");
@@ -236,8 +238,22 @@ public:
 
 	void Draw() override
 	{
-		//DrawLine(body[0].position, body[1].position, body[1].r, Base.color, true, CubeNormalMapTexture, Z_Index+1);
-		
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 		glm::vec2 mid = (ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f;
 		//GunTexture
 		DrawTexturedQuad(mid, glm::vec2(0.5f * PARTSIZE, 2.0f * PARTSIZE), GunTexture, get_angle_between_points(ballPosition[body[0]], mid), color, Z_Index + 2, GunNormalMap);
@@ -324,6 +340,7 @@ public:
 
 
 		Health = PartsData.GetPropertyAsFloat("LaserGun", "Health");
+		maxHealth = Health;
 		HeatPerShot = PartsData.GetPropertyAsFloat("LaserGun", "HeatPerShot");
 		dmg = PartsData.GetPropertyAsFloat("LaserGun", "Damage");
 		BulletHeat = PartsData.GetPropertyAsFloat("LaserGun", "LaserHeat");
@@ -378,6 +395,7 @@ public:
 		Cost.Matter = 50;
 
 		Health = PartsData.GetPropertyAsFloat("LaserGun", "Health");
+		maxHealth = Health;
 		HeatPerShot = PartsData.GetPropertyAsFloat("LaserGun", "HeatPerShot");
 		dmg = PartsData.GetPropertyAsFloat("LaserGun", "Damage");
 		BulletHeat = PartsData.GetPropertyAsFloat("LaserGun", "LaserHeat");
@@ -565,7 +583,22 @@ public:
 	void Draw() override
 	{
 
-
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 		mid = (ballPosition[body[0]] + ballPosition[body[2]] + ballPosition[body[3]] + ballPosition[body[4]]) * 0.25f;
 		DrawTexturedQuad(mid, glm::vec2(0.5f * PARTSIZE * 0.2f, 4.0f * PARTSIZE * 0.2f), LaserGunTexture, get_angle_between_points(ballPosition[body[1]], mid), color, Z_Index + 2, LaserGunNormalMap);
 		DrawTexturedQuad(mid, glm::vec2(PARTSIZE * 2.0f), LaserGunBaseTexture, get_angle_between_points(ballPosition[body[0]],mid) - pi*0.25f, color, Z_Index + 1, LaserGunBaseNormalMap);
@@ -616,6 +649,7 @@ public:
 		Name = "RocketLauncher";
 		
 		Health = PartsData.GetPropertyAsFloat("RocketLauncher", "Health");
+		maxHealth = Health;
 		//HeatPerShot = PartsData.GetPropertyAsFloat("RocketLauncher", "HeatPerShot");
 		dmg = PartsData.GetPropertyAsFloat("RocketLauncher", "Damage");
 		ExplodionForce = PartsData.GetPropertyAsFloat("RocketLauncher", "ExlodionForce");
@@ -654,6 +688,7 @@ public:
 	{
 
 		Health = PartsData.GetPropertyAsFloat("RocketLauncher", "Health");
+		maxHealth = Health;
 		//HeatPerShot = PartsData.GetPropertyAsFloat("RocketLauncher", "HeatPerShot");
 		dmg = PartsData.GetPropertyAsFloat("RocketLauncher", "Damage");
 		ExplodionForce = PartsData.GetPropertyAsFloat("RocketLauncher", "ExlodionForce");
@@ -830,6 +865,22 @@ public:
 
 	void Draw() override
 	{
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 		//DrawLine(body[0].position, body[1].position, body[1].r, Base.color, true, CubeNormalMapTexture, Z_Index+1);
 		for (int i = 0; i < FiredRockets.size(); i++)
 		{
@@ -902,6 +953,7 @@ public:
 		Name = "MiniGun";
 		
 		Health = PartsData.GetPropertyAsFloat("MiniGun", "Health");
+		maxHealth = Health;
 		HeatPerShot = PartsData.GetPropertyAsFloat("MiniGun", "HeatPerShot");
 		dmg = PartsData.GetPropertyAsFloat("MiniGun", "Damage");
 		BulletHeat = PartsData.GetPropertyAsFloat("MiniGun", "BulletHeat");
@@ -943,6 +995,7 @@ public:
 
 
 		Health = PartsData.GetPropertyAsFloat("MiniGun", "Health");
+		maxHealth = Health;
 		HeatPerShot = PartsData.GetPropertyAsFloat("MiniGun", "HeatPerShot");
 		dmg = PartsData.GetPropertyAsFloat("MiniGun", "Damage");
 		BulletHeat = PartsData.GetPropertyAsFloat("MiniGun", "BulletHeat");
@@ -1172,6 +1225,23 @@ public:
 
 	void Draw() override
 	{
+
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 		//DrawLine(body[0].position, body[1].position, body[1].r, Base.color, true, CubeNormalMapTexture, Z_Index+1);
 
 		glm::vec2 mid2 = (ballPosition[body[4]] + mid) * 0.5f;
@@ -1265,6 +1335,7 @@ public:
 		Name = "RocketEngine";
 		
 		Health = PartsData.GetPropertyAsFloat("RocketEngine", "Health");
+		maxHealth = Health;
 		HeatPerSecond = PartsData.GetPropertyAsFloat("RocketEngine", "HeatPerSecond");
 		Power = PartsData.GetPropertyAsFloat("RocketEngine", "Power");
 
@@ -1284,6 +1355,7 @@ public:
 	{
 
 		Health = PartsData.GetPropertyAsFloat("RocketEngine", "Health");
+		maxHealth = Health;
 		HeatPerSecond = PartsData.GetPropertyAsFloat("RocketEngine", "HeatPerSecond");
 		Power = PartsData.GetPropertyAsFloat("RocketEngine", "Power");
 
@@ -1389,6 +1461,23 @@ public:
 	}
 	void Draw() override
 	{
+
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 		if (abs(throtle) > 0.0f && !shutdown)
 		{
 			float Particleforce = throtle;
@@ -1449,6 +1538,7 @@ public:
 		Name = "BallBody";
 
 		Health = PartsData.GetPropertyAsFloat("BallBody", "Health");
+		maxHealth = Health;
 		
 		CreateBody(1);
 		ballPosition[body[0]] = position;
@@ -1462,6 +1552,7 @@ public:
 	void Create(glm::vec2 position, glm::vec2 direction, float size,float mass = 1.0f) override
 	{
 		Health = PartsData.GetPropertyAsFloat("BallBody", "Health");
+		maxHealth = Health;
 		
 		ballPosition[body[0]] = position;
 
@@ -1486,6 +1577,23 @@ public:
 	}
 	void Draw() override
 	{
+
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 		//DrawTexturedQuad(body[0].position, glm::vec2(body[0].r), BallBodyTexture, 0.0f, color, Z_Index + 1, BallBodyNormalMap);
 		DrawCircle(ballPosition[body[0]], PARTSIZE, color, true, BallNormalMapTexture, Z_Index);
 
@@ -1518,6 +1626,7 @@ public:
 		Name = "Rotor";
 
 		Health = PartsData.GetPropertyAsFloat("Rotor", "Health");
+		maxHealth = Health;
 		
 		CreateBody(5,2);
 
@@ -1540,6 +1649,7 @@ public:
 	void Create(glm::vec2 position, glm::vec2 direction, float size, float mass = 1.0f) override
 	{
 		Health = PartsData.GetPropertyAsFloat("Rotor", "Health");
+		maxHealth = Health;
 
 		ballPosition[body[0]] = position;
 		ballPosition[body[1]] = position + glm::vec2(PARTSIZE * 2.0f, 0.0f);
@@ -1618,6 +1728,23 @@ public:
 	}
 	void Draw() override
 	{
+
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 		DrawTexturedQuad(ballPosition[body[0]], { PARTSIZE * 3.0f ,PARTSIZE * 3.0f }, RotorTexture, get_angle_between_points({ 0.0f,0.0f }, dir), color, Z_Index, RotorNormalMap);
 
 	}
@@ -1649,6 +1776,7 @@ public:
 		Name = "Radiator";
 		
 		Health = PartsData.GetPropertyAsFloat("Radiator", "Health");
+		maxHealth = Health;
 		coolingSpeed = PartsData.GetPropertyAsFloat("Radiator", "coolingSpeed");
 		mintemp = PartsData.GetPropertyAsFloat("Radiator", "mintemp");
 
@@ -1668,6 +1796,7 @@ public:
 	{
 
 		Health = PartsData.GetPropertyAsFloat("Radiator", "Health");
+		maxHealth = Health;
 		coolingSpeed = PartsData.GetPropertyAsFloat("Radiator", "coolingSpeed");
 		mintemp = PartsData.GetPropertyAsFloat("Radiator", "mintemp");
 
@@ -1738,6 +1867,23 @@ public:
 
 	void Draw() override
 	{
+
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 		glm::vec2 dif = ballPosition[body[0]] - ballPosition[body[1]];
 		//DrawLine(body[0].position + dif*0.5f, body[1].position - dif * 0.5f, body[0].r, Base.color, true, CubeNormalMapTexture, Z_Index);
 		glm::vec2 mid = (ballPosition[body[1]] + ballPosition[body[0]]) * 0.5f;
@@ -1780,6 +1926,7 @@ public:
 		Name = "StaticPoint";
 		
 
+		maxHealth = Health;
 		CreateBody(1);
 		ballPosition[body[0]] = position;
 		this->position = position;
@@ -1792,6 +1939,7 @@ public:
 
 		
 
+		maxHealth = Health;
 		ballPosition[body[0]] = position;
 		this->position = position;
 
@@ -1812,6 +1960,23 @@ public:
 	}
 	void Draw() override
 	{
+
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 		DrawCircle(ballPosition[body[0]],PARTSIZE, color, true, BallNormalMapTexture, Z_Index);
 	}
 
@@ -1836,6 +2001,7 @@ public:
 		Name = "AIAim";
 
 		Health = PartsData.GetPropertyAsFloat("AIAim", "Health");
+		maxHealth = Health;
 		
 		CreateBody(1,2,1,1);
 		ballPosition[body[0]] = position;
@@ -1848,6 +2014,7 @@ public:
 	void Create(glm::vec2 position, glm::vec2 direction, float size,float mass = 1.0f) override
 	{
 		Health = PartsData.GetPropertyAsFloat("AIAim", "Health");
+		maxHealth = Health;
 		
 		ballPosition[body[0]]= position;
 
@@ -1935,6 +2102,23 @@ public:
 	}
 	void Draw() override
 	{
+
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 		//DrawTexturedQuad(body[0].position, glm::vec2(body[0].r), BallBodyTexture, 0.0f, color, Z_Index + 1, BallBodyNormalMap);
 		DrawCircle(ballPosition[body[0]], PARTSIZE, color, true, BallNormalMapTexture, Z_Index);
 
@@ -1977,6 +2161,7 @@ public:
 		Name = "Glider";
 		
 		Health = PartsData.GetPropertyAsFloat("Glider", "Health");
+		maxHealth = Health;
 		HeatPerSecond = PartsData.GetPropertyAsFloat("Glider", "HeatPerSecond");
 		Power = PartsData.GetPropertyAsFloat("Glider", "Power");
 
@@ -2010,6 +2195,7 @@ public:
 	{
 
 		Health = PartsData.GetPropertyAsFloat("Glider", "Health");
+		maxHealth = Health;
 		HeatPerSecond = PartsData.GetPropertyAsFloat("Glider", "HeatPerSecond");
 		Power = PartsData.GetPropertyAsFloat("Glider", "Power");
 
@@ -2180,7 +2366,23 @@ public:
 
 	void Draw() override
 	{
-		
+
+		if (drawHealth)
+		{
+			float stage = Health / maxHealth;
+			color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+		}
+		if (drawHeat)
+		{
+			for (auto i : body)
+			{
+				float stage = ballTemp[i] / MaxTemp;
+				if (stage > 0)
+					DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+				else
+					DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			}
+		}
 
 		throtle = 0.0f;
 		for(int i=0;i<4;i++)

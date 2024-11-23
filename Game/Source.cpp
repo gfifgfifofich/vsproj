@@ -315,7 +315,6 @@ void ChangeMap(std::string FilePath, glm::vec2 lastoffset, glm::vec2 newoffset)
 	}
 	lastid = 0; 
 	freeBallIDs.clear();
-	lastEntityID = 0;
 	DamageSpheres.clear();
 	DamageSpheresArray.clear();
 	bullets.clear();
@@ -1003,6 +1002,7 @@ void ProcessPlayerControls()
 			bl.fogamount = 0.0f;
 			bl.questid = Entities[i]->questid;
 			std::string savestr = "Saves/" + GameSaveName + "/bleeps/" + std::to_string(ActiveRadar.BleepsCounter) + "/ship.sav";
+			std::filesystem::create_directories("Saves/" + GameSaveName + "/bleeps/" + std::to_string(ActiveRadar.BleepsCounter));
 			ActiveRadar.BleepsCounter++;
 			Entities[i]->SaveTo(savestr,false,true);
 
@@ -1429,19 +1429,21 @@ void Ready()
 	MenuWindowID = CreateWindow();
 	InterfaceWindowID = CreateWindow();
 	ForeGroundWindowID = CreateWindow();
+	PreviewWindowID = CreateWindow();
 
 	Window* bw = GetWindow(BackgroundWindowID);
 	Window* sw = GetWindow(ForeWindowID);
 	Window* fw = GetWindow(ForeGroundWindowID);
 	Window* cw = GetWindow(InterfaceWindowID);
 	Window* mw = GetWindow(MenuWindowID);
-
+	Window* pw = GetWindow(PreviewWindowID);
 
 	sw->AutoActive = false;
 	bw->AutoActive = false;
 	fw->AutoActive = false;
 	cw->AutoActive = false;
 	mw->AutoActive = false;
+	pw->AutoActive = false;
 
 	sw->hdr = true;
 	bw->hdr = true;
@@ -1452,6 +1454,7 @@ void Ready()
 	fw->Init(GetWindow(SceneWindowID)->ViewportSize);
 	cw->Init(GetWindow(SceneWindowID)->ViewportSize);
 	mw->Init(GetWindow(SceneWindowID)->ViewportSize);
+	pw->Init(glm::vec2(GetWindow(SceneWindowID)->ViewportSize.x * 0.2f));
 
 
 	sw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
@@ -1459,12 +1462,15 @@ void Ready()
 	fw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
 	cw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
 	mw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
+	pw->backgroundColor = { 0.0f,0.0f,0.0f,1.0f };
+
 	EditorColor = {0.0f,0.0f,0.0f,1.0f};
 	sw->w_AmbientLight = 0.4f;
 	bw->w_AmbientLight = 0.1f;
 	fw->w_AmbientLight = 0.1f;
 	cw->w_AmbientLight = 1.4f;
 	sw->w_DirectionalLight = 2.0f;
+	pw->w_AmbientLight = 1.0f;
 
 	
 
@@ -1557,6 +1563,7 @@ void Process(float dt)
 	Window* bw = GetWindow(BackgroundWindowID);
 	Window* cw = GetWindow(InterfaceWindowID);
 	Window* mw = GetWindow(MenuWindowID);
+	Window* pw = GetWindow(PreviewWindowID);
 
 	sw->active = true;
 
@@ -1908,15 +1915,40 @@ void Process(float dt)
 
 	fw->End();
 
+	bool b = false;
 	cw->Use();
-	
-	
+	ConsoleShow;
+	ConsolePos;
+	ConsolePosTimer;
+
+
+	if (ConsoleShow)
+	{
+		ConsolePosTimer += dt * 1.5f;
+		if (ConsolePosTimer > 1.0f)
+			ConsolePosTimer = 1.0f;
+	}
+	else
+	{
+		ConsolePosTimer -= dt * 1.5f;
+		if (ConsolePosTimer < 0.0f)
+			ConsolePosTimer = 0.0f;
+	}
+
+	ConsolePos = SmootherStep(cw->ViewportSize.x*-0.3f, 0.0f, ConsolePosTimer);
+
+
+	b = false;
+	UI_button(&b, "Console", glm::vec2(-cw->ViewportSize.x * 0.5f + 15.0f, cw->ViewportSize.y * 0.5f - 20.0f), { 150,35 }, 0.35f, glm::vec4(0.5f), glm::vec4(0.8f), glm::vec4(0.5f), 10);
+	if (b)
+		ConsoleShow = !ConsoleShow;
+
 	float ConsoleYStep = 15.0f;
 	float ConsoleTextSize = 0.4f;
 	glm::vec4 consoleTextColor = glm::vec4(1.0f,1.0f,1.0f,1.0f);
 
 	float posy = HEIGHT * 0.5f - ConsoleYStep * 4.0f;
-	float posx = WIDTH * -0.5f + ConsoleYStep * 2.0f;
+	float posx = WIDTH * -0.5f + ConsoleYStep * 2.0f + ConsolePos;
 	for(int i=0;i<ConsoleTexts.size();i++)
 	{
 		DrawText(ConsoleTexts[i],{posx,posy},ConsoleTextSize,consoleTextColor);
@@ -1925,7 +1957,53 @@ void Process(float dt)
 	
 
 	cw->End();
+
+	pw->active = true;
 	
+	
+	pw->AutoDraw = PreviewShowWindow;
+
+	if (PreviewShowWindow)
+	{
+		PreviewPosTimer += dt * 1.5f;
+		if (PreviewPosTimer > 1.0f)
+			PreviewPosTimer = 1.0f;
+	}
+	else
+	{
+		PreviewPosTimer -= dt * 1.5f;
+		if (PreviewPosTimer < 0.0f)
+			PreviewPosTimer = 0.0f;
+	}
+	
+	PreviewPos = SmootherStep(-pw->ViewportSize.y * 1.0f, 0.0f, PreviewPosTimer);
+
+	pw->Use();
+
+	if (Entities.size() > 0)
+	{
+		UI_CheckBox(&Previewheat, "Heat/Health",glm::vec2(-pw->ViewportSize.x * 0.5f + 15.0f, pw->ViewportSize.y * 0.5f - 25.0f));
+		CameraPosition = Entities[0]->mid;
+		CameraScale = glm::vec2(float(pw->ViewportSize.x *0.4f) / Entities[0]->maxR);
+		if (!Previewheat)
+		{
+			drawHealth = true;
+			DirectionalLight = 0.0f;
+		}
+		else
+		{
+			drawHeat = true;
+			DirectionalLight = 0.0f;
+		}
+		Entities[0]->Draw();
+		for (auto p : Entities[0]->Parts)
+			p->Draw();
+	}
+
+	drawHealth = false;
+	drawHeat = false;
+	pw->End();
+	pw->Position = glm::vec2(pw->ViewportSize.x * 0.5f - sw->ViewportSize.x * 0.5f + 5.0f, pw->ViewportSize.y * 0.5f - sw->ViewportSize.y * 0.5f + 5.0f + PreviewPos);
 
 	UseWindow(SceneWindowID);
 	AmbientLight = 1.0f;
@@ -1952,8 +2030,13 @@ void Process(float dt)
 		fw->Draw(3);
 	}
 	cw->Draw(4);
-
+	pw->Draw(4);
+	b = false;
+	UI_button(&b, "Ship preview", pw->Position + glm::vec2(0.0f, pw->ViewportSize.y * 0.5f + 20.0f), {150,35}, 0.35f, glm::vec4(0.5f), glm::vec4(0.8f), glm::vec4(0.5f), 10);
+	if (b)
+		PreviewShowWindow = !PreviewShowWindow;
 	mw->Draw(5);
+
 
 	if (JustPressedkey[GLFW_KEY_F9])
 		QuickLoad("TheQuickSave");
@@ -1963,6 +2046,8 @@ void Process(float dt)
 
 void PreReady()
 {
+	drawHeat = false;
+	drawHealth = true;
 
 	Speed = 1.0f;
 

@@ -588,7 +588,7 @@ glm::vec2 UI_button(bool* param, const char* text, glm::vec2 scrPosition, glm::v
 		TextColor = ColorOFF + TextColorAdder;
 	}
 
-	UI_DrawSmoothQuad(pos, scale * 0.5f, 0.0f, backColor);
+	UI_DrawSmoothQuad(pos, scale * 0.5f, 0.0f, backColor, Z_Index);
 	UI_DrawText(text, pos + glm::vec2(-Testsize.x * 0.5f, -Testsize.y * 0.5f), textScale, TextColor, Z_Index, Additive);
 
 	return scale;

@@ -20,12 +20,12 @@ ShipFileNames
 TheQuickSave
 {
 	EntityBackUpName PreMissionBackup
-	EntityCount 10
+	EntityCount 1
 	Materials 1486657
 	MissionSelectMenu.Hub 1
-	MissionSelectMenu.missionPosition 6831.000977 1532.080811
+	MissionSelectMenu.missionPosition 5829.625977 3876.868164
 	inbase 1
-	lastEntityID 13
+	lastEntityID 418
 	lastEntityName 
 	storyint 4
 }

@@ -175,18 +175,6 @@ void DeleteSource(FMOD::Channel* source)
 }
 #undef PlaySound
 
-void PlaySound(FMOD::Sound* sound, glm::vec2 position, float gain, float pitch)
-{
-	FMOD::Channel* channel = nullptr;
-	_sound_result = _sound_system->playSound(sound, 0, true, &channel);
-	ERRCHECK(_sound_result);
-	
-	SetSource3D(channel, position, {0.0f,0.0f});
-	SetSourceGain(channel, gain);
-	SetSourcePitch(channel, pitch);
-	SetSourceLooping(channel, false);
-	PlaySource(channel);
-}
 
 
 

@@ -12,6 +12,7 @@ inline int ForeWindowID;// "game" window
 inline int ForeGroundWindowID;// foreground cosmetic window
 inline int InterfaceWindowID;// player interface window
 inline int MenuWindowID;
+inline int PreviewWindowID; //window for ship previews
 inline glm::vec2 foregroundMousePosition;
 
 inline float UpdateTime;
@@ -42,6 +43,15 @@ inline std::string GameSaveName;
 inline std::vector<std::string> ConsoleTexts;
 inline bool inside;
 inline bool inbase;
+
+inline bool Previewheat = false;
+inline bool PreviewShowWindow = false;
+inline float PreviewPos = 0.0f;
+inline float PreviewPosTimer = 0.0f;
+
+inline bool ConsoleShow = false;
+inline float ConsolePos = 0.0f;
+inline float ConsolePosTimer = 0.0f;
 
 struct shipInfo
 {

@@ -57,6 +57,8 @@ public:
 		int b1 = -1;
 		int b2 = -1;
 
+		float accumDT = 0.0f;
+
 		BodyComponent* bod1;
 		BodyComponent* bod2;
 
@@ -68,7 +70,7 @@ public:
 		void UpdateLinks(CentralPart* ent);
 		void Init();
 		void Process(CentralPart* ent, float dt);
-		void Draw(float dt);
+		void Draw();
 
 	};
 

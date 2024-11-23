@@ -164,6 +164,7 @@ void CentralPart::Connection::Init()
 }
 void CentralPart::Connection::Process(CentralPart* ent, float dt)
 {
+	accumDT = dt;
 	UpdateLinks(ent);
 	if (b1 != -1 && b2 != -1)
 	{
@@ -172,8 +173,9 @@ void CentralPart::Connection::Process(CentralPart* ent, float dt)
 		if (type == CONNECTION::SPRING)
 			SpringBetweenBalls(b1, b2, length, stiffnes, absorbtion);
 		if (type == CONNECTION::HEATPIPE || type == CONNECTION::ROPE)
+		{
 			Rope(b1, b2, length);
-		
+		}
 	}
 	if (b1 != -1 && b2 != -1)
 	{
@@ -182,7 +184,7 @@ void CentralPart::Connection::Process(CentralPart* ent, float dt)
 		ballTemp[b2] += change;
 	}
 }
-void CentralPart::Connection::Draw(float dt)
+void CentralPart::Connection::Draw()
 {
 
 	glm::vec4 BaseColor = glm::vec4(1.0f);
@@ -228,17 +230,15 @@ void CentralPart::Connection::Draw(float dt)
 		rope.rope[0].velocity = ballVelocity[b1];
 		rope.rope[4].velocity = ballVelocity[b2];
 		rope.length = length;
+		rope.Process(accumDT);
 		rope.width = width;
-		rope.Process(dt);
 		rope.Texture = Texture;
 		rope.NormalMap = NormalMap;
 		rope.color = color;
 		
-		if(frame>10)
-			rope.Draw(-9);
-		else
-			frame++;
+		rope.Draw(-9);
 	}
+	accumDT = 0.0f;
 }
 	
 
@@ -251,6 +251,7 @@ CentralPart::CentralPart()
 	type = partid + NodeType::LASTNODE;
 	Name = "CentralPart";
 	Health = PartsData.GetPropertyAsFloat("CentralPart", "Health");
+	maxHealth = Health;
 	CreateBody(2,9,0,3);
 	BodyIdsWithCollision.push_back(0);
 	BodyIdsWithCollision.push_back(1);
@@ -264,6 +265,7 @@ void CentralPart::Create(glm::vec2 position, glm::vec2 direction, float size,flo
 {
 	
 	Health = PartsData.GetPropertyAsFloat("CentralPart", "Health");
+	maxHealth = Health;
 	ballPosition[body[0]] = position + Normalize(direction) * size;
 	ballPosition[body[1]] = position - Normalize(direction) * size;
 	ProcessConnections();
@@ -622,16 +624,33 @@ void CentralPart::Draw()
 		firstdrawafterload = false;
 		return;
 	}
-	glm::vec2 dif = ballPosition[body[0]] - ballPosition[body[1]];
-	DrawLine(ballPosition[body[0]] + dif*0.5f, ballPosition[body[1]] - dif * 0.5f, PARTSIZE, color, true, CubeNormalMapTexture, Z_Index);
 	
+
+	if (drawHealth)
+	{
+		float stage = Health / maxHealth;
+		color = glm::vec4(((1.0f - stage) * 1.1f), stage * 1.1f, 0.0f, 1.0f);
+	}
+	if (drawHeat)
+	{
+		for (auto i : body)
+		{
+			float stage = ballTemp[i] / MaxTemp;
+			if (stage > 0)
+				DrawCircle(ballPosition[i], PARTSIZE, HeatColor * stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+			else
+				DrawCircle(ballPosition[i], PARTSIZE, ColdColor * -stage + glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), true, BallNormalMapTexture, Z_Index + 10);
+		}
+	}
 	DrawTexturedQuad(mid, glm::vec2(1.0f * PARTSIZE, 2.0f * PARTSIZE), CentralPartTexture, get_angle_between_points(mid, ballPosition[body[0]]), color, Z_Index, CentralPartNormalMap);
 	
 	
 	for (int i = 0; i < Connections.size(); i++)
-		Connections[i].Draw(delta*Speed);
+		Connections[i].Draw();
 	for (int i = 0; i < DataConnections.size(); i++)
 		DataConnections[i].Draw();
+	
+
 }
 
 void CentralPart::DeletePart() 

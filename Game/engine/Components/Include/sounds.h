@@ -34,7 +34,6 @@ void StopSource(FMOD::Channel* source);
 bool SourcePlaying(FMOD::Channel* source);
 void DeleteSource(FMOD::Channel* source);
 
-void PlaySound(FMOD::Sound* sound, glm::vec2 position, float gain = 1.0f, float pitch= 1.0f);
 
 
 struct soundpool
