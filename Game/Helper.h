@@ -12,7 +12,10 @@ inline int ForeWindowID;// "game" window
 inline int ForeGroundWindowID;// foreground cosmetic window
 inline int InterfaceWindowID;// player interface window
 inline int MenuWindowID;
+
 inline int PreviewWindowID; //window for ship previews
+inline int JournalWindowID; //window for ship previews
+
 inline glm::vec2 foregroundMousePosition;
 
 inline float UpdateTime;
@@ -41,6 +44,7 @@ inline std::string lastEntityName;
 inline std::string EntityBackUpName;
 inline std::string GameSaveName;
 inline std::vector<std::string> ConsoleTexts;
+inline std::vector<std::string> MissionTexts;
 inline bool inside;
 inline bool inbase;
 
@@ -52,6 +56,14 @@ inline float PreviewPosTimer = 0.0f;
 inline bool ConsoleShow = false;
 inline float ConsolePos = 0.0f;
 inline float ConsolePosTimer = 0.0f;
+
+inline bool JournalWindowShow = false;
+inline float JournalWindowPos = 0.0f;
+inline float JournalWindowPosTimer = 0.0f;
+inline float JournalWindowScroll = 0.0f;
+inline glm::vec2 JournalPrevMousePos = { 0.0f,0.0f };
+inline glm::vec2 Journaldif = glm::vec2(0.0f);
+inline int JournalSelectedQuest = 0;
 
 struct shipInfo
 {

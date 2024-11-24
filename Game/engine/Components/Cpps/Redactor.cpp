@@ -1765,7 +1765,6 @@ void On_Update()
 
 	if (!grabbedAnyWindow)
 		GrabStartMousePos = MousePosition;
-
 	if (JustPressedbutton[GLFW_MOUSE_BUTTON_1])
 	{
 		if (MousePosition.x > WIDTH * 0.5f - iw->ViewportSize.x - 3 && MousePosition.x < WIDTH * 0.5f - iw->ViewportSize.x + 3)
@@ -1804,72 +1803,103 @@ void On_Update()
 		if (cw->Scale.y * cw->ViewportSize.y < 25) cw->Scale.y = 25 / cw->ViewportSize.y;
 		if (cw->Scale.y * cw->ViewportSize.y > HEIGHT - 100) cw->Scale.y = (HEIGHT - 100) / cw->ViewportSize.y;
 	}
-
-
-	float rightx = pw->ViewportSize.x * pw->Scale.x - WIDTH * 0.5f + 2.0f;
-	float leftx = WIDTH * 0.5f - iw->ViewportSize.x * iw->Scale.x - 2.0f;
-
-	float maxy = HEIGHT * 0.5f;
-	float miny = cw->ViewportSize.y * cw->Scale.y - HEIGHT * 0.5f + 2.0f;
-	if (grabbedAnyWindow || initialsizecalc)
+	if (JustPressedkey[GLFW_KEY_F1])
 	{
-		cw->Scale.x = (leftx - rightx) / cw->ViewportSize.x;
+		RedactorNoUI = !RedactorNoUI;
+		if (RedactorNoUI)
+		{
+			w->ViewportSize = { s_Resolution.x,s_Resolution.y };
+			w->Scale = { 1.0f,1.0f };
+			w->Position = { 0.0f,0.0f };
+			w->RecalculateSize();
+			Rescale(s_Resolution.x, s_Resolution.y);
+			iw->AutoDraw = false;
+			pw->AutoDraw = false;
+			cw->AutoDraw = false;
 
-		w->Scale.x = (leftx - rightx) / w->ViewportSize.x;
-		w->Scale.y = (maxy - miny - 25.0f) / w->ViewportSize.y ;
+			iw->Autoclear = false;
+			pw->Autoclear = false;
+			cw->Autoclear = false;
+		}
+		else
+		{
+			grabbedAnyWindow = true;
+			iw->AutoDraw =  true;
+			pw->AutoDraw =  true;
+			cw->AutoDraw =  true;
+
+			iw->Autoclear = true;
+			pw->Autoclear = true;
+			cw->Autoclear = true;
+		}
 	}
-	if ( grabbedAnyWindow || initialsizecalc)
+	if (JustReleasedkey[GLFW_KEY_F1])
 	{
-
-		w->ViewportSize *= w->Scale;
-		iw->ViewportSize *= iw->Scale;
-		pw->ViewportSize *= pw->Scale;
-		cw->ViewportSize *= cw->Scale;
-
-		w->Scale = { 1.0f,1.0f };
-		iw->Scale = { 1.0f,1.0f };
-		pw->Scale = { 1.0f,1.0f };
-		cw->Scale = { 1.0f,1.0f };
-
-
-
-
-
-		iw->RecalculateSize();
-		pw->RecalculateSize();
-		cw->RecalculateSize();
-		w->RecalculateSize();
-		Rescale(w->ViewportSize.x,w->ViewportSize.y);
-		/*
-		std::cout << "w" << w->ViewportSize.x << "  " << w->ViewportSize.y<<"\n";
-		std::cout << "cw" << cw->ViewportSize.x << "  " << cw->ViewportSize.y<<"\n";
-		std::cout << "iw" << iw->ViewportSize.x << "  " << iw->ViewportSize.y<<"\n";
-		std::cout << "pw" << pw->ViewportSize.x << "  " << pw->ViewportSize.y<<"\n";*/
-		initialsizecalc = false;
-		GrabStartMousePos = MousePosition;
-	}
-	if(JustReleasedbutton[GLFW_MOUSE_BUTTON_1])
-	{
-		for (int i = 0; i < 3; i++)
-			grabbedWindow[i] = false;
 		grabbedAnyWindow = false;
 	}
+	if (!RedactorNoUI)
+	{
+		float rightx = pw->ViewportSize.x * pw->Scale.x - WIDTH * 0.5f + 2.0f;
+		float leftx = WIDTH * 0.5f - iw->ViewportSize.x * iw->Scale.x - 2.0f;
 
-	//CountourSize
+		float maxy = HEIGHT * 0.5f;
+		float miny = cw->ViewportSize.y * cw->Scale.y - HEIGHT * 0.5f + 2.0f;
+		if (grabbedAnyWindow || initialsizecalc)
+		{
+			cw->Scale.x = (leftx - rightx) / cw->ViewportSize.x;
+
+			w->Scale.x = (leftx - rightx) / w->ViewportSize.x;
+			w->Scale.y = (maxy - miny - 25.0f) / w->ViewportSize.y;
+		}
+		if (grabbedAnyWindow || initialsizecalc)
+		{
+
+			w->ViewportSize *= w->Scale;
+			iw->ViewportSize *= iw->Scale;
+			pw->ViewportSize *= pw->Scale;
+			cw->ViewportSize *= cw->Scale;
+
+			w->Scale = { 1.0f,1.0f };
+			iw->Scale = { 1.0f,1.0f };
+			pw->Scale = { 1.0f,1.0f };
+			cw->Scale = { 1.0f,1.0f };
 
 
-	iw->Position = glm::vec2(WIDTH * 0.5f - iw->ViewportSize.x * iw->Scale.x * 0.5f + 2.0f, 0.0f);
-	iw->Draw(1001);
 
-	pw->Position = glm::vec2(pw->ViewportSize.x * pw->Scale.x * 0.5f - WIDTH * 0.5f - 2.0f, 0.0f);
-	pw->Draw(1002);
 
-	cw->Position = glm::vec2((rightx + leftx) * 0.5f, cw->ViewportSize.y * cw->Scale.y * 0.5f - HEIGHT * 0.5f - 2.0f);
-	cw->Draw(1003);
 
-	w->Position.x = (rightx + leftx) * 0.5f;
-	w->Position.y = (maxy + miny) * 0.5f - 25.0f;
+			iw->RecalculateSize();
+			pw->RecalculateSize();
+			cw->RecalculateSize();
+			w->RecalculateSize();
+			Rescale(w->ViewportSize.x, w->ViewportSize.y);
+			/*
+			std::cout << "w" << w->ViewportSize.x << "  " << w->ViewportSize.y<<"\n";
+			std::cout << "cw" << cw->ViewportSize.x << "  " << cw->ViewportSize.y<<"\n";
+			std::cout << "iw" << iw->ViewportSize.x << "  " << iw->ViewportSize.y<<"\n";
+			std::cout << "pw" << pw->ViewportSize.x << "  " << pw->ViewportSize.y<<"\n";*/
+			initialsizecalc = false;
+			GrabStartMousePos = MousePosition;
+		}
+		if (JustReleasedbutton[GLFW_MOUSE_BUTTON_1])
+		{
+			for (int i = 0; i < 3; i++)
+				grabbedWindow[i] = false;
+			grabbedAnyWindow = false;
+		}
 
+		iw->Position = glm::vec2(WIDTH * 0.5f - iw->ViewportSize.x * iw->Scale.x * 0.5f + 2.0f, 0.0f);
+		iw->Draw(1001);
+
+		pw->Position = glm::vec2(pw->ViewportSize.x * pw->Scale.x * 0.5f - WIDTH * 0.5f - 2.0f, 0.0f);
+		pw->Draw(1002);
+
+		cw->Position = glm::vec2((rightx + leftx) * 0.5f, cw->ViewportSize.y * cw->Scale.y * 0.5f - HEIGHT * 0.5f - 2.0f);
+		cw->Draw(1003);
+
+		w->Position.x = (rightx + leftx) * 0.5f;
+		w->Position.y = (maxy + miny) * 0.5f - 25.0f;
+	}
 	switch (SceneWindowSelection)
 	{
 	case 0:
@@ -1898,7 +1928,13 @@ void On_Update()
 	default:
 		break;
 	}
-
+	if (RedactorNoUI)
+	{
+		w->Use();
+		ProcessScene(&Map, true, true);
+		w->End();
+		return;
+	}
 	/*
 	kw->Position = MousePosition;
 	kw->Scale = {1.0f,1.0f};
@@ -2033,7 +2069,7 @@ void On_Update()
 	
 	b = false;
 	
-
+	
 
 	if (HEIGHT * 0.5f < abs(Corner.y + CameraPosition.y))
 	{
@@ -2264,28 +2300,30 @@ void On_Update()
 			VSync = !VSync;
 			glfwSwapInterval(VSync);
 		}
-		Corner.y += UI_DrawText("Save file:", Corner, 0.35f).y * -1.0f - step;
-		Corner.y += UI_TextBox(&MapFileName, Corner,128).y * -1.0f - step;
-		b = false;
-		Corner.y += UI_button(&b, "Save", Corner).y * -1.0f - step;
-
-		if (b || keys[GLFW_KEY_LEFT_CONTROL] && keys[GLFW_KEY_S])
-			Map.SaveAs(MapFileName);
-		
-		b = false;
-		Corner.y += UI_button(&b, "Load", Corner).y * -1.0f - step;
-		if (b)
+		if (!Running)
 		{
+			Corner.y += UI_DrawText("Save file:", Corner, 0.35f).y * -1.0f - step;
+			Corner.y += UI_TextBox(&MapFileName, Corner, 128).y * -1.0f - step;
+			b = false;
+			Corner.y += UI_button(&b, "Save", Corner).y * -1.0f - step;
 
-			Map.LoadFrom(MapFileName);
-			SelectedNode = NULL;
-			SelectedNodeID = -1;
-			SelectedAsset =NULL;
-			SelectedAssetID=-1;
-			UndoLine.clear();
-			
+			if (b || keys[GLFW_KEY_LEFT_CONTROL] && keys[GLFW_KEY_S])
+				Map.SaveAs(MapFileName);
+
+			b = false;
+			Corner.y += UI_button(&b, "Load", Corner).y * -1.0f - step;
+			if (b)
+			{
+
+				Map.LoadFrom(MapFileName);
+				SelectedNode = NULL;
+				SelectedNodeID = -1;
+				SelectedAsset = NULL;
+				SelectedAssetID = -1;
+				UndoLine.clear();
+
+			}
 		}
-
 		
 		Corner.y += UI_CheckBox(&grid, "Grid", Corner).y * -1.0f - step;
 		if(grid)
@@ -2294,24 +2332,30 @@ void On_Update()
 			Corner.y += UI_Drag(&grid_step, "Gtid step", Corner , 1.0f).y * -1.0f - step;
 		}
 
-		Corner.y += UI_CheckBox(&GameScene->filter, "Filter", Corner).y * -1.0f - step;
-		if(GameScene->filter)
+		if (!Running)
 		{
-			Corner.y += UI_SliderInt(&GameScene->filter_object,"object type",Corner,0,NodeConstructorNames.size()-1).y * -1.0f - step;
-			int newobjectidmapped = -1;
-			int id= 0;
-			for(auto x : NodeConstructorNames)
+			Corner.y += UI_CheckBox(&GameScene->filter, "Filter", Corner).y * -1.0f - step;
+			if (GameScene->filter)
 			{
-				if(id == GameScene->filter_object)
+				Corner.y += UI_SliderInt(&GameScene->filter_object, "object type", Corner, 0, NodeConstructorNames.size() - 1).y * -1.0f - step;
+				int newobjectidmapped = -1;
+				int id = 0;
+				for (auto x : NodeConstructorNames)
 				{
-					newobjectidmapped = x.first;
-					break;
+					if (id == GameScene->filter_object)
+					{
+						newobjectidmapped = x.first;
+						break;
+					}
+					id++;
 				}
-				id++;
+				Corner.y += UI_DrawText(NodeConstructorNames[newobjectidmapped], Corner, 0.35f).y * -1.0f - step;
 			}
-			Corner.y +=  UI_DrawText(NodeConstructorNames[newobjectidmapped], Corner, 0.35f).y * -1.0f - step;
 		}
-
+		else
+		{
+			GameScene->filter = false;
+		}
 		
 		std::string ulinesizestr = "Undo buffer size: ";
 		ulinesizestr += std::to_string(UndoLine.size());

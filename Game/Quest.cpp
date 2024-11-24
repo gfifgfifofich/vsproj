@@ -12,9 +12,9 @@
 #include "Mission.h"
 #include "Helper.h"
 /*
-different colors on map for different station fractions // jsut slap some periodic bleeps 
-
+	different colors on map for different station fractions // jsut slap some periodic bleeps
 */
+
 void Quest::Start()
 {
 	flags["Failed"] = false;
@@ -143,12 +143,17 @@ void Quest::Start()
 			}
 		ActiveRadar.bleeps.push_back(bl);
 		positions["supply_target"] = ActiveRadar.offset;
+		positions["target_bleep_pos"] = bl.position;
 		counters["delivered"] = 0;
 		counters["destroyed"] = 0;
 	}
 }
 void Quest::Process(float dt)
 {
+	bool Selected = false;
+	if (JournalSelectedQuest == id)
+		Selected = true;
+
 	if (Entities.size() <= 0)
 		return;
 	if (missiontype == MissionType::pirates)
@@ -169,10 +174,12 @@ void Quest::Process(float dt)
 	if (missiontype == MissionType::SupplySabotage)
 	{
 		flags["Done"] = true;
-		ConsoleTexts.push_back(name + "  id = " + std::to_string(id) );
+		if (Selected)
+			MissionTexts.push_back(name + "  id = " + std::to_string(id) );
 		if (flags["Failed"])
 		{
-			ConsoleTexts.push_back("Failed");
+			if (Selected)
+				MissionTexts.push_back("Failed");
 			return;
 		}
 		glm::vec2 shipposition = { 0.0f,0.0f };
@@ -193,8 +200,10 @@ void Quest::Process(float dt)
 					ActiveRadar.bleeps[i].infinite = false;
 					ActiveRadar.bleeps[i].t = -10.0f;
 				}
-				ConsoleTexts.push_back("bleeps[" + std::to_string(i) + "]");
-				ConsoleTexts.push_back("pos = " + std::to_string((ActiveRadar.bleeps[i].position - (ActiveRadar.offset + Entities[0]->mid)).x)
+				if (Selected)
+					MissionTexts.push_back("bleeps[" + std::to_string(i) + "]");
+				if (Selected)
+					MissionTexts.push_back("pos = " + std::to_string((ActiveRadar.bleeps[i].position - (ActiveRadar.offset + Entities[0]->mid)).x)
 					+ "  " + std::to_string((ActiveRadar.bleeps[i].position - (ActiveRadar.offset + Entities[0]->mid)).x)
 				);
 			}
@@ -217,22 +226,27 @@ void Quest::Process(float dt)
 					e->Destroy();
 				}
 				shipposition = e->mid + ActiveRadar.offset;
-				ConsoleTexts.push_back("Entities[" + std::to_string(i) + "]");
+				if (Selected)
+					MissionTexts.push_back("Entities[" + std::to_string(i) + "]");
 			}
 			i++;
 		}
 		if (flags["Done"] && !flags["Failed"])
-			ConsoleTexts.push_back("Done");
+			if (Selected)
+				MissionTexts.push_back("Done");
 
 	}
 	if (missiontype == MissionType::Transportation)
 	{
-		ConsoleTexts.push_back(name + "  id = " + std::to_string(id));
-		ConsoleTexts.push_back("pos = " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + Entities[0]->mid)).x)
+		if (Selected)
+			MissionTexts.push_back(name + "  id = " + std::to_string(id));
+		if (Selected)
+			MissionTexts.push_back("pos = " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + Entities[0]->mid)).x)
 			+ "  " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + Entities[0]->mid)).x));
 		if (flags["Failed"])
 		{
-			ConsoleTexts.push_back("Failed");
+			if (Selected)
+				MissionTexts.push_back("Failed");
 			return;
 		}
 
@@ -258,7 +272,8 @@ void Quest::Process(float dt)
 			}
 			if (Entities[0]->Parts[i]->questid == id)
 			{
-				ConsoleTexts.push_back("pos = " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])).x)
+				if (Selected)
+					MissionTexts.push_back("pos = " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])).x)
 						+ "  " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])).x));
 			}
 			if (Entities[0]->Parts[i]->questid == id && sqrlength(positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])) < 1000.0f * 1000.0f)
@@ -281,10 +296,21 @@ void Quest::Process(float dt)
 	{
 
 		if (state == 0)
-			ConsoleTexts.push_back("goto mission bleep");
-		if (state == 1)
-			ConsoleTexts.push_back("transfer parts to base");
+		{
+			if (Selected)
+				MissionTexts.push_back("goto mission bleep");
 
+			if (Selected)
+				MissionTexts.push_back("pos = X" + std::to_string((positions["target_bleep_pos"].x - (ActiveRadar.offset.x + Entities[0]->Parts[0]->mid.x))) + "    Y" + std::to_string((positions["target_bleep_pos"].y - (ActiveRadar.offset.y + Entities[0]->Parts[0]->mid.y))));
+		}
+		if (state == 1)
+		{
+			if (Selected)
+				MissionTexts.push_back("transfer parts to base");
+
+			if (Selected)
+				MissionTexts.push_back("pos = X" + std::to_string((positions["supply_target"].x - Entities[0]->Parts[0]->mid.x)) + "    Y" + std::to_string((positions["supply_target"].y - Entities[0]->Parts[0]->mid.y)));
+		}
 		for (int i = 0; i < Debris.Parts.size(); i++)
 		{
 			if (Debris.Parts[i]->questid == id && (Debris.Parts[i]->Health < 0 || Debris.Parts[i]->Delete))
@@ -307,7 +333,8 @@ void Quest::Process(float dt)
 			}
 			if (Entities[0]->Parts[i]->questid == id)
 			{
-				ConsoleTexts.push_back("pos = " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])).x)
+				if(Selected)
+				MissionTexts.push_back("pos = " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])).x)
 					+ "  " + std::to_string((positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])).x));
 			}
 			if (Entities[0]->Parts[i]->questid == id && sqrlength(positions["supply_target"] - (ActiveRadar.offset + ballPosition[Entities[0]->Parts[i]->body[0]])) < 1000.0f * 1000.0f)

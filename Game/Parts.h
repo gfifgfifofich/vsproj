@@ -51,7 +51,6 @@ public:
 		ballPosition[body[0]]= position;
 		ballPosition[body[1]]= position + glm::vec2(0.0f,1.0f) * 3.0f;
 		ballPosition[body[2]]= position + glm::vec2(0.0f,1.0f) * 3.0f;
-		deactivated = true;
 
 
 
@@ -79,7 +78,6 @@ public:
 		ballPosition[body[0]]= position;
 		ballPosition[body[1]]= position + direction * 3.0f;
 		ballPosition[body[2]]= position + direction * 3.0f;
-		deactivated = true;
 
 		Health = PartsData.GetPropertyAsFloat("Gun", "Health");
 		maxHealth = Health;
@@ -325,7 +323,6 @@ public:
 
 		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
-		deactivated = true;
 		lsr = new Laser(ballPosition[body[1]], ballPosition[body[1]] - ballPosition[body[0]],150,175);
 		lsr->inf = true;
 
@@ -378,7 +375,6 @@ public:
 
 		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
-		deactivated = true;
 		ballPosition[body[1]] = position + direction*3.0f;
 		lsr = new Laser(ballPosition[body[1]], ballPosition[body[1]]- ballPosition[body[0]],150,175);
 		lsr->inf = true;
@@ -662,7 +658,6 @@ public:
 		CreateBody(2, 1, 0, 1);
 		ballPosition[body[0]] = position;
 		ballPosition[body[1]] = position + glm::vec2(0.0f, 1.0f) * 3.0f;
-		deactivated = true;
 
 		ProcessConnections();
 
@@ -701,7 +696,6 @@ public:
 
 		ballPosition[body[0]] = position;
 		ballPosition[body[1]] = position + direction * 3.0f;
-		deactivated = true;
 
 		ProcessConnections();
 
@@ -979,7 +973,6 @@ public:
 
 		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
-		deactivated = true;
 		Cost.Matter = 75;
 
 		shutdownTemp = 15.0f;
@@ -1020,7 +1013,6 @@ public:
 
 		diaglength = sqrt(PARTSIZE * 2.0f * PARTSIZE * 2.0f + PARTSIZE * 2.0f * PARTSIZE * 2.0f);
 
-		deactivated = true;
 
 		shutdownTemp = 15.0f;
 		ProcessConnections();

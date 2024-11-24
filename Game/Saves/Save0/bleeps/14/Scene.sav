@@ -1,1267 +1,2184 @@
-CO_Cube_0000000000
+CO_Ball_0000000000
 {
 	Additive 0
 	Bounciness 0.000000
-	Class 4
+	Class 3
 	Collision_layer 0
 	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
-	Height 165.000000
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 0.008734 335.004364
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 329.000000 -67.500000
+	Radius 19.000000
 	Rotation 0.000000
 	Roughness 0.000000
-	Scale 500.002106 165.004486
+	Scale 19.000000 19.000000
 	Type 1
-	Width 500.000000
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000001
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 500.000000
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -335.000000 0.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.002213 500.004517
-	Type 1
-	Width 165.000000
 	Z_Index 0
 	invertX 0
 	invertY 0
 }
-CO_Cube_0000000002
+CO_Ball_0000000001
 {
 	Additive 0
 	Bounciness 0.000000
-	Class 4
+	Class 3
 	Collision_layer 0
 	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
-	Height 165.000000
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 0.000000 -335.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 320.500000 -97.500000
+	Radius 24.500000
 	Rotation 0.000000
 	Roughness 0.000000
-	Scale 500.002197 165.004517
+	Scale 24.500000 24.500000
 	Type 1
-	Width 500.000000
 	Z_Index 0
 	invertX 0
 	invertY 0
 }
-CO_Cube_0000000075
+CO_Ball_0000000002
 {
 	Additive 0
 	Bounciness 0.000000
-	Class 4
+	Class 3
 	Collision_layer 0
 	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
-	Height 165.002594
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 0.000000 1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 500.000854 165.001266
-	Type 1
-	Width 500.002838
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000076
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.002594
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 0.000000 665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 500.000854 165.001266
-	Type 1
-	Width 500.002838
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000080
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.002594
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 0.000000 -665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 500.000854 165.001266
-	Type 1
-	Width 500.002838
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000081
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.002594
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 0.000000 -1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 500.000854 165.001266
-	Type 1
-	Width 500.002838
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000085
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 -335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000086
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000087
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 500.000183
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 1335.000000 0.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007263 500.008881
-	Type 1
-	Width 165.005173
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000091
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 500.000183
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -1335.000000 0.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007263 500.008881
-	Type 1
-	Width 165.005173
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000092
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 500.000183
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -665.000000 0.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007263 500.008881
-	Type 1
-	Width 165.005173
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000096
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000097
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000098
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 1335.000000 1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000099
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 1335.000000 665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000104
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 -1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000105
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 -665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000106
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 1335.000000 -665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000107
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 1335.000000 -1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000112
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -1335.000000 665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000113
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -1335.000000 1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000114
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -665.000000 1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000115
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -665.000000 665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000120
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -1335.000000 -1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000121
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -1335.000000 -665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000122
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -665.000000 -665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000123
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -665.000000 -1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CubeHM_0000000000
-{
-	Class 1
 	ID 0
-	Name CubeHM
-	Type 0
-	texture_FileName 
-	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
-	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
-	texture_Noize_Frequency 10.000000
-	texture_Noize_Layers 3
-	texture_Size 100.000000
-	texture_Type 11
-	texture_filter 1
-}
-CubeNM_0000000001
-{
-	Class 1
-	ID 0
-	Name CubeNM
-	Type 0
-	texture_FileName 
-	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
-	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
-	texture_Noize_Frequency 10.000000
-	texture_Noize_Layers 3
-	texture_Size 100.000000
-	texture_Type 9
-	texture_filter 1
-}
-Cube_0000000002
-{
-	Class 1
-	ID 0
-	Name Cube
-	Type 0
-	texture_FileName 
-	texture_Gradient_Color1 1.000000 1.000000 1.000000 1.000000
-	texture_Gradient_Color2 1.000000 1.000000 1.000000 0.000000
-	texture_Noize_Frequency 10.000000
-	texture_Noize_Layers 3
-	texture_Size 100.000000
-	texture_Type 7
-	texture_filter 0
-}
-LightSource_0000000003
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 0.000000 0.000000
+	Material No_Material
+	Name CO_Ball
+	Position 339.000000 -91.500000
+	Radius 14.000000
 	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
+	Roughness 0.000000
+	Scale 14.000000 14.000000
 	Type 1
-	Volume 0.000000
 	Z_Index 0
 	invertX 0
 	invertY 0
-	sizeZ 707.000000
 }
-LightSource_0000000077
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 0.000000 1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000082
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 0.000000 -1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000088
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 1000.000000 0.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000093
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position -1000.000000 0.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000100
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 1000.000000 1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000108
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 1000.000000 -1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000116
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position -1000.000000 1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000124
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position -1000.000000 -1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-M_Cube_0000000003
-{
-	Class 2
-	Height_Map CubeHM
-	ID 0
-	Name M_Cube
-	Normal_Map CubeNM
-	Texture Cube
-	Type 0
-}
-Monitor_0000000101
+CO_Ball_0000000003
 {
 	Additive 0
-	Class 9996
-	Color 0.000000 0.000000 0.000000 1.170000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Monitor
-	Position 1000.000000 1000.000000
+	Material No_Material
+	Name CO_Ball
+	Position 321.500000 -75.000000
+	Radius 0.500000
 	Rotation 0.000000
-	Scale 84.000000 46.000000
+	Roughness 0.000000
+	Scale 0.500000 0.500000
 	Type 1
 	Z_Index 0
-	bleepLastLine 0
-	color1 1.000000 1.000000 1.000000 1.000000
-	color10 1.000000 1.000000 1.000000 1.000000
-	color2 1.000000 1.000000 1.000000 1.000000
-	color3 1.000000 1.000000 1.000000 1.000000
-	color4 1.000000 1.000000 1.000000 1.000000
-	color5 1.000000 1.000000 1.000000 1.000000
-	color6 1.000000 1.000000 1.000000 1.000000
-	color7 1.000000 1.000000 1.000000 1.000000
-	color8 1.000000 1.000000 1.000000 1.000000
-	color9 1.000000 1.000000 1.000000 1.000000
 	invertX 0
 	invertY 0
-	text1 Housing
-	text10 
-	text2 
-	text3 
-	text4 
-	text5 
-	text6 
-	text7 
-	text8 
-	text9 
-	textOffset 4.000000 -32.699997
-	textScale 0.360000
-	textStep 6.960022
 }
-Monitor_0000000109
+CO_Ball_0000000004
 {
 	Additive 0
-	Class 9996
-	Color 0.000000 0.000000 0.000000 1.170000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Monitor
-	Position 1000.000000 -1000.000000
+	Material No_Material
+	Name CO_Ball
+	Position 357.500000 -69.000000
+	Radius 12.000000
 	Rotation 0.000000
-	Scale 84.000000 46.000000
+	Roughness 0.000000
+	Scale 12.000000 12.000000
 	Type 1
 	Z_Index 0
-	bleepLastLine 0
-	color1 1.000000 1.000000 1.000000 1.000000
-	color10 1.000000 1.000000 1.000000 1.000000
-	color2 1.000000 1.000000 1.000000 1.000000
-	color3 1.000000 1.000000 1.000000 1.000000
-	color4 1.000000 1.000000 1.000000 1.000000
-	color5 1.000000 1.000000 1.000000 1.000000
-	color6 1.000000 1.000000 1.000000 1.000000
-	color7 1.000000 1.000000 1.000000 1.000000
-	color8 1.000000 1.000000 1.000000 1.000000
-	color9 1.000000 1.000000 1.000000 1.000000
 	invertX 0
 	invertY 0
-	text1 Processing
-	text10 
-	text2 
-	text3 
-	text4 
-	text5 
-	text6 
-	text7 
-	text8 
-	text9 
-	textOffset 4.000000 -32.699997
-	textScale 0.360000
-	textStep 6.960022
 }
-Monitor_0000000117
+CO_Ball_0000000005
 {
 	Additive 0
-	Class 9996
-	Color 0.000000 0.000000 0.000000 1.170000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Monitor
-	Position -1000.000000 1000.000000
+	Material No_Material
+	Name CO_Ball
+	Position 354.000000 -94.000000
+	Radius 32.000000
 	Rotation 0.000000
-	Scale 84.000000 46.000000
+	Roughness 0.000000
+	Scale 32.000000 32.000000
 	Type 1
 	Z_Index 0
-	bleepLastLine 0
-	color1 1.000000 1.000000 1.000000 1.000000
-	color10 1.000000 1.000000 1.000000 1.000000
-	color2 1.000000 1.000000 1.000000 1.000000
-	color3 1.000000 1.000000 1.000000 1.000000
-	color4 1.000000 1.000000 1.000000 1.000000
-	color5 1.000000 1.000000 1.000000 1.000000
-	color6 1.000000 1.000000 1.000000 1.000000
-	color7 1.000000 1.000000 1.000000 1.000000
-	color8 1.000000 1.000000 1.000000 1.000000
-	color9 1.000000 1.000000 1.000000 1.000000
 	invertX 0
 	invertY 0
-	text1 Laaabs
-	text10 
-	text2 
-	text3 
-	text4 
-	text5 
-	text6 
-	text7 
-	text8 
-	text9 
-	textOffset 4.000000 -32.699997
-	textScale 0.360000
-	textStep 6.960022
 }
-Monitor_0000000125
+CO_Ball_0000000006
 {
 	Additive 0
-	Class 9996
-	Color 0.000000 0.000000 0.000000 1.170000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Monitor
-	Position -1000.000000 -1000.000000
+	Material No_Material
+	Name CO_Ball
+	Position 145.500000 349.000000
+	Radius 25.500000
 	Rotation 0.000000
-	Scale 84.000000 46.000000
+	Roughness 0.000000
+	Scale 25.500000 25.500000
 	Type 1
 	Z_Index 0
-	bleepLastLine 0
-	color1 1.000000 1.000000 1.000000 1.000000
-	color10 1.000000 1.000000 1.000000 1.000000
-	color2 1.000000 1.000000 1.000000 1.000000
-	color3 1.000000 1.000000 1.000000 1.000000
-	color4 1.000000 1.000000 1.000000 1.000000
-	color5 1.000000 1.000000 1.000000 1.000000
-	color6 1.000000 1.000000 1.000000 1.000000
-	color7 1.000000 1.000000 1.000000 1.000000
-	color8 1.000000 1.000000 1.000000 1.000000
-	color9 1.000000 1.000000 1.000000 1.000000
 	invertX 0
 	invertY 0
-	text1 cargo
-	text10 
-	text2 
-	text3 
-	text4 
-	text5 
-	text6 
-	text7 
-	text8 
-	text9 
-	textOffset 4.000000 -32.699997
-	textScale 0.360000
-	textStep 6.960022
 }
-Object_0000000004
+CO_Ball_0000000007
 {
 	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Object
-	Position 0.000000 0.000000
+	Material No_Material
+	Name CO_Ball
+	Position 165.000000 368.000000
+	Radius 22.500000
 	Rotation 0.000000
-	Scale 500.009399 500.005188
+	Roughness 0.000000
+	Scale 22.500000 22.500000
 	Type 1
-	Z_Index -32
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
-Object_0000000078
+CO_Ball_0000000008
 {
 	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Object
-	Position 0.000000 1000.000000
+	Material No_Material
+	Name CO_Ball
+	Position 155.500000 357.500000
+	Radius 30.000000
 	Rotation 0.000000
-	Scale 500.008057 500.008209
+	Roughness 0.000000
+	Scale 30.000000 30.000000
 	Type 1
-	Z_Index -32
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
-Object_0000000083
+CO_Ball_0000000009
 {
 	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Object
-	Position 0.000000 -1000.000000
+	Material No_Material
+	Name CO_Ball
+	Position 179.000000 356.500000
+	Radius 9.500000
 	Rotation 0.000000
-	Scale 500.008057 500.008209
+	Roughness 0.000000
+	Scale 9.500000 9.500000
 	Type 1
-	Z_Index -32
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
-Object_0000000089
+CO_Ball_0000000010
 {
 	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Object
-	Position 1000.000000 0.000000
+	Material No_Material
+	Name CO_Ball
+	Position 161.000000 346.500000
+	Radius 6.000000
 	Rotation 0.000000
-	Scale 500.008057 500.008209
+	Roughness 0.000000
+	Scale 6.000000 6.000000
 	Type 1
-	Z_Index -32
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
-Object_0000000094
+CO_Ball_0000000011
 {
 	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Object
-	Position -1000.000000 0.000000
+	Material No_Material
+	Name CO_Ball
+	Position 166.500000 381.500000
+	Radius 39.000000
 	Rotation 0.000000
-	Scale 500.008057 500.008209
+	Roughness 0.000000
+	Scale 39.000000 39.000000
 	Type 1
-	Z_Index -32
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
-Object_0000000102
+CO_Ball_0000000012
 {
 	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Object
-	Position 1000.000000 1000.000000
+	Material No_Material
+	Name CO_Ball
+	Position 145.500000 356.000000
+	Radius 16.500000
 	Rotation 0.000000
-	Scale 500.008057 500.008209
+	Roughness 0.000000
+	Scale 16.500000 16.500000
 	Type 1
-	Z_Index -32
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
-Object_0000000110
+CO_Ball_0000000013
 {
 	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Object
-	Position 1000.000000 -1000.000000
+	Material No_Material
+	Name CO_Ball
+	Position 168.500000 357.500000
+	Radius 24.500000
 	Rotation 0.000000
-	Scale 500.008057 500.008209
+	Roughness 0.000000
+	Scale 24.500000 24.500000
 	Type 1
-	Z_Index -32
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
-Object_0000000118
+CO_Ball_0000000014
 {
 	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Object
-	Position -1000.000000 1000.000000
+	Material No_Material
+	Name CO_Ball
+	Position 232.500000 301.500000
+	Radius 16.000000
 	Rotation 0.000000
-	Scale 500.008057 500.008209
+	Roughness 0.000000
+	Scale 16.000000 16.000000
 	Type 1
-	Z_Index -32
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
-Object_0000000126
+CO_Ball_0000000015
 {
 	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Material M_Cube
-	Name Object
-	Position -1000.000000 -1000.000000
+	Material No_Material
+	Name CO_Ball
+	Position 251.000000 300.500000
+	Radius 2.000000
 	Rotation 0.000000
-	Scale 500.008057 500.008209
+	Roughness 0.000000
+	Scale 2.000000 2.000000
 	Type 1
-	Z_Index -32
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
-TriggerCube_0000000005
+CO_Ball_0000000016
 {
-	Class 9995
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Name TriggerCube
-	Position 0.000000 0.000000
-	Scale 500.005280 500.007233
+	Material No_Material
+	Name CO_Ball
+	Position 241.000000 337.000000
+	Radius 25.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 25.000000 25.000000
 	Type 1
 	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
+	invertX 0
+	invertY 0
 }
-TriggerCube_0000000079
+CO_Ball_0000000017
 {
-	Class 9995
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Name TriggerCube
-	Position 0.000000 1000.000000
-	Scale 500.007202 500.003235
+	Material No_Material
+	Name CO_Ball
+	Position 234.000000 291.500000
+	Radius 30.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 30.000000 30.000000
 	Type 1
 	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
+	invertX 0
+	invertY 0
 }
-TriggerCube_0000000084
+CO_Ball_0000000018
 {
-	Class 9995
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Name TriggerCube
-	Position 0.000000 -1000.000000
-	Scale 500.007202 500.003235
+	Material No_Material
+	Name CO_Ball
+	Position 233.000000 311.000000
+	Radius 20.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 20.000000 20.000000
 	Type 1
 	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
+	invertX 0
+	invertY 0
 }
-TriggerCube_0000000090
+CO_Ball_0000000019
 {
-	Class 9995
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Name TriggerCube
-	Position 1000.000000 0.000000
-	Scale 500.007202 500.003235
+	Material No_Material
+	Name CO_Ball
+	Position 252.000000 332.500000
+	Radius 3.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 3.000000 3.000000
 	Type 1
 	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
+	invertX 0
+	invertY 0
 }
-TriggerCube_0000000095
+CO_Ball_0000000020
 {
-	Class 9995
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Name TriggerCube
-	Position -1000.000000 0.000000
-	Scale 500.007202 500.003235
+	Material No_Material
+	Name CO_Ball
+	Position 251.000000 307.500000
+	Radius 0.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 0.000000 0.000000
 	Type 1
 	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
+	invertX 0
+	invertY 0
 }
-TriggerCube_0000000103
+CO_Ball_0000000021
 {
-	Class 9995
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Name TriggerCube
-	Position 1000.000000 1000.000000
-	Scale 500.007202 500.003235
+	Material No_Material
+	Name CO_Ball
+	Position -109.000000 58.000000
+	Radius 15.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 15.500000 15.500000
 	Type 1
 	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
+	invertX 0
+	invertY 0
 }
-TriggerCube_0000000111
+CO_Ball_0000000022
 {
-	Class 9995
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Name TriggerCube
-	Position 1000.000000 -1000.000000
-	Scale 500.007202 500.003235
+	Material No_Material
+	Name CO_Ball
+	Position -103.500000 80.500000
+	Radius 8.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 8.000000 8.000000
 	Type 1
 	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
+	invertX 0
+	invertY 0
 }
-TriggerCube_0000000119
+CO_Ball_0000000023
 {
-	Class 9995
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Name TriggerCube
-	Position -1000.000000 1000.000000
-	Scale 500.007202 500.003235
+	Material No_Material
+	Name CO_Ball
+	Position -119.500000 55.500000
+	Radius 30.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 30.500000 30.500000
 	Type 1
 	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
+	invertX 0
+	invertY 0
 }
-TriggerCube_0000000127
+CO_Ball_0000000024
 {
-	Class 9995
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
 	ID 0
-	Name TriggerCube
-	Position -1000.000000 -1000.000000
-	Scale 500.007202 500.003235
+	Material No_Material
+	Name CO_Ball
+	Position -89.500000 75.500000
+	Radius 30.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 30.000000 30.000000
 	Type 1
 	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000025
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -113.000000 80.500000
+	Radius 16.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 16.000000 16.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000026
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 35.500000 -27.000000
+	Radius 21.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 21.000000 21.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000027
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 43.000000 -61.500000
+	Radius 0.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 0.000000 0.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000028
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 36.500000 -54.500000
+	Radius 17.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 17.000000 17.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000029
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 32.500000 -25.500000
+	Radius 14.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 14.000000 14.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000030
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 45.000000 -46.500000
+	Radius 5.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 5.000000 5.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000031
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 19.000000 -32.500000
+	Radius 12.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 12.500000 12.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000032
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 19.500000 -45.000000
+	Radius 6.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 6.000000 6.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000033
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 31.500000 -57.000000
+	Radius 24.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 24.000000 24.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000034
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 35.000000 -38.000000
+	Radius 1.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 1.000000 1.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000035
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -441.500000 516.000000
+	Radius 6.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 6.000000 6.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000036
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -421.000000 517.000000
+	Radius 8.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 8.000000 8.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000037
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -441.500000 502.000000
+	Radius 6.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 6.000000 6.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000038
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -420.500000 509.000000
+	Radius 3.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 3.500000 3.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000039
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -431.500000 509.000000
+	Radius 4.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 4.000000 4.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000040
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -433.000000 501.000000
+	Radius 0.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 0.500000 0.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000041
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -431.000000 510.500000
+	Radius 25.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 25.000000 25.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000042
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -427.000000 499.000000
+	Radius 8.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 8.000000 8.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000043
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -433.000000 504.500000
+	Radius 16.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 16.500000 16.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000044
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 453.500000 338.500000
+	Radius 7.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 7.000000 7.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000045
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 454.000000 329.500000
+	Radius 23.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 23.500000 23.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000046
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 453.000000 340.500000
+	Radius 10.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 10.000000 10.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000047
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 439.000000 313.000000
+	Radius 1.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 1.500000 1.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000048
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 445.000000 320.000000
+	Radius 4.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 4.500000 4.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000049
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -171.000000 -322.500000
+	Radius 15.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 15.000000 15.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000050
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -173.500000 -295.500000
+	Radius 11.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 11.000000 11.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000051
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -156.500000 -324.000000
+	Radius 30.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 30.000000 30.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000052
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -154.500000 -313.500000
+	Radius 31.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 31.500000 31.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000053
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -198.500000 -315.000000
+	Radius 23.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 23.500000 23.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000054
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -162.000000 -321.500000
+	Radius 39.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 39.000000 39.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000055
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -180.000000 -307.500000
+	Radius 34.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 34.000000 34.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000056
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -170.500000 -306.500000
+	Radius 17.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 17.000000 17.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000057
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 103.500000 434.500000
+	Radius 7.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 7.000000 7.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000058
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 132.000000 439.000000
+	Radius 33.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 33.500000 33.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000059
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 130.500000 435.000000
+	Radius 8.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 8.000000 8.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000060
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 109.000000 427.500000
+	Radius 35.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 35.000000 35.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000061
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 111.000000 453.500000
+	Radius 4.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 4.500000 4.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000062
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 121.500000 442.000000
+	Radius 6.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 6.000000 6.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000063
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 114.500000 447.500000
+	Radius 10.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 10.000000 10.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000064
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 327.000000 -198.000000
+	Radius 35.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 35.000000 35.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000065
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 337.000000 -202.500000
+	Radius 30.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 30.000000 30.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000066
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 318.000000 -219.500000
+	Radius 25.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 25.000000 25.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000067
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 331.000000 -228.000000
+	Radius 4.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 4.500000 4.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000068
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 347.500000 -198.500000
+	Radius 14.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 14.500000 14.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000069
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 342.500000 -207.500000
+	Radius 1.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 1.000000 1.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000070
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 340.500000 -225.000000
+	Radius 32.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 32.500000 32.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000071
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 316.000000 -214.500000
+	Radius 13.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 13.000000 13.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000072
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 266.500000 172.500000
+	Radius 0.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 0.500000 0.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000073
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 281.000000 196.000000
+	Radius 10.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 10.000000 10.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000074
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 253.000000 199.000000
+	Radius 17.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 17.000000 17.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000075
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 284.500000 195.500000
+	Radius 2.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 2.000000 2.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000076
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 293.500000 190.000000
+	Radius 5.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 5.500000 5.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000077
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -359.000000 -158.000000
+	Radius 24.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 24.500000 24.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000078
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -372.000000 -143.500000
+	Radius 11.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 11.000000 11.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000079
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -366.500000 -140.500000
+	Radius 25.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 25.500000 25.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000080
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -355.500000 -133.500000
+	Radius 4.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 4.000000 4.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000081
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -368.500000 -135.000000
+	Radius 14.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 14.500000 14.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000082
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -356.500000 -155.000000
+	Radius 19.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 19.000000 19.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000083
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -366.000000 -131.500000
+	Radius 31.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 31.000000 31.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000084
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -361.000000 -152.000000
+	Radius 3.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 3.500000 3.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000085
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -351.000000 -148.500000
+	Radius 14.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 14.500000 14.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000086
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 498.500000 -241.000000
+	Radius 11.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 11.000000 11.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000087
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 481.000000 -246.000000
+	Radius 8.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 8.000000 8.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000088
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 480.500000 -229.000000
+	Radius 35.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 35.500000 35.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000089
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 497.500000 -230.000000
+	Radius 33.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 33.000000 33.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000090
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position 479.000000 -232.000000
+	Radius 33.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 33.000000 33.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000091
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -193.000000 451.500000
+	Radius 33.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 33.500000 33.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000092
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -191.500000 460.000000
+	Radius 38.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 38.000000 38.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000093
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -192.000000 463.000000
+	Radius 25.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 25.500000 25.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000094
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -194.000000 447.500000
+	Radius 14.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 14.500000 14.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000095
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -207.000000 464.500000
+	Radius 0.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 0.500000 0.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000096
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -192.500000 464.500000
+	Radius 8.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 8.500000 8.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000097
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -106.500000 -451.000000
+	Radius 18.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 18.000000 18.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000098
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -95.500000 -432.000000
+	Radius 34.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 34.500000 34.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000099
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -82.500000 -440.000000
+	Radius 36.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 36.000000 36.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000100
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -98.500000 -433.500000
+	Radius 35.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 35.000000 35.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000101
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -92.000000 -450.500000
+	Radius 35.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 35.500000 35.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000102
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -80.500000 -460.000000
+	Radius 17.000000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 17.000000 17.000000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
+}
+CO_Ball_0000000103
+{
+	Additive 0
+	Bounciness 0.000000
+	Class 3
+	Collision_layer 0
+	Color 1.000000 1.000000 1.000000 1.000000
+	Depth 0.000000
+	ID 0
+	Material No_Material
+	Name CO_Ball
+	Position -95.000000 -454.500000
+	Radius 10.500000
+	Rotation 0.000000
+	Roughness 0.000000
+	Scale 10.500000 10.500000
+	Type 1
+	Z_Index 0
+	invertX 0
+	invertY 0
 }

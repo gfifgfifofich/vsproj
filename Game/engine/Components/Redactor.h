@@ -14,6 +14,7 @@ inline std::vector<std::string> NodeNames;
 
 inline glm::vec2 s_Resolution = { 1920,1080 };
 inline bool s_Fullscreen = true;
+inline bool RedactorNoUI = false;
 
 inline int substeps = 10;
 inline glm::vec4 EditorColor = { 0.025f,0.025f,0.025f,1.0f };

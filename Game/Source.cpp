@@ -272,7 +272,6 @@ glm::ivec2 StandartResolutions[] =
 
 bool disablefog = false;
 
-
 void Delete()
 {
 }
@@ -360,6 +359,8 @@ void ProcessPlayerControls()
 	Window* sw = GetWindow(ForeWindowID);
 	Window* iw = GetWindow(InterfaceWindowID);
 	Window* mw = GetWindow(MenuWindowID);
+	Window* pw = GetWindow(PreviewWindowID);
+	Window* jw = GetWindow(JournalWindowID); 
 
 	AqueredCameraScale *= 1.0f + scrollmovement * 0.1f;
 
@@ -1043,7 +1044,9 @@ void ProcessPlayerControls()
 	}
 
 	ActiveRadar.Process(delta);
-	ActiveRadar.Draw({ 0.5f * WIDTH - 120.0f,0.5f * HEIGHT - 120.0f });
+	//ActiveRadar.Draw({ 0.5f * WIDTH - 120.0f,0.5f * HEIGHT - 120.0f });
+	//JournalWindowPos = SmootherStep(jw->ViewportSize.x * 1.5f
+	ActiveRadar.Draw({ 0.5f * WIDTH - 120.0f + JournalWindowPos  - jw->ViewportSize.x * 1.1f,0.5f * HEIGHT - 150.0f });
 
 	ConsoleTexts.push_back("Materials: " + std::to_string(Materials));
 	for (auto q : quests)
@@ -1430,6 +1433,7 @@ void Ready()
 	InterfaceWindowID = CreateWindow();
 	ForeGroundWindowID = CreateWindow();
 	PreviewWindowID = CreateWindow();
+	JournalWindowID = CreateWindow();
 
 	Window* bw = GetWindow(BackgroundWindowID);
 	Window* sw = GetWindow(ForeWindowID);
@@ -1437,6 +1441,7 @@ void Ready()
 	Window* cw = GetWindow(InterfaceWindowID);
 	Window* mw = GetWindow(MenuWindowID);
 	Window* pw = GetWindow(PreviewWindowID);
+	Window* jw = GetWindow(JournalWindowID);
 
 	sw->AutoActive = false;
 	bw->AutoActive = false;
@@ -1444,10 +1449,12 @@ void Ready()
 	cw->AutoActive = false;
 	mw->AutoActive = false;
 	pw->AutoActive = false;
+	jw->AutoActive = true;
 
 	sw->hdr = true;
 	bw->hdr = true;
 	fw->hdr = false;
+	jw->hdr = false;
 
 	sw->Init(GetWindow(SceneWindowID)->ViewportSize);
 	bw->Init(GetWindow(SceneWindowID)->ViewportSize);
@@ -1455,6 +1462,7 @@ void Ready()
 	cw->Init(GetWindow(SceneWindowID)->ViewportSize);
 	mw->Init(GetWindow(SceneWindowID)->ViewportSize);
 	pw->Init(glm::vec2(GetWindow(SceneWindowID)->ViewportSize.x * 0.2f));
+	jw->Init(glm::vec2(GetWindow(SceneWindowID)->ViewportSize.x * 0.3f, GetWindow(SceneWindowID)->ViewportSize.y * 0.6f));
 
 
 	sw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
@@ -1463,6 +1471,7 @@ void Ready()
 	cw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
 	mw->backgroundColor = { 0.0f,0.0f,0.0f,0.0f };
 	pw->backgroundColor = { 0.0f,0.0f,0.0f,1.0f };
+	jw->backgroundColor = { 0.0f,0.0f,0.0f,1.0f };
 
 	EditorColor = {0.0f,0.0f,0.0f,1.0f};
 	sw->w_AmbientLight = 0.4f;
@@ -1471,6 +1480,7 @@ void Ready()
 	cw->w_AmbientLight = 1.4f;
 	sw->w_DirectionalLight = 2.0f;
 	pw->w_AmbientLight = 1.0f;
+	jw->w_AmbientLight = 1.0f;
 
 	
 
@@ -1564,6 +1574,7 @@ void Process(float dt)
 	Window* cw = GetWindow(InterfaceWindowID);
 	Window* mw = GetWindow(MenuWindowID);
 	Window* pw = GetWindow(PreviewWindowID);
+	Window* jw = GetWindow(JournalWindowID);
 
 	sw->active = true;
 
@@ -1675,13 +1686,9 @@ void Process(float dt)
 		}
 		if (JustPressedkey[GLFW_KEY_3])
 		{
-			Entities.push_back(new CentralPart);
-			Entities[Entities.size() - 1]->Create(MousePosition, { 0.0f,1.0f }, PARTSIZE);
-			Entities[Entities.size() - 1]->LoadFrom("Bigboy.sav");
-			Entities[Entities.size() - 1]->autocontrol = true;
-			Entities[Entities.size() - 1]->trgPos = MousePosition;
-			lastEntityID++;
-			Entities[Entities.size() - 1]->id = lastEntityID;
+			CentralPart* ent = SpawnAiShip(MousePosition, "Bigboy");
+			ent->trgPos = MousePosition;
+			ent->AIState = 1;
 			//Entities[Entities.size() - 1]->CP.Health = -10;
 
 		}
@@ -1938,10 +1945,6 @@ void Process(float dt)
 	ConsolePos = SmootherStep(cw->ViewportSize.x*-0.3f, 0.0f, ConsolePosTimer);
 
 
-	b = false;
-	UI_button(&b, "Console", glm::vec2(-cw->ViewportSize.x * 0.5f + 15.0f, cw->ViewportSize.y * 0.5f - 20.0f), { 150,35 }, 0.35f, glm::vec4(0.5f), glm::vec4(0.8f), glm::vec4(0.5f), 10);
-	if (b)
-		ConsoleShow = !ConsoleShow;
 
 	float ConsoleYStep = 15.0f;
 	float ConsoleTextSize = 0.4f;
@@ -1959,8 +1962,6 @@ void Process(float dt)
 	cw->End();
 
 	pw->active = true;
-	
-	
 	pw->AutoDraw = PreviewShowWindow;
 
 	if (PreviewShowWindow)
@@ -1980,11 +1981,11 @@ void Process(float dt)
 
 	pw->Use();
 
-	if (Entities.size() > 0)
+	if (Entities.size() > 0 && PreviewShowWindow)
 	{
-		UI_CheckBox(&Previewheat, "Heat/Health",glm::vec2(-pw->ViewportSize.x * 0.5f + 15.0f, pw->ViewportSize.y * 0.5f - 25.0f));
+		UI_CheckBox(&Previewheat, "Heat/Health", glm::vec2(-pw->ViewportSize.x * 0.5f + 15.0f, pw->ViewportSize.y * 0.5f - 25.0f));
 		CameraPosition = Entities[0]->mid;
-		CameraScale = glm::vec2(float(pw->ViewportSize.x *0.4f) / Entities[0]->maxR);
+		CameraScale = glm::vec2(float(pw->ViewportSize.x * 0.4f) / Entities[0]->maxR);
 		if (!Previewheat)
 		{
 			drawHealth = true;
@@ -2004,6 +2005,80 @@ void Process(float dt)
 	drawHeat = false;
 	pw->End();
 	pw->Position = glm::vec2(pw->ViewportSize.x * 0.5f - sw->ViewportSize.x * 0.5f + 5.0f, pw->ViewportSize.y * 0.5f - sw->ViewportSize.y * 0.5f + 5.0f + PreviewPos);
+
+
+	jw->AutoDraw = JournalWindowShow;
+
+	if (JournalWindowShow)
+	{
+		JournalWindowPosTimer += dt * 1.5f;
+		if (JournalWindowPosTimer > 1.0f)
+			JournalWindowPosTimer = 1.0f;
+	}
+	else
+	{
+		JournalWindowPosTimer -= dt * 1.5f;
+		if (JournalWindowPosTimer < 0.0f)
+			JournalWindowPosTimer = 0.0f;
+	}
+
+	JournalWindowPos = SmootherStep(jw->ViewportSize.x * 1.1f, 0.0f, JournalWindowPosTimer);
+
+	jw->Use();
+
+	glm::vec2 Corner = { -jw->ViewportSize.x * 0.5f + 15.0f, jw->ViewportSize.y * 0.5 - 25.0f};
+	glm::vec2 CornerAdd = { 0.0f, -JournalWindowScroll };
+	if (JournalWindowShow)
+	{
+		//b = false;
+		//UI_CheckBox(&b, "Journal", glm::vec2(-jw->ViewportSize.x * 0.5f + 15.0f, jw->ViewportSize.y * 0.5f - 25.0f));
+		//if (b)
+		//{
+		//
+		//}
+		Corner.y += UI_DrawText("Quests:", Corner + CornerAdd, 0.45f).y * -1.0f;
+	
+
+		for (auto q : quests)
+		{
+			b = false;
+			UI_DrawText(q.second.name.c_str(), Corner + CornerAdd - glm::vec2(0.0f, 5.0f), 0.35f);
+			UI_DrawCube(Corner + CornerAdd + glm::vec2(250 * 0.5f, 0.0f), glm::vec2(250.0f, 20.0f) * 0.5f, 0.0f, glm::vec4(0.07f));
+			Corner.y += UI_button(&b, "", Corner + CornerAdd, { 250,20 }, 0.35f, glm::vec4(0.0f), glm::vec4(0.5f), glm::vec4(0.0f)).y * -1.0f - 0;
+			if (b)
+			{
+				JournalSelectedQuest = q.second.id;
+			}
+		}
+	}
+
+	JournalWindowScroll += scrollmovement * 50.0f;
+
+
+	if (JustPressedbutton[GLFW_MOUSE_BUTTON_MIDDLE])
+		JournalPrevMousePos = MousePosition;
+	if (buttons[GLFW_MOUSE_BUTTON_MIDDLE] && !JustPressedbutton[GLFW_MOUSE_BUTTON_MIDDLE])
+	{
+		JournalWindowScroll -= Journaldif.y;
+		Journaldif = JournalPrevMousePos - MousePosition;
+	}
+	else
+		Journaldif = { 0.0f ,0.0f};
+	JournalWindowScroll += Journaldif.y;
+
+	if (-jw->ViewportSize.y * 0.5f > Corner.y)
+	{
+		if (JournalWindowScroll > 0.0f)
+			JournalWindowScroll = 0.0f;
+		else if (JournalWindowScroll < (Corner.y))
+			JournalWindowScroll = (Corner.y);
+	}
+	else
+		JournalWindowScroll = 0.0f;
+	
+	jw->End();
+	jw->Position = glm::vec2(jw->ViewportSize.x * -0.5f + sw->ViewportSize.x * 0.5f - 5.0f + JournalWindowPos, jw->ViewportSize.y * -0.5f + sw->ViewportSize.y * 0.5f - 5.0f);
+
 
 	UseWindow(SceneWindowID);
 	AmbientLight = 1.0f;
@@ -2030,11 +2105,23 @@ void Process(float dt)
 		fw->Draw(3);
 	}
 	cw->Draw(4);
+	b = false;
+	UI_button(&b, "Console", glm::vec2(-cw->ViewportSize.x * 0.5f + 15.0f, cw->ViewportSize.y * 0.5f - 20.0f), { 150,35 }, 0.35f, glm::vec4(0.5f), glm::vec4(0.8f), glm::vec4(0.5f), 10);
+	if (b)
+		ConsoleShow = !ConsoleShow;
+
+	jw->Draw(4);
+	b = false;
+	UI_button(&b, "Journal", glm::vec2(cw->ViewportSize.x * 0.5f - 165.0f, cw->ViewportSize.y * 0.5f - 20.0f), { 150,35 }, 0.35f, glm::vec4(0.5f), glm::vec4(0.8f), glm::vec4(0.5f), 10);
+	if (b)
+		JournalWindowShow= !JournalWindowShow;
+
 	pw->Draw(4);
 	b = false;
-	UI_button(&b, "Ship preview", pw->Position + glm::vec2(0.0f, pw->ViewportSize.y * 0.5f + 20.0f), {150,35}, 0.35f, glm::vec4(0.5f), glm::vec4(0.8f), glm::vec4(0.5f), 10);
+	UI_button(&b, "Ship preview", pw->Position + glm::vec2(pw->ViewportSize.x * -0.5f + 15.0f, pw->ViewportSize.y * 0.5f + 20.0f), {150,35}, 0.35f, glm::vec4(0.5f), glm::vec4(0.8f), glm::vec4(0.5f), 10);
 	if (b)
 		PreviewShowWindow = !PreviewShowWindow;
+
 	mw->Draw(5);
 
 
@@ -2218,20 +2305,28 @@ void Rescale(int newWindth,int newHeight)
 	Window* iw = GetWindow(InterfaceWindowID);
 	Window* fw = GetWindow(ForeGroundWindowID);
 	Window* mw = GetWindow(MenuWindowID);
-	sw->ViewportSize = GetWindow(SceneWindowID)->ViewportSize;
+	Window* pw = GetWindow(PreviewWindowID);
+	Window* jw = GetWindow(JournalWindowID);
+
+	sw->ViewportSize = { newWindth ,newHeight };
 	sw->RecalculateSize();
 
-	bw->ViewportSize = GetWindow(SceneWindowID)->ViewportSize;
+	bw->ViewportSize = { newWindth ,newHeight };
 	bw->RecalculateSize();
 
-	mw->ViewportSize = GetWindow(SceneWindowID)->ViewportSize;
+	mw->ViewportSize = { newWindth ,newHeight };
 	mw->RecalculateSize();
 
-	iw->ViewportSize = GetWindow(SceneWindowID)->ViewportSize;
+	iw->ViewportSize = { newWindth ,newHeight };
 	iw->RecalculateSize();
 
-	fw->ViewportSize = GetWindow(SceneWindowID)->ViewportSize;
+	fw->ViewportSize = { newWindth ,newHeight };
 	fw->RecalculateSize();
+
+	pw->ViewportSize = (glm::vec2(newWindth * 0.2f));
+	pw->RecalculateSize();
+	jw->ViewportSize = (glm::vec2(newWindth * 0.3f, newHeight * 0.6f));
+	jw->RecalculateSize();
 
 	float maxsize = fmaxf(sw->ViewportSize.x, sw->ViewportSize.y);
 	TextSize = maxsize * 0.0005f * 0.35f;

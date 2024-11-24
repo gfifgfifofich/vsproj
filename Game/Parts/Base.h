@@ -104,7 +104,7 @@ public:
 	bool player=false;
 
 	bool dead = false;
-	bool debris = false;
+	bool debris = true;
 	bool deactivated = false;
 
 	bool attached = false;
@@ -119,7 +119,7 @@ public:
 	float throtle = 0.0f;
 
 	bool shot = false;
-	bool shutdown = true;
+	bool shutdown = false;
 	float shutdownTemp = 10.0f;
 	float MaxTemp = 30.0f;
 	float MinAutocooltemp = 0.0f;

@@ -9,6 +9,7 @@
 #include "Parts/Base.h"
 #include "Parts/CentralPart.h"
 #include "Radar.h"
+#include "Helper.h"
 
 
 
@@ -259,6 +260,15 @@ void Radar::Draw(glm::vec2 screenpos)
 {
 	if (Entities.size() > 0)
 	{
+		float step = 16.5f;
+		glm::vec2 corner = { 0.0f,-step };
+		for (int i = 0; i < MissionTexts.size(); i++)
+		{
+			UI_DrawText(MissionTexts[i].c_str(), screenpos - glm::vec2(100.0f,100.0f) + corner,0.35f);
+			corner.y -= step;
+		}
+		MissionTexts.clear();
+
 		glm::vec2 pos = Entities[0]->mid + offset;
 		UI_DrawCircle(screenpos, 100.0f, { 0.0f,0.3f,0.0f,1.0f }, 0, 0, -10);
 		UI_DrawCircle(screenpos, 99.0f, { 0.0f,0.0f,0.0f,1.0f }, 0, 0, -10);
@@ -301,7 +311,7 @@ void Radar::Draw(glm::vec2 screenpos)
 			else
 				color = { 0.2f,0.2f,2.0f,1.0f };
 			if (bleeps[i].state > 2)
-				color = { 0.1f,2.0f,0.1f,1.0f };
+				color = { 0.2f,0.6f,0.2f,1.0f };
 			if (bleeps[i].state ==-1)
 				color = { 2.1f,1.0f,3.1f,1.0f };
 

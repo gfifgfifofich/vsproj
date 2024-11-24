@@ -6,7 +6,7 @@ Save0
 {
 	EntityBackUpName PreMissionBackup
 	LastShip Save0 
-	Materials 1486657
+	Materials 1486737
 	lastEntityName 
 	storyint 4
 }
@@ -27,8 +27,8 @@ ShipFileNames
 }
 TheQuickSave
 {
-	EntityBackUpName PreMissionBackup
-	Materials 1486657
+	EntityBackUpName PreMissionBackup 
+	Materials 1486657 
 	lastEntityName 
-	storyint 4
+	storyint 4 
 }

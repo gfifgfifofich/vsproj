@@ -1,0 +1,29 @@
+Counters
+{
+	Cargo 0
+	FightingQuests 0
+	Housing 0
+	Labs 0
+	Processing 0
+	RNDQuests 0
+	TotalSize 0
+	deliveryQuests 0
+	materials 0
+}
+Mission
+{
+	EntitiesCount 0
+	compleated 0
+	dificulty 0
+	exiting 0
+	materialReward 400
+	missionpos 10162.761719 28630.617188
+	planetpos 0.000000 0.000000
+	size 0
+	story_mission 0
+	type -1
+}
+TakenAreas
+{
+	0 0.000000 0.000000 50.000000 50.000000
+}
