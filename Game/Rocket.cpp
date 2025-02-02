@@ -109,10 +109,12 @@ void Rocket::Draw()
 	if (ThrowParticles) 
 	{
 		ThrowParticles = false;
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 1; i++)
 			EngineSmoke.Spawn(body[1].position + dir * body[0].r * -1.0f - dir * (rand() % 1000 * 0.002f * body[0].r),
 				dir * 5000.0f * throtle * 0.025f, 1,
 				EngineSmoke.lifetime * 0.5f * abs(throtle) * (rand() % 1000 * 0.0005f + 0.5f));
+
+		RocketSmoke.Spawn(DS.body.position, { (rand() % 1000 * 0.001f - 0.5f) * 30.0f ,(rand() % 1000 * 0.001f - 0.5f) * 30.0f }, 1);
 	}
 	AddLightSphere(body[1].position + dir * body[0].r, 80.0f * abs(throtle), glm::vec4(15.0f, 2.0f, 1.0f, abs(0.5f + abs(throtle) + (rand() % 100 - 50) * 0.01f)));
 	DrawLight(body[1].position + dir * body[0].r, glm::vec2(30.0f * abs(throtle)), glm::vec4(10.0f, 2.0f, 1.0f, abs(0.5f + abs(throtle) + (rand() % 100 - 50) * 0.01f)), 0.3f);

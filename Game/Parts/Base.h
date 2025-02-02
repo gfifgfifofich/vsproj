@@ -98,8 +98,14 @@ public:
 	int parttype = TYPE::STRUCTUREPART;
 	int partid = -1;
 	int id = 0;
+	int Regenid = -1;
+	int PreviousPartId = -1; // id of part closer to central part
+	int closestRouteSize = -1; // size of shortest path to central part
 
 	int questid = -1;
+
+	float DamageTimer = 0.0f;
+	float LastHealth = 0.0f;
 
 	bool player=false;
 

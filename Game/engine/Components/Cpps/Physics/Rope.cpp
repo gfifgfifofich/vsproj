@@ -83,7 +83,7 @@ void DecorativeRope::Init(ball* b1, ball* b2, float length )
 	for (int i = 0; i < 5; i++)
 		rope[i].position = b1->position + i * 0.2f * (b2->position - b1->position);
 }
-void DecorativeRope::Process(float dt)
+void DecorativeRope::Process(float dt, bool updateb1b2)
 {
 	for (int s = 0; s < 2; s++)
 	{
@@ -93,15 +93,18 @@ void DecorativeRope::Process(float dt)
 			rope[0].velocity = b1->velocity;
 			rope[0].Force = b1->Force;
 		}
+		if (b2 != nullptr)
+		{
+			rope[4].position = b2->position;
+			rope[4].velocity = b2->velocity;
+			rope[4].Force = b2->Force;
+		}
 		for (int i = 1; i < 5; i++)
 		{
-			rope[i].Force = Force;
-			rope[i].Process(dt);
-			if (b1 != nullptr)
+			if (i != 4)
 			{
-				rope[4].position = b2->position;
-				rope[4].velocity = b2->velocity;
-				rope[4].Force = b2->Force;
+				rope[i].Force = Force;
+				rope[i].Process(dt);
 			}
 			Rope(&rope[i], &rope[i - 1], length * 0.2f);
 

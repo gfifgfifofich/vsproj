@@ -13,15 +13,15 @@ Counters
 Mission
 {
 	EntitiesCount 0
-	compleated 0
-	dificulty 3
+	compleated 1
+	dificulty 0
 	exiting 0
-	materialReward 90
-	missionpos 2964.079590 6077.439941
+	materialReward 0
+	missionpos -5311.759277 2540.424316
 	planetpos 0.000000 0.000000
-	size 3
+	size 0
 	story_mission 0
-	type 9
+	type -1
 }
 TakenAreas
 {

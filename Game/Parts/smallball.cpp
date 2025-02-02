@@ -7,7 +7,7 @@ Some physics interactions lead to nans
 like spawning inside a cube
 */
 
-const float collisionRoughness = 0.4f;
+const float collisionRoughness = 0.95f;
 
 int NewBall()
 {
@@ -150,10 +150,10 @@ void Rope(int b1, int b2, float maxlength)
 	}
 }
 
-void BallToPointCollision(int b, glm::vec2 point)
+bool BallToPointCollision(int b, glm::vec2 point)
 {
 	if (b < 0 || b >= 100000)
-		return;
+		return false;
 	if (sqrlength(ballPosition[b] - point) < PARTSIZE * PARTSIZE && sqrlength(ballPosition[b] - point) != 0.0f)
 	{
 		glm::vec2 dif = glm::vec2(0.0f);
@@ -172,17 +172,18 @@ void BallToPointCollision(int b, glm::vec2 point)
 
 		velocity1 = velocity1 * collisionRoughness;
 
-		velocity1 -= n1 * energy1 * 1.0f;
+		velocity1 -= n1 * energy1 * collisionRoughness;
 
 		ballVelocity[b] = velocity1;
 		ballPosition[b] += (dif / dist) * distancedifference;
-
+		return true;
 	}
+	return false;
 }
-void BalltoStaticBallCollision(int b1, ball* b2)
+bool BalltoStaticBallCollision(int b1, ball* b2)
 {
 	if (b1 < 0 || b1 >= 100000 || b2 ==nullptr)
-		return;
+		return false;
 	glm::vec2 dif = b2->position - ballPosition[b1];
 	if (dif.x * dif.x + dif.y * dif.y < (PARTSIZE + b2->r) * (PARTSIZE + b2->r))
 	{
@@ -209,6 +210,7 @@ void BalltoStaticBallCollision(int b1, ball* b2)
 		float energy1 = DOT(ballVelocity[b1], n1);// basicly, a component of velocity, that is changed after collision
 
 
+		velocity1 = velocity1 * collisionRoughness;
 		velocity1 -= n1 * collisionRoughness * energy1;
 
 		//positions
@@ -216,13 +218,15 @@ void BalltoStaticBallCollision(int b1, ball* b2)
 
 
 		ballVelocity[b1] = velocity1;
+		return true;
 	}
+	return false;
 }
-void BallToStaticQuadCollision(int b, cube* c)
+bool BallToStaticQuadCollision(int b, cube* c)
 {
 
 	if (b < 0 || b >= 100000 )
-		return;
+		return false;
 	float roughness = collisionRoughness;
 	glm::vec2 posdifference = c->position - ballPosition[b];
 
@@ -238,7 +242,9 @@ void BallToStaticQuadCollision(int b, cube* c)
 
 
 	if (c->position - posdifference != ballPosition[b])
-		BallToPointCollision(b, c->position - posdifference);
+	{
+		return BallToPointCollision(b, c->position - posdifference);
+	}
 	else
 	{
 		bool plane1, plane2;// y = x, y=-x;
@@ -281,14 +287,16 @@ void BallToStaticQuadCollision(int b, cube* c)
 		else if (posdifference.y < -c->height)
 			posdifference.y = -c->height;
 
-		BallToPointCollision(b, c->position - posdifference);
+		return BallToPointCollision(b, c->position - posdifference);
+	
 	}
 
+	return false;
 }
-void BtBCollision(int b1, int b2)
+bool BtBCollision(int b1, int b2)
 {
 	if (b1 < 0 || b1 >= 100000 || b2 < 0 || b2 >= 100000)
-		return;
+		return false;
 	glm::vec2 dif = ballPosition[b2]- ballPosition[b1];
 	if (dif.x * dif.x + dif.y * dif.y < (PARTSIZE+PARTSIZE) * (PARTSIZE + PARTSIZE))
 	{
@@ -327,5 +335,7 @@ void BtBCollision(int b1, int b2)
 
 		ballVelocity[b1]= velocity1;
 		ballVelocity[b2]= velocity2;
+		return true;
 	}
+	return false;
 }

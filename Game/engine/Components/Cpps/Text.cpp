@@ -71,6 +71,8 @@ void LoadFont(const char* font,int size)
 }
 glm::vec2 getTextSize(std::string Text, GLfloat scale)
 {
+	if (Text.size() < 1)
+		return { 0.0f,0.0f };
 	glm::vec2 size = {0.0f,0.0f};
 	for (int i = 0; i < Text.size(); i++)
 	{

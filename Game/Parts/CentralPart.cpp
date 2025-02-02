@@ -9,17 +9,8 @@
 #include "Base.h"
 #include "CentralPart.h"
 #include "../Radar.h"
+#include "../Helper.h"
 
-inline float Speed;
-inline bool absoluteControl;
-inline bool BuildingMode;
-inline float TextSize;
-inline float UISize;
-inline bool bLogicMode;
-inline bool fLogicMode;
-inline bool vLogicMode;
-inline int DataconnectionData[6];
-inline glm::vec2 foregroundMousePosition;
 
 void CentralPart::DataConnection::Process(CentralPart* ent)
 {
@@ -109,6 +100,7 @@ void CentralPart::DataConnection::Process(CentralPart* ent)
 }
 void CentralPart::DataConnection::Draw()
 {
+
 	if (type == 0)
 	{
 		if (bLogicMode)
@@ -143,6 +135,9 @@ void CentralPart::DataConnection::Draw()
 
 void CentralPart::Connection::UpdateLinks(CentralPart* ent)
 {
+	if (!(part1 < ent->Parts.size() && part1 >= 0 &&
+		part2 < ent->Parts.size() && part2 >= 0))
+		return;
 	bod1 = ent->Parts[part1];
 	b1 = ent->Parts[part1]->body[index1];
 	bod2 = ent->Parts[part2];
@@ -160,11 +155,23 @@ void CentralPart::Connection::UpdateLinks(CentralPart* ent)
 }
 void CentralPart::Connection::Init()
 {
-	//rope.Init(b1, b2, length);
+	if (!(b1 >= 0 && b1 < ballTemp.size() &&
+		b2 >= 0 && b2 < ballTemp.size()
+		&& IsBall[b1] && IsBall[b2]))
+		return;
+
+	rope.length = length;
+	for (int i = 0; i < 5; i++)
+		rope.rope[i].position = ballPosition[b1] + i * 0.2f * (ballPosition[b2] - ballPosition[b1]);
 }
 void CentralPart::Connection::Process(CentralPart* ent, float dt)
 {
-	accumDT = dt;
+	if (frame <= 5)
+	{
+		frame += 1;
+		Init();
+	}
+	accumDT += dt;
 	UpdateLinks(ent);
 	if (b1 != -1 && b2 != -1)
 	{
@@ -186,7 +193,10 @@ void CentralPart::Connection::Process(CentralPart* ent, float dt)
 }
 void CentralPart::Connection::Draw()
 {
-
+	if (!(b1 >= 0 && b1 < ballTemp.size() &&
+		b2 >= 0 && b2 < ballTemp.size()
+		&& IsBall[b1] && IsBall[b2]))
+		return;
 	glm::vec4 BaseColor = glm::vec4(1.0f);
 	glm::vec4 HeatColor = glm::vec4(60.0f, 10.0f, 2.0f, 0.0f);
 	glm::vec4 ColdColor = glm::vec4(0.04f, 2.0f, 10.0f, 0.0f);
@@ -226,11 +236,13 @@ void CentralPart::Connection::Draw()
 	if (type == CONNECTION::HEATPIPE || type == CONNECTION::ROPE)
 	{
 		rope.rope[0].position = ballPosition[b1];
-		rope.rope[4].position = ballPosition[b2];
 		rope.rope[0].velocity = ballVelocity[b1];
+		rope.rope[0].Force = ballForce[b1];
+		rope.rope[4].position = ballPosition[b2];
 		rope.rope[4].velocity = ballVelocity[b2];
+		rope.rope[4].Force = ballForce[b2];
 		rope.length = length;
-		rope.Process(accumDT);
+		rope.Process(accumDT*0.5f,false);
 		rope.width = width;
 		rope.Texture = Texture;
 		rope.NormalMap = NormalMap;
@@ -238,7 +250,7 @@ void CentralPart::Connection::Draw()
 		
 		rope.Draw(-9);
 	}
-	accumDT = 0.0f;
+	accumDT = 0;
 }
 	
 
@@ -299,6 +311,304 @@ void CentralPart::ProcessConnections()
 	vDataConnections[1].source = true;
 	vDataConnections[2].source = true;
 }
+
+void CentralPart::ProcessRegen(float dt)
+{
+	if (Parts.size() <= 0)
+		return;
+
+	if (BuildingMode)
+		return;
+
+	float CraftAngle = get_angle_between_points(ballPosition[Parts[0]->body[1]], ballPosition[Parts[0]->body[0]]);
+	glm::vec2 dir = Parts[0]->dir;// Normalize(ballPosition[Parts[0]->body[1]] - ballPosition[Parts[0]->body[0]]); //y
+	glm::vec2 norm = glm::vec2(dir.y, -dir.x); //x
+	
+
+	if (BuildingSwitched && !BuildingMode)
+	{// just out of building mode
+		//save craft as regen print
+		RegenParts.clear();
+
+		for (int i = 0; i < Parts.size(); i++)
+			if(Parts[i]->Regenid==-1)
+				Parts[i]->Regenid = i - 1;
+
+		for (int i = 1; i < Parts.size(); i++)
+		{
+			RegenPart rp;
+			
+			rp.Type = Parts[i]->partid;
+
+			for (int c = 0; c < Connections.size(); c++)
+			{
+				Connections[c].regenp1 = Parts[Connections[c].part1]->Regenid;
+				Connections[c].regenp2 = Parts[Connections[c].part2]->Regenid;
+
+				if (Connections[c].part1 == i || Connections[c].part2 == i)
+				{
+					rp.Connections.push_back(Connections[c]);
+					if (Connections[c].part1 == i)
+						rp.PartConnections.push_back(Connections[c].regenp2);
+					else
+						rp.PartConnections.push_back(Connections[c].regenp1);
+
+				}
+			}
+
+			for (int c = 0; c < DataConnections.size(); c++)
+			{
+				DataConnections[c].regenp1 = Parts[DataConnections[c].part1]->Regenid;
+				DataConnections[c].regenp2 = Parts[DataConnections[c].part2]->Regenid;
+				if (DataConnections[c].part1 == i || DataConnections[c].part2 == i)
+					rp.DataConnections.push_back(DataConnections[c]);
+			}
+
+			for (int a = 0; a < rp.PartConnections.size(); a++)
+			{
+				std::vector<glm::vec2> tvec;
+
+				BodyComponent* part = Parts[rp.PartConnections[a] + 1];
+
+				rp.Positions.push_back(tvec);
+				
+				for (int p = 0; p < Parts[i]->body.size(); p++)
+				{
+					glm::vec2 pos = (ballPosition[Parts[i]->body[p]] - Parts[0]->mid);
+
+					rp.Positions.back().push_back(Rotate(pos,-CraftAngle));
+				}
+			}
+
+			RegenParts.push_back(rp);
+		}
+
+	}
+
+	if (prevsumHealth <= sumHealth)
+		regenTimer -= dt;
+	else
+		regenTimer = 2.0f;
+	if (regenTimer <= 0.0f)
+	{
+		regenTimer = 0.0f;
+		if (Parts.size() - 1 < RegenParts.size())
+		{	
+			regenaftertime = 0.5f;
+		}
+		else
+		{
+			regenaftertime -= dt;
+			if (regenaftertime <= 0.0f)
+				return;
+		}
+
+
+		
+		// regening
+		regendt -= dt;
+		if (regendt <= 0.0f)
+		{
+			regendt = 0.05f;
+
+			for (int i = 0; i < RegenParts.size(); i++)
+			{
+				bool found = false;
+				int partID = 0;
+				for (auto p : Parts)
+				{
+					if (p->Regenid == i)
+					{
+						found = true;
+						// no need regen, just connections and position;
+						if (Parts.size() - 1 <= RegenParts.size())
+						{// regening, need to fix positions
+							for (int a = 0; a < RegenParts[i].Positions[0].size(); a++)
+							{
+								
+								//ballPosition[p->body[a]] = norm * RegenParts[i].Positions[a].x + dir * RegenParts[i].Positions[a].y + mid;
+								ballPosition[p->body[a]] = Rotate(RegenParts[i].Positions[0][a], CraftAngle) + Parts[0]->mid;
+						
+							}
+						}
+						/*
+						for (int c = 0; c < RegenParts[i].Connections.size(); c++)
+						{
+							if (RegenParts[i].Connections[c].part1 > -1 && RegenParts[i].Connections[c].part1 < Parts.size() &&
+								RegenParts[i].Connections[c].part2 > -1 && RegenParts[i].Connections[c].part2 < Parts.size() )
+							{
+								if (Parts[RegenParts[i].Connections[c].part1]->Regenid == RegenParts[i].Connections[c].regenp1 &&
+									Parts[RegenParts[i].Connections[c].part2]->Regenid == RegenParts[i].Connections[c].regenp2)
+									AddConnection(RegenParts[i].Connections[c].type, RegenParts[i].Connections[c].length, RegenParts[i].Connections[c].width,
+										RegenParts[i].Connections[c].stiffnes, RegenParts[i].Connections[c].absorbtion, RegenParts[i].Connections[c].HeatTransferSpeed,
+										RegenParts[i].Connections[c].part1, RegenParts[i].Connections[c].index1,
+										RegenParts[i].Connections[c].part2, RegenParts[i].Connections[c].index2, true);
+								else
+								{
+									if (Parts[RegenParts[i].Connections[c].part1]->Regenid != RegenParts[i].Connections[c].regenp1)
+										for (int a = 1; a < Parts.size(); a++)
+											if (Parts[a]->Regenid == RegenParts[i].Connections[c].regenp1)
+											{
+												RegenParts[i].Connections[c].part1 = a;
+												break;
+											}
+									if (Parts[RegenParts[i].Connections[c].part2]->Regenid != RegenParts[i].Connections[c].regenp2)
+										for (int a = 1; a < Parts.size(); a++)
+											if (Parts[a]->Regenid == RegenParts[i].Connections[c].regenp2)
+											{
+												RegenParts[i].Connections[c].part2 = a;
+												break;
+											}
+									AddConnection(RegenParts[i].Connections[c].type, RegenParts[i].Connections[c].length, RegenParts[i].Connections[c].width,
+										RegenParts[i].Connections[c].stiffnes, RegenParts[i].Connections[c].absorbtion, RegenParts[i].Connections[c].HeatTransferSpeed,
+										RegenParts[i].Connections[c].part1, RegenParts[i].Connections[c].index1,
+										RegenParts[i].Connections[c].part2, RegenParts[i].Connections[c].index2, true);
+								}
+							}
+						}
+						for (int c = 0; c < RegenParts[i].DataConnections.size(); c++)
+						{
+							if (RegenParts[i].DataConnections[c].part1 > -1 && RegenParts[i].DataConnections[c].part1 < Parts.size() &&
+								RegenParts[i].DataConnections[c].part2 > -1 && RegenParts[i].DataConnections[c].part2 < Parts.size())
+							{
+								if (Parts[RegenParts[i].DataConnections[c].part1]->Regenid == RegenParts[i].DataConnections[c].regenp1 &&
+									Parts[RegenParts[i].DataConnections[c].part2]->Regenid == RegenParts[i].DataConnections[c].regenp2)
+									AddDataConnection(RegenParts[i].DataConnections[c].type,
+										RegenParts[i].DataConnections[c].part1, RegenParts[i].DataConnections[c].index1,
+										RegenParts[i].DataConnections[c].part2, RegenParts[i].DataConnections[c].index2, true);
+								else
+								{
+									if (Parts[RegenParts[i].DataConnections[c].part1]->Regenid != RegenParts[i].DataConnections[c].regenp1)
+										for (int a = 1; a < Parts.size(); a++)
+											if (Parts[a]->Regenid == RegenParts[i].DataConnections[c].regenp1)
+											{
+												RegenParts[i].DataConnections[c].part1 = a;
+												break;
+											}
+									if (Parts[RegenParts[i].DataConnections[c].part2]->Regenid != RegenParts[i].DataConnections[c].regenp2)
+										for (int a = 1; a < Parts.size(); a++)
+											if (Parts[a]->Regenid == RegenParts[i].DataConnections[c].regenp2)
+											{
+												RegenParts[i].DataConnections[c].part2 = a;
+												break;
+											}
+									AddDataConnection(RegenParts[i].DataConnections[c].type,
+										RegenParts[i].DataConnections[c].part1, RegenParts[i].DataConnections[c].index1,
+										RegenParts[i].DataConnections[c].part2, RegenParts[i].DataConnections[c].index2, true);
+								}
+							}
+						}
+						*/
+					}
+					partID++;
+				}
+				if (!found)
+				{// need to spawn part
+					int foundid = -1; 
+					BodyComponent* foundpart = nullptr;
+					for (auto p : Parts)
+					{
+						for (int pc = 0; pc < RegenParts[i].PartConnections.size(); pc++)
+						{
+							if (RegenParts[i].PartConnections[pc] == p->Regenid)
+							{
+								found = true;
+								foundid = pc;
+								foundpart = p;
+								break;
+							}
+						}
+
+						if (found)
+							break;
+					}
+					if (!found || foundpart == nullptr || foundid ==-1)
+						continue;
+					BodyComponent* b = CreatePart(RegenParts[i].Type, { 0.0f,0.0f }, { 0.0f,1.0f }, PARTSIZE);
+					if (b != NULL)
+					{
+						b->Create({ 0.0f,0.0f }, { 0.0f,1.0f }, PARTSIZE);
+						glm::vec2 l_dir = foundpart->dir;
+						glm::vec2 l_norm = glm::vec2(l_dir.y, -l_dir.x);
+						for (int a = 0; a < RegenParts[i].Positions[0].size(); a++)
+							ballPosition[b->body[a]] = Rotate(RegenParts[i].Positions[foundid][a], CraftAngle) + Parts[0]->mid;
+						b->Regenid = i;
+						Parts.push_back(b);
+						std::cout << "\ncreated\n";
+					}
+					else 
+						continue;
+					
+					for (int c = 0; c < RegenParts[i].Connections.size(); c++)
+					{
+						if (RegenParts[i].Connections[c].regenp2 == i)
+						{
+							RegenParts[i].Connections[c].part2 = Parts.size() - 1;
+							for (int a = 0; a < Parts.size(); a++)
+								if (Parts[a]->Regenid == RegenParts[i].Connections[c].regenp1)
+								{
+									RegenParts[i].Connections[c].part1 = a;
+									break;
+								}
+						}
+
+						if (RegenParts[i].Connections[c].regenp1 == i)
+						{
+							RegenParts[i].Connections[c].part1 = Parts.size() - 1;
+							for (int a = 0; a < Parts.size(); a++)
+								if (Parts[a]->Regenid == RegenParts[i].Connections[c].regenp2)
+								{
+									RegenParts[i].Connections[c].part2 = a;
+									break;
+								}
+						}
+
+						if (RegenParts[i].Connections[c].part1 > -1 && RegenParts[i].Connections[c].part1 < Parts.size() &&
+							RegenParts[i].Connections[c].part2 > -1 && RegenParts[i].Connections[c].part2 < Parts.size())
+						{
+							AddConnection(RegenParts[i].Connections[c].type, RegenParts[i].Connections[c].length, RegenParts[i].Connections[c].width,
+								RegenParts[i].Connections[c].stiffnes, RegenParts[i].Connections[c].absorbtion, RegenParts[i].Connections[c].HeatTransferSpeed,
+								RegenParts[i].Connections[c].part1, RegenParts[i].Connections[c].index1,
+								RegenParts[i].Connections[c].part2, RegenParts[i].Connections[c].index2, true);
+						}
+					}
+					/*
+					for (int c = 0; c < RegenParts[i].DataConnections.size(); c++)
+					{
+						if (RegenParts[i].DataConnections[c].part1 > -1 && RegenParts[i].DataConnections[c].part1 < Parts.size() &&
+							RegenParts[i].DataConnections[c].part2 > -1 && RegenParts[i].DataConnections[c].part2 < Parts.size())
+						{
+
+							if (Parts[RegenParts[i].DataConnections[c].part1]->Regenid != RegenParts[i].DataConnections[c].regenp1)
+								for (int a = 0; a < Parts.size(); a++)
+									if (Parts[a]->Regenid == RegenParts[i].DataConnections[c].regenp1)
+									{
+										RegenParts[i].DataConnections[c].part1 = a;
+										break;
+									}
+							if (Parts[RegenParts[i].DataConnections[c].part2]->Regenid != RegenParts[i].DataConnections[c].regenp2)
+								for (int a = 0; a < Parts.size(); a++)
+									if (Parts[a]->Regenid == RegenParts[i].DataConnections[c].regenp2)
+									{
+										RegenParts[i].DataConnections[c].part2 = a;
+										break;
+									}
+							AddDataConnection(RegenParts[i].DataConnections[c].type,
+								RegenParts[i].DataConnections[c].part1, RegenParts[i].DataConnections[c].index1,
+								RegenParts[i].DataConnections[c].part2, RegenParts[i].DataConnections[c].index2, true);
+
+						}
+					}
+					*/
+					
+				}
+
+			}
+
+		}
+	}
+}
+
 void CentralPart::MTProcess (float dt) 
 {
 	if (Health <= 0.0f || destroyed || Delete || !Alive)
@@ -352,6 +662,8 @@ void CentralPart::MTProcess (float dt)
 	}
 	Engines.clear();
 	Balls.clear();
+	prevsumHealth = sumHealth;
+	sumHealth = 0.0f;
 	maxR = 0.0f;
 	if (!destroyed)
 	{
@@ -373,6 +685,7 @@ void CentralPart::MTProcess (float dt)
 		for (int i = 0; i < Parts.size(); i++)
 		{
 			Parts[i]->debris = false;
+			sumHealth += Parts[i]->Health;
 			float len = sqrlength(ballPosition[Parts[i]->body[0]] - CenterOfMass);
 			if (len > maxR)
 				maxR = sqrt(len);
@@ -388,20 +701,20 @@ void CentralPart::MTProcess (float dt)
 		mass = 0.0f;
 		avgvel = glm::vec2(0.0f);
 		CenterOfMass = glm::vec2(0.0f);
+		
 		int coniter = 0;
 		while (coniter < Connections.size())
 		{
+			Connections[coniter].Process(this, dt);
 			if (Connections[coniter].length > strutMaxLength || Connections[coniter].length < strutMinLength)
 			{
 				Connections[coniter] = Connections[Connections.size() - 1];
 				Connections.pop_back();
+				coniter--;
 			}
-			else
-			{
-				Connections[coniter].Process(this, dt);
-				coniter++;
-			}
+			coniter++;
 		}
+
 		for (int i = 0; i < DataConnections.size(); i++)
 			DataConnections[i].Process(this);
 		for (int i = 0; i < DataConnections.size(); i++)
@@ -603,6 +916,7 @@ void CentralPart::Process(float dt)
 		vDataConnections[0].data = mid;
 	}
 	CheckPartsConnections();
+	ProcessRegen(dt);
 	int pt = 0;
 	while (pt < Parts.size())
 	{
@@ -613,6 +927,7 @@ void CentralPart::Process(float dt)
 		else
 			pt++;
 	}
+
 }
 void CentralPart::Draw() 
 {
@@ -743,7 +1058,7 @@ void CentralPart::DestroyPart(int  index)
 		mid += Parts[index]->body[i].position;
 	}*/
 	mid /= Parts[index]->bodysize;
-	for (int bp = 0; bp < Parts[index]->bodysize; bp++)
+	for (int bp = 0; bp < Parts[index]->body.size(); bp++)
 	{
 		if (GrabbedBall != -1)
 			if (ballPosition[GrabbedBall] == ballPosition[Parts[index]->body[bp]])
@@ -759,11 +1074,11 @@ void CentralPart::DetachPart( int  index)
 {
 	Parts[index]->shutdown = false;
 	Parts[index]->shot = false;
-	for (int i = 0; i < Parts[index]->bDCsize; i++)
+	for (int i = 0; i < Parts[index]->bDataConnections.size(); i++)
 		Parts[index]->bDataConnections[i].data = false;
-	for (int i = 0; i < Parts[index]->fDCsize; i++)
+	for (int i = 0; i < Parts[index]->fDataConnections.size(); i++)
 		Parts[index]->fDataConnections[i].data = 0;
-	for (int i = 0; i < Parts[index]->vDCsize; i++)
+	for (int i = 0; i < Parts[index]->vDataConnections.size(); i++)
 		Parts[index]->vDataConnections[i].data = {0.0f,0.0f};
 	if(!Parts[index]->Delete)
 		Debris.Parts.push_back(Parts[index]);
@@ -771,7 +1086,7 @@ void CentralPart::DetachPart( int  index)
 	int index2 = Parts.size() - 1;
 	Parts[index] = Parts[Parts.size() - 1];
 	Parts.pop_back();
-	DeleteConnections( index, index2);
+	DeleteConnections(index, index2);
 }
 void CentralPart::DetachDetachedParts()
 {
@@ -808,9 +1123,14 @@ bool CentralPart::CheckPartConnections(Connection* c)
 void CentralPart::CheckPartsConnections()
 {
 	for (int i = 0; i < Parts.size(); i++)
+	{
 		Parts[i]->attached = false;
+
+		if (i == 0)
+			Parts[0]->attached = true;
+	}
 	bool End = false;
-	Parts[0]->attached = true;// central part
+	// central part
 	while (!End)
 	{
 		End = true;
@@ -831,9 +1151,11 @@ int CentralPart::ClaimPart(int index)
 }
 void CentralPart::AddConnection(int type, float len, float width, float stiffness, float absorbtion, float HeatTransferSpeed,
 	int part1, int  index1,
-	int part2, int  index2)
+	int part2, int  index2, bool onlyCreate)
 {
-	if(part1>=Parts.size() || part2 >= Parts.size())
+	if (part1 >= Parts.size() || part2 >= Parts.size())
+		return;
+	if (index1 >= Parts[part1]->body.size() || index2 >= Parts[part2]->body.size())
 		return;
 	int it = -1;
 	for (int i = 0; i < Connections.size(); i++)
@@ -867,7 +1189,7 @@ void CentralPart::AddConnection(int type, float len, float width, float stiffnes
 		else
 			Connections[i].length = len;
 	}
-	else if (it >= 0)
+	else if (it >= 0 && !onlyCreate )
 	{
 		Connections[it] = Connections[Connections.size() - 1];
 		Connections.pop_back();
@@ -876,7 +1198,7 @@ void CentralPart::AddConnection(int type, float len, float width, float stiffnes
 	}
 	
 }
-void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2, int  index2)
+void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2, int  index2, bool onlyCreate)
 {
 	if(part1>=Parts.size() || part2 >= Parts.size())
 		return;
@@ -962,7 +1284,7 @@ void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2,
 
 			}
 		}
-		else if(it>=0)
+		else if(it>=0 && !onlyCreate)
 		{
 			DataConnections[it] = DataConnections[DataConnections.size() - 1];
 			DataConnections.pop_back();
@@ -972,6 +1294,8 @@ void CentralPart::AddDataConnection(int type, int part1, int  index1, int part2,
 }
 void CentralPart::SaveTo(std::string filename, bool AllSave, bool fullpath)
 {
+	if (Parts.size() <= 0)
+		return;
 	std::string fn = "./Ships/"+filename + ".sav";
 	if (fullpath)
 		fn = filename;
@@ -980,6 +1304,7 @@ void CentralPart::SaveTo(std::string filename, bool AllSave, bool fullpath)
 	f.open(filename);
 	glm::vec2 mid = 0.5f * (ballPosition[Parts[0]->body[0]] + ballPosition[Parts[0]->body[1]]);
 
+	float baseangle = 0.0f;
 
 	f << "Q ";
 	f << questid;
@@ -1031,7 +1356,10 @@ void CentralPart::SaveTo(std::string filename, bool AllSave, bool fullpath)
 		f << id;
 		f << "\n";
 	}
-
+	else
+	{
+		baseangle = get_angle_between_points(ballPosition[Parts[0]->body[1]], ballPosition[Parts[0]->body[0]]);
+	}
 	for (int i = 1; i < Parts.size(); i++) // skip part[0] - central part
 	{
 		f << "P ";
@@ -1040,11 +1368,13 @@ void CentralPart::SaveTo(std::string filename, bool AllSave, bool fullpath)
 		f << Parts[i]->bodysize;
 		for (int a = 0; a < Parts[i]->bodysize; a++)
 		{
+			glm::vec2 dif = ballPosition[Parts[i]->body[a]] - mid;
+			dif = Rotate(dif, -baseangle);
+
 			f << " ";
-			f << ballPosition[Parts[i]->body[a]].x - mid.x;
+			f << dif.x;
 			f << " ";
-			f << ballPosition[Parts[i]->body[a]].y - mid.y;
-			Parts[i]->mid = ballPosition[Parts[i]->body[a]];
+			f << dif.y;
 		}
 		if (AllSave)
 		{
@@ -1118,6 +1448,11 @@ void CentralPart::LoadFrom(std::string filename, bool AllSave, bool fullpath)
 	filename = fn;
 	std::cout<<"\nLoading Entity: "<<filename;
 	mid = 0.5f * (ballPosition[Parts[0]->body[0]] + ballPosition[Parts[0]->body[1]]);
+
+	float baseangle = 0.0f;
+	if(!AllSave)
+		baseangle = get_angle_between_points(ballPosition[Parts[0]->body[1]], ballPosition[Parts[0]->body[0]]);
+
 	Clear();
 	std::ifstream f(filename);
 	if (!f.is_open())
@@ -1178,7 +1513,12 @@ void CentralPart::LoadFrom(std::string filename, bool AllSave, bool fullpath)
 			{
 				b->Create({ 0.0f,0.0f }, { 0.0f,1.0f }, PARTSIZE);
 				for (int i = 0; i < bodysize; i++)
-					ballPosition[b->body[i]] = positions[i]+ mid;
+				{
+					//ballPosition[b->body[i]] = positions[i] + mid;
+
+					glm::vec2 dif = Rotate(positions[i], baseangle);
+					ballPosition[b->body[i]] = dif + mid;
+				}
 				Parts.push_back(b);
 
 				if (AllSave && allsavefile)

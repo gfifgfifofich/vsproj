@@ -1337,7 +1337,6 @@ void DrawCube(glm::vec2 position, glm::vec2 scale, float rotation, glm::vec4 col
 	SceneLayers[SLI].QuadRotations.push_back(rotation);
 
 	SceneLayers[SLI].Quadcolors.push_back(color);
-	SceneLayers[SLI].Quadcolors.push_back(color);
 
 
 }

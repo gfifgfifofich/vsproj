@@ -1444,6 +1444,12 @@ float InspectorWindowMaxScroll = 0.0f;
 float ProjectWindowMaxScroll = 0.0f;
 float ConsoleWindowMaxScroll = 0.0f;
 
+bool FirstPressedOnSource = false;
+int LastPressedBlock1 = -1;
+int LastPressedBlock2 = -1;
+int NodeConnection1 = -1;
+int NodeConnection2 = -1;
+
 
 bool Test[10];
 bool sTestb[10];
@@ -1462,7 +1468,9 @@ std::string AssetWindowSelectionNames[3]= {"Assets","EventGraph","Animation"};//
 std::string InspectorWindowSelectionNames[3]= {"Properties","none","none"};// placeholder 
 
 
+
 glm::vec2 PrevMousePos = glm::vec2(0.0f);
+glm::vec2 PrevConsoleMousePos = glm::vec2(0.0f);
 bool MMBJustPressedWindow[4];
 
 bool grabbedWindow[3];// bools for window resizing
@@ -1950,24 +1958,24 @@ void On_Update()
 	bool b = false;
 	GetWindow(ConsoleWindowID)->Use();
 
-	ConsoleWindowScroll += scrollmovement * 50.0f;
-	CameraPosition.y += (ConsoleWindowScroll - CameraPosition.y) * 0.25f;
-
-	glm::vec2 dif = glm::vec2(0.0f);
-	if (buttons[GLFW_MOUSE_BUTTON_MIDDLE] && !JustPressedbutton[GLFW_MOUSE_BUTTON_MIDDLE] && MMBJustPressedWindow[0])
-		dif = PrevMousePos - MousePosition;
-	CameraPosition += dif.y;
-	ConsoleWindowScroll += dif.y;
-	MousePosition += dif.y;
+	
 	if(cw->active)
 		if (JustPressedbutton[GLFW_MOUSE_BUTTON_MIDDLE])
 		{
-			PrevMousePos = MousePosition;
+			PrevConsoleMousePos = MousePosition;
 			MMBJustPressedWindow[0]=true;
 			MMBJustPressedWindow[1]=false;
 			MMBJustPressedWindow[2]=false;
 			MMBJustPressedWindow[3]=false;
 		}
+	if (JustReleasedbutton[GLFW_MOUSE_BUTTON_MIDDLE])
+	{
+
+		MMBJustPressedWindow[0] = false;
+		MMBJustPressedWindow[1] = false;
+		MMBJustPressedWindow[2] = false;
+		MMBJustPressedWindow[3] = false;
+	}
 
 	Corner = { WIDTH * -0.5f , HEIGHT * 0.5f - CameraPosition.y };
 	Corner += glm::vec2(20.0f, -25.0f);
@@ -1977,24 +1985,33 @@ void On_Update()
 	if(bSizeX>150.0f) bSizeX = 150.0f;
 	if(bSizeX<50.0f) bSizeX = 50.0f;
 	b=AssetWindowSelection == 0;
-	xstep += UI_button(&b,"Assets", Corner + glm::vec2(xstep,0.0f),glm::vec2(bSizeX,35.0f)).x * 1.0f + step;
+	xstep += UI_button(&b,"Assets", Corner + glm::vec2(xstep, CameraPosition.y),glm::vec2(bSizeX,35.0f)).x * 1.0f + step;
 	if (b)
 		AssetWindowSelection =0;
 	b=AssetWindowSelection == 1;
-	xstep += UI_button(&b,"Event Graph", Corner + glm::vec2(xstep,0.0f),glm::vec2(bSizeX,35.0f)).x * 1.0f + step;
+	xstep += UI_button(&b,"Event Graph", Corner + glm::vec2(xstep, CameraPosition.y),glm::vec2(bSizeX,35.0f)).x * 1.0f + step;
 	if (b)
 		AssetWindowSelection =1;
 	b=AssetWindowSelection == 2;
-	Corner.y += UI_button(&b,"Animation", Corner + glm::vec2(xstep,0.0f),glm::vec2(bSizeX,35.0f)).y * -1.0f - step;
+	Corner.y += UI_button(&b,"Animation", Corner + glm::vec2(xstep, CameraPosition.y),glm::vec2(bSizeX,35.0f)).y * -1.0f - step;
 	if (b)
 		AssetWindowSelection =2;
-
+	glm::vec2 dif = glm::vec2(0.0f);
 
 	xstep = 0.0f;
 	switch (AssetWindowSelection)
 	{
 	case 0:
 		{
+		ConsoleWindowScroll += scrollmovement * 50.0f;
+		CameraPosition.y += (ConsoleWindowScroll - CameraPosition.y) * 0.25f;
+
+		dif = glm::vec2(0.0f);
+		if (buttons[GLFW_MOUSE_BUTTON_MIDDLE] && !JustPressedbutton[GLFW_MOUSE_BUTTON_MIDDLE] && MMBJustPressedWindow[0])
+			dif = PrevMousePos - MousePosition;
+		CameraPosition += dif.y;
+		ConsoleWindowScroll += dif.y;
+		MousePosition += dif.y;
 		float size = 100;
 		int AssetStep = 20.0f;
 		int MaxAmountRow = cw->ViewportSize.x/(size + AssetStep * 2.0f)-1; 	
@@ -2055,7 +2072,201 @@ void On_Update()
 		}
 		}
 		break;
-	
+	case 1: // Event graph
+	{
+		AqueredCameraScale *= 1.0f + scrollmovement * 0.1f;
+		CameraScale += (AqueredCameraScale - CameraScale) * 0.25f * 0.017f * 60.0f;
+		if (CameraScale.x > AqueredCameraScale.x)
+			CameraScale = AqueredCameraScale;
+
+		dif = glm::vec2(0.0f);
+		if (buttons[GLFW_MOUSE_BUTTON_MIDDLE] && !JustPressedbutton[GLFW_MOUSE_BUTTON_MIDDLE] && MMBJustPressedWindow[0])
+			dif = PrevConsoleMousePos - MousePosition;
+		CameraPosition += dif;
+		MousePosition += dif;
+
+
+		if (JustPressedkey[GLFW_KEY_U])
+		{
+			block b;
+			block::aConnection ac;
+			ac.rc.source = true;
+			ac.rc.DataType = 0;
+			b.ActionConnections.push_back(ac);
+			ac.rc.source = false;
+			b.ActionConnections.push_back(ac);
+
+			block::fConnection fc;
+			fc.rc.source = true;
+			fc.rc.DataType = 1;
+			b.FloatConnections.push_back(fc);
+			fc.rc.source = false;
+			b.FloatConnections.push_back(fc);
+
+
+			b.position = MousePosition;
+			blocks.push_back(b);
+
+			for (int c = 0; c < blocks.back().ActionConnections.size(); c++)
+				blocks.back().Connections.push_back(&blocks.back().ActionConnections[c].rc);
+			for (int c = 0; c < blocks.back().FloatConnections.size(); c++)
+				blocks.back().Connections.push_back(&blocks.back().FloatConnections[c].rc);
+		}
+
+		for (int i = 0; i < blocks.size(); i++)
+		{// draw each block and their connections
+			
+			float ystep = 15.0f;
+			
+			glm::vec2 NameTextScale = getTextSize(blocks[i].Name, 0.35f);
+			glm::vec2 blockscale = NameTextScale;
+			if (blockscale.x < 50.0f)
+				blockscale.x = 50.0f;
+
+			int sourcecount = 0;
+			int inputcount = 0;
+			for (int c = 0; c < blocks[i].Connections.size(); c++)
+			{
+				if (blocks[i].Connections[c]->source) sourcecount++;
+				else inputcount++;
+			}
+
+			blockscale.y += std::max(inputcount,sourcecount) * ystep;
+
+			DrawText(blocks[i].Name, blocks[i].position - glm::vec2(blockscale.x, -blockscale.y + NameTextScale.y), 0.35f);
+			DrawCube(blocks[i].position, blockscale ,0.0f,{0.15f,0.15f,0.15f,1.0f},0,0,-1);
+
+			glm::vec2 LeftBlockCorner = blocks[i].position - glm::vec2(blockscale.x, -blockscale.y + ystep + ystep);
+			glm::vec2 RightBlockCorner = blocks[i].position - glm::vec2(-blockscale.x, -blockscale.y  + ystep + ystep);
+
+
+
+
+			for (int c = 0; c < blocks[i].Connections.size(); c++)
+			{
+				glm::vec4 Nodecolor = { 1.0f,1.0f,1.0f,1.0f };
+
+				if (blocks[i].Connections[c]->DataType == 0)
+					Nodecolor = { 1.0f,1.0f,1.0f,1.0f };
+				if (blocks[i].Connections[c]->DataType == 1)
+					Nodecolor = { 0.0f,1.0f,0.0f,1.0f };
+				if (blocks[i].Connections[c]->DataType == 2)
+					Nodecolor = { 0.0f,0.5f,0.0f,1.0f };
+				if (blocks[i].Connections[c]->DataType == 3)
+					Nodecolor = { 0.0f,0.0f,1.0f,1.0f };
+				if (blocks[i].Connections[c]->DataType == 4)
+					Nodecolor = { 1.2f,0.1f,0.1f,1.0f };
+				if (blocks[i].Connections[c]->DataType == 5)
+					Nodecolor = { 1.2f,0.2f,0.2f,1.0f };
+				if (blocks[i].Connections[c]->DataType == 6)
+					Nodecolor = { 1.2f,0.3f,0.3f,1.0f };
+				if (blocks[i].Connections[c]->DataType == 6)
+					Nodecolor = { 1.0f,1.0f,0.1f,1.0f };
+
+				float BlobRadous = 7.5f;
+				if (NodeConnection1 > -1 &&
+					LastPressedBlock1 == i && NodeConnection1 == c)
+				{
+					DrawLine(RightBlockCorner, MousePosition, BlobRadous * 0.25f, Nodecolor, 0, 0, 0);
+				}
+				if ((blocks[i].Connections[c]->source && sqrlength(MousePosition - RightBlockCorner) < BlobRadous * BlobRadous) ||
+					(!blocks[i].Connections[c]->source && sqrlength(MousePosition - LeftBlockCorner) < BlobRadous * BlobRadous)   )
+				{
+					BlobRadous *= 1.3f;
+					if (JustPressedLMB)
+					{
+						
+						if (NodeConnection1 == -1)
+						{
+							NodeConnection1 = c;
+							LastPressedBlock1 = i;
+							FirstPressedOnSource = blocks[i].Connections[c]->source;
+						}
+						else 
+						{
+							NodeConnection2 = c;
+							LastPressedBlock2 = i;
+							if (FirstPressedOnSource != blocks[i].Connections[c]->source)
+							{
+								if (
+									blocks[LastPressedBlock1].Connections[NodeConnection1]->NodeId == NodeConnection2 && 
+									blocks[LastPressedBlock1].Connections[NodeConnection1]->BlockId == LastPressedBlock2 && 
+									blocks[LastPressedBlock2].Connections[NodeConnection2]->NodeId == NodeConnection1 && 
+									blocks[LastPressedBlock2].Connections[NodeConnection2]->BlockId == LastPressedBlock1)
+								{
+
+									blocks[LastPressedBlock1].Connections[NodeConnection1]->NodeId = 0;
+									blocks[LastPressedBlock1].Connections[NodeConnection1]->BlockId = 0;
+									blocks[LastPressedBlock2].Connections[NodeConnection2]->NodeId = 0;
+									blocks[LastPressedBlock2].Connections[NodeConnection2]->BlockId = 0;
+								}
+								else
+								{
+									blocks[LastPressedBlock1].Connections[NodeConnection1]->NodeId = NodeConnection2;
+									blocks[LastPressedBlock1].Connections[NodeConnection1]->BlockId = LastPressedBlock2;
+									blocks[LastPressedBlock2].Connections[NodeConnection2]->NodeId = NodeConnection1;
+									blocks[LastPressedBlock2].Connections[NodeConnection2]->BlockId = LastPressedBlock1;
+								}
+								NodeConnection1 = -1;
+								LastPressedBlock1 = -1;
+								NodeConnection2 = -1;
+								LastPressedBlock2 = -1;
+							}
+							else
+							{
+								NodeConnection1 = -1;
+								LastPressedBlock1 = -1;
+								NodeConnection2 = -1;
+								LastPressedBlock2 = -1;
+							}
+						}
+					}
+				}
+				
+				if (JustReleasedbutton[GLFW_MOUSE_BUTTON_2])
+					{
+						NodeConnection1 = -1;
+						LastPressedBlock1 = -1;
+						NodeConnection2 = -1;
+						LastPressedBlock2 = -1;
+					}
+				if (blocks[i].Connections[c]->source &&
+					blocks[i].Connections[c]->BlockId > 0 &&
+					blocks[i].Connections[c]->BlockId < blocks.size() &&
+					blocks[i].Connections[c]->NodeId < blocks[blocks[i].Connections[c]->BlockId].Connections.size())
+				{
+					// RightBlockCorner - p1
+					// 
+					int BID = blocks[i].Connections[c]->BlockId;
+					glm::vec2 b2LeftBlockCorner = blocks[BID].position - glm::vec2(blockscale.x, -blockscale.y + ystep + ystep);
+					for (int a = 0; a < blocks[i].Connections[c]->NodeId; a++)
+					{
+						if (!blocks[BID].Connections[a]->source)
+						{
+							b2LeftBlockCorner.y -= ystep;
+						}
+					}
+
+					DrawLine(RightBlockCorner, b2LeftBlockCorner, BlobRadous * 0.25f, Nodecolor,0,0,0);
+				}
+
+				if (blocks[i].Connections[c]->source)
+				{
+					DrawCircle(RightBlockCorner, BlobRadous, Nodecolor);
+					RightBlockCorner.y -= ystep;
+				}
+				else
+				{
+					DrawCircle(LeftBlockCorner, BlobRadous, Nodecolor);
+					LeftBlockCorner.y -= ystep;
+				}
+
+			}
+
+
+		}
+	}
+	break;
 	default:
 		break;
 	}

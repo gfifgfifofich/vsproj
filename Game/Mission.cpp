@@ -179,16 +179,7 @@ void Mission::Start()
 		Counters["Cargo"] = 0;
 		Counters["Labs"] = 0;
 
-		ChangeMap("Scenes/base.sav", ActiveRadar.offset, missionpos);
-		glm::vec2 BlockScale = { 1000.0f,1000.0f };
-		GameScene->AddFromFile("Scenes/StationBlocks/HorI.sav",  glm::vec2( 0.0f,1.0f)   * BlockScale);
-		GameScene->AddFromFile("Scenes/StationBlocks/HorI.sav",  glm::vec2( 0.0f,-1.0f)  * BlockScale);
-		GameScene->AddFromFile("Scenes/StationBlocks/leftT.sav", glm::vec2( 1.0f,0.0f)   * BlockScale);
-		GameScene->AddFromFile("Scenes/StationBlocks/VertI.sav", glm::vec2( -1.0f,0.0f)  * BlockScale);
-		GameScene->AddFromFile("Scenes/StationBlocks/housing.sav",  glm::vec2( 1.0f,1.0f)   * BlockScale);
-		GameScene->AddFromFile("Scenes/StationBlocks/Processing.sav",  glm::vec2( 1.0f,-1.0f)  * BlockScale);
-		GameScene->AddFromFile("Scenes/StationBlocks/Labs.sav",  glm::vec2( -1.0f,1.0f)  * BlockScale);
-		GameScene->AddFromFile("Scenes/StationBlocks/Cargo.sav",  glm::vec2( -1.0f,-1.0f) * BlockScale);
+		ChangeMap("Scenes/basev2.sav", ActiveRadar.offset, missionpos);
 
 
 

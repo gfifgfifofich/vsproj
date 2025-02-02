@@ -186,6 +186,9 @@
     <ClInclude Include="Helper.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="engine\Components\Include\BlockScheme.h">
+      <Filter>Source Files\Engine\Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\Components\Cpps\Collisions\BallToBall.cpp">
@@ -343,6 +346,9 @@
     </ClCompile>
     <ClCompile Include="Quest.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Components\Cpps\BlockScheme.cpp">
+      <Filter>Source Files\Engine\Cpps</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

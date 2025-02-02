@@ -25,6 +25,27 @@ void SetupEnginePE()
 
 	EngineSmoke.Additive = true;
 }
+void SetupRocketSmokePE() 
+{
+
+	RocketSmoke.material.Texture = noize;
+	RocketSmoke.Type = "TEXTURED";
+	RocketSmoke.StartColor = { 6.0f,6.0f,6.0f,7.0f };
+	RocketSmoke.EndColor = { 5.0f,5.0f,5.0f,0.0f };
+	RocketSmoke.OrbitalVelocityRandomness = 1.5f;
+	RocketSmoke.lighted = false;
+	RocketSmoke.RotationRandomness = 10.0f;
+	RocketSmoke.InitialRotation = 10.0f;
+	RocketSmoke.lifetimeRandomness = 0.1f;
+	RocketSmoke.lifetime = 10.0f;
+	RocketSmoke.VelocityDamper = 0.1f * 60;
+	RocketSmoke.Z_Index = -10;
+	RocketSmoke.StartSize = { 8.0f,8.0f };
+	RocketSmoke.EndSize = {8.0f, 8.0f };
+	RocketSmoke.ShowWindow = false;
+
+	RocketSmoke.Additive = true;
+}
 void SetupSmokePE()
 {
 
@@ -301,6 +322,7 @@ void SetupPEs()
 	
 	SetupLaserPE();
 	SetupEnginePE();
+	SetupRocketSmokePE();
 	SetupSmokePE();
 	SetupSparksPE();
 	SetupBulletPE();
@@ -313,6 +335,7 @@ void SetupPEs()
 	SetupforegroundFogPE();
 
 	emiters.push_back(&EngineSmoke);
+	emiters.push_back(&RocketSmoke);
 	emiters.push_back(&Sparks);
 	emiters.push_back(&bulletFlightPm);
 	emiters.push_back(&bulletColisionPm);
@@ -330,7 +353,7 @@ void SetupPEs()
 	{
 		emiters[i]->influenced = true;
 		emiters[i]->lighted = true;
-		emiters[i]->ShowWindow = false;
+		//emiters[i]->ShowWindow = false;
 	}
 }
 void clearParticleMaterials()
@@ -363,7 +386,7 @@ void ProcessPE(float dt)
 	EngineSmoke.lifetime = 0.2f;
 	for (int i = 0; i < emiters.size(); i++)
 	{
-		emiters[i]->ShowWindow = false;
+		//emiters[i]->ShowWindow = false;
 		emiters[i]->Process(dt);
 		emiters[i]->SpheresOfInfluence.clear();
 		emiters[i]->LightSpheres.clear();

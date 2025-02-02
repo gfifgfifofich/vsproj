@@ -29,7 +29,7 @@ void Strut(int b1, int b2, float length);
 void SpringBetweenBalls(int b1, int b2, float length, float stiffnes, float absorbtion);
 void Rope(int b1, int b2, float length);
 
-void BallToPointCollision(int b, glm::vec2 point);
-void BalltoStaticBallCollision(int id, ball* b);
-void BallToStaticQuadCollision(int id, cube* b);
-void BtBCollision(int id1, int id2);
+bool BallToPointCollision(int b, glm::vec2 point);
+bool BalltoStaticBallCollision(int id, ball* b);
+bool BallToStaticQuadCollision(int id, cube* b);
+bool BtBCollision(int id1, int id2);

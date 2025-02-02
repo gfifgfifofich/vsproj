@@ -919,6 +919,7 @@ void CO_Cube::MTPreProcess()
 {
 	ObjectUpdateMaterial();
 	c.position = position;
+	c.id = id;
 }
 void CO_Cube::PreProcess()
 {

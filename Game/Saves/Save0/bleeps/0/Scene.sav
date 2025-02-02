@@ -6,17 +6,17 @@ CO_Cube_0000000000
 	Collision_layer 0
 	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
-	Height 165.000000
+	Height 75.018562
 	ID -1
 	Material M_Cube
 	Name CO_Cube
-	Position 0.008734 335.004364
+	Position 255.000000 0.000000
 	Rotation 0.000000
 	Roughness 0.000000
-	Scale 500.002106 165.004486
+	Scale 75.005714 75.008080
 	Type 1
-	Width 500.000000
-	Z_Index 1
+	Width 75.013512
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
@@ -28,16 +28,16 @@ CO_Cube_0000000001
 	Collision_layer 0
 	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
-	Height 500.000000
+	Height 150.016312
 	ID -1
 	Material M_Cube
 	Name CO_Cube
-	Position -335.000000 0.000000
+	Position 0.000000 0.000000
 	Rotation 0.000000
 	Roughness 0.000000
-	Scale 165.002213 500.004517
+	Scale 150.001587 150.000824
 	Type 1
-	Width 165.000000
+	Width 150.019394
 	Z_Index 0
 	invertX 0
 	invertY 0
@@ -50,21 +50,21 @@ CO_Cube_0000000002
 	Collision_layer 0
 	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
-	Height 165.000000
+	Height 15.008931
 	ID -1
 	Material M_Cube
 	Name CO_Cube
-	Position 0.000000 -335.000000
+	Position -90.000000 165.000000
 	Rotation 0.000000
 	Roughness 0.000000
-	Scale 500.002197 165.004517
+	Scale 15.004207 15.003444
 	Type 1
-	Width 500.000000
+	Width 15.012013
 	Z_Index 0
 	invertX 0
 	invertY 0
 }
-CO_Cube_0000000027
+CO_Cube_0000000003
 {
 	Additive 0
 	Bounciness 0.000000
@@ -72,43 +72,43 @@ CO_Cube_0000000027
 	Collision_layer 0
 	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
-	Height 165.002594
+	Height 15.008931
 	ID -1
 	Material M_Cube
 	Name CO_Cube
-	Position 0.000000 1335.000000
+	Position 90.000000 165.000000
 	Rotation 0.000000
 	Roughness 0.000000
-	Scale 500.000854 165.001266
+	Scale 15.004207 15.003444
 	Type 1
-	Width 500.002838
-	Z_Index 1
+	Width 15.012013
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
-CO_Cube_0000000028
+CO_Cube_0000000004
 {
-	Additive 0
+	Additive 1
 	Bounciness 0.000000
 	Class 4
 	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
+	Color 23.899998 1.000000 1.000000 1.000000
 	Depth 0.000000
-	Height 165.002594
-	ID -1
+	Height 10.108955
+	ID -10
 	Material M_Cube
 	Name CO_Cube
-	Position 0.000000 665.000000
+	Position -375.000000 195.000000
 	Rotation 0.000000
 	Roughness 0.000000
-	Scale 500.000854 165.001266
+	Scale 100.248344 10.098473
 	Type 1
-	Width 500.002838
-	Z_Index 1
+	Width 100.256142
+	Z_Index -1
 	invertX 0
 	invertY 0
 }
-CO_Cube_0000000032
+CO_Cube_0000000005
 {
 	Additive 0
 	Bounciness 0.000000
@@ -116,501 +116,17 @@ CO_Cube_0000000032
 	Collision_layer 0
 	Color 1.000000 1.000000 1.000000 1.000000
 	Depth 0.000000
-	Height 165.002594
+	Height 75.018562
 	ID -1
 	Material M_Cube
 	Name CO_Cube
-	Position 0.000000 -665.000000
+	Position -390.000000 0.000000
 	Rotation 0.000000
 	Roughness 0.000000
-	Scale 500.000854 165.001266
+	Scale 75.005714 75.008080
 	Type 1
-	Width 500.002838
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000033
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.002594
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 0.000000 -1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 500.000854 165.001266
-	Type 1
-	Width 500.002838
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000037
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 -335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000038
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000039
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 500.000183
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 1335.000000 0.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007263 500.008881
-	Type 1
-	Width 165.005173
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000043
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 500.000183
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -1335.000000 0.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007263 500.008881
-	Type 1
-	Width 165.005173
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000044
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 500.000183
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -665.000000 0.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007263 500.008881
-	Type 1
-	Width 165.005173
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000048
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000049
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000050
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 1335.000000 1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000051
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 1335.000000 665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000056
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 -1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000057
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 665.000000 -665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000058
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 1335.000000 -665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000059
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position 1335.000000 -1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000064
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -1335.000000 665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000065
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -1335.000000 1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000066
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -665.000000 1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000067
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -665.000000 665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000072
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -1335.000000 -1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000073
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -1335.000000 -665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000074
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -665.000000 -665.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
-	invertX 0
-	invertY 0
-}
-CO_Cube_0000000075
-{
-	Additive 0
-	Bounciness 0.000000
-	Class 4
-	Collision_layer 0
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.000000
-	Height 165.005951
-	ID -1
-	Material M_Cube
-	Name CO_Cube
-	Position -665.000000 -1335.000000
-	Rotation 0.000000
-	Roughness 0.000000
-	Scale 165.007233 165.000427
-	Type 1
-	Width 165.005142
-	Z_Index 1
+	Width 75.013512
+	Z_Index 0
 	invertX 0
 	invertY 0
 }
@@ -659,7 +175,7 @@ Cube_0000000002
 	texture_Type 7
 	texture_filter 0
 }
-LightSource_0000000003
+LightSource_0000000006
 {
 	Class 6
 	Color 1.000000 1.000000 1.000000 1.000000
@@ -668,155 +184,11 @@ LightSource_0000000003
 	Name LightSource
 	Position 0.000000 0.000000
 	Rotation 0.000000
-	Scale 507.132812 509.051300
+	Scale 281.331665 276.407806
 	Texture No_texture
 	Type 1
 	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000029
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 0.000000 1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000034
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 0.000000 -1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000040
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 1000.000000 0.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000045
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position -1000.000000 0.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000052
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 1000.000000 1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000060
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position 1000.000000 -1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000068
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position -1000.000000 1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
-	invertX 0
-	invertY 0
-	sizeZ 707.000000
-}
-LightSource_0000000076
-{
-	Class 6
-	Color 1.000000 1.000000 1.000000 1.000000
-	Depth 0.440006
-	ID 0
-	Name LightSource
-	Position -1000.000000 -1000.000000
-	Rotation 0.000000
-	Scale 507.132812 509.051300
-	Texture No_texture
-	Type 1
-	Volume 0.000000
-	Z_Index 0
+	Z_Index -254
 	invertX 0
 	invertY 0
 	sizeZ 707.000000
@@ -831,171 +203,7 @@ M_Cube_0000000003
 	Texture Cube
 	Type 0
 }
-Monitor_0000000053
-{
-	Additive 0
-	Class 9996
-	Color 0.000000 0.000000 0.000000 1.170000
-	Depth 0.000000
-	ID 0
-	Material M_Cube
-	Name Monitor
-	Position 1000.000000 1000.000000
-	Rotation 0.000000
-	Scale 84.000000 46.000000
-	Type 1
-	Z_Index 0
-	bleepLastLine 0
-	color1 1.000000 1.000000 1.000000 1.000000
-	color10 1.000000 1.000000 1.000000 1.000000
-	color2 1.000000 1.000000 1.000000 1.000000
-	color3 1.000000 1.000000 1.000000 1.000000
-	color4 1.000000 1.000000 1.000000 1.000000
-	color5 1.000000 1.000000 1.000000 1.000000
-	color6 1.000000 1.000000 1.000000 1.000000
-	color7 1.000000 1.000000 1.000000 1.000000
-	color8 1.000000 1.000000 1.000000 1.000000
-	color9 1.000000 1.000000 1.000000 1.000000
-	invertX 0
-	invertY 0
-	text1 Housing
-	text10 
-	text2 
-	text3 
-	text4 
-	text5 
-	text6 
-	text7 
-	text8 
-	text9 
-	textOffset 4.000000 -32.699997
-	textScale 0.360000
-	textStep 6.960022
-}
-Monitor_0000000061
-{
-	Additive 0
-	Class 9996
-	Color 0.000000 0.000000 0.000000 1.170000
-	Depth 0.000000
-	ID 0
-	Material M_Cube
-	Name Monitor
-	Position 1000.000000 -1000.000000
-	Rotation 0.000000
-	Scale 84.000000 46.000000
-	Type 1
-	Z_Index 0
-	bleepLastLine 0
-	color1 1.000000 1.000000 1.000000 1.000000
-	color10 1.000000 1.000000 1.000000 1.000000
-	color2 1.000000 1.000000 1.000000 1.000000
-	color3 1.000000 1.000000 1.000000 1.000000
-	color4 1.000000 1.000000 1.000000 1.000000
-	color5 1.000000 1.000000 1.000000 1.000000
-	color6 1.000000 1.000000 1.000000 1.000000
-	color7 1.000000 1.000000 1.000000 1.000000
-	color8 1.000000 1.000000 1.000000 1.000000
-	color9 1.000000 1.000000 1.000000 1.000000
-	invertX 0
-	invertY 0
-	text1 Processing
-	text10 
-	text2 
-	text3 
-	text4 
-	text5 
-	text6 
-	text7 
-	text8 
-	text9 
-	textOffset 4.000000 -32.699997
-	textScale 0.360000
-	textStep 6.960022
-}
-Monitor_0000000069
-{
-	Additive 0
-	Class 9996
-	Color 0.000000 0.000000 0.000000 1.170000
-	Depth 0.000000
-	ID 0
-	Material M_Cube
-	Name Monitor
-	Position -1000.000000 1000.000000
-	Rotation 0.000000
-	Scale 84.000000 46.000000
-	Type 1
-	Z_Index 0
-	bleepLastLine 0
-	color1 1.000000 1.000000 1.000000 1.000000
-	color10 1.000000 1.000000 1.000000 1.000000
-	color2 1.000000 1.000000 1.000000 1.000000
-	color3 1.000000 1.000000 1.000000 1.000000
-	color4 1.000000 1.000000 1.000000 1.000000
-	color5 1.000000 1.000000 1.000000 1.000000
-	color6 1.000000 1.000000 1.000000 1.000000
-	color7 1.000000 1.000000 1.000000 1.000000
-	color8 1.000000 1.000000 1.000000 1.000000
-	color9 1.000000 1.000000 1.000000 1.000000
-	invertX 0
-	invertY 0
-	text1 Laaabs
-	text10 
-	text2 
-	text3 
-	text4 
-	text5 
-	text6 
-	text7 
-	text8 
-	text9 
-	textOffset 4.000000 -32.699997
-	textScale 0.360000
-	textStep 6.960022
-}
-Monitor_0000000077
-{
-	Additive 0
-	Class 9996
-	Color 0.000000 0.000000 0.000000 1.170000
-	Depth 0.000000
-	ID 0
-	Material M_Cube
-	Name Monitor
-	Position -1000.000000 -1000.000000
-	Rotation 0.000000
-	Scale 84.000000 46.000000
-	Type 1
-	Z_Index 0
-	bleepLastLine 0
-	color1 1.000000 1.000000 1.000000 1.000000
-	color10 1.000000 1.000000 1.000000 1.000000
-	color2 1.000000 1.000000 1.000000 1.000000
-	color3 1.000000 1.000000 1.000000 1.000000
-	color4 1.000000 1.000000 1.000000 1.000000
-	color5 1.000000 1.000000 1.000000 1.000000
-	color6 1.000000 1.000000 1.000000 1.000000
-	color7 1.000000 1.000000 1.000000 1.000000
-	color8 1.000000 1.000000 1.000000 1.000000
-	color9 1.000000 1.000000 1.000000 1.000000
-	invertX 0
-	invertY 0
-	text1 cargo
-	text10 
-	text2 
-	text3 
-	text4 
-	text5 
-	text6 
-	text7 
-	text8 
-	text9 
-	textOffset 4.000000 -32.699997
-	textScale 0.360000
-	textStep 6.960022
-}
-Object_0000000004
+Object_0000000007
 {
 	Additive 0
 	Class 1
@@ -1004,264 +212,11 @@ Object_0000000004
 	ID 0
 	Material M_Cube
 	Name Object
-	Position 0.000000 0.000000
+	Position 780.000000 15.000000
 	Rotation 0.000000
-	Scale 500.009399 500.005188
+	Scale 174.992584 130.512299
 	Type 1
-	Z_Index -32
+	Z_Index -370
 	invertX 0
 	invertY 0
-}
-Object_0000000030
-{
-	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
-	ID 0
-	Material M_Cube
-	Name Object
-	Position 0.000000 1000.000000
-	Rotation 0.000000
-	Scale 500.008057 500.008209
-	Type 1
-	Z_Index -32
-	invertX 0
-	invertY 0
-}
-Object_0000000035
-{
-	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
-	ID 0
-	Material M_Cube
-	Name Object
-	Position 0.000000 -1000.000000
-	Rotation 0.000000
-	Scale 500.008057 500.008209
-	Type 1
-	Z_Index -32
-	invertX 0
-	invertY 0
-}
-Object_0000000041
-{
-	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
-	ID 0
-	Material M_Cube
-	Name Object
-	Position 1000.000000 0.000000
-	Rotation 0.000000
-	Scale 500.008057 500.008209
-	Type 1
-	Z_Index -32
-	invertX 0
-	invertY 0
-}
-Object_0000000046
-{
-	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
-	ID 0
-	Material M_Cube
-	Name Object
-	Position -1000.000000 0.000000
-	Rotation 0.000000
-	Scale 500.008057 500.008209
-	Type 1
-	Z_Index -32
-	invertX 0
-	invertY 0
-}
-Object_0000000054
-{
-	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
-	ID 0
-	Material M_Cube
-	Name Object
-	Position 1000.000000 1000.000000
-	Rotation 0.000000
-	Scale 500.008057 500.008209
-	Type 1
-	Z_Index -32
-	invertX 0
-	invertY 0
-}
-Object_0000000062
-{
-	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
-	ID 0
-	Material M_Cube
-	Name Object
-	Position 1000.000000 -1000.000000
-	Rotation 0.000000
-	Scale 500.008057 500.008209
-	Type 1
-	Z_Index -32
-	invertX 0
-	invertY 0
-}
-Object_0000000070
-{
-	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
-	ID 0
-	Material M_Cube
-	Name Object
-	Position -1000.000000 1000.000000
-	Rotation 0.000000
-	Scale 500.008057 500.008209
-	Type 1
-	Z_Index -32
-	invertX 0
-	invertY 0
-}
-Object_0000000078
-{
-	Additive 0
-	Class 1
-	Color 0.030000 0.030000 0.030000 1.000000
-	Depth 0.240000
-	ID 0
-	Material M_Cube
-	Name Object
-	Position -1000.000000 -1000.000000
-	Rotation 0.000000
-	Scale 500.008057 500.008209
-	Type 1
-	Z_Index -32
-	invertX 0
-	invertY 0
-}
-TriggerCube_0000000005
-{
-	Class 9995
-	ID 0
-	Name TriggerCube
-	Position 0.000000 0.000000
-	Scale 500.005280 500.007233
-	Type 1
-	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
-}
-TriggerCube_0000000031
-{
-	Class 9995
-	ID 0
-	Name TriggerCube
-	Position 0.000000 1000.000000
-	Scale 500.007202 500.003235
-	Type 1
-	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
-}
-TriggerCube_0000000036
-{
-	Class 9995
-	ID 0
-	Name TriggerCube
-	Position 0.000000 -1000.000000
-	Scale 500.007202 500.003235
-	Type 1
-	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
-}
-TriggerCube_0000000042
-{
-	Class 9995
-	ID 0
-	Name TriggerCube
-	Position 1000.000000 0.000000
-	Scale 500.007202 500.003235
-	Type 1
-	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
-}
-TriggerCube_0000000047
-{
-	Class 9995
-	ID 0
-	Name TriggerCube
-	Position -1000.000000 0.000000
-	Scale 500.007202 500.003235
-	Type 1
-	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
-}
-TriggerCube_0000000055
-{
-	Class 9995
-	ID 0
-	Name TriggerCube
-	Position 1000.000000 1000.000000
-	Scale 500.007202 500.003235
-	Type 1
-	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
-}
-TriggerCube_0000000063
-{
-	Class 9995
-	ID 0
-	Name TriggerCube
-	Position 1000.000000 -1000.000000
-	Scale 500.007202 500.003235
-	Type 1
-	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
-}
-TriggerCube_0000000071
-{
-	Class 9995
-	ID 0
-	Name TriggerCube
-	Position -1000.000000 1000.000000
-	Scale 500.007202 500.003235
-	Type 1
-	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
-}
-TriggerCube_0000000079
-{
-	Class 9995
-	ID 0
-	Name TriggerCube
-	Position -1000.000000 -1000.000000
-	Scale 500.007202 500.003235
-	Type 1
-	Z_Index 0
-	determineInside 1
-	disable 0
-	triggered 0
 }

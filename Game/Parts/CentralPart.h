@@ -17,7 +17,11 @@ public:
 
 	struct DataConnection
 	{
+		int regenp1 = -1;
+		int regenp2 = -1;
+
 		int type;// 0=bool 1=float 2=vec2
+
 		int part1 = 0;
 		int part2 = 0;
 
@@ -39,6 +43,8 @@ public:
 	private:
 		int frame = 0;
 	public:
+		int regenp1 = -1;
+		int regenp2 = -1;
 		int part1 = 0;
 		int part2 = 0;
 
@@ -74,6 +80,27 @@ public:
 
 	};
 
+
+	struct RegenPart
+	{
+		/*
+			Regen if part with id of PartConnections exists, and attempt to create all connections.
+		*/
+		std::vector<Connection> Connections;
+		std::vector<DataConnection> DataConnections;
+
+		std::vector<int> PartConnections;
+		std::vector<std::vector<glm::vec2>> Positions;
+
+		int Type = -1;
+	};
+	std::vector<RegenPart> RegenParts;
+
+	float regendt = 0.5f;
+	float regenaftertime = 0.5f;
+	float regenTimer = 10.0f;
+
+	
 	int id = -1;
 	bool Alive = true;
 	bool destroyed = false;
@@ -100,6 +127,9 @@ public:
 
 	float avgheat = 0.0f;
 	float sumheat = 0.0f;
+
+	float sumHealth = 0.0f;
+	float prevsumHealth = 0.0f;
 
 	std::vector<int> Balls;
 	std::vector<BodyComponent*> Parts;
@@ -130,6 +160,7 @@ public:
 	CentralPart();
 	void Create(glm::vec2 position, glm::vec2 direction, float size,float mass = 1.0f) override;
 	void ProcessConnections();
+	void ProcessRegen(float dt);
 	void MTProcess (float dt) override;
 	void Process(float dt) override;
 	void Draw() override;
@@ -146,8 +177,8 @@ public:
 	int ClaimPart(int index);
 	void AddConnection(int type, float len, float width, float stiffness, float absorbtion, float HeatTransferSpeed,
 		int part1, int  index1,
-		int part2, int  index2);
-	void AddDataConnection(int type, int part1, int  index1, int part2, int  index2);
+		int part2, int  index2, bool onlyCreate = false);
+	void AddDataConnection(int type, int part1, int  index1, int part2, int  index2, bool onlyCreate = false);
 	void SaveTo(std::string filename, bool AllSave = false,bool fullpath = false);
 	void LoadFrom(std::string filename, bool AllSave = false, bool fullpath = false);
 	void Clear();

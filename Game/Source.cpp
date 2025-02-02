@@ -284,8 +284,21 @@ void ChangeMap(std::string FilePath, glm::vec2 lastoffset, glm::vec2 newoffset)
 	MainMenu = false;
 
 	ActiveRadar.offset = lastoffset;
+	glm::vec2 movevec = ActiveRadar.offset;
+	movevec -= newoffset;
+
+
 	CurrnetMission.MissionClear();
 	// clear directory, save entities
+
+
+	for (int i = 0; i < Rockets.size(); i++)
+	{
+		Rockets[i]->body[0].position += movevec;
+		Rockets[i]->body[1].position += movevec;
+		Rockets[i]->DS.body.position += movevec;
+		Rockets[i]->Explode();
+	}
 	int EntitiesSize = 0;
 	for (int i = 0; i < Entities.size(); i++)
 	{
@@ -314,15 +327,44 @@ void ChangeMap(std::string FilePath, glm::vec2 lastoffset, glm::vec2 newoffset)
 	}
 	lastid = 0; 
 	freeBallIDs.clear();
-	DamageSpheres.clear();
-	DamageSpheresArray.clear();
-	bullets.clear();
-	Rockets.clear();
-	Lasers.clear();
-	LightEffects.clear();
 	GameScene->LoadFrom(FilePath);
 
+	
+
+
 	ActiveRadar.offset = newoffset;
+	for (int i = 0; i < emiters.size(); i++)
+		for (int a = 0; a < emiters[i]->Particles.size(); a++)
+			emiters[i]->Particles[a].position += movevec;
+
+	Rockets.clear();
+	for (int i = 0; i < bullets.size(); i++)
+	{
+		bullets[i].body.body.position += movevec;
+		bullets[i].ball.position += movevec;
+	}
+	//bullets.clear();
+	
+	for (int i = 0; i < DamageSpheresArray.size(); i++)
+	{
+		DamageSpheresArray[i].body.position += movevec;
+	}
+	for (int i = 0; i < Lasers.size(); i++)
+	{
+		Lasers[i].body.body.position += movevec;
+		Lasers[i].RayCast.position += movevec;
+	}
+	for (int i = 0; i < LightEffects.size(); i++)
+	{
+		LightEffects[i].position.x += movevec.x;
+		LightEffects[i].position.y += movevec.y;
+	}
+	for (int i = 0; i < ExplodionArray.size(); i++)
+	{
+		ExplodionArray[i].DS.body.position += movevec;
+	}
+
+
 	// SpawnEntities
 	for (int i = 0; i < EntitiesSize; i++)
 	{
@@ -394,7 +436,7 @@ void ProcessPlayerControls()
 		Entities[0]->ThrustDirection = velvec;
 
 	}
-	else
+	else if (Entities.size()>0)
 	{
 		glm::vec2 LookAtVec = Entities[0]->direction;
 
@@ -640,25 +682,25 @@ void ProcessPlayerControls()
 			{
 				if (JustPressedLMB && in_UI <= 0)
 				{
+					bool detached = false;
 					for (int i = 1; i < Entities[0]->Parts.size(); i++)
 					{
-						bool detached = true;
-						while (detached)
+
+						for (int a = 0; a < Entities[0]->Parts[i]->body.size(); a++)
 						{
-							detached = false;
-							for (int a = 0; a < Entities[0]->Parts[i]->bodysize; a++)
+
+							glm::vec2 dif = ballPosition[Entities[0]->Parts[i]->body[a]] - MousePosition;
+
+							if (i < Entities[0]->Parts.size() && sqrlength(dif) < PARTSIZE * PARTSIZE)
 							{
-
-								glm::vec2 dif = ballPosition[Entities[0]->Parts[i]->body[a]] - MousePosition;
-
-								if (i < Entities[0]->Parts.size() && sqrlength(dif) < PARTSIZE * PARTSIZE && !detached)
-								{
-									playsound(Detach, MousePosition, 0.3f, 3.5f);
-									Entities[0]->DetachPart(i);
-									detached = true;
-								}
+								playsound(Detach, MousePosition, 0.3f, 3.5f);
+								Entities[0]->DetachPart(i);
+								detached = true;
+								break;
 							}
 						}
+						if (detached)
+							break;
 					}
 				}
 			}
@@ -840,7 +882,12 @@ void ProcessPlayerControls()
 	bool bm = BuildingMode;
 
 	if (JustPressedkey[GLFW_KEY_B])
+	{
 		BuildingMode = !BuildingMode;
+		BuildingSwitched = true;
+	}
+	else BuildingSwitched = false;
+
 	if (Entities.size() > 0)
 		ActiveRadar.playerHeat = Entities[0]->avgheat;
 
@@ -982,7 +1029,7 @@ void ProcessPlayerControls()
 			}
 		}
 	}
-	if (inbase && sqrlength(Entities[0]->mid) < 5000 * 5000)
+	if (inbase && Entities.size()>0 && sqrlength(Entities[0]->mid) < 5000 * 5000)
 		forcenofog = true;
 	if (forcenofog)
 	{
@@ -1083,7 +1130,6 @@ void ProcessPlayerControls()
 		camerapos = (Entities[0]->mid + MissionSelectMenu.missionPosition);
 		CameraPosition = (Entities[0]->mid + MissionSelectMenu.missionPosition);
 	}
-
 	if (bLogicMode && blm != bLogicMode)
 	{
 		bLogicMode = true;
@@ -1201,7 +1247,7 @@ void ProcessMainMenu()
 
 		if(storyint >0)
 		{
-			ChangeMap("Scenes/base.sav", { 0.0f,0.0f }, { 0.0f,0.0f });
+			ChangeMap("Scenes/basev2.sav", { 0.0f,0.0f }, { 0.0f,0.0f });
 
 			SpawnPlayer();
 			Background.LoadFrom("Scenes/Sun.sav");
@@ -1631,7 +1677,8 @@ void Process(float dt)
 		inside = !inside;
 	}
 	ImGui::SliderFloat("AmbientLight", &AmbientLight, 0.0f, 1.0f);
-	
+	ImGui::SliderFloat("Camera", &AqueredCameraScale.x, 1.0f, 80.0f);
+	AqueredCameraScale.y = AqueredCameraScale.x;
 
 
 	if (ImGui::Button("VSync"))

@@ -17,7 +17,7 @@ public:
 	glm::vec2 Force = { 0.0f,0.0f };
 	glm::vec4 color = glm::vec4(1.0f);
 	void Init(ball* b1, ball* b2, float length = 100.0f);
-	void Process(float dt);
+	void Process(float dt, bool updateb1b2 = true);
 	void Draw(int Z_Index = 0);
 
 };

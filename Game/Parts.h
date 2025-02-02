@@ -721,6 +721,9 @@ public:
 	}
 	void ProcessConnections()
 	{
+		if (bDataConnections.size() <= 0 ||
+			vDataConnections.size() <= 0)
+			return;
 
 		bDataConnections[0].name = "Shoot";
 		vDataConnections[0].name = "Target";
@@ -733,6 +736,8 @@ public:
 	{
 		ProcessConnections();
 		ProcessBody(dt);
+		if (body.size() <= 0)
+			return;
 		dir = Normalize(ballPosition[body[1]] - ballPosition[body[0]]);
 
 
@@ -783,7 +788,7 @@ public:
 	void Process(float dt) override
 	{
 		
-		if (!debris)
+		if (!debris && bDataConnections.size()>0 && body.size()>0)
 		{
 		
 			
@@ -859,6 +864,8 @@ public:
 
 	void Draw() override
 	{
+		if (body.size() <= 0)
+			return;
 		if (drawHealth)
 		{
 			float stage = Health / maxHealth;
@@ -1022,17 +1029,25 @@ public:
 	}
 	void ProcessConnections()
 	{
-		bDataConnections[0].name = "Shoot";
-		vDataConnections[0].name = "Target";
-
-		vDataConnections[0].source = false;
-		bDataConnections[0].source = false;
+		if (bDataConnections.size() > 0)
+		{
+			bDataConnections[0].name = "Shoot";
+			bDataConnections[0].source = false;
+		}
+		if (vDataConnections.size() > 0)
+		{
+			vDataConnections[0].name = "Target";
+			vDataConnections[0].source = false;
+		}
 	}
 	
 	void MTProcess(float dt) override
 	{
 		ProcessConnections();
 		ProcessBody(dt);
+		if (body.size() <= 0)
+			return;
+		if(bDataConnections.size()>0)
 		if(bDataConnections[0].connected)
 			shot = bDataConnections[0].data;
 		else
@@ -1218,6 +1233,8 @@ public:
 	void Draw() override
 	{
 
+		if (body.size() <= 0)
+			return;
 		if (drawHealth)
 		{
 			float stage = Health / maxHealth;
@@ -1359,16 +1376,22 @@ public:
 	}
 	void ProcessConnections()
 	{
-		bDataConnections[0].name = "Fire override";
-		bDataConnections[0].source = false;
-		bDataConnections[1].name = "Boost";
-		bDataConnections[1].source = false;
+		if (bDataConnections.size() > 0)
+		{
+			bDataConnections[0].name = "Fire override";
+			bDataConnections[0].source = false;
+			bDataConnections[1].name = "Boost";
+			bDataConnections[1].source = false;
+		}
 	}
 	void MTProcess (float dt) override
 	{
 		ProcessConnections();
 		ProcessBody(dt);
-		Strut(body[1], body[0],PARTSIZE * 2.0f);
+		if (body.size() <= 0)
+			return;
+		
+		Strut(body[1], body[0], PARTSIZE * 2.0f);
 
 
 		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
@@ -1381,8 +1404,9 @@ public:
 		ballForce[body[1]] = { 0.0f,0.0f };
 
 		dir = Normalize(ballPosition[body[1]] - ballPosition[body[0]]);
+		
 
-		if ((bDataConnections[0].connected && bDataConnections[0].data))
+		if (bDataConnections.size()>0 && bDataConnections[0].connected && bDataConnections[0].data)
 			throtle = 1.0f;
 		if (!debris )
 		{
@@ -1418,6 +1442,9 @@ public:
 	}
 	void Process(float dt) override
 	{
+
+		if (body.size() <= 0)
+			return;
 		if (!debris )
 		{
 			if (abs(throtle) > 0.0f && !shutdown && !deactivated)
@@ -1454,6 +1481,8 @@ public:
 	void Draw() override
 	{
 
+		if (body.size() <= 0)
+			return;
 		if (drawHealth)
 		{
 			float stage = Health / maxHealth;
@@ -1555,6 +1584,8 @@ public:
 	void MTProcess (float dt) override
 	{
 		ProcessBody(dt);
+		if (body.size() <= 0)
+			return;
 
 		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
 
@@ -1569,7 +1600,8 @@ public:
 	}
 	void Draw() override
 	{
-
+		if (body.size() <= 0)
+			return;
 		if (drawHealth)
 		{
 			float stage = Health / maxHealth;
@@ -1808,7 +1840,8 @@ public:
 	{
 		delt = dt;
 		ProcessBody(dt);
-
+		if (body.size() <= 0)
+			return;
 		mid = 0.5f * (ballPosition[body[0]] + ballPosition[body[1]]);
 		dir = (ballPosition[body[1]] - ballPosition[body[0]]);
 
@@ -1833,6 +1866,8 @@ public:
 	void Process(float dt) override
 	{
 
+		if (body.size() <= 0)
+			return;
 		float gain = 0.0f;
 
 		if (!debris && !deactivated)
@@ -1860,6 +1895,8 @@ public:
 	void Draw() override
 	{
 
+		if (body.size() <= 0)
+			return;
 		if (drawHealth)
 		{
 			float stage = Health / maxHealth;
@@ -2015,6 +2052,10 @@ public:
 	}
 	void ProcessConnections()
 	{
+		if (vDataConnections.size() <= 0 ||
+			fDataConnections.size() <= 0 ||
+			bDataConnections.size() <= 0)
+			return;
 		vDataConnections[0].name = "ClosestEnemy";
 		vDataConnections[0].source = true;
 
@@ -2031,6 +2072,8 @@ public:
 	{
 		ProcessConnections();
 		ProcessBody(dt);
+		if (body.size() <= 0)
+			return;
 
 		ballPosition[body[0]] += ballVelocity[body[0]] * dt;
 
@@ -2094,7 +2137,8 @@ public:
 	}
 	void Draw() override
 	{
-
+		if (body.size() <= 0)
+			return;
 		if (drawHealth)
 		{
 			float stage = Health / maxHealth;
@@ -2210,6 +2254,9 @@ public:
 	}
 	void ProcessConnections()
 	{
+		if (bDataConnections.size() <= 0 ||
+			vDataConnections.size() <= 0)
+			return;
 		bDataConnections[0].name = "\"Heater\"";
 		vDataConnections[0].name = "AllignTo";
 
@@ -2221,6 +2268,8 @@ public:
 	{
 		ProcessConnections();
 		ProcessBody(dt);
+		if (body.size() <= 0)
+			return;
 
 		glm::vec2 avgvel = (ballVelocity[body[0]] + ballVelocity[body[1]] + ballVelocity[body[2]] + ballVelocity[body[3]]) * 0.25f;
 		mid = (ballPosition[body[0]]+ ballPosition[body[1]]+ ballPosition[body[2]]+ ballPosition[body[3]]) * 0.25f;
@@ -2327,7 +2376,8 @@ public:
 	}
 	void Process(float dt) override
 	{
-		
+		if (body.size() <= 0)
+			return;
 
 		if (!debris )
 		{
@@ -2359,6 +2409,8 @@ public:
 	void Draw() override
 	{
 
+		if (body.size() <= 0)
+			return;
 		if (drawHealth)
 		{
 			float stage = Health / maxHealth;

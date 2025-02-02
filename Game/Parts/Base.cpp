@@ -26,7 +26,7 @@ void BodyComponent::ProcessBody(float dt)
 	WasHitThisFrame = false;
 	dmgThisFrame = 0;
 	float avgT = 0.0f;
-	for (int i = 0; i < bodysize; i++)
+	for (int i = 0; i < body.size(); i++)
 	{
 		if (glm::isnan(ballPosition[body[i]]).x || glm::isnan(ballPosition[body[i]]).y)
 		{
@@ -46,15 +46,27 @@ void BodyComponent::ProcessBody(float dt)
 			ballTemp[body[i]] += dt * CoolingSpeed;
 		if (ballTemp[body[i]] > MaxTemp) ballTemp[body[i]] = MaxTemp;
 		if (ballTemp[body[i]] < MinTemp) ballTemp[body[i]] = MinTemp;
-		avgT += ballTemp[body[i]] ;
-		
-		ballVelocityBuff[body[i]]= ballVelocity[body[i]];
+		avgT += ballTemp[body[i]];
+
+		ballVelocityBuff[body[i]] = ballVelocity[body[i]];
 		for (int a = 0; a < GameScene->Collision_balls.size(); a++)
-			BalltoStaticBallCollision(body[i], GameScene->Collision_balls[a]);
+		{	
+			if(BalltoStaticBallCollision(body[i], GameScene->Collision_balls[a]) && GameScene->Collision_balls[a]->id == -10 && debris)
+				Health = -10.0f;
+		}
 
 		for (int a = 0; a < GameScene->Collision_cubes.size(); a++)
-			BallToStaticQuadCollision(body[i], GameScene->Collision_cubes[a]);
+		{
+			if (BallToStaticQuadCollision(body[i], GameScene->Collision_cubes[a]) && GameScene->Collision_cubes[a]->id == -10 && debris)
+				Health = -10.0f;
+		}
+		if (sqrlength(ballVelocityBuff[body[i]] - ballVelocity[body[i]]) > 50*50)
+		{
+			Health -= (length(ballVelocityBuff[body[i]] - ballVelocity[body[i]]) - 50) * 0.005f;
+		}
 	}
+	
+
 	avgT /= bodysize;
 
 	float tmpdiv = 1.0f / MaxTemp;
@@ -63,8 +75,26 @@ void BodyComponent::ProcessBody(float dt)
 	else
 		color = BaseColor - ColdColor * (avgT * tmpdiv);
 	if (Health < 0.0f)
+	{
 		dead = true;
+		return;
+	}
+	DamageTimer -= dt;
+	if (LastHealth > Health)
+	{
+		DamageTimer = 15.0f;
+	}
+	LastHealth = Health;
+	if (!debris)
+	{
+		if (DamageTimer <= 0.0f)
+		{
+			Health += dt * maxHealth*0.03f;
+		}
+	}
 
+	if (Health > maxHealth)
+		Health = maxHealth;
 	
 }
 void BodyComponent::Create(glm::vec2 position, glm::vec2 direction, float size, float mass) {}
@@ -281,6 +311,7 @@ void BodyComponent::DeleteBody()
 	bDataConnections.clear();
 	fDataConnections.clear();
 	vDataConnections.clear();
+	bodysize = 0;
 
 }
 
@@ -329,6 +360,8 @@ void PartsPile::Process(float dt, int iter,bool lastiter)
 }
 void PartsPile::DeletePart(int  index)
 {
+	if (index >= Parts.size() || index<0)
+		return;
 	glm::vec2 mid = {0.0f,0.0f};
 	for (int i = 0; i < Parts[index]->bodysize; i++)
 	{
@@ -348,11 +381,12 @@ void PartsPile::DeletePart(int  index)
 		if (SelectedPart = index)
 			SelectedPart = -1;
 	}
+	if(Parts[index]->body.size()>0)
+		playsound(PartDestrSOund, mid, 0.25f, 0.085f + rand() % 100 * 0.001f, ballVelocity[Parts[index]->body[0]]);
 	Parts[index]->DeleteBody();
 	Parts[index]->Delete = true;
 	Parts[index] = Parts[Parts.size() - 1];
 	Parts.pop_back();
-	playsound(PartDestrSOund, mid, 0.25f,0.085f+rand()%100*0.001f,ballVelocity[Parts[index]->body[0]]);
 }
 void PartsPile::SpawnPart(int type, glm::vec2 position, float size)
 {

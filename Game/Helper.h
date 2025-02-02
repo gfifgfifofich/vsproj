@@ -99,6 +99,8 @@ inline bool balltaken;
 inline bool absoluteControl;
 inline bool BuildingMode;
 
+inline bool BuildingSwitched;
+
 inline bool bLogicMode;
 inline bool fLogicMode;
 inline bool vLogicMode;

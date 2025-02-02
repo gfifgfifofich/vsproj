@@ -22,6 +22,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="DamageSphere.h" />
     <ClInclude Include="engine\Components\Engine.h" />
+    <ClInclude Include="engine\Components\Include\BlockScheme.h" />
     <ClInclude Include="engine\Components\Include\Collisions.h" />
     <ClInclude Include="engine\Components\Include\Collisions\BallToBall.h" />
     <ClInclude Include="engine\Components\Include\Collisions\BallToLine.h" />
@@ -74,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="engine\Components\Cpps\BlockScheme.cpp" />
     <ClCompile Include="engine\Components\Cpps\Collisions\BallToBall.cpp" />
     <ClCompile Include="engine\Components\Cpps\Collisions\BallToLine.cpp" />
     <ClCompile Include="engine\Components\Cpps\Collisions\BallToPolygon.cpp" />
@@ -226,7 +228,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;glad.lib;freetype.lib;stb_image.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;glad.lib;freetype.lib;stb_image.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

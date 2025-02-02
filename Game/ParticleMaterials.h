@@ -1,6 +1,7 @@
 #pragma once
 
 inline ParticleEmiter EngineSmoke;
+inline ParticleEmiter RocketSmoke;
 inline ParticleEmiter bulletFlightPm;
 inline ParticleEmiter bulletColisionPm;
 inline ParticleEmiter CollisionSparks;
@@ -23,6 +24,7 @@ inline std::vector<ParticleEmiter*> emiters;
 
 
 void SetupEnginePE();
+void SetupRocketSmokePE();
 void SetupSmokePE();
 void SetupSparksPE();
 void SetupBulletPE();

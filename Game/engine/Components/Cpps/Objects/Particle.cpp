@@ -445,6 +445,7 @@ void ParticleEmiter::Process(float dt)
 			std::for_each(std::execution::par_unseq, threadints.begin(), threadints.end(), [](int thr)
 				{
 					_ptheadstarget->_Process(thr);
+
 				}
 			);
 		}
@@ -472,7 +473,7 @@ void ParticleEmiter::Process(float dt)
 		}
 	}
 	
-	for(int i=0;i<Particles.size();i++)
+	/*for (int i = 0; i<Particles.size(); i++)
 	{
 		if (Type == "CIRCLE") {
 
@@ -588,6 +589,7 @@ void ParticleEmiter::Process(float dt)
 
 		}
 	}
+	*/
 	
 	int p = 0;
 	while (p<Particles.size())
@@ -737,7 +739,6 @@ void ParticleEmiter::_Process(int thr)
 				Particles[i].color = color;
 				Particles[i].Size = Size;
 
-			/*
 				if (Type == "CIRCLE") {
 
 					float aspx = ScreenDivisorX * CameraScale.x;
@@ -747,25 +748,15 @@ void ParticleEmiter::_Process(int thr)
 					position *= glm::vec2(aspx, aspy);
 
 
-					SceneLayers[SceneLayerIndex].CirclePosScale[start + i] = glm::vec4(position, Size * glm::vec2(aspx, aspy));
-					SceneLayers[SceneLayerIndex].Circlecolors[start + i] = color;
+					SceneLayers[SceneLayerIndex].CirclePosScale[start + i] = glm::vec4(position, Particles[i].Size * glm::vec2(aspx, aspy));
+					SceneLayers[SceneLayerIndex].Circlecolors[start + i] = Particles[i].color;
 					if (DrawToNormalMap)
 					{
-						if (material.NormalMap != CubeNormalMapTexture && material.NormalMap != BallNormalMapTexture)
-						{
-							SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadPosScale[Normastart + i] = glm::vec4(position, Size * glm::vec2(aspx, aspy));
-							SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadRotations[Normastart + i] = Particles[i].Rotation;
-						}
-						else if (material.NormalMap == CubeNormalMapTexture)
-						{
-							SceneLayers[SceneLayerIndex].NormalMapCubePosScale[Normastart + i] = glm::vec4(position, Size * glm::vec2(aspx, aspy));
-							SceneLayers[SceneLayerIndex].NormalMapCubeRotations[Normastart + i] = Particles[i].Rotation;
-						}
-						else
-						{
-							SceneLayers[SceneLayerIndex].NormalMapCirclePosScale[Normastart + i] = glm::vec4(position, Size * glm::vec2(aspx, aspy));
-							SceneLayers[SceneLayerIndex].NormalMapCircleRotations[Normastart + i] = Particles[i].Rotation;
-						}
+
+						SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadPosScale[Normastart + i] = glm::vec4(position, Particles[i].Size * glm::vec2(aspx, aspy));
+						SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadRotations[Normastart + i] = Particles[i].Rotation;
+						SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadDepth[Normastart + i] = 0.0f;
+
 					}
 				}
 				else if (Type == "QUAD")
@@ -778,26 +769,16 @@ void ParticleEmiter::_Process(int thr)
 
 
 
-					SceneLayers[SceneLayerIndex].QuadPosScale[start + i] = glm::vec4(position, Size * glm::vec2(aspx, aspy));
+					SceneLayers[SceneLayerIndex].QuadPosScale[start + i] = glm::vec4(position, Particles[i].Size * glm::vec2(aspx, aspy));
 					SceneLayers[SceneLayerIndex].QuadRotations[start + i] = Particles[i].Rotation;
-					SceneLayers[SceneLayerIndex].Quadcolors[start + i] = color;
+					SceneLayers[SceneLayerIndex].Quadcolors[start + i] = Particles[i].color;
 					if (DrawToNormalMap)
 					{
-						if (material.NormalMap != CubeNormalMapTexture && material.NormalMap != BallNormalMapTexture)
-						{
-							SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadPosScale[Normastart + i] = glm::vec4(position, Size * glm::vec2(aspx, aspy));
-							SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadRotations[Normastart + i] = Particles[i].Rotation;
-						}
-						else if (material.NormalMap == CubeNormalMapTexture)
-						{
-							SceneLayers[SceneLayerIndex].NormalMapCubePosScale[Normastart + i] = glm::vec4(position, Size * glm::vec2(aspx, aspy));
-							SceneLayers[SceneLayerIndex].NormalMapCubeRotations[Normastart + i] = Particles[i].Rotation;
-						}
-						else
-						{
-							SceneLayers[SceneLayerIndex].NormalMapCirclePosScale[Normastart + i] = glm::vec4(position, Size * glm::vec2(aspx, aspy));
-							SceneLayers[SceneLayerIndex].NormalMapCircleRotations[Normastart + i] = Particles[i].Rotation;
-						}
+
+						SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadPosScale[Normastart + i] = glm::vec4(position, Particles[i].Size * glm::vec2(aspx, aspy));
+						SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadRotations[Normastart + i] = Particles[i].Rotation;
+						SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadDepth[Normastart + i] = 0.0f;
+
 					}
 
 				}
@@ -805,7 +786,7 @@ void ParticleEmiter::_Process(int thr)
 				{
 
 					glm::vec2 p1 = Particles[i].position;
-					glm::vec2 p2 = Particles[i].position + Particles[i].velocity * Size.y * 0.017f;
+					glm::vec2 p2 = Particles[i].position + Particles[i].velocity * Particles[i].Size.y * 0.017f;
 					glm::vec2 midpos = (p2 + p1) / 2.0f;
 					float rotation = get_angle_between_points(p1, p2);
 					glm::vec2 dif = p1 - p2;
@@ -820,27 +801,16 @@ void ParticleEmiter::_Process(int thr)
 
 					//DrawCube(midpos, glm::vec2(length * 5.125f * 25, width), glm::vec3(0.0f, 0.0f, rotation), color);
 
-					SceneLayers[SceneLayerIndex].QuadPosScale[start + i] = glm::vec4(position, glm::vec2(Size.x, Size.y * length) * glm::vec2(aspx, aspy));
+					SceneLayers[SceneLayerIndex].QuadPosScale[start + i] = glm::vec4(position, glm::vec2(Particles[i].Size.x, Particles[i].Size.y * length) * glm::vec2(aspx, aspy));
 					SceneLayers[SceneLayerIndex].QuadRotations[start + i] = rotation;
-					SceneLayers[SceneLayerIndex].Quadcolors[start + i] = color;
-				
+					SceneLayers[SceneLayerIndex].Quadcolors[start + i] = Particles[i].color;
+
 					if (DrawToNormalMap)
 					{
-						if (material.NormalMap != CubeNormalMapTexture && material.NormalMap != BallNormalMapTexture)
-						{
-							SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadPosScale[Normastart + i] = glm::vec4(position, glm::vec2(Size.x, Size.y * length) * glm::vec2(aspx, aspy));
-							SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadRotations[Normastart + i] = rotation;
-						}
-						else if (material.NormalMap == CubeNormalMapTexture)
-						{
-							SceneLayers[SceneLayerIndex].NormalMapCubePosScale[Normastart + i] = glm::vec4(position, glm::vec2(Size.x, Size.y * length) * glm::vec2(aspx, aspy));
-							SceneLayers[SceneLayerIndex].NormalMapCubeRotations[Normastart + i] = rotation;
-						}
-						else
-						{
-							SceneLayers[SceneLayerIndex].NormalMapCirclePosScale[Normastart + i] = glm::vec4(position, glm::vec2(Size.x, Size.y * length) * glm::vec2(aspx, aspy));
-							SceneLayers[SceneLayerIndex].NormalMapCircleRotations[Normastart + i] = rotation;
-						}
+						SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadPosScale[Normastart + i] = glm::vec4(position, glm::vec2(Particles[i].Size.x, Particles[i].Size.y * length) * glm::vec2(aspx, aspy));
+						SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadRotations[Normastart + i] = rotation;
+						SceneLayers[SceneLayerIndex].NormalMaps[NormalMapIndex].QuadDepth[Normastart + i] = 0.0f;
+
 					}
 				}
 				else if (Type == "TEXTURED" && material.Texture > 0)
@@ -851,16 +821,17 @@ void ParticleEmiter::_Process(int thr)
 					glm::vec2 position = Particles[i].position - CameraPosition;
 					position *= glm::vec2(aspx, aspy);
 
-					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].Quadcolors[start + i] = color;
-					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].QuadPosScale[start + i] = glm::vec4(position, Size * glm::vec2(aspx, aspy));
+					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].Quadcolors[start + i] = Particles[i].color;
+					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].QuadPosScale[start + i] = glm::vec4(position, Particles[i].Size * glm::vec2(aspx, aspy));
 					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].QuadRotations[start + i] = Particles[i].Rotation;
+					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].QuadDepth[start + i] = 0.0f;
 
 				}
 				else if (Type == "TEXTUREDLINE" && material.Texture > 0)
 				{
 
 					glm::vec2 p1 = Particles[i].position;
-					glm::vec2 p2 = Particles[i].position + Particles[i].velocity * Size.y * 0.017f;
+					glm::vec2 p2 = Particles[i].position + Particles[i].velocity * Particles[i].Size.y * 0.017f;
 					glm::vec2 midpos = (p2 + p1) / 2.0f;
 					float rotation = get_angle_between_points(p1, p2);
 					glm::vec2 dif = p1 - p2;
@@ -874,13 +845,15 @@ void ParticleEmiter::_Process(int thr)
 					//DrawCube(midpos, glm::vec2(length * 5.125f * 25, width), glm::vec3(0.0f, 0.0f, rotation), color);
 
 
-					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].Quadcolors[start + i] = color;
-					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].QuadPosScale[start + i] = glm::vec4(position, glm::vec2(Size.x, Size.y * length) * glm::vec2(aspx, aspy));
+					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].Quadcolors[start + i] = Particles[i].color;
+					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].QuadPosScale[start + i] = glm::vec4(position, glm::vec2(Particles[i].Size.x, Particles[i].Size.y * length) * glm::vec2(aspx, aspy));
 					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].QuadRotations[start + i] = rotation;
+					SceneLayers[SceneLayerIndex].TexturedQuads[TQA].QuadDepth[start + i] = 0.0f;
 
 
 				}
-			*/
+
+			
 			
 			}
 			

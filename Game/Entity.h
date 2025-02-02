@@ -224,7 +224,6 @@ void ProcessEntities(float dt,int s)
 	//	for (int i = 0; i < Entities[e]->Balls.size(); i++)
 	//		balls.push_back(Entities[e]->Balls[i]);
 	//}
-
 	for (int i = 0; i < lastid; i++)
 	{
 		if (!IsBall[i])
@@ -233,7 +232,10 @@ void ProcessEntities(float dt,int s)
 		glm::vec2 aVel = ballVelocity[i];
 		glm::vec2 pVel = ballVelocityBuff[i];
 		ballVelocity[i] -= ballVelocity[i] * sqrlength(ballVelocity[i]) * subdt * 0.000002f;
-		glm::vec2 offset = Entities[0]->mid + glm::vec2(-150, -150);
+
+		glm::vec2 offset = glm::vec2(-150, -150);
+		if (Entities.size() > 0)
+			offset = Entities[0]->mid + glm::vec2(-150, -150);
 		//int x = roundf(balls[i]->position.x - offset.x);
 		//int y = roundf(balls[i]->position.y - offset.y);
 		////std::cout << x << "			" << y << "\n";
